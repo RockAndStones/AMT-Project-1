@@ -1,7 +1,7 @@
 version: '3'
 services:
   payara:
-    build: ../../images/payara
+    image: amt/stoneoverflow
     environment:
      - ADMIN_PASSWORD=adminadmin
     ports:
