@@ -20,7 +20,7 @@
         <div class="w-full md:w-1/3 flex flex-col">
             <!-- Logo -->
             <div class="flex justify-center md:justify-start pt-12 md:pl-12 md:-mb-24">
-                <a href="#" class="bg-black text-white font-bold text-xl p-4">StoneOverflow</a>
+                <a href="home" class="bg-black text-white font-bold text-xl p-4">StoneOverflow</a>
             </div>
 
             <!-- Login Section -->
