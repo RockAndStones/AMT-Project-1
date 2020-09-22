@@ -11,6 +11,7 @@
 <head>
     <title>Login</title>
     <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="javascript/login.js"></script>
 </head>
 <body class="bg-white font-family-karla h-screen">
 
@@ -23,7 +24,7 @@
             </div>
 
             <!-- Login Section -->
-            <div class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
+            <div id="loginSection" class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
                 <p class="text-center text-3xl">Welcome.</p>
                 <form class="flex flex-col pt-3 md:pt-8" onsubmit="event.preventDefault();">
                     <div class="flex flex-col pt-4">
@@ -39,12 +40,12 @@
                     <input type="submit" value="Log In" class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8">
                 </form>
                 <div class="text-center pt-12 pb-12">
-                    <p>Don't have an account? <a href="register.html" class="underline font-semibold">Register here.</a></p>
+                    <p>Don't have an account? <span onClick="showRegister()" class="underline font-semibold">Register here.</span></p>
                 </div>
             </div>
 
             <!-- Register Section -->
-            <div class="hidden flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
+            <div id="registerSection" class="hidden flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
                 <p class="text-center text-3xl">Join Us.</p>
                 <form class="flex flex-col pt-3 md:pt-8" onsubmit="event.preventDefault();">
                     <div class="flex flex-col pt-4">
@@ -65,7 +66,7 @@
                     <input type="submit" value="Register" class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8">
                 </form>
                 <div class="text-center pt-12 pb-12">
-                    <p>Already have an account? <a href="login.html" class="underline font-semibold">Log in here.</a></p>
+                    <p>Already have an account? <span onClick="showLogin()" class="underline font-semibold">Log in here.</span></p>
                 </div>
             </div>
 
@@ -79,3 +80,5 @@
 
 </body>
 </html>
+
+
