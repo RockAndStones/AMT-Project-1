@@ -45,10 +45,7 @@
                         <a class="inline-block py-2 px-4 text-gray-900 font-bold no-underline" href="#">Active</a>
                     </li>
                     <li class="mr-3 py-2 lg:py-0">
-                        <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-2 px-4" href="#">link</a>
-                    </li>
-                    <li class="mr-3 py-2 lg:py-0">
-                        <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-2 px-4" href="#">link</a>
+                        <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-2 px-4" href="login">Log in/Sign up</a>
                     </li>
                 </ul>
             </div>
@@ -98,7 +95,6 @@
         <div class="w-full lg:w-4/5 p-8 mt-6 lg:mt-0 text-gray-900 leading-normal bg-white border border-gray-400 border-rounded">
             <!--Title-->
             <div class="font-sans">
-                <span class="text-base text-purple-500 font-bold">&laquo;</span> <a href="#" class="text-base md:text-sm text-purple-500 font-bold no-underline hover:underline">Back Link</a>
                 <h1 class="font-sans break-normal text-gray-900 pt-6 pb-2 text-xl">Help page title</h1>
                 <hr class="border-b border-gray-400">
             </div>
