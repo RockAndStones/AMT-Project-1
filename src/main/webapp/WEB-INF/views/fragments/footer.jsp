@@ -4,7 +4,7 @@
   Date:         23.09.2020
   Description:  Footer fragment for StoneOverflow.
 --%>
-<footer class="w-full border-t">
+<footer class="w-full border-t mb-16 lg:mb-0">
     <div class="container mx-auto flex py-8">
         <div class="w-full mx-auto flex flex-wrap">
             <div class="flex w-full lg:w-1/2 ">

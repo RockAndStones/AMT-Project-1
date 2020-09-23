@@ -23,8 +23,7 @@
         <!-- Sidebar -->
         <%@include file="fragments/sidebar.jsp" %>
         <!-- Main content -->
-        <div class="w-full lg:w-4/5 p-8 mt-6 lg:mt-0 text-gray-900 leading-normal">
-
+        <div class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-900 leading-normal">
             <!-- Question Card -->
             <c:forEach items="${questions}" var="question">
                 <%@include file="fragments/question.jsp" %>
@@ -33,5 +32,7 @@
     </div>
     <!-- Footer -->
     <%@include file="fragments/footer.jsp" %>
+    <!-- BottomBar -->
+    <%@include file="fragments/bottombar.jsp" %>
 </body>
 </html>
