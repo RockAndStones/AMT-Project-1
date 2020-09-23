@@ -26,15 +26,15 @@
             <!-- Login Section -->
             <div id="loginSection" class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
                 <p class="text-center text-3xl">Welcome.</p>
-                <form class="flex flex-col pt-3 md:pt-8" onsubmit="event.preventDefault();">
+                <form action="${pageContext.request.contextPath}/loginCommand" method="POST" class="flex flex-col pt-3 md:pt-8">
                     <div class="flex flex-col pt-4">
-                        <label for="loginUsername" class="text-lg">Email</label>
-                        <input type="text" id="loginUsername" placeholder="Your awesome username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                        <label for="loginUsername" class="text-lg">Username</label>
+                        <input type="text" id="loginUsername" name="username" placeholder="Your awesome username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
 
                     <div class="flex flex-col pt-4">
                         <label for="loginPassword" class="text-lg">Password</label>
-                        <input type="password" id="loginPassword" placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                        <input type="password" id="loginPassword" name="password" placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
 
                     <input type="submit" value="Log In" class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8">
@@ -47,20 +47,20 @@
             <!-- Register Section -->
             <div id="registerSection" class="hidden flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
                 <p class="text-center text-3xl">Join Us.</p>
-                <form class="flex flex-col pt-3 md:pt-8" onsubmit="event.preventDefault();">
+                <form action="${pageContext.request.contextPath}/registerCommand" method="POST" class="flex flex-col pt-3 md:pt-8">
                     <div class="flex flex-col pt-4">
-                        <label for="registerUsername" class="text-lg">Email</label>
-                        <input type="text" id="registerUsername" placeholder="Your awesome username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                        <label for="registerUsername" class="text-lg">Username</label>
+                        <input type="text" id="registerUsername" name="username" placeholder="Your awesome username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
 
                     <div class="flex flex-col pt-4">
                         <label for="registerPassword" class="text-lg">Password</label>
-                        <input type="password" id="registerPassword" placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                        <input type="password" id="registerPassword" name="password" placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
 
                     <div class="flex flex-col pt-4">
-                        <label for="confirm-password" class="text-lg">Confirm Password</label>
-                        <input type="password" id="confirm-password" placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                        <label for="confirmPassword" class="text-lg">Confirm Password</label>
+                        <input type="password" id="confirmPassword" placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
 
                     <input type="submit" value="Register" class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8">
