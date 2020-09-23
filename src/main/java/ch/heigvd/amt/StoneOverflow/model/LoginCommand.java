@@ -9,5 +9,6 @@ import javax.servlet.http.HttpSession;
 @Getter
 public class LoginCommand {
     private final String username;
+    private final String password;
     private final HttpSession session;
 }
