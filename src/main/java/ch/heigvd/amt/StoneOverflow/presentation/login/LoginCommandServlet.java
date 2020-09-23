@@ -16,10 +16,15 @@ public class LoginCommandServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LoginCommand command = LoginCommand.builder()
                 .username(req.getParameter("username"))
+                .password(req.getParameter("password"))
                 .session(req.getSession())
                 .build();
-        if(UsersDatastore.isUserIn(command)){
-            req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);
+        if(UsersDatastore.isValidUser(command)){
+            //todo: Use shared logic for register & login
+            req.getSession().setAttribute("loggedInUser", command.getUsername());
+            resp.sendRedirect("/StoneOverflow-1.0-SNAPSHOT/home");
+        } else {
+            resp.sendRedirect("/StoneOverflow-1.0-SNAPSHOT/login");
         }
     }
 }

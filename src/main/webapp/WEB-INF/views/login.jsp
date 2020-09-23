@@ -77,7 +77,6 @@
             <img class="object-cover w-full h-screen hidden md:block" src="https://api.time.com/wp-content/uploads/2018/03/rocks-students-armed.jpg">
         </div>
     </div>
-
 </body>
 </html>
 

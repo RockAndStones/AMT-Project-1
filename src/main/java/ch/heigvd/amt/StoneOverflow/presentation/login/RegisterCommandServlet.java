@@ -12,12 +12,15 @@ import java.io.IOException;
 
 @WebServlet(name = "RegisterCommandServlet", urlPatterns = "/registerCommand")
 public class RegisterCommandServlet extends HttpServlet {
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RegisterCommand command = RegisterCommand.builder().
                 username(req.getParameter("username")).
+                password(req.getParameter("password")).
                 session(req.getSession()).build();
         UsersDatastore.addUser(command);
+        //todo: Use shared logic for register & login
+        req.getSession().setAttribute("loggedInUser", command.getUsername());
+        resp.sendRedirect("/StoneOverflow-1.0-SNAPSHOT/home");
     }
 }
