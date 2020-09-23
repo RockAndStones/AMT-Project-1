@@ -10,8 +10,4 @@ public class Question {
     String description;
     String creator;
     int nbVotes;
-
-    public String getTitle() {
-        return title;
-    }
 }
