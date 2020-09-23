@@ -12,10 +12,11 @@
 <head>
     <title>Home</title>
     <link href="css/styles.css" rel="stylesheet" type="text/css"/>
+    <link href="css/normalize.css" rel="stylesheet" type="text/css"/>
 </head>
-<body class="bg-gray-100 tracking-wider tracking-normal">
+<body class="bg-white tracking-wider tracking-normal">
     <!--Navigation-->
-    <nav id="header" class="fixed w-full z-10 top-0 bg-white border-b border-gray-400">
+    <nav id="header" class="sticky w-full z-10 top-0 bg-white border-b border-gray-400">
         <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-4">
             <div class="pl-4 flex items-center">
                 <!-- Logo -->
@@ -52,50 +53,56 @@
         </div>
     </nav>
     <!--Container-->
-    <div class="container w-full flex flex-wrap mx-auto px-2 pt-8 lg:pt-16 mt-16">
-        <div class="w-full lg:w-1/5 lg:px-6 text-xl text-gray-800 leading-normal">
-            <p class="text-base font-bold py-2 lg:pb-6 text-gray-700">Menu</p>
-            <div class="block lg:hidden sticky inset-0">
-                <button id="menu-toggle" class="flex w-full justify-end px-3 py-3 bg-white lg:bg-transparent border rounded border-gray-600 hover:border-purple-500 appearance-none focus:outline-none">
-                    <svg class="fill-current h-3 float-right" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+    <div class="w-full flex flex-wrap">
+        <!-- Sidebar -->
+        <div class="w-full lg:w-1/5 text-xl text-gray-800 lg:border-r leading-normal">
+            <nav class="mt-10">
+                <!-- Current page (gray-900) -->
+                <a class="flex items-center py-2 px-8 bg-gray-200 text-gray-900 border-r-4 border-gray-900" href="#">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                </button>
-            </div>
-            <div class="w-full sticky inset-0 hidden h-64 lg:h-auto overflow-x-hidden overflow-y-auto lg:overflow-y-hidden lg:block mt-0 border border-gray-400 lg:border-transparent bg-white shadow lg:shadow-none lg:bg-transparent z-20" style="top:5em;" id="menu-content">
-                <ul class="list-reset">
-                    <li class="py-2 md:my-0 hover:bg-purple-100 lg:hover:bg-transparent">
-                        <a href="#" class="block pl-4 align-middle text-gray-700 no-underline hover:text-purple-500 border-l-4 border-transparent lg:border-purple-500 lg:hover:border-purple-500">
-                            <span class="pb-1 md:pb-0 text-sm text-gray-900 font-bold">Home</span>
-                        </a>
-                    </li>
-                    <li class="py-2 md:my-0 hover:bg-purple-100 lg:hover:bg-transparent">
-                        <a href="#" class="block pl-4 align-middle text-gray-700 no-underline hover:text-purple-500 border-l-4 border-transparent lg:hover:border-gray-400">
-                            <span class="pb-1 md:pb-0 text-sm">Tasks</span>
-                        </a>
-                    </li>
-                    <li class="py-2 md:my-0 hover:bg-purple-100 lg:hover:bg-transparent">
-                        <a href="#" class="block pl-4 align-middle text-gray-700 no-underline hover:text-purple-500 border-l-4 border-transparent lg:hover:border-gray-400">
-                            <span class="pb-1 md:pb-0 text-sm">Messages</span>
-                        </a>
-                    </li>
-                    <li class="py-2 md:my-0 hover:bg-purple-100 lg:hover:bg-transparent">
-                        <a href="#" class="block pl-4 align-middle text-gray-700 no-underline hover:text-purple-500 border-l-4 border-transparent lg:hover:border-gray-400">
-                            <span class="pb-1 md:pb-0 text-sm">Analytics</span>
-                        </a>
-                    </li>
-                    <li class="py-2 md:my-0 hover:bg-purple-100 lg:hover:bg-transparent">
-                        <a href="#" class="block pl-4 align-middle text-gray-700 no-underline hover:text-purple-500 border-l-4 border-transparent lg:hover:border-gray-400">
-                            <span class="pb-1 md:pb-0 text-sm">Payments</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+
+                    <span class="mx-4 font-medium">Dashboard</span>
+                </a>
+
+                <a class="flex items-center mt-5 py-2 px-8 text-gray-600 border-r-4 border-white hover:bg-gray-200 hover:text-gray-700 hover:border-gray-700" href="#">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+
+                    <span class="mx-4 font-medium">Accounts</span>
+                </a>
+
+                <a class="flex items-center mt-5 py-2 px-8 text-gray-600 border-r-4 border-white hover:bg-gray-200 hover:text-gray-700 hover:border-gray-700" href="#">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 5V7M15 11V13M15 17V19M5 5C3.89543 5 3 5.89543 3 7V10C4.10457 10 5 10.8954 5 12C5 13.1046 4.10457 14 3 14V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V14C19.8954 14 19 13.1046 19 12C19 10.8954 19.8954 10 21 10V7C21 5.89543 20.1046 5 19 5H5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+
+                    <span class="mx-4 font-medium">Tickets</span>
+                </a>
+
+                <a class="flex items-center mt-5 py-2 px-8 text-gray-600 border-r-4 border-white hover:bg-gray-200 hover:text-gray-700 hover:border-gray-700" href="#">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.3246 4.31731C10.751 2.5609 13.249 2.5609 13.6754 4.31731C13.9508 5.45193 15.2507 5.99038 16.2478 5.38285C17.7913 4.44239 19.5576 6.2087 18.6172 7.75218C18.0096 8.74925 18.5481 10.0492 19.6827 10.3246C21.4391 10.751 21.4391 13.249 19.6827 13.6754C18.5481 13.9508 18.0096 15.2507 18.6172 16.2478C19.5576 17.7913 17.7913 19.5576 16.2478 18.6172C15.2507 18.0096 13.9508 18.5481 13.6754 19.6827C13.249 21.4391 10.751 21.4391 10.3246 19.6827C10.0492 18.5481 8.74926 18.0096 7.75219 18.6172C6.2087 19.5576 4.44239 17.7913 5.38285 16.2478C5.99038 15.2507 5.45193 13.9508 4.31731 13.6754C2.5609 13.249 2.5609 10.751 4.31731 10.3246C5.45193 10.0492 5.99037 8.74926 5.38285 7.75218C4.44239 6.2087 6.2087 4.44239 7.75219 5.38285C8.74926 5.99037 10.0492 5.45193 10.3246 4.31731Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+
+                    <span class="mx-4 font-medium">Settings</span>
+                </a>
+            </nav>
         </div>
-        <div class="w-full lg:w-4/5 p-8 mt-6 lg:mt-0 text-gray-900 leading-normal bg-white border border-gray-400 border-rounded">
+        <!-- Main content -->
+        <div class="w-full lg:w-4/5 p-8 mt-6 lg:mt-0 text-gray-900 leading-normal">
+
+            <!-- --------------- -->
+            <!-- Example content -->
+            <!-- --------------- -->
+
             <!--Title-->
             <div class="font-sans">
-                <h1 class="font-sans font-bold break-normal text-gray-900 pt-6 pb-2 text-xl">Questions</h1>
+                <h1 class="font-sans break-normal text-gray-900 pt-6 pb-2 text-xl">Questions</h1>
                 <hr class="border-b border-gray-400">
             </div>
 
