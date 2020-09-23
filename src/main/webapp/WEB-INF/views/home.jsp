@@ -11,12 +11,13 @@
 <html>
 <head>
     <title>Home</title>
+    <link href="css/custom.css" rel="stylesheet" type="text/css"/>
     <link href="css/styles.css" rel="stylesheet" type="text/css"/>
     <link href="css/normalize.css" rel="stylesheet" type="text/css"/>
 </head>
-<body class="bg-white tracking-wider tracking-normal">
-    <!--Navigation-->
-    <nav id="header" class="bg-white sticky w-full flex flex-wrap justify-between z-10 top-0 py-4 border-b border-gray-400">
+<body class="bg-white tracking-wider tracking-normal border-gray-400">
+    <!-- Navigation -->
+    <nav id="header" class="bg-white sticky w-full flex flex-wrap justify-between z-10 top-0 py-4 border-b">
         <!-- Logo -->
         <div class="pl-4 flex lg:w-1/5 justify-center">
             <a href="home" class="bg-black text-white font-bold text-l p-3">StoneOverflow</a>
@@ -51,10 +52,11 @@
             </ul>
         </div>
     </nav>
-    <!--Container-->
+    <!-- Main -->
     <div class="w-full flex flex-wrap">
         <!-- Sidebar -->
-        <div class="w-full lg:w-1/5 text-xl text-gray-800 lg:border-r leading-normal">
+        <div class="hidden lg:block lg:w-1/5 lg:border-r"></div>
+        <div class="lg:fixed w-full lg:w-1/5 text-xl text-gray-800 lg:border-r leading-normal">
             <nav class="mt-10">
                 <!-- Current page (gray-900) -->
                 <a class="flex items-center py-2 px-8 bg-gray-200 text-gray-900 border-r-4 border-gray-900" href="#">
@@ -62,7 +64,7 @@
                         <path d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
 
-                    <span class="mx-4 font-medium">Dashboard</span>
+                    <span class="mx-4 font-medium">Questions</span>
                 </a>
 
                 <a class="flex items-center mt-5 py-2 px-8 text-gray-600 border-r-4 border-white hover:bg-gray-200 hover:text-gray-700 hover:border-gray-700" href="#">
@@ -95,22 +97,12 @@
         <!-- Main content -->
         <div class="w-full lg:w-4/5 p-8 mt-6 lg:mt-0 text-gray-900 leading-normal">
 
-            <!-- --------------- -->
-            <!-- Example content -->
-            <!-- --------------- -->
-
-            <!--Title-->
-            <div class="font-sans">
-                <h1 class="font-sans break-normal text-gray-900 pt-6 pb-2 text-xl">Questions</h1>
-                <hr class="border-b border-gray-400">
-            </div>
-
             <!-- Question Card -->
             <c:forEach items="${questions}" var="question">
-                <div class="flex bg-white border md:mx-auto max-w-md md:max-w-2xl ">
-                    <div class="flex items-start px-4 py-6">
+                <div class="question flex border-b">
+                    <div class="w-full flex items-start px-4 py-6">
                         <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt="avatar">
-                        <div class="">
+                        <div class="w-full">
                             <div class="flex items-center justify-between">
                                 <h2 class="text-lg font-semibold text-gray-900 -mt-1">${question.title}</h2>
                                 <small class="text-left text-sm text-gray-700">date</small>
@@ -133,8 +125,10 @@
                     </div>
                 </div>
             </c:forEach>
-
-    <footer class="bg-white border-t border-gray-400 shadow">
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="w-full border-t">
         <div class="container mx-auto flex py-8">
             <div class="w-full mx-auto flex flex-wrap">
                 <div class="flex w-full lg:w-1/2 ">
