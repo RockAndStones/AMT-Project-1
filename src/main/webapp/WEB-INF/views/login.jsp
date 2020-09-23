@@ -28,8 +28,8 @@
                 <p class="text-center text-3xl">Welcome.</p>
                 <form class="flex flex-col pt-3 md:pt-8" onsubmit="event.preventDefault();">
                     <div class="flex flex-col pt-4">
-                        <label for="loginEmail" class="text-lg">Email</label>
-                        <input type="email" id="loginEmail" placeholder="your@email.com" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                        <label for="loginUsername" class="text-lg">Email</label>
+                        <input type="text" id="loginUsername" placeholder="Your awesome username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
 
                     <div class="flex flex-col pt-4">
@@ -49,8 +49,8 @@
                 <p class="text-center text-3xl">Join Us.</p>
                 <form class="flex flex-col pt-3 md:pt-8" onsubmit="event.preventDefault();">
                     <div class="flex flex-col pt-4">
-                        <label for="registerLogin" class="text-lg">Email</label>
-                        <input type="email" id="registerLogin" placeholder="your@email.com" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                        <label for="registerUsername" class="text-lg">Email</label>
+                        <input type="text" id="registerUsername" placeholder="Your awesome username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
 
                     <div class="flex flex-col pt-4">
