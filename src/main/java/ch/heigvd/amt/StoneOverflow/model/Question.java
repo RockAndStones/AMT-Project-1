@@ -10,4 +10,20 @@ public class Question {
     String description;
     String creator;
     int nbVotes;
+
+    public String shortDescription(){
+        int maxLength = 64;
+        String thereIsmore = "...";
+
+        if(this.description.length() > maxLength){
+            String shortDescription = this.description.substring(0, maxLength);
+            shortDescription += thereIsmore;
+            return shortDescription;
+        } else{
+            return this.description;
+        }
+
+
+
+    }
 }
