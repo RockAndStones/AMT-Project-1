@@ -3,6 +3,7 @@ package ch.heigvd.amt.StoneOverflow.presentation.login;
 import ch.heigvd.amt.StoneOverflow.business.UsersDatastore;
 import ch.heigvd.amt.StoneOverflow.model.RegisterCommand;
 
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,13 +13,16 @@ import java.io.IOException;
 
 @WebServlet(name = "RegisterCommandServlet", urlPatterns = "/registerCommand")
 public class RegisterCommandServlet extends HttpServlet {
+    @EJB
+    UsersDatastore usersDatastore;
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RegisterCommand command = RegisterCommand.builder().
                 username(req.getParameter("username")).
                 password(req.getParameter("password")).
                 session(req.getSession()).build();
-        UsersDatastore.addUser(command);
+        usersDatastore.addUser(command);
         //todo: Use shared logic for register & login
         req.getSession().setAttribute("loggedInUser", command.getUsername());
         resp.sendRedirect("/StoneOverflow-1.0-SNAPSHOT/home");
