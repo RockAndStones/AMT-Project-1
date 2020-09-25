@@ -1,6 +1,8 @@
 package ch.heigvd.amt.StoneOverflow.application.identitymgmt;
 
+import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.AuthenticatedUserDTO;
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.LoginCommand;
+import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.LoginFailedException;
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegisterCommand;
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegistrationFailedException;
 import ch.heigvd.amt.StoneOverflow.domain.user.IUserRepository;
@@ -33,5 +35,21 @@ public class IdentityManagementFacade {
         } catch (Exception e) {
             throw new RegistrationFailedException(e.getMessage());
         }
+    }
+
+
+    public AuthenticatedUserDTO login(LoginCommand loginCommand) throws LoginFailedException {
+        User user = userRepository.findByUsername(loginCommand.getUsername())
+                .orElseThrow(() -> new LoginFailedException("User not found"));
+
+        if (user.authenticate(loginCommand.getPlaintextPassword()))
+            throw new LoginFailedException("Invalid password");
+
+        return AuthenticatedUserDTO.builder()
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .build();
     }
 }
