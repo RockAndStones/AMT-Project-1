@@ -1,7 +1,7 @@
 package ch.heigvd.amt.StoneOverflow.ui.web.login;
 
 import ch.heigvd.amt.StoneOverflow.business.UsersDatastore;
-import ch.heigvd.amt.StoneOverflow.domain.LoginCommand;
+import ch.heigvd.amt.StoneOverflow.application.identitymgmt.authenticate.LoginCommand;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -20,7 +20,7 @@ public class LoginCommandServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LoginCommand command = LoginCommand.builder()
                 .username(req.getParameter("username"))
-                .password(req.getParameter("password"))
+                .plaintextPassword(req.getParameter("password"))
                 .build();
         if(usersDatastore.isValidUser(command)){
             //todo: Use shared logic for register & login
