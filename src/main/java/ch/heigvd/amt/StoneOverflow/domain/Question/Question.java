@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Data
 @Builder(toBuilder = true)
-public class Question implements IEntity {
+public class Question implements IEntity<Question, QuestionId> {
     @Setter(AccessLevel.NONE)
     private QuestionId id = new QuestionId();
     private String title;
@@ -17,6 +17,13 @@ public class Question implements IEntity {
     private int nbVotes;
     @Setter(AccessLevel.NONE)
     private QuestionType questionType;
+
+    @Override
+    public Question deepClone() {
+        return this.toBuilder()
+                .id(new QuestionId(id.asString()))
+                .build();
+    }
 
     public void categorizeAs(QuestionType questionType){this.questionType = questionType;}
 
