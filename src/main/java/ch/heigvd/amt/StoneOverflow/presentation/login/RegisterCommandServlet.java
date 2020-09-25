@@ -21,7 +21,7 @@ public class RegisterCommandServlet extends HttpServlet {
         RegisterCommand command = RegisterCommand.builder().
                 username(req.getParameter("username")).
                 password(req.getParameter("password")).
-                session(req.getSession()).build();
+                build();
         usersDatastore.addUser(command);
         //todo: Use shared logic for register & login
         req.getSession().setAttribute("loggedInUser", command.getUsername());
