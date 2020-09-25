@@ -1,9 +1,9 @@
 package ch.heigvd.amt.StoneOverflow.business;
 
-import ch.heigvd.amt.StoneOverflow.model.LoginCommand;
-import ch.heigvd.amt.StoneOverflow.model.RegisterCommand;
+import ch.heigvd.amt.StoneOverflow.domain.LoginCommand;
+import ch.heigvd.amt.StoneOverflow.domain.RegisterCommand;
 
-import ch.heigvd.amt.StoneOverflow.model.User;
+import ch.heigvd.amt.StoneOverflow.domain.User;
 
 import javax.ejb.Singleton;
 import java.util.HashMap;

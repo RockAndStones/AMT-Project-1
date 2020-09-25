@@ -1,4 +1,4 @@
-package ch.heigvd.amt.StoneOverflow.model;
+package ch.heigvd.amt.StoneOverflow.domain;
 
 import lombok.Builder;
 import lombok.Getter;

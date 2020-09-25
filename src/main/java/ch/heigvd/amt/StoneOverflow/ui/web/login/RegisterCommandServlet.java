@@ -1,7 +1,7 @@
-package ch.heigvd.amt.StoneOverflow.presentation.login;
+package ch.heigvd.amt.StoneOverflow.ui.web.login;
 
 import ch.heigvd.amt.StoneOverflow.business.UsersDatastore;
-import ch.heigvd.amt.StoneOverflow.model.RegisterCommand;
+import ch.heigvd.amt.StoneOverflow.domain.RegisterCommand;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
