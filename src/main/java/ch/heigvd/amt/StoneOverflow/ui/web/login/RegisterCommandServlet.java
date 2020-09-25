@@ -25,6 +25,6 @@ public class RegisterCommandServlet extends HttpServlet {
         usersDatastore.addUser(command);
         //todo: Use shared logic for register & login
         req.getSession().setAttribute("loggedInUser", command.getUsername());
-        resp.sendRedirect("/StoneOverflow-1.0-SNAPSHOT/home");
+        resp.sendRedirect(req.getContextPath() + "/home");
     }
 }

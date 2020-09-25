@@ -23,6 +23,6 @@ public class AddQuestionCommandEndpoint extends HttpServlet {
                 .title(req.getParameter("title"))
                 .description(req.getParameter("description")).build();
         questionFacade.addQuestion(command);
-        resp.sendRedirect("/StoneOverflow/home");
+        resp.sendRedirect(req.getContextPath() + "/home");
     }
 }
