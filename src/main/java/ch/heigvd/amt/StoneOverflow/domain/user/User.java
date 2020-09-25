@@ -18,8 +18,10 @@ public class User implements IEntity<User, UserId> {
     @EqualsAndHashCode.Exclude
     private String hashedPassword;
 
-    //todo: Check whether to implement here
-//    public boolean authenticate
+    //todo: Verify whether to move the authentication outside of the user or not
+    public boolean authenticate(String plaintextPassword) {
+        return BCrypt.checkpw(plaintextPassword, this.hashedPassword);
+    }
 
     @Override
     public User deepClone() {
@@ -29,7 +31,7 @@ public class User implements IEntity<User, UserId> {
     }
 
     public static class UserBuilder {
-        public UserBuilder clearTextPassword(String password) {
+        public UserBuilder plaintextPassword(String password) {
             if (password == null || password.isEmpty())
                 throw new IllegalArgumentException("Password cannot be null or empty");
 
