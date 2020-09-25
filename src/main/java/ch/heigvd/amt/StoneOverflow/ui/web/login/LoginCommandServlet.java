@@ -1,7 +1,7 @@
-package ch.heigvd.amt.StoneOverflow.presentation.login;
+package ch.heigvd.amt.StoneOverflow.ui.web.login;
 
 import ch.heigvd.amt.StoneOverflow.business.UsersDatastore;
-import ch.heigvd.amt.StoneOverflow.model.LoginCommand;
+import ch.heigvd.amt.StoneOverflow.domain.LoginCommand;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -21,14 +21,13 @@ public class LoginCommandServlet extends HttpServlet {
         LoginCommand command = LoginCommand.builder()
                 .username(req.getParameter("username"))
                 .password(req.getParameter("password"))
-                .session(req.getSession())
                 .build();
         if(usersDatastore.isValidUser(command)){
             //todo: Use shared logic for register & login
             req.getSession().setAttribute("loggedInUser", command.getUsername());
-            resp.sendRedirect("/StoneOverflow-1.0-SNAPSHOT/home");
+            resp.sendRedirect("/StoneOverflow/home");
         } else {
-            resp.sendRedirect("/StoneOverflow-1.0-SNAPSHOT/login");
+            resp.sendRedirect("/StoneOverflow/login");
         }
     }
 }

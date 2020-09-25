@@ -1,14 +1,11 @@
-package ch.heigvd.amt.StoneOverflow.model;
+package ch.heigvd.amt.StoneOverflow.domain;
 
 import lombok.Builder;
 import lombok.Value;
-
-import javax.servlet.http.HttpSession;
 
 @Builder
 @Value
 public class User {
     String username;
     String password;
-    HttpSession session;
 }

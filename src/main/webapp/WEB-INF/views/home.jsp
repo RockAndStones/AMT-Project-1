@@ -6,6 +6,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:useBean scope="request" id="questions" type="ch.heigvd.amt.StoneOverflow.application.Question.QuestionsDTO"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +26,7 @@
         <!-- Main content -->
         <div class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-900 leading-normal">
             <!-- Question Card -->
-            <c:forEach items="${questions}" var="question">
+            <c:forEach items="${questions.questions}" var="question">
                 <%@include file="fragments/question.jsp" %>
             </c:forEach>
         </div>

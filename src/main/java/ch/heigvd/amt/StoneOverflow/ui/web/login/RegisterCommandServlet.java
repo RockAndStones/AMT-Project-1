@@ -1,7 +1,7 @@
-package ch.heigvd.amt.StoneOverflow.presentation.login;
+package ch.heigvd.amt.StoneOverflow.ui.web.login;
 
 import ch.heigvd.amt.StoneOverflow.business.UsersDatastore;
-import ch.heigvd.amt.StoneOverflow.model.RegisterCommand;
+import ch.heigvd.amt.StoneOverflow.domain.RegisterCommand;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -21,7 +21,7 @@ public class RegisterCommandServlet extends HttpServlet {
         RegisterCommand command = RegisterCommand.builder().
                 username(req.getParameter("username")).
                 password(req.getParameter("password")).
-                session(req.getSession()).build();
+                build();
         usersDatastore.addUser(command);
         //todo: Use shared logic for register & login
         req.getSession().setAttribute("loggedInUser", command.getUsername());

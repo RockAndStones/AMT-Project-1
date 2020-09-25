@@ -1,9 +1,5 @@
-package ch.heigvd.amt.StoneOverflow.presentation.login;
+package ch.heigvd.amt.StoneOverflow.ui.web.login;
 
-import ch.heigvd.amt.StoneOverflow.business.UsersDatastore;
-import ch.heigvd.amt.StoneOverflow.model.LoginCommand;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
