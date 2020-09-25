@@ -1,4 +1,4 @@
-package ch.heigvd.amt.StoneOverflow.domain;
+package ch.heigvd.amt.StoneOverflow.application.identitymgmt.register;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -6,6 +6,9 @@ import lombok.Getter;
 @Builder
 @Getter
 public class RegisterCommand {
-    private final String username;
-    private final String password;
+    private String username;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String plaintextPassword;
 }
