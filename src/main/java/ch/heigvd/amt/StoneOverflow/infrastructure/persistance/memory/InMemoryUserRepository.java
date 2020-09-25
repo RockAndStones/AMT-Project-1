@@ -3,6 +3,8 @@ package ch.heigvd.amt.StoneOverflow.infrastructure.persistance.memory;
 import ch.heigvd.amt.StoneOverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.StoneOverflow.domain.user.User;
 import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
+import ch.heigvd.amt.StoneOverflow.infrastructure.persistance.exception.DataCorruptionException;
+import ch.heigvd.amt.StoneOverflow.infrastructure.persistance.exception.IntegrityConstraintViolationException;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +13,12 @@ import java.util.stream.Collectors;
 public class InMemoryUserRepository extends InMemoryRepository<User, UserId> implements IUserRepository {
     @Override
     public void save(User entity) {
-        //todo: - synchronized (concurrency issue)
-        //      - verify there is only one user with that username
-        super.save(entity);
+        synchronized (entity.getUsername()) {
+            if (findByUsername(entity.getUsername()).isPresent())
+                throw new IntegrityConstraintViolationException("Cannot save user. Integrity constraint violation: username must be unique");
+
+            super.save(entity);
+        }
     }
 
     @Override
@@ -23,8 +28,9 @@ public class InMemoryUserRepository extends InMemoryRepository<User, UserId> imp
                 .collect(Collectors.toList());
         if (users.size() < 1)
             return Optional.empty();
+        else if (users.size() > 1)
+            throw new DataCorruptionException("Data store is corrupted. More than one user with the same username");
 
-        //todo: throw error if more than one user is found
         return Optional.of(users.get(0).deepClone());
     }
 }
