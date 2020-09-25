@@ -1,4 +1,4 @@
-package ch.heigvd.amt.StoneOverflow.application.identitymgmt.authenticate;
+package ch.heigvd.amt.StoneOverflow.application.identitymgmt.login;
 
 import lombok.Builder;
 import lombok.Getter;

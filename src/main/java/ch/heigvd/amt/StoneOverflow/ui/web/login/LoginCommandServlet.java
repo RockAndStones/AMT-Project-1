@@ -1,7 +1,7 @@
 package ch.heigvd.amt.StoneOverflow.ui.web.login;
 
 import ch.heigvd.amt.StoneOverflow.business.UsersDatastore;
-import ch.heigvd.amt.StoneOverflow.application.identitymgmt.authenticate.LoginCommand;
+import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.LoginCommand;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;

@@ -1,10 +1,10 @@
 package ch.heigvd.amt.StoneOverflow.application.identitymgmt;
 
+import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.LoginCommand;
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegisterCommand;
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegistrationFailedException;
 import ch.heigvd.amt.StoneOverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.StoneOverflow.domain.user.User;
-import lombok.EqualsAndHashCode;
 
 import java.util.Optional;
 
