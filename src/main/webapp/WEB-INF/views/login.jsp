@@ -10,8 +10,8 @@
 <html>
 <head>
     <title>Login</title>
-    <link href="css/styles.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="javascript/login.js"></script>
+    <link href="assets/css/styles.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="assets/javascript/login.js"></script>
 </head>
 <body class="bg-white font-family-karla h-screen">
 

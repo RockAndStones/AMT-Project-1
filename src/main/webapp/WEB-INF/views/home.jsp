@@ -11,10 +11,10 @@
 <html>
 <head>
     <title>Home</title>
-    <link href="css/custom.css" rel="stylesheet" type="text/css"/>
-    <link href="css/styles.css" rel="stylesheet" type="text/css"/>
-    <link href="css/normalize.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="javascript/header.js"></script>
+    <link href="assets/css/custom.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/styles.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/normalize.css" rel="stylesheet" type="text/css"/>
+    <script type="text/javascript" src="assets/javascript/header.js"></script>
 </head>
 <body class="bg-white tracking-wider tracking-normal border-gray-400">
     <!-- Navigation -->
