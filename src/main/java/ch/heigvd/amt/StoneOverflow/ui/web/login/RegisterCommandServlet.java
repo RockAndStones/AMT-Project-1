@@ -1,5 +1,8 @@
 package ch.heigvd.amt.StoneOverflow.ui.web.login;
 
+import ch.heigvd.amt.StoneOverflow.application.ServiceRegistry;
+import ch.heigvd.amt.StoneOverflow.application.identitymgmt.IdentityManagementFacade;
+import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegistrationFailedException;
 import ch.heigvd.amt.StoneOverflow.business.UsersDatastore;
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegisterCommand;
 
@@ -13,18 +16,25 @@ import java.io.IOException;
 
 @WebServlet(name = "RegisterCommandServlet", urlPatterns = "/registerCommand")
 public class RegisterCommandServlet extends HttpServlet {
-    @EJB
-    UsersDatastore usersDatastore;
+    private IdentityManagementFacade identityManagementFacade = ServiceRegistry.getServiceRegistry().getIdentityManagementFacade();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RegisterCommand command = RegisterCommand.builder().
-                username(req.getParameter("username")).
-                plaintextPassword(req.getParameter("password")).
-                build();
-        usersDatastore.addUser(command);
-        //todo: Use shared logic for register & login
-        req.getSession().setAttribute("loggedInUser", command.getUsername());
-        resp.sendRedirect(req.getContextPath() + "/home");
+        //todo: Add email, first name, last name to register form
+        RegisterCommand registerCommand = RegisterCommand.builder()
+                .username(req.getParameter("username"))
+                .email("Email placeholder")
+                .firstName("First name placeholder")
+                .lastName("Last name placeholder")
+                .plaintextPassword(req.getParameter("password"))
+                .build();
+
+        try {
+            identityManagementFacade.register(registerCommand);
+            //Forward request to login command. !! Only possible because username and password field name match !!
+            req.getRequestDispatcher("/loginCommand").forward(req, resp);
+        } catch (RegistrationFailedException e) {
+            e.printStackTrace();
+        }
     }
 }
