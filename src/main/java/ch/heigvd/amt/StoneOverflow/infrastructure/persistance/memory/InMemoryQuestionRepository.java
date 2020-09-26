@@ -5,7 +5,6 @@ import ch.heigvd.amt.StoneOverflow.application.Question.QuestionQuery;
 import ch.heigvd.amt.StoneOverflow.domain.Question.IQuestionRepository;
 import ch.heigvd.amt.StoneOverflow.domain.Question.Question;
 import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionId;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Collection;
 
@@ -13,6 +12,6 @@ public class InMemoryQuestionRepository extends InMemoryRepository<Question, Que
     @Override
     public Collection<Question> find(QuestionQuery questionQuery) {
         //todo: implement question queries
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException();
     }
 }
