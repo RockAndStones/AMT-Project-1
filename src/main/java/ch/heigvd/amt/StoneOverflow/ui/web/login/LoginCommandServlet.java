@@ -27,8 +27,15 @@ public class LoginCommandServlet extends HttpServlet {
         try {
             AuthenticatedUserDTO user = identityManagementFacade.login(loginCommand);
             req.getSession().setAttribute("authenticatedUser", user);
-            resp.sendRedirect(req.getContextPath() + "/home");
+
+            //Read target servlet
+            String targetServlet = (String)req.getSession().getAttribute("targetServlet");
+            req.getSession().removeAttribute("targetServlet");
+
+            String target = targetServlet == null ? "/home" : targetServlet;
+            resp.sendRedirect(req.getContextPath() + target);
         } catch (LoginFailedException e) {
+            resp.sendRedirect(req.getContextPath() + "/login");
             e.printStackTrace();
         }
     }
