@@ -1,9 +1,11 @@
 package ch.heigvd.amt.StoneOverflow.ui.web.login;
 
-import ch.heigvd.amt.StoneOverflow.business.UsersDatastore;
+import ch.heigvd.amt.StoneOverflow.application.ServiceRegistry;
+import ch.heigvd.amt.StoneOverflow.application.identitymgmt.IdentityManagementFacade;
+import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.AuthenticatedUserDTO;
+import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.LoginFailedException;
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.LoginCommand;
 
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,21 +15,21 @@ import java.io.IOException;
 
 @WebServlet(name = "LoginCommandServlet", urlPatterns = "/loginCommand")
 public class LoginCommandServlet extends HttpServlet {
-    @EJB
-    UsersDatastore usersDatastore;
+    private IdentityManagementFacade identityManagementFacade = ServiceRegistry.getServiceRegistry().getIdentityManagementFacade();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LoginCommand command = LoginCommand.builder()
+        LoginCommand loginCommand = LoginCommand.builder()
                 .username(req.getParameter("username"))
                 .plaintextPassword(req.getParameter("password"))
                 .build();
-        if(usersDatastore.isValidUser(command)){
-            //todo: Use shared logic for register & login
-            req.getSession().setAttribute("loggedInUser", command.getUsername());
+
+        try {
+            AuthenticatedUserDTO user = identityManagementFacade.login(loginCommand);
+            req.getSession().setAttribute("authenticatedUser", user);
             resp.sendRedirect(req.getContextPath() + "/home");
-        } else {
-            resp.sendRedirect(req.getContextPath() + "/login");
+        } catch (LoginFailedException e) {
+            e.printStackTrace();
         }
     }
 }

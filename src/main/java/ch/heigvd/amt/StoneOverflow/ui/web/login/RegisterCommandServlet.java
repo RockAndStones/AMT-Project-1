@@ -3,7 +3,6 @@ package ch.heigvd.amt.StoneOverflow.ui.web.login;
 import ch.heigvd.amt.StoneOverflow.application.ServiceRegistry;
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.IdentityManagementFacade;
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegistrationFailedException;
-import ch.heigvd.amt.StoneOverflow.business.UsersDatastore;
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegisterCommand;
 
 import javax.ejb.EJB;

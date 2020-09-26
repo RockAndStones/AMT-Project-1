@@ -12,6 +12,6 @@ public class InMemoryQuestionRepository extends InMemoryRepository<Question, Que
     @Override
     public Collection<Question> find(QuestionQuery questionQuery) {
         //todo: implement question queries
-        throw new UnsupportedOperationException();
+        return super.findAll();
     }
 }

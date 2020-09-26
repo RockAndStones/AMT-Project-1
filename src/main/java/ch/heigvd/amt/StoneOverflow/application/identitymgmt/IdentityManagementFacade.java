@@ -42,7 +42,7 @@ public class IdentityManagementFacade {
         User user = userRepository.findByUsername(loginCommand.getUsername())
                 .orElseThrow(() -> new LoginFailedException("User not found"));
 
-        if (user.authenticate(loginCommand.getPlaintextPassword()))
+        if (!user.authenticate(loginCommand.getPlaintextPassword()))
             throw new LoginFailedException("Invalid password");
 
         return AuthenticatedUserDTO.builder()
