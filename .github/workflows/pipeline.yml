@@ -32,8 +32,7 @@ jobs:
 
       - name: Build Docker image (includes mvn clean package)
         run: |
-          ls
           echo ${{ secrets.PAT }} | docker login ghcr.io -u b3cauda --password-stdin
-          docker build -t amt/stoneoverflow .docker/images/stoneoverflow
+          docker build -t amt/stoneoverflow docker/images/stoneoverflow
           docker tag amt/stoneoverflow ghcr.io/amt/stoneoverflow
           docker push ghcr.io/amt/stoneoverflow
