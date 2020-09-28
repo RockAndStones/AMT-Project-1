@@ -34,5 +34,5 @@ jobs:
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u b3cauda --password-stdin
           docker build -t rockandstones/stoneoverflow docker/images/stoneoverflow
-          docker rockandstones amt/stoneoverflow ghcr.io/rockandstones/stoneoverflow
+          docker tag amt/stoneoverflow ghcr.io/rockandstones/stoneoverflow
           docker push ghcr.io/rockandstones/stoneoverflow
