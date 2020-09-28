@@ -42,6 +42,8 @@ public class AuthorizationFilter implements Filter {
             return true;
         else if (servletPath.startsWith("/login"))
             return true;
+        else if (servletPath.startsWith("/register"))
+            return true;
 
         return false;
     }
