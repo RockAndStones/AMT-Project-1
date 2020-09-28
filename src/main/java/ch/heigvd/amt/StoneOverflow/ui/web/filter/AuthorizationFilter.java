@@ -15,8 +15,11 @@ public class AuthorizationFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest)servletRequest;
         HttpServletResponse resp = (HttpServletResponse)servletResponse;
 
+        //Get path without request context path
+        String reqPath = req.getRequestURI().substring(req.getContextPath().length());
+
         //Allow access to public resources
-        if (isPublicResource(req.getServletPath())) {
+        if (isPublicResource(reqPath)) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -37,14 +40,21 @@ public class AuthorizationFilter implements Filter {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    private boolean isPublicResource(String servletPath) {
-        if (servletPath.startsWith("/assets"))
+    private boolean isPublicResource(String path) {
+        if (path.startsWith("/assets"))
             return true;
-        else if (servletPath.startsWith("/login"))
+        else if (path.startsWith("/login"))
             return true;
-        else if (servletPath.startsWith("/register"))
+        else if (path.startsWith("/register"))
             return true;
 
         return false;
     }
+
+    //Required by open liberty
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {}
+
+    @Override
+    public void destroy() {}
 }
