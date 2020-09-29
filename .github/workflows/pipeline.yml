@@ -32,7 +32,7 @@ jobs:
 
       - name: Build Docker image (includes mvn clean package)
         run: |
-          echo ${{ secrets.PAT }} | docker login ghcr.io -u b3cauda --password-stdin
+          echo ${{ secrets.PAT }} | docker login ghcr.io -u Naludrag --password-stdin
           docker build -t rockandstones/stoneoverflow docker/images/stoneoverflow
           docker tag rockandstones/stoneoverflow ghcr.io/rockandstones/stoneoverflow
           docker push ghcr.io/rockandstones/stoneoverflow
