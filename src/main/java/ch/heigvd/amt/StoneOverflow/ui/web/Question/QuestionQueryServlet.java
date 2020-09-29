@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(name="QuestionsPageServlet", urlPatterns = "/home")
-public class QuestionQueryEndpoint extends HttpServlet {
+public class QuestionQueryServlet extends HttpServlet {
     private ServiceRegistry serviceRegistry;
     private QuestionFacade questionFacade;
 

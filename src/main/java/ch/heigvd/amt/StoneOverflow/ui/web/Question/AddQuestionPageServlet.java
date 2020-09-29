@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@WebServlet(name = "addQuestionHandler", urlPatterns = "/newQuestion")
+@WebServlet(name = "addQuestionServlet", urlPatterns = "/addQuestion")
 public class AddQuestionPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("WEB-INF/views/addQuestion.jsp").forward(req, resp);
