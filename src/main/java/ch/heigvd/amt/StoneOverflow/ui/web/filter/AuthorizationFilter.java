@@ -50,11 +50,4 @@ public class AuthorizationFilter implements Filter {
 
         return false;
     }
-
-    //Required by open liberty
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {}
-
-    @Override
-    public void destroy() {}
 }
