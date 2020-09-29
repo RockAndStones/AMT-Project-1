@@ -9,5 +9,5 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class QuestionQuery {
     @Builder.Default
-    private boolean sqlSearch = true;
+    private boolean sqlSearch = false;
 }
