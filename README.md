@@ -20,11 +20,10 @@ First you can install it with a payara server for that you will have to do the f
   `git clone git@github.com:RockAndStones/AMT-Project-1.git`
 
 2. Go in the directory `docker/images/stoneoverflow` and run the script `build-image.sh`.  
-    This script will make an **mvn clean package** on the project and copy the .war in the current directory and then build an docker image named **amt/stoneoverflow**
+    This script will make an **mvn clean package** on the project and copy the **.war** in the current directory(`docker/images/stoneoverflow`) and then build an docker image named **amt/stoneoverflow**
 
-3. Go to the directory `docker/topologies/test` and run the command :  
-   `docker compose up`  
-   This command will start the payara server and you will now be able to access the application threw the port `8080` of your localhost or the ip address of your docker machine(`192.168.99.100:8080` for instance).
+3. Go to the directory `docker/topologies/test` and run the command : `docker compose up`  
+   This command will start the payara server and you will now be able to access the application through the port `8080` of your **localhost** or the **ip address** of your docker machine(`192.168.99.100:8080` for instance).
 
 If you prefer OpenAffect you can also install it be doing the following steps:
 
@@ -32,4 +31,4 @@ Working on it...
 
 Lastly, you can directly download a docker image of your application :
 
-Working on it... 
+Working on it...
