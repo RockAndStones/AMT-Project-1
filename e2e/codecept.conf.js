@@ -9,16 +9,22 @@ exports.config = {
   output: './output',
   helpers: {
     Puppeteer: {
-      url: 'http://localhost',
-      show: true,
+      url: 'http://localhost:8080/StoneOverflow/',
+      show: false,
       windowSize: '1200x900'
     }
   },
   include: {
-    I: './steps_file.js'
+    I: './steps_file.js',
+    __comment1__:     '---------- PAGES ----------',
+    loginPage:        './pages/loginPage.js',
+    homePage:         './pages/homePage.js',
+    __comment2__:     '---------- FRAGMENTS ----------',
+    loginFragment:    './fragments/loginFragment.js',
+    registerFragment: './fragments/registerFragment.js',
+    headerFragment:   './fragments/headerFragment.js',
+    sidebarFragment:  './fragments/sidebarFragment.js'
   },
-  bootstrap: null,
-  mocha: {},
   name: 'e2e',
   plugins: {
     retryFailedStep: {
