@@ -13,7 +13,7 @@
     <link href="assets/css/custom.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/styles.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/normalize.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="javascript/login.js"></script>
+    <script type="text/javascript" src="assets/javascript/login.js"></script>
 </head>
 <body class="bg-white font-family-karla h-screen">
 
