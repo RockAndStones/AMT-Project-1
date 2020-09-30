@@ -1,12 +1,20 @@
-const { headerFragment, sidebarFragment, questionListFragment } = inject();
+const { headerFragment, sidebarFragment } = inject();
 
 module.exports = {
-    url: 'home',
-    pageTitle: 'Home',
 
-    components: {
-        header: headerFragment,
-        sidebar: sidebarFragment,
-        questionList: questionListFragment
-    }
+  goToHomePageUsingHeader() {
+      headerFragment.goToHomePage();
+  },
+
+  goToHomePageUsingSidebar() {
+      sidebarFragment.goToHomePage();
+  },
+
+  goToLoginPage() {
+      headerFragment.goToLoginPage();
+  },
+
+  goToNewQuestionPage() {
+      sidebarFragment.goToNewQuestionPage();
+  }
 }

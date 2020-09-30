@@ -2,7 +2,7 @@ const { I } = inject();
 
 module.exports = {
 
-    root: {id: 'sidebar'},
+    root: '#sidebar',
 
     links: {
         home: {css: 'a[href=home]'},
@@ -10,13 +10,13 @@ module.exports = {
     },
 
     goToHomePage() {
-        within(this.root, () => {
+        within(this.root, function() {
             I.clickLink(this.links.home);
         });
     },
 
     goToNewQuestionPage() {
-        within(this.root, () => {
+        within(this.root, function() {
             I.clickLink(this.links.newQuestions);
         });
     }

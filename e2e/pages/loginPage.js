@@ -1,19 +1,21 @@
-const { I, loginFormFragment, registerFormFragment } = inject();
+const { loginFragment, registerFragment } = inject();
 
 module.exports = {
     url: 'login',
-    pageTitle: 'Login',
 
-    components: {
-        loginForm: loginFormFragment,
-        registerForm: registerFormFragment
+    loginUser(username, password) {
+      loginFragment.loginUser(username, password);
     },
 
-    links: {
-      home: {css: 'a[href=home]'}
+    registerUser(username, password) {
+        registerFragment.registerUser(username, password);
     },
 
-    goToHomePage(){
-      I.clickLink(this.links.home);
+    showLoginForm() {
+        registerFragment.showLoginForm();
+    },
+
+    showRegisterForm() {
+        loginFragment.showRegisterForm();
     }
 }
