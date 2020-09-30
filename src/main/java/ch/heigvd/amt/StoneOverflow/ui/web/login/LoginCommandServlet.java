@@ -29,8 +29,8 @@ public class LoginCommandServlet extends HttpServlet {
             req.getSession().setAttribute("authenticatedUser", user);
 
             //Read target servlet
-            String targetServlet = (String)req.getSession().getAttribute("targetServlet");
-            req.getSession().removeAttribute("targetServlet");
+            String targetServlet = (String)req.getSession().getAttribute("targetReq");
+            req.getSession().removeAttribute("targetReq");
 
             String target = targetServlet == null ? "/home" : targetServlet;
             resp.sendRedirect(req.getContextPath() + target);
