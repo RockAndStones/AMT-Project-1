@@ -49,6 +49,8 @@ public class AuthorizationFilter implements Filter {
             return true;
         else if (path.startsWith("/home"))
             return true;
+        else if (path.startsWith("/favicon.ico"))
+            return true;
 
         return false;
     }
