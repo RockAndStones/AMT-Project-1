@@ -10,13 +10,13 @@ module.exports = {
   },
 
   goToHomePage() {
-      within(this.root, function() {
+      within(this.root, () => {
           I.clickLink(this.links.home);
       });
   },
 
   goToLoginPage() {
-      within(this.root, function() {
+      within(this.root, () => {
           I.clickLink(this.links.login);
       });
   }

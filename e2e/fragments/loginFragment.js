@@ -16,7 +16,7 @@ module.exports = {
     },
 
     loginUser(username, password) {
-        within(this.root, function() {
+        within(this.root, () => {
             I.fillField(this.fields.username, username);
             I.fillField(this.fields.password, password);
             I.click(this.buttons.submit);
@@ -24,7 +24,7 @@ module.exports = {
     },
 
     showRegisterForm(){
-        within(this.root, function() {
+        within(this.root, () => {
             I.click(this.buttons.showRegisterForm);
         });
     },
