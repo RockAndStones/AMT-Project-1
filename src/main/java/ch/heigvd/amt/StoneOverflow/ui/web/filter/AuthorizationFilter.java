@@ -32,7 +32,7 @@ public class AuthorizationFilter implements Filter {
                 targetServlet += "?" + req.getQueryString();
 
             req.getSession().setAttribute("targetServlet", targetServlet);
-            resp.sendRedirect(req.getContextPath() + "/login");
+            resp.sendRedirect(req.getContextPath() + "/home");
             return;
         }
 
@@ -46,6 +46,8 @@ public class AuthorizationFilter implements Filter {
         else if (path.startsWith("/login"))
             return true;
         else if (path.startsWith("/register"))
+            return true;
+        else if (path.startsWith("/home"))
             return true;
 
         return false;
