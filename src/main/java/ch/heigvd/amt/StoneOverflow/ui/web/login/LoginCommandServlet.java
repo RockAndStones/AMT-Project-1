@@ -35,8 +35,8 @@ public class LoginCommandServlet extends HttpServlet {
             String target = targetServlet == null ? "/home" : targetServlet;
             resp.sendRedirect(req.getContextPath() + target);
         } catch (LoginFailedException e) {
+            req.getSession().setAttribute("errorMessage", "Invalid username / password");
             resp.sendRedirect(req.getContextPath() + "/login");
-            e.printStackTrace();
         }
     }
 }

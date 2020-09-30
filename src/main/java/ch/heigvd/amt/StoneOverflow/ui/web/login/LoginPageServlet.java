@@ -12,6 +12,10 @@ public class LoginPageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String errorMessage = (String)request.getSession().getAttribute("errorMessage");
+        request.getSession().removeAttribute("errorMessage");
+
+        request.setAttribute("errorMessage", errorMessage);
         request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
     }
 }

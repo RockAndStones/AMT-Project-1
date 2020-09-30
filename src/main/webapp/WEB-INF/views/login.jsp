@@ -13,7 +13,7 @@
     <link href="assets/css/custom.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/styles.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/normalize.css" rel="stylesheet" type="text/css"/>
-    <script type="text/javascript" src="javascript/login.js"></script>
+    <script type="text/javascript" src="assets/javascript/login.js"></script>
 </head>
 <body class="bg-white font-family-karla h-screen">
 
@@ -29,6 +29,9 @@
             <div id="loginSection" class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
                 <p class="text-center text-3xl">Welcome.</p>
                 <form action="${pageContext.request.contextPath}/loginCommand" method="POST" class="flex flex-col pt-3 md:pt-8">
+                    <c:if test="${errorMessage != null}">
+                        <p class="text-center text-xl text-red-700">${errorMessage}</p>
+                    </c:if>
                     <div class="flex flex-col pt-4">
                         <label for="loginUsername" class="text-lg">Username</label>
                         <input type="text" id="loginUsername" name="username" placeholder="Your awesome username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
