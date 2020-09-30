@@ -17,8 +17,9 @@ exports.config = {
   include: {
     I: './steps_file.js',
     __comment1__:     '---------- PAGES ----------',
-    loginPage:        './pages/loginPage.js',
     homePage:         './pages/homePage.js',
+    loginPage:        './pages/loginPage.js',
+    newQuestionPage:  './pages/newQuestionsPage.js',
     __comment2__:     '---------- FRAGMENTS ----------',
     loginFragment:    './fragments/loginFragment.js',
     registerFragment: './fragments/registerFragment.js',

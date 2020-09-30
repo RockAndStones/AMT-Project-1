@@ -13,3 +13,8 @@ Scenario('Successful login', (I) => {
     I.loginTestUser();
     I.seeInCurrentUrl('home');
 });
+
+Scenario('Failed register', (I) => {
+    I.amOnPage('login');
+    I.seeInCurrentUrl('home');
+});
