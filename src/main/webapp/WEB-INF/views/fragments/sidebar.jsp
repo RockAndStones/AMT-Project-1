@@ -6,7 +6,7 @@
 --%>
 <div class="hidden lg:block lg:w-1/5 lg:border-r"></div>
 <div class="hidden lg:block lg:fixed w-full lg:w-1/5 text-xl text-gray-800 lg:border-r leading-normal">
-    <nav class="mt-10">
+    <nav id="sidebar" class="mt-10">
         <!-- Current page (gray-900) -->
         <a href="${pageContext.request.contextPath}/home" class="flex items-center py-2 px-8 bg-gray-200 text-gray-900 border-r-4 border-gray-900">
             <i class="h-5 w-5 fas fa-bars"></i>
