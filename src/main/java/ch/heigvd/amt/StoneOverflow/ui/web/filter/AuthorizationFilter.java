@@ -27,12 +27,12 @@ public class AuthorizationFilter implements Filter {
         //Read DTO from session attribute
         AuthenticatedUserDTO authenticatedUser = (AuthenticatedUserDTO)req.getSession().getAttribute("authenticatedUser");
         if (authenticatedUser == null) {
-            String targetServlet = req.getServletPath();
+            String targetReq = reqPath;
             if (req.getQueryString() != null)
-                targetServlet += "?" + req.getQueryString();
+                targetReq += "?" + req.getQueryString();
 
-            req.getSession().setAttribute("targetServlet", targetServlet);
-            resp.sendRedirect(req.getContextPath() + "/home");
+            req.getSession().setAttribute("targetReq", targetReq);
+            resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
 
