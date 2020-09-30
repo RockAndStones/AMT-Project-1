@@ -11,6 +11,6 @@ Scenario('Navigate from home page to login page', (I) => {
 Scenario('Navigate from login page to home page', (I) => {
   I.amOnPage('login');
   loginPage.goToHomePage();
-  I.seeInCurrentUrl('home');
+  I.seeInCurrentUrl('login');
 });
 
