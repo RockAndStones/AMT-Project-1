@@ -9,24 +9,21 @@ exports.config = {
   output: './output',
   helpers: {
     Puppeteer: {
-      url: 'http://localhost:8080/',
+      url: 'http://localhost:8080/StoneOverflow/',
       show: false,
       windowSize: '1200x900'
     }
   },
   include: {
-    I:                        './steps_file.js',
-    __comment1__:             '---------- PAGES ----------',
-    homePage:                 './pages/homePage.js',
-    loginPage:                './pages/loginPage.js',
-    newQuestionPage:          './pages/newQuestionPage.js',
-    __comment2__:             '---------- FRAGMENTS ----------',
-    loginFormFragment:        './fragments/loginFormFragment.js',
-    registerFormFragment:     './fragments/registerFormFragment.js',
-    headerFragment:           './fragments/headerFragment.js',
-    sidebarFragment:          './fragments/sidebarFragment.js',
-    newQuestionFormFragment:  './fragments/newQuestionFormFragment.js',
-    questionListFragment:     './fragments/questionListFragment.js'
+    I: './steps_file.js',
+    __comment1__:     '---------- PAGES ----------',
+    loginPage:        './pages/loginPage.js',
+    homePage:         './pages/homePage.js',
+    __comment2__:     '---------- FRAGMENTS ----------',
+    loginFragment:    './fragments/loginFragment.js',
+    registerFragment: './fragments/registerFragment.js',
+    headerFragment:   './fragments/headerFragment.js',
+    sidebarFragment:  './fragments/sidebarFragment.js'
   },
   name: 'e2e',
   plugins: {
