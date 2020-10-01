@@ -1,4 +1,4 @@
-FROM payara/server-full:5.2020.4-jdk11
+FROM openliberty/open-liberty:kernel-java11-openj9-ubi
 
-ADD drivers/mysql-connector-java-5.1.39-bin.jar /glassfish4/glassfish/lib/
-ADD ./StoneOverflow.war /opt/payara/deployments/
+COPY --chown=1001:0 ./liberty/config/ /config/
+COPY --chown=1001:0 ./*.war /config/apps/
