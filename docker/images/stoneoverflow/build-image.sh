@@ -1,5 +1,6 @@
 #!/bin/bash
 
 mvn clean package -f ../../../
-cp ../../../target/StoneOverflow-1.0-SNAPSHOT.war ./StoneOverflow.war
-docker build -t amt/stoneoverflow .
+cp ../../../target/StoneOverflow.war ./StoneOverflow.war
+
+docker build -t liberty/stoneoverflow .

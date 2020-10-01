@@ -1,9 +1,7 @@
 version: '3'
 services:
-  payara:
-    image: amt/stoneoverflow
-    environment:
-     - ADMIN_PASSWORD=adminadmin
-    ports:
-     - "8080:8080"
-     - "4848:4848"
+  openliberty:
+     image: liberty/stoneoverflow
+     ports:
+       - "9080:9080"
+       - "9443:9443"
