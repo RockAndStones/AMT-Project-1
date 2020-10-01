@@ -10,7 +10,7 @@ As part of the course AMT we were asked to create a site that will be a simple v
 
 We will also use JUnit for the UnitTest and Codecept.js for the e2e tests.
 
-If you want to see the specification of the user interface please [click here](https://docs.google.com/document/d/1DSahosKDQq_0yjQDg7r0EOaPcs6QhwXc7yyWqTjHFSo)
+If you want to see the specification of the user interface please [click here](https://docs.google.com/document/d/1DSahosKDQq_0yjQDg7r0EOaPcs6QhwXc7yyWqTjHFSo/edit?usp=sharing)
 
 ## Installation
 
