@@ -12,7 +12,9 @@ module.exports = {
     },
     buttons: {
         submit: {css: 'input[value="Log In"]'},
-        showRegisterForm: {css: 'span[onClick=showRegister()]'}
+    },
+    scripts: {
+        showRegisterForm: "showRegister()"
     },
 
     loginUser(username, password) {
@@ -25,7 +27,7 @@ module.exports = {
 
     showRegisterForm(){
         within(this.root, () => {
-            I.click(this.buttons.showRegisterForm);
+            I.executeScript(this.scripts.showRegisterForm);
         });
     },
 }

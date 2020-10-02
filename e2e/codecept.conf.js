@@ -19,7 +19,7 @@ exports.config = {
     __comment1__:     '---------- PAGES ----------',
     homePage:         './pages/homePage.js',
     loginPage:        './pages/loginPage.js',
-    newQuestionPage:  './pages/newQuestionsPage.js',
+    newQuestionPage:  './pages/newQuestionPage.js',
     __comment2__:     '---------- FRAGMENTS ----------',
     loginFragment:    './fragments/loginFragment.js',
     registerFragment: './fragments/registerFragment.js',

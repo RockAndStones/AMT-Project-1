@@ -1,7 +1,12 @@
-const { I } = inject();
+const { I, headerFragment, sidebarFragment } = inject();
 
 module.exports = {
     url: "addQuestion",
+
+    components: {
+        header: headerFragment,
+        sidebar: sidebarFragment
+    },
 
     labels: {
       newQuestion: {css: '#newQuestionLabel'}
