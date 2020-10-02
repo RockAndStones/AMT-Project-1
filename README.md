@@ -30,6 +30,6 @@ First you can install it with an OpenLiberty server for that you will have to do
 
 The second way is the one when you can directly download a docker image with the package available on github :
 
-For this one simply run the following command `docker pull ghcr.io/rockandstones/stoneoverflow:latest`.  
-Then, run the command `docker run -p 9080:9080 -p 9443:94443 ghcr.io/rockandstones/stoneoverflow`.  
-After that you can see the website using the same method as before `localhost:8080` or `192.168.99.100:8080` if you have docker machine.
+ 1. First run the following command `docker pull ghcr.io/rockandstones/stoneoverflow:latest`.  
+ 2. Then, run the command `docker run -p 9080:9080 -p 9443:94443 ghcr.io/rockandstones/stoneoverflow`.    
+    After that you can see the website using the same method as before `localhost:9080` or `192.168.99.100:9080` if you have docker machine.
