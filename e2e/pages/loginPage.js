@@ -1,7 +1,8 @@
-const { I, loginFormFragment, registerFormFragment, headerFragment, sidebarFragment } = inject();
+const { I, loginFormFragment, registerFormFragment } = inject();
 
 module.exports = {
     url: 'login',
+    pageTitle: 'Login',
 
     components: {
         loginForm: loginFormFragment,
