@@ -1,9 +1,38 @@
-Feature('Login page');
+const { loginPage, homePage, newQuestionPage } = inject();
+const randomstring= require('randomstring');
 
-Scenario('Show register form then login form', (I) => {
-    I.amOnPage('http://localhost:8080/StoneOverflow-1.0-SNAPSHOT/login');
-    I.click('//html/body/div/div[1]/div[2]/div/p/span'); // "Register here."
-    I.seeElement("//html/body/div/div[1]/div[3]/form/input"); // "Register" button
-    I.click('//html/body/div/div[1]/div[3]/div/p/span'); // "Log in here."
-    I.seeElement("//html/body/div/div[1]/div[2]/form/input"); // "Log In" button
-});
+Feature('Login');
+
+    Scenario('Failed login', (I) => {
+        const wrongUsername = randomstring.generate(10);
+        const wrongPassword = randomstring.generate(10);
+
+        I.amOnPage(loginPage.url);
+        loginPage.components.loginForm.loginUser(wrongUsername, wrongPassword);
+        I.amOnPage(newQuestionPage.url);
+        I.seeInTitle(loginPage.pageTitle);
+    });
+
+    Scenario('Successful login', (I) => {
+        I.amOnPage(loginPage.url);
+        I.loginTestUser();
+        I.amOnPage(newQuestionPage.url);
+        I.seeInTitle(newQuestionPage.pageTitle);
+    });
+
+
+Feature('Register');
+
+    Scenario('Successful register', (I) => {
+        const newUsername = randomstring.generate(10);
+        const newPassword = randomstring.generate(10);
+
+        I.amOnPage(loginPage);
+        loginPage.components.loginForm.showRegisterForm();
+        I.seeElement(loginPage.components.registerForm.elements.register);
+        loginPage.components.registerForm.registerUser(newUsername, newPassword);
+        I.seeInTitle(homePage.pageTitle);
+        homePage.components.sidebar.goToNewQuestionPage();
+        I.seeInTitle(newQuestionPage.pageTitle);
+    });
+

@@ -1,10 +1,17 @@
-// in this file you can append custom step methods to 'I' object
+const { I, loginPage } = inject();
 
 module.exports = function() {
   return actor({
 
-    // Define custom steps here, use 'this' to access default methods of I.
-    // It is recommended to place a general 'login' function here.
+    credentials: {
+      username: "test",
+      password: "test"
+    },
+
+    loginTestUser: function() {
+      I.amOnPage(loginPage.url);
+      loginPage.components.loginForm.loginUser(this.credentials.username, this.credentials.password);
+    }
 
   });
 }

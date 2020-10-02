@@ -27,7 +27,7 @@
 
             <!-- Login Section -->
             <div id="loginSection" class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
-                <p class="text-center text-3xl">Welcome.</p>
+                <p id="loginLabel" class="text-center text-3xl">Welcome.</p>
                 <form action="${pageContext.request.contextPath}/loginCommand" method="POST" class="flex flex-col pt-3 md:pt-8">
                     <c:if test="${errorMessage != null}">
                         <p class="text-center text-xl text-red-700">${errorMessage}</p>
@@ -51,7 +51,7 @@
 
             <!-- Register Section -->
             <div id="registerSection" class="hidden flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
-                <p class="text-center text-3xl">Join Us.</p>
+                <p id="registerLabel" class="text-center text-3xl">Join Us.</p>
                 <form action="${pageContext.request.contextPath}/registerCommand" method="POST" class="flex flex-col pt-3 md:pt-8">
                     <div class="flex flex-col pt-4">
                         <label for="registerUsername" class="text-lg">Username</label>

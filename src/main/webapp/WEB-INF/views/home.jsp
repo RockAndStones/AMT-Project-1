@@ -14,8 +14,6 @@
     <link href="assets/css/custom.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/styles.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/normalize.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-    <script type="text/javascript" src="assets/javascript/header.js"></script>
 </head>
 <body class="bg-white tracking-wider tracking-normal border-gray-400">
     <!-- Navigation -->
@@ -25,7 +23,7 @@
         <!-- Sidebar -->
         <%@include file="fragments/sidebar.jsp" %>
         <!-- Main content -->
-        <div class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-900 leading-normal">
+        <div id="questionList" class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-900 leading-normal">
             <!-- Question Card -->
             <c:forEach items="${questions.questions}" var="question">
                 <%@include file="fragments/question.jsp" %>

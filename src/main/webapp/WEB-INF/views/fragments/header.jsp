@@ -4,6 +4,7 @@
   Date:         23.09.2020
   Description:  Header fragment for StoneOverflow.
 --%>
+<script type="text/javascript" src="assets/javascript/header.js"></script>
 <nav id="header" class="bg-white sticky w-full flex flex-wrap justify-between z-10 top-0 py-4 border-b">
     <!-- Logo -->
     <div class="pl-4 flex lg:w-1/5 justify-center">
