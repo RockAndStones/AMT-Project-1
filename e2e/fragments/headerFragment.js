@@ -2,7 +2,7 @@ const { I } = inject();
 
 module.exports = {
 
-  root: '#header',
+  root: {css: 'nav[id=header]'},
 
   links: {
       home: {css: 'a[href=home]'},
