@@ -1,20 +1,27 @@
-const { loginPage } = inject();
+const { loginPage, homePage } = inject();
 
 Feature('Login');
 
-Scenario('Failed login', (I, loginFragment) => {
-    I.amOnPage('login');
-    loginPage.loginUser("M'aWrongBoii", "DaSecurePassword");
-    I.seeElement(loginFragment.elements.login);
+Scenario('Failed login', (I) => {
+    I.amOnPage(loginPage.url);
+    loginPage.components.loginForm.loginUser("M'aWrongBoii", "DaSecurePassword");
+    I.seeInCurrentUrl(loginPage.url);
 });
 
 Scenario('Successful login', (I) => {
-    I.amOnPage('login');
+    I.amOnPage(loginPage.url);
     I.loginTestUser();
-    I.seeInCurrentUrl('home');
+    I.seeInCurrentUrl(homePage.url);
 });
 
-Scenario('Failed register', (I) => {
-    I.amOnPage('login');
-    I.seeInCurrentUrl('home');
+/*
+Scenario('Successful register', (I) => {
+    I.amOnPage(loginPage);
+    loginPage.components.loginForm.showRegisterForm();
+    I.seeElement(loginPage.components.registerForm.elements.register);
+    loginPage.components.registerForm.registerUser("test2", "test2");
+    I.seeInCurrentUrl(homePage.url);
+    homePage.components.sidebar.goToNewQuestionPage();
+    I.seeInCurrentUrl(newQuestionPage.url);
 });
+*/

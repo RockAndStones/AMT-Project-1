@@ -12,9 +12,11 @@ module.exports = {
       confirmPassword : '#confirmPassword'
   },
   buttons: {
-      submit: {css: 'input[value=register]'},
-      showLoginForm: {css: 'span[onClick=showLogin()]'}
+      submit: {css: 'input[value=Register]'},
   },
+    scripts: {
+        showLoginForm: "showLogin()"
+    },
 
   registerUser(username, password) {
       within(this.root, () => {
@@ -27,7 +29,7 @@ module.exports = {
 
   showLoginForm(){
       within(this.root, () => {
-          I.click(this.buttons.showLoginForm);
+          I.executeScript(this.scripts.showLoginForm);
       });
   }
 }

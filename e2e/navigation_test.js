@@ -2,22 +2,42 @@ const {homePage, loginPage, newQuestionPage } = inject();
 
 Feature('Navigation');
 
-Scenario('Navigate from home page to login page', (I) => {
-  I.amOnPage('home');
-  homePage.goToLoginPage();
+Scenario('Home => Home', (I) => {
+  I.amOnPage(homePage.url);
+  homePage.components.header.goToHomePage();
+  I.seeInCurrentUrl(homePage.url);
+});
+
+Scenario('Home => Login', (I) => {
+  I.amOnPage(homePage.url);
+  homePage.components.header.goToLoginPage();
   I.seeInCurrentUrl(loginPage.url);
 });
 
-Scenario('Navigate from login page to home page', (I) => {
+Scenario('Home => New question', (I) => {
+  I.loginTestUser();
+  homePage.components.sidebar.goToNewQuestionPage();
+  I.seeInCurrentUrl(newQuestionPage.url);
+});
+
+Scenario('Login => Home', (I) => {
   I.amOnPage('login');
   loginPage.goToHomePage();
   I.seeInCurrentUrl(homePage.url);
 });
 
-Scenario('Navigate from home page to new question page', (I) => {
-  I.amOnPage('login');
+Scenario('New question => Home', (I) => {
   I.loginTestUser();
-  loginPage.goToNewQuestionPage();
-  I.seeInCurrentUrl(newQuestionPage.url);
+  I.amOnPage(newQuestionPage.url);
+  newQuestionPage.components.header.goToHomePage();
+  I.seeInCurrentUrl(homePage.url);
 });
+
+Scenario('New question => Login', (I) => {
+  I.loginTestUser();
+  I.amOnPage(newQuestionPage.url);
+  newQuestionPage.components.header.goToLoginPage();
+  I.seeInCurrentUrl(loginPage.url);
+});
+
 

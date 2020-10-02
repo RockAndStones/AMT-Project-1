@@ -1,10 +1,11 @@
-const { loginPage } = inject();
+const { I, loginPage } = inject();
 
 module.exports = function() {
   return actor({
 
     loginTestUser: function() {
-      loginPage.loginUser("test", "test");
+      I.amOnPage(loginPage.url);
+      loginPage.components.loginForm.loginUser("test", "test");
     }
 
   });
