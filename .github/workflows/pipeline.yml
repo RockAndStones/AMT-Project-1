@@ -43,7 +43,7 @@ jobs:
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u Naludrag --password-stdin
           cd docker/images/stoneoverflow
-          ./docker/images/stoneoverflow/build-image.sh
+          ./build-image.sh
           docker build -t rockandstones/stoneoverflow .
           docker tag rockandstones/stoneoverflow ghcr.io/rockandstones/stoneoverflow
           docker push ghcr.io/rockandstones/stoneoverflow
