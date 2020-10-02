@@ -24,7 +24,7 @@
         <!-- Sidebar -->
         <%@include file="fragments/sidebar.jsp" %>
         <!-- Main content -->
-        <div class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-900 leading-normal">
+        <div id="questionList" class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-900 leading-normal">
             <!-- Question Card -->
             <c:forEach items="${questions.questions}" var="question">
                 <%@include file="fragments/question.jsp" %>
