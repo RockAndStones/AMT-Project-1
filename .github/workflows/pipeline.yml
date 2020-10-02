@@ -45,15 +45,18 @@ jobs:
           cp target/StoneOverflow.war docker/images/stoneoverflow/StoneOverflow.war
           docker build -t rockandstones/stoneoverflow docker/images/stoneoverflow/
           docker tag rockandstones/stoneoverflow ghcr.io/rockandstones/stoneoverflow
-          docker push ghcr.io/rockandstones/stoneoverflow
 
       - name: Codeceptjs test
         run: |
-          docker pull ghcr.io/rockandstones/stoneoverflow:latest
-          docker run -d -p 9080:9080 -p 9443:9443 ghcr.io/rockandstones/stoneoverflow
+          docker run -d -p 8080:8080 -p 9443:9443 rockandstones/stoneoverflow
+          npm -g i ping-until
+          ping-until localhost:8080
           cd e2e
           npm install
           npx codeceptjs run --steps
           cd ..
         env:
           CI: true
+
+      - name: Push Docker image
+        run: docker push ghcr.io/rockandstones/stoneoverflow
