@@ -23,8 +23,37 @@ public class JdbcUserRepository implements IUserRepository {
     @Resource(lookup = "")
     private DataSource dataSource;
 
+
+
     @Override
     public Optional<User> findByUsername(String username) {
+        try {
+            Connection con = dataSource.getConnection();
+
+            PreparedStatement ps = con.prepareStatement("SELECT id, username, mail, firstName, lastName, password FROM User WHERE username=?");
+            ps.setString(1, username);
+
+            ResultSet rs = ps.executeQuery();
+            if (!rs.next())
+                return Optional.empty();
+
+            User u = User.builder()
+                    .id(new UserId(rs.getString("id")))
+                    .username(rs.getString("username"))
+                    .email(rs.getString("mail"))
+                    .firstName(rs.getString("firstName"))
+                    .lastName(rs.getString("lastName"))
+                    .hashedPassword(rs.getString("password"))
+                    .build();
+
+            ps.close();
+            con.close();
+
+            return Optional.of(u);
+        } catch (SQLException ex) {
+            //todo: log/handle error
+        }
+
         return Optional.empty();
     }
 
