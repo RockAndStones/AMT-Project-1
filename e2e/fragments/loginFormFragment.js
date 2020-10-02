@@ -1,7 +1,7 @@
-const { I } = inject();
+const { I, homePage } = inject();
 
 module.exports = {
-    root: '#loginSection',
+    root: {id: 'loginSection'},
 
     elements: {
       login: '#loginLabel'
@@ -23,6 +23,7 @@ module.exports = {
             I.fillField(this.fields.password, password);
             I.click(this.buttons.submit);
         });
+        I.amOnPage(homePage.url);
     },
 
     showRegisterForm(){

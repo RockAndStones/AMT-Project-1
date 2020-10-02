@@ -1,7 +1,8 @@
 const { headerFragment, sidebarFragment, questionListFragment } = inject();
 
 module.exports = {
-    url: "home",
+    url: 'home',
+    pageTitle: 'Home',
 
     components: {
         header: headerFragment,
