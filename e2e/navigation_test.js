@@ -1,13 +1,43 @@
+const {homePage, loginPage, newQuestionPage } = inject();
+
 Feature('Navigation');
 
-Scenario('From home to login', (I) => {
-  I.amOnPage('http://localhost:8080/StoneOverflow-1.0-SNAPSHOT/home');
-  I.clickLink('Log in/Sign up'); // Upper nav bar link
-  I.seeElement("//html/body/div/div[1]/div[2]/form/input"); // "Log In" button on login page
+Scenario('Home => Home', (I) => {
+  I.amOnPage(homePage.url);
+  homePage.components.header.goToHomePage();
+  I.seeInCurrentUrl(homePage.url);
 });
 
-Scenario('From login to home', (I) => {
-  I.amOnPage('http://localhost:8080/StoneOverflow-1.0-SNAPSHOT/login');
-  I.clickLink('StoneOverflow'); // Upper left "StoneOverflow" logo
-  I.see("Questions"); // In-page title, main content
+Scenario('Home => Login', (I) => {
+  I.amOnPage(homePage.url);
+  homePage.components.header.goToLoginPage();
+  I.seeInCurrentUrl(loginPage.url);
 });
+
+Scenario('Home => New question', (I) => {
+  I.loginTestUser();
+  homePage.components.sidebar.goToNewQuestionPage();
+  I.seeInCurrentUrl(newQuestionPage.url);
+});
+
+Scenario('Login => Home', (I) => {
+  I.amOnPage('login');
+  loginPage.goToHomePage();
+  I.seeInCurrentUrl(homePage.url);
+});
+
+Scenario('New question => Home', (I) => {
+  I.loginTestUser();
+  I.amOnPage(newQuestionPage.url);
+  newQuestionPage.components.header.goToHomePage();
+  I.seeInCurrentUrl(homePage.url);
+});
+
+Scenario('New question => Login', (I) => {
+  I.loginTestUser();
+  I.amOnPage(newQuestionPage.url);
+  newQuestionPage.components.header.goToLoginPage();
+  I.seeInCurrentUrl(loginPage.url);
+});
+
+

@@ -9,10 +9,10 @@
         <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt="avatar">
         <div class="w-full">
             <div class="flex items-center justify-between">
-                <h2 class="text-lg font-semibold text-gray-900 -mt-1">${question.title}</h2>
+                <h2 class="questionTitleClass text-lg font-semibold text-gray-900 -mt-1">${question.title}</h2>
                 <small class="text-left text-sm text-gray-700">date</small>
             </div>
-            <p class="mt-3 text-gray-700 text-sm">
+            <p class="questionDescriptionClass mt-3 text-gray-700 text-sm">
                 ${question.shortDescription()}
             </p>
             <div class="mt-4 flex items-center">
