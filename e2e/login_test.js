@@ -15,6 +15,8 @@ Scenario('Successful login', (I) => {
 });
 
 /*
+Feature('Register');
+
 Scenario('Successful register', (I) => {
     I.amOnPage(loginPage);
     loginPage.components.loginForm.showRegisterForm();
