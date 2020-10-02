@@ -38,14 +38,6 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
 
-      - name: Codeceptjs test
-        run: |
-          cd e2e
-          npm install
-          npx codeceptjs run --steps
-          cd ..
-        env:
-          CI: true
 
       - name: Build Docker image (includes mvn clean package)
         run: |
@@ -54,3 +46,14 @@ jobs:
           docker build -t rockandstones/stoneoverflow docker/images/stoneoverflow
           docker tag rockandstones/stoneoverflow ghcr.io/rockandstones/stoneoverflow
           docker push ghcr.io/rockandstones/stoneoverflow
+
+      - name: Codeceptjs test
+        run: |
+          docker pull ghcr.io/rockandstones/stoneoverflow:latest
+          docker run -p 9080:9080 -p 9443:9443 ghcr.io/rockandstones/stoneoverflow
+          cd e2e
+          npm install
+          npx codeceptjs run --steps
+          cd ..
+        env:
+          CI: true
