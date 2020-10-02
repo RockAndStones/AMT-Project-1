@@ -1,10 +1,11 @@
-const { headerFragment, sidebarFragment } = inject();
+const { headerFragment, sidebarFragment, questionListFragment } = inject();
 
 module.exports = {
     url: "home",
 
     components: {
         header: headerFragment,
-        sidebar: sidebarFragment
+        sidebar: sidebarFragment,
+        questionList: questionListFragment
     }
 }
