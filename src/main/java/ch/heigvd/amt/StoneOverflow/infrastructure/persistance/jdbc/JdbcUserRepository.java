@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import javax.sql.DataSource;
-import javax.swing.text.html.Option;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,10 +19,15 @@ import java.util.Optional;
 @ApplicationScoped
 @Named("JdbcUserRepository")
 public class JdbcUserRepository implements IUserRepository {
-    @Resource(lookup = "")
+    @Resource(lookup = "jdbc/StoneOverflowDS")
     private DataSource dataSource;
 
+    public JdbcUserRepository() {
+    }
 
+    public JdbcUserRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     public Optional<User> findByUsername(String username) {
@@ -59,7 +63,24 @@ public class JdbcUserRepository implements IUserRepository {
 
     @Override
     public void save(User user) {
+        try {
+            Connection con = dataSource.getConnection();
 
+            PreparedStatement ps = con.prepareStatement("INSERT INTO User VALUES (?, ?, ?, ?, ?, ?)");
+            ps.setString(1, user.getId().asString());
+            ps.setString(2, user.getFirstName());
+            ps.setString(3, user.getLastName());
+            ps.setString(4, user.getEmail());
+            ps.setString(5, user.getUsername());
+            ps.setString(6, user.getHashedPassword());
+
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            //todo: log/handle error
+        }
     }
 
     @Override
