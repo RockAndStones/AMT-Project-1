@@ -6,36 +6,31 @@ import ch.heigvd.amt.StoneOverflow.application.identitymgmt.IdentityManagementFa
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegisterCommand;
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegistrationFailedException;
 import ch.heigvd.amt.StoneOverflow.domain.Question.IQuestionRepository;
+import ch.heigvd.amt.StoneOverflow.domain.Question.Question;
 import ch.heigvd.amt.StoneOverflow.domain.user.IUserRepository;
-import ch.heigvd.amt.StoneOverflow.infrastructure.persistance.memory.InMemoryQuestionRepository;
-import ch.heigvd.amt.StoneOverflow.infrastructure.persistance.memory.InMemoryUserRepository;
+import lombok.Getter;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+@ApplicationScoped
 public class ServiceRegistry {
-    private static ServiceRegistry singleton;
+    @Inject @Named("InMemoryQuestionRepository")
+    IQuestionRepository questionRepository;
 
-    private static IQuestionRepository questionRepository;
-    private static IUserRepository userRepository;
-    private static QuestionFacade questionFacade;
-    private static IdentityManagementFacade identityManagementFacade;
+    @Inject @Named("JdbcUserRepository")
+    IUserRepository userRepository;
 
-    public static ServiceRegistry getServiceRegistry(){
-        if (singleton == null){
-            singleton = new ServiceRegistry();
-        }
-        return singleton;
-    }
+    IdentityManagementFacade identityManagementFacade;
+    QuestionFacade questionFacade;
 
-    private ServiceRegistry(){
-        singleton = this;
-        questionRepository = new InMemoryQuestionRepository();
-        userRepository = new InMemoryUserRepository();
-        questionFacade = new QuestionFacade(questionRepository);
+    @PostConstruct
+    private void initDefaultValues() {
         identityManagementFacade = new IdentityManagementFacade(userRepository);
+        questionFacade = new QuestionFacade(questionRepository);
 
-        initializeDefaultValues();
-    }
-
-    private void initializeDefaultValues() {
         //Create default account
         try {
             identityManagementFacade.register(RegisterCommand.builder()

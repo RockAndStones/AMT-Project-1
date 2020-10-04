@@ -56,6 +56,7 @@ public class JdbcUserRepository implements IUserRepository {
             return Optional.of(u);
         } catch (SQLException ex) {
             //todo: log/handle error
+            System.out.println(ex);
         }
 
         return Optional.empty();
@@ -80,6 +81,7 @@ public class JdbcUserRepository implements IUserRepository {
             con.close();
         } catch (SQLException ex) {
             //todo: log/handle error
+            System.out.println(ex);
         }
     }
 
@@ -115,6 +117,7 @@ public class JdbcUserRepository implements IUserRepository {
             return Optional.of(u);
         } catch (SQLException ex) {
             //todo: log/handle error
+            System.out.println(ex);
         }
 
         return Optional.empty();
