@@ -46,11 +46,17 @@ jobs:
           docker build -t rockandstones/stoneoverflow docker/images/stoneoverflow/
           docker tag rockandstones/stoneoverflow ghcr.io/rockandstones/stoneoverflow
 
+      - name: Run Docker Container
+        run: docker run -d -p 8080:8080 -p 9443:9443 rockandstones/stoneoverflow
+
+      - name: Wait for container
+        uses: nev7n/wait_for_response@v1
+        with:
+          url: 'http://localhost:8080/StoneOverflow/login'
+          responseCode: 200
+
       - name: Codeceptjs test
         run: |
-          docker run -d -p 8080:8080 -p 9443:9443 rockandstones/stoneoverflow
-          npm -g i ping-until
-          ping-until localhost:8080
           cd e2e
           npm install
           npx codeceptjs run --steps
