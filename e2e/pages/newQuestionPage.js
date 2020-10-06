@@ -1,7 +1,8 @@
 const { headerFragment, sidebarFragment, newQuestionFormFragment } = inject();
 
 module.exports = {
-    url: "addQuestion",
+    url: 'addQuestion',
+    pageTitle: 'New question',
 
     components: {
         header: headerFragment,

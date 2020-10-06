@@ -14,7 +14,6 @@
     <link href="assets/css/custom.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/styles.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/normalize.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 </head>
 <body class="bg-white tracking-wider tracking-normal border-gray-400">
     <!-- Navigation -->
