@@ -1,3 +1,5 @@
-.question:last-child {
+.question:last-child .answer:last-child {
     border: none;
 }
+
+

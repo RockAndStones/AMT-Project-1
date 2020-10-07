@@ -3,6 +3,35 @@
   Authors:      Bécaud Arthur, Egremy Bruno, Muller Robin & Teixeira Carvalho Stéphane
   Date:         07.10.2020
   Description:  Question's details page of StoneOverflow.
+
+  JSP VARIABLE NEEDED:
+
+  question:
+    id,
+    title,
+    nbViews,
+    nbVotes,
+    description,
+    creator,
+    date,
+    answers: [
+        {
+            id,
+            description,
+            creator,
+            date,
+            comments: [
+                {
+                    content,
+                    creator,
+                    date
+                },
+                ...
+            ]
+        },
+        ...
+    ]
+
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -29,47 +58,25 @@
                 <h1 class="leading-normal text-lg font-semibold text-gray-900 mt-0">${question.title}TMP: TITLE</h1>
                 <span>${question.nbViews}TMP: NBVIEWS</span>
                 <i class="mx-auto mb-2 h-5 w-5 far fa-eye"></i>
-                <span class="ml-2">${question.nbComments}TMP: NBCOMMENTS</span>
+                <span class="ml-2">${questions.comments.size()}TMP: NBRESPONSE</span>
                 <i class="mx-auto mb-2 h-5 w-5 far fa-comment"></i>
             </div>
             <!-- Details body -->
-            <div class="flex flex-shrink pb-8 mb-8 border-b">
-                <!-- Vote -->
-                <div class="flex flex-col inline-flex items-center">
-                    <form action="" method="post">
-                        <input type="hidden" name="type" value="question">
-                        <input type="hidden" name="id" value="${question.id}">
-                        <input type="hidden" name="vote" value="up">
-                        <button type="submit"><i class="leading-normal fas fa-caret-up text-6xl"></i></button>
-                    </form>
-                    <span class="text-lg">${question.nbVotes}TMP:2</span>
-                    <form action="" method="post">
-                        <input type="hidden" name="type" value="question">
-                        <input type="hidden" name="id" value="${question.id}">
-                        <input type="hidden" name="vote" value="down">
-                        <button type="submit"><i class="leading-normal fas fa-caret-down text-6xl"></i></button>
-                    </form>
-                </div>
-                <!-- Body -->
-                <div class="ml-6 mt-4 text-gray-700">
-                    <p>
-                        ${question.description}
-                            TMP: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc accumsan vel urna sed lobortis. Nulla lectus est, posuere sed leo vel, elementum tristique nunc. Fusce sit amet magna odio. Mauris vel odio tincidunt, facilisis tortor euismod, porta sapien. Sed et ex quis turpis sodales laoreet. Mauris ac nisl id nunc consectetur facilisis quis a nulla. Fusce fermentum risus gravida volutpat euismod. Cras magna lorem, semper eu mi eget, iaculis tincidunt ipsum. Vivamus sagittis leo non posuere hendrerit. Donec efficitur libero non egestas ultrices. Pellentesque tincidunt viverra erat faucibus iaculis. Praesent volutpat, ipsum quis tristique imperdiet, mauris eros posuere ligula, nec sodales nulla lorem eu nisi. Duis viverra mi eu mauris condimentum, id condimentum justo suscipit. Vivamus consequat porttitor rhoncus. Donec sapien mi, viverra mollis volutpat ut, aliquet et nunc.
-                    </p>
-                    <span class="block text-sm mt-4">${question.creator} TMP: CREATOR</span>
-                    <small class="text-sm">${question.date}TMP: DATE</small>
+            <div class="pb-8 mb-8 border-b">
+                <div class="flex flex-shrink">
+                    <%@include file="fragments/postVoteAndContent.jsp"%>
                 </div>
             </div>
-            <!-- Details comment(s) -->
+            <!-- Details answer(s) -->
             <div class="mb-8 pb-8 border-b">
                 <c:choose>
-                    <c:when test="${empty question.comments}">
+                    <c:when test="${empty question.answers}">
                         <h2 class="leading-normal text-lg font-semibold text-gray-900 mt-0">No one responded for now <i class="far fa-sad-tear"></i></h2>
                     </c:when>
                     <c:otherwise>
-                        <h2 class="leading-normal text-lg font-semibold text-gray-900 mt-0">Answer(s)</h2>
-                        <c:forEach items="${question.comments}" var="comment">
-                            <%@include file="fragments/comment.jsp" %>
+                        <h2 class="leading-normal text-lg font-semibold text-gray-900 mt-0 mb-4">Answer(s)</h2>
+                        <c:forEach items="${question.answer}" var="post">
+                            <%@include file="fragments/answer.jsp" %>
                         </c:forEach>
                     </c:otherwise>
                 </c:choose>
