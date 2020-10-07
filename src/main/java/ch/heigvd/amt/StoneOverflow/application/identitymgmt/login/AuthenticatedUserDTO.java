@@ -8,6 +8,7 @@ import lombok.Value;
 @Builder
 @Value
 public class AuthenticatedUserDTO {
+    private UserId id;
     private String username;
     private String email;
     private String firstName;

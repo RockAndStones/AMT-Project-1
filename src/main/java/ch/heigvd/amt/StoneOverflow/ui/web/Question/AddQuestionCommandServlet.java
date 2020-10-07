@@ -30,6 +30,7 @@ public class AddQuestionCommandServlet extends HttpServlet {
         //todo: verify getSession ?
         AuthenticatedUserDTO user = (AuthenticatedUserDTO)req.getSession().getAttribute("authenticatedUser");
         AddQuestionCommand command = AddQuestionCommand.builder()
+                .creatorId(user.getId())
                 .creator(user.getUsername())
                 .title(req.getParameter("title"))
                 .description(req.getParameter("description")).build();

@@ -8,6 +8,7 @@ import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.Registratio
 import ch.heigvd.amt.StoneOverflow.domain.Question.IQuestionRepository;
 import ch.heigvd.amt.StoneOverflow.domain.Question.Question;
 import ch.heigvd.amt.StoneOverflow.domain.user.IUserRepository;
+import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
 import lombok.Getter;
 
 import javax.annotation.PostConstruct;
@@ -17,7 +18,7 @@ import javax.inject.Named;
 
 @ApplicationScoped
 public class ServiceRegistry {
-    @Inject @Named("InMemoryQuestionRepository")
+    @Inject @Named("JdbcQuestionRepository")
     IQuestionRepository questionRepository;
 
     @Inject @Named("JdbcUserRepository")
@@ -48,6 +49,7 @@ public class ServiceRegistry {
         questionFacade.addQuestion(AddQuestionCommand.builder()
                 .title("Is it real life ??")
                 .description("Well, you real ????")
+                .creatorId(new UserId("6f780eb3-81eb-4bdf-99b5-84c9c4a0a774"))
                 .creator("SwagMan McSwagenstein")
                 .nbVotes(2)
                 .build());
@@ -55,6 +57,7 @@ public class ServiceRegistry {
         questionFacade.addQuestion(AddQuestionCommand.builder()
                 .title("Do you even lift bro ?!")
                 .description("Start lifting weights today, lift women tomorrow !")
+                .creatorId(new UserId("6f780eb3-81eb-4bdf-99b5-84c9c4a0a774"))
                 .creator("Ricardo")
                 .nbVotes(1038)
                 .build());
@@ -76,6 +79,7 @@ public class ServiceRegistry {
                         "Is there any out of the box solution in Vue that can allow this configuration? Basically we need to have a file in the root folder of the built app, and read values for our Vue.prototype.VARIABLES.\n" +
                         "\n" +
                         "We are using vue-cli 3.")
+                .creatorId(new UserId("6f780eb3-81eb-4bdf-99b5-84c9c4a0a774"))
                 .creator("Jack Casas")
                 .nbVotes(6)
                 .build());
