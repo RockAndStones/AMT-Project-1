@@ -87,7 +87,8 @@ public class JdbcUserRepository implements IUserRepository {
 
     @Override
     public void remove(UserId userId) {
-
+        //todo: implement remove method
+        throw new UnsupportedOperationException("Remove is not yet implemented");
     }
 
     @Override
