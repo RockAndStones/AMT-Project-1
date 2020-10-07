@@ -8,6 +8,7 @@ import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.Registratio
 import ch.heigvd.amt.StoneOverflow.domain.Question.IQuestionRepository;
 import ch.heigvd.amt.StoneOverflow.domain.Question.Question;
 import ch.heigvd.amt.StoneOverflow.domain.user.IUserRepository;
+import ch.heigvd.amt.StoneOverflow.domain.user.User;
 import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
 import lombok.Getter;
 
@@ -32,24 +33,20 @@ public class ServiceRegistry {
         identityManagementFacade = new IdentityManagementFacade(userRepository);
         questionFacade = new QuestionFacade(questionRepository);
 
-        //Create default account
-        try {
-            identityManagementFacade.register(RegisterCommand.builder()
+        User u = User.builder()
                     .username("test")
                     .email("test@test.com")
                     .firstName("John")
                     .lastName("Smith")
                     .plaintextPassword("test")
-                    .build());
-        } catch (RegistrationFailedException e) {
-            e.printStackTrace();
-        }
+                    .build();
+        userRepository.save(u);
 
         //Add default questions
         questionFacade.addQuestion(AddQuestionCommand.builder()
                 .title("Is it real life ??")
                 .description("Well, you real ????")
-                .creatorId(new UserId("6f780eb3-81eb-4bdf-99b5-84c9c4a0a774"))
+                .creatorId(u.getId())
                 .creator("SwagMan McSwagenstein")
                 .nbVotes(2)
                 .build());
@@ -57,7 +54,7 @@ public class ServiceRegistry {
         questionFacade.addQuestion(AddQuestionCommand.builder()
                 .title("Do you even lift bro ?!")
                 .description("Start lifting weights today, lift women tomorrow !")
-                .creatorId(new UserId("6f780eb3-81eb-4bdf-99b5-84c9c4a0a774"))
+                .creatorId(u.getId())
                 .creator("Ricardo")
                 .nbVotes(1038)
                 .build());
@@ -79,7 +76,7 @@ public class ServiceRegistry {
                         "Is there any out of the box solution in Vue that can allow this configuration? Basically we need to have a file in the root folder of the built app, and read values for our Vue.prototype.VARIABLES.\n" +
                         "\n" +
                         "We are using vue-cli 3.")
-                .creatorId(new UserId("6f780eb3-81eb-4bdf-99b5-84c9c4a0a774"))
+                .creatorId(u.getId())
                 .creator("Jack Casas")
                 .nbVotes(6)
                 .build());
