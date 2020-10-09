@@ -40,7 +40,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`UserMessage` (
   `id` CHAR(36) NOT NULL,
   `idUser` CHAR(36) NOT NULL,
-  `description` VARCHAR(45) NULL,
+  `description` TEXT NULL,
   `nbVotes` INT NULL,
   `date` DATETIME NULL,
   PRIMARY KEY (`id`),
@@ -58,7 +58,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Question` (
   `id` CHAR(36) NOT NULL,
-  `title` VARCHAR(45) NULL,
+  `title` VARCHAR(100) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_Question_UserMessage1_idx` (`id` ASC) VISIBLE,
   CONSTRAINT `fk_Question_UserMessage1`
@@ -74,7 +74,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Answer` (
   `id` CHAR(36) NOT NULL,
-  `idQuestion` VARCHAR(36) NOT NULL,
+  `idQuestion` CHAR(36) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_Answer_Question1_idx` (`idQuestion` ASC) VISIBLE,
   CONSTRAINT `fk_Answer_UserMessage1`
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Comment` (
   `id` CHAR(36) NOT NULL,
   `idUserMessage` VARCHAR(36) NOT NULL,
   `idUser` VARCHAR(36) NOT NULL,
-  `description` VARCHAR(45) NULL,
+  `description` TEXT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_Comment_UserMessage1_idx` (`idUserMessage` ASC) VISIBLE,
   INDEX `fk_Comment_User1_idx` (`idUser` ASC) VISIBLE,

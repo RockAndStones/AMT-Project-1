@@ -6,6 +6,7 @@ import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.Registratio
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegisterCommand;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,14 +16,22 @@ import java.io.IOException;
 
 @WebServlet(name = "RegisterCommandServlet", urlPatterns = "/registerCommand")
 public class RegisterCommandServlet extends HttpServlet {
-    private IdentityManagementFacade identityManagementFacade = ServiceRegistry.getServiceRegistry().getIdentityManagementFacade();
+    @Inject
+    ServiceRegistry serviceRegistry;
+    IdentityManagementFacade identityManagementFacade;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        identityManagementFacade = serviceRegistry.getIdentityManagementFacade();
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //todo: Add email, first name, last name to register form
         RegisterCommand registerCommand = RegisterCommand.builder()
                 .username(req.getParameter("username"))
-                .email("Email placeholder")
+                .email("Email placeholder " + Math.random())
                 .firstName("First name placeholder")
                 .lastName("Last name placeholder")
                 .plaintextPassword(req.getParameter("password"))

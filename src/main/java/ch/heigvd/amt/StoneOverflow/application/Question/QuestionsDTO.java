@@ -1,6 +1,5 @@
 package ch.heigvd.amt.StoneOverflow.application.Question;
 
-import ch.heigvd.amt.StoneOverflow.domain.Question.Question;
 import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

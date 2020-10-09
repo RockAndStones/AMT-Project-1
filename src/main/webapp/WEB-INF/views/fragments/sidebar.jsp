@@ -4,6 +4,7 @@
   Date:         23.09.2020
   Description:  Sidebar fragment for StoneOverflow.
 --%>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 <div class="hidden lg:block lg:w-1/5 lg:border-r"></div>
 <div class="hidden lg:block lg:fixed w-full lg:w-1/5 text-xl text-gray-800 lg:border-r leading-normal">
     <nav id="sidebar" class="mt-10">
