@@ -52,7 +52,7 @@ jobs:
       - name: Wait for container
         uses: nev7n/wait_for_response@v1
         with:
-          url: 'http://localhost:8080/StoneOverflow/login'
+          url: 'http://localhost:8080'
           responseCode: 200
 
       - name: Codeceptjs test
