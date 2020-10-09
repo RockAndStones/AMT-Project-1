@@ -38,7 +38,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home</title>
+    <title>Question details</title>
     <link href="assets/css/custom.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/styles.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/normalize.css" rel="stylesheet" type="text/css"/>
