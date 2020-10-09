@@ -3,7 +3,7 @@ services:
   openliberty:
      image: stoneoverflow/liberty
      ports:
-       - "9080:9080"
+       - "8080:8080"
        - "9443:9443"
   sql:
     image: stoneoverflow/mysql
