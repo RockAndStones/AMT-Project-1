@@ -7,6 +7,7 @@ import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegisterCom
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegistrationFailedException;
 import ch.heigvd.amt.StoneOverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.StoneOverflow.domain.user.User;
+import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
 
 import java.util.Optional;
 
@@ -46,6 +47,7 @@ public class IdentityManagementFacade {
             throw new LoginFailedException("Invalid password");
 
         return AuthenticatedUserDTO.builder()
+                .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
