@@ -6,10 +6,14 @@ import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
 import ch.heigvd.amt.StoneOverflow.infrastructure.persistance.exception.DataCorruptionException;
 import ch.heigvd.amt.StoneOverflow.infrastructure.persistance.exception.IntegrityConstraintViolationException;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@ApplicationScoped
+@Named("InMemoryUserRepository")
 public class InMemoryUserRepository extends InMemoryRepository<User, UserId> implements IUserRepository {
     @Override
     public void save(User entity) {

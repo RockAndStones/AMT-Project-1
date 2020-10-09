@@ -6,6 +6,7 @@ import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.AuthenticatedU
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.LoginFailedException;
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.LoginCommand;
 
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,7 +16,15 @@ import java.io.IOException;
 
 @WebServlet(name = "LoginCommandServlet", urlPatterns = "/loginCommand")
 public class LoginCommandServlet extends HttpServlet {
-    private IdentityManagementFacade identityManagementFacade = ServiceRegistry.getServiceRegistry().getIdentityManagementFacade();
+    @Inject
+    ServiceRegistry serviceRegistry;
+    IdentityManagementFacade identityManagementFacade;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        identityManagementFacade = serviceRegistry.getIdentityManagementFacade();
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

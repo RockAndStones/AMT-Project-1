@@ -1,6 +1,7 @@
 package ch.heigvd.amt.StoneOverflow.domain.Question;
 
 import ch.heigvd.amt.StoneOverflow.domain.IEntity;
+import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,7 @@ public class Question implements IEntity<Question, QuestionId> {
     private QuestionId id;
     private String title;
     private String description;
+    private UserId creatorId;
     private String creator;
     private int nbVotes;
     @Setter(AccessLevel.NONE)
@@ -46,11 +48,15 @@ public class Question implements IEntity<Question, QuestionId> {
                 creator = "";
             }
 
+            if(creatorId == null){
+                creatorId = new UserId();
+            }
+
             if(questionType == null){
                 questionType = QuestionType.UNCLASSIFIED;
             }
 
-            return new Question(id, title, description, creator, nbVotes, questionType);
+            return new Question(id, title, description, creatorId, creator, nbVotes, questionType);
         }
     }
 }

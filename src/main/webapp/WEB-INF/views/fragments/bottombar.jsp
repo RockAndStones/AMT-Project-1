@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 <nav class="bg-white fixed bottom-0 w-full border-t lg:hidden text-xs">
     <ul class="flex justify-around items-center text-center text-lg font-bold">
         <li class="p-4 bg-gray-200 border-b-4 border-gray-900">

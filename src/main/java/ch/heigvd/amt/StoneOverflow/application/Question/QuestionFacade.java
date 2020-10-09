@@ -18,6 +18,7 @@ public class QuestionFacade {
         Question addedQuestion = Question.builder().
                 title(command.getTitle()).
                 description(command.getDescription()).
+                creatorId(command.getCreatorId()).
                 creator(command.getCreator()).
                 nbVotes(command.getNbVotes()).
                 questionType(command.getType()).build();

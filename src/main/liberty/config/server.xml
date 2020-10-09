@@ -11,4 +11,24 @@
     <httpEndpoint host="*" httpPort="${default.http.port}"
                   httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
 
+    <dataSource id="mySQL" jndiName="jdbc/StoneOverflowDS" type="javax.sql.DataSource">
+        <jdbcDriver libraryRef="MySQLLib"/>
+        <properties databaseName="db_stoneoverflow" serverName="localhost" portNumber="3306"
+            user="root" password="mysql"/>
+    </dataSource>
+
+    <library id="MySQLLib">
+        <fileset dir="${server.config.dir}" includes="*.jar"/>
+    </library>
+
+<!--    <library id="MySQLLib">-->
+<!--        <fileset dir="/wlp/usr/servers/defaultServer/" includes="*.jar"/>-->
+<!--    </library>-->
+
+<!--    <dataSource id="jdbc/StoneOverflowDS" jndiName="jdbc/StoneOverflowDS" type="javax.sql.DataSource">-->
+<!--        <jdbcDriver libraryRef="MySQLLib"/>-->
+<!--        <properties databaseName="db_stoneoveflow"-->
+<!--                    serverName="localhost" portNumber="3306"-->
+<!--                    user="root" password="mysql"/>-->
+<!--    </dataSource>-->
 </server>
