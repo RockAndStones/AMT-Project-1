@@ -47,12 +47,15 @@ jobs:
           docker tag rockandstones/stoneoverflow ghcr.io/rockandstones/stoneoverflow
 
       - name: Run Docker Container
-        run: docker run -d -p 8080:8080 -p 9443:9443 rockandstones/stoneoverflow
+        run: |
+        docker run -d -p 8080:8080 -p 9443:9443 rockandstones/stoneoverflow
+        docker images
+        docker ps
 
       - name: Wait for container
         uses: nev7n/wait_for_response@v1
         with:
-          url: 'http://localhost:8080'
+          url: 'http://localhost:8080/'
           responseCode: 200
 
       - name: Codeceptjs test
