@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name="QuestionsPageServlet", urlPatterns = "/home")
+@WebServlet(name="QuestionsPageServlet", urlPatterns =  {"", "/home"})
 public class QuestionQueryServlet extends HttpServlet {
     @Inject
     ServiceRegistry serviceRegistry;
@@ -32,6 +32,6 @@ public class QuestionQueryServlet extends HttpServlet {
                 .sqlSearch(false)
                 .build());
         req.setAttribute("questions", questionsDTO);
-        req.getRequestDispatcher("WEB-INF/views/home.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);
     }
 }
