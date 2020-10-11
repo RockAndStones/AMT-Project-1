@@ -2,15 +2,18 @@ package ch.heigvd.amt.StoneOverflow.application;
 
 import ch.heigvd.amt.StoneOverflow.application.Question.AddQuestionCommand;
 import ch.heigvd.amt.StoneOverflow.application.Question.QuestionFacade;
+import ch.heigvd.amt.StoneOverflow.application.answer.AnswerFacade;
+import ch.heigvd.amt.StoneOverflow.application.comment.CommentFacade;
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.IdentityManagementFacade;
-import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegisterCommand;
-import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegistrationFailedException;
 import ch.heigvd.amt.StoneOverflow.domain.Question.IQuestionRepository;
 import ch.heigvd.amt.StoneOverflow.domain.Question.Question;
+import ch.heigvd.amt.StoneOverflow.domain.answer.Answer;
+import ch.heigvd.amt.StoneOverflow.domain.answer.IAnswerRepository;
+import ch.heigvd.amt.StoneOverflow.domain.comment.Comment;
+import ch.heigvd.amt.StoneOverflow.domain.comment.ICommentRepository;
 import ch.heigvd.amt.StoneOverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.StoneOverflow.domain.user.User;
 import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
-import lombok.Getter;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -25,28 +28,49 @@ public class ServiceRegistry {
     @Inject @Named("JdbcUserRepository")
     IUserRepository userRepository;
 
+    @Inject @Named("InMemoryAnswerRepository")
+    IAnswerRepository  answerRepository;
+
+    @Inject @Named("InMemoryCommentRepository")
+    ICommentRepository commentRepository;
+
     IdentityManagementFacade identityManagementFacade;
     QuestionFacade questionFacade;
+    AnswerFacade  answerFacade;
+    CommentFacade commentFacade;
 
     @PostConstruct
     private void initDefaultValues() {
         identityManagementFacade = new IdentityManagementFacade(userRepository);
-        questionFacade = new QuestionFacade(questionRepository);
+        questionFacade           = new QuestionFacade(questionRepository);
+        answerFacade             = new AnswerFacade(answerRepository);
+        commentFacade            = new CommentFacade(commentRepository);
 
-        User u = User.builder()
+        // Add default users
+        User u1 = User.builder()
                     .username("test")
                     .email("test@test.com")
                     .firstName("John")
                     .lastName("Smith")
                     .plaintextPassword("test")
                     .build();
-        userRepository.save(u);
 
-        //Add default questions
+        User u2 = User.builder()
+                .username("rocky")
+                .email("rocky@strongerthanyou.com")
+                .firstName("Sylvester")
+                .lastName("Stallone")
+                .plaintextPassword("balboa")
+                .build();
+
+        userRepository.save(u1);
+        userRepository.save(u2);
+
+        // Add default questions
         questionFacade.addQuestion(AddQuestionCommand.builder()
                 .title("Is it real life ??")
                 .description("Well, you real ????")
-                .creatorId(u.getId())
+                .creatorId(u1.getId())
                 .creator("SwagMan McSwagenstein")
                 .nbVotes(2)
                 .build());
@@ -54,7 +78,7 @@ public class ServiceRegistry {
         questionFacade.addQuestion(AddQuestionCommand.builder()
                 .title("Do you even lift bro ?!")
                 .description("Start lifting weights today, lift women tomorrow !")
-                .creatorId(u.getId())
+                .creatorId(u1.getId())
                 .creator("Ricardo")
                 .nbVotes(1038)
                 .build());
@@ -76,10 +100,65 @@ public class ServiceRegistry {
                         "Is there any out of the box solution in Vue that can allow this configuration? Basically we need to have a file in the root folder of the built app, and read values for our Vue.prototype.VARIABLES.\n" +
                         "\n" +
                         "We are using vue-cli 3.")
-                .creatorId(u.getId())
+                .creatorId(u1.getId())
                 .creator("Jack Casas")
                 .nbVotes(6)
                 .build());
+
+        Question q1 = Question.builder()
+                .title("Is there any herb to get your dog high like catnip?")
+                .description("The question is all about the title :)")
+                .creatorId(u2.getId())
+                .creator(u2.getUsername())
+                .nbVotes(601).build();
+
+        questionRepository.save(q1);
+
+        // Add default answers
+        Answer a1 = Answer.builder()
+                .answerTo(q1.getId())
+                .description("Yes there is. It's called anise ;)")
+                .creator(u1.getUsername())
+                .nbVotes(542).build();
+
+        Answer a2 = Answer.builder()
+                .answerTo(q1.getId())
+                .description("Is this questions a cake?")
+                .creator("IAmALieBecauseIMayBeACakeInsideAndIAmScaredAboutThat")
+                .nbVotes(-4).build();
+
+        answerRepository.save(a1);
+        answerRepository.save(a2);
+
+        // Add default comments
+        Comment c1 = Comment.builder()
+                .commentTo(q1.getId())
+                .content("Excellent question sir.")
+                .creator("Anonymous1EvenIfYouCannotBeAnonymousInAComment")
+                .creatorId(new UserId()).build();
+
+        Comment c2 = Comment.builder()
+                .commentTo(a1.getId())
+                .content("It's also called dog nip by the way.")
+                .creator(u1.getUsername())
+                .creatorId(u1.getId()).build();
+
+        Comment c3 = Comment.builder()
+                .commentTo(a1.getId())
+                .content("Yeah it's anise, I've tried it with my dog. But since this event my dog stopped moving but it was fun I would say.")
+                .creator("Anonymous2EvenIfYouCannotBeAnonymousInAComment")
+                .creatorId(new UserId()).build();
+
+        Comment c4 = Comment.builder()
+                .commentTo(a2.getId())
+                .content("D*fuck is wrong with you buddy?")
+                .creator("Anonymous3EvenIfYouCannotBeAnonymousInAComment")
+                .creatorId(new UserId()).build();
+
+        commentRepository.save(c1);
+        commentRepository.save(c2);
+        commentRepository.save(c3);
+        commentRepository.save(c4);
     }
 
     public QuestionFacade getQuestionFacade() {

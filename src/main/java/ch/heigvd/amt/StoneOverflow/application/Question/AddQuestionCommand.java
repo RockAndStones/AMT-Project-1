@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+import java.util.Date;
+
 @Builder
 @Getter
 @EqualsAndHashCode
@@ -24,6 +26,12 @@ public class AddQuestionCommand {
 
     @Builder.Default
     private int nbVotes = 0;
+
+    @Builder.Default
+    private int nbViews = 0;
+
+    @Builder.Default
+    private Date date = null;
 
     @Builder.Default
     private QuestionType type = QuestionType.UNCLASSIFIED;
