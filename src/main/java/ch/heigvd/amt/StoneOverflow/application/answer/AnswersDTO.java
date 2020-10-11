@@ -1,11 +1,12 @@
 package ch.heigvd.amt.StoneOverflow.application.answer;
 
+import ch.heigvd.amt.StoneOverflow.application.comment.CommentsDTO;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Singular;
 
-import java.util.Date;
+import java.util.Collection;
 import java.util.List;
 
 @Builder
@@ -17,10 +18,13 @@ public class AnswersDTO {
     @Getter
     @EqualsAndHashCode
     public static class AnswerDTO {
+        private String uuid;
         private String description;
         private String creator;
         private int    nbVotes;
-        private Date   date;
+        private String date;
+
+        private Collection<CommentsDTO.CommentDTO> comments;
     }
 
     @Singular

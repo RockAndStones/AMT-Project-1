@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Singular;
 
-import java.util.Date;
 import java.util.List;
 
 @Builder
@@ -17,9 +16,10 @@ public class CommentsDTO {
     @Getter
     @EqualsAndHashCode
     public static class CommentDTO {
+        private String uuid;
         private String creator;
         private String content;
-        private Date   date;
+        private String date;
     }
 
     @Singular
