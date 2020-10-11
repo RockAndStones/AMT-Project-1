@@ -1,6 +1,5 @@
 package ch.heigvd.amt.StoneOverflow.application.answer;
 
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionId;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,12 +17,12 @@ public class AnswersDTO {
     @Getter
     @EqualsAndHashCode
     public static class AnswerDTO {
-        private String     description;
-        private String     creator;
-        private int        nbVotes;
-        private Date       date;
+        private String description;
+        private String creator;
+        private int    nbVotes;
+        private Date   date;
     }
 
     @Singular
-    private List<AnswersDTO.AnswerDTO> answers;
+    private List<AnswerDTO> answers;
 }
