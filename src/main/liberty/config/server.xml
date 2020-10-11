@@ -20,15 +20,4 @@
     <library id="MySQLLib">
         <fileset dir="${server.config.dir}" includes="*.jar"/>
     </library>
-
-<!--    <library id="MySQLLib">-->
-<!--        <fileset dir="/wlp/usr/servers/defaultServer/" includes="*.jar"/>-->
-<!--    </library>-->
-
-<!--    <dataSource id="jdbc/StoneOverflowDS" jndiName="jdbc/StoneOverflowDS" type="javax.sql.DataSource">-->
-<!--        <jdbcDriver libraryRef="MySQLLib"/>-->
-<!--        <properties databaseName="db_stoneoveflow"-->
-<!--                    serverName="localhost" portNumber="3306"-->
-<!--                    user="root" password="mysql"/>-->
-<!--    </dataSource>-->
 </server>
