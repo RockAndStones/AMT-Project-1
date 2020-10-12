@@ -62,10 +62,10 @@ public class IdentityManagementFacade {
     }
 
     private boolean isPasswordStrong(String plaintextPassword) {
-        boolean hasUpperCase = plaintextPassword.matches("[A-Z]");
-        boolean hasLowerCase = plaintextPassword.matches("[a-z]");
-        boolean hasNumber = plaintextPassword.matches("[0-9]");
-        boolean hasSpecialChar = plaintextPassword.matches("[^\\W]");
+        boolean hasUpperCase = plaintextPassword.matches("(?=.*[A-Z]).*");
+        boolean hasLowerCase = plaintextPassword.matches("(?=.*[a-z]).*");
+        boolean hasNumber = plaintextPassword.matches("(?=.*[0-9]).*");
+        boolean hasSpecialChar = plaintextPassword.matches("(?=.*[\\W]).*");
 
         return hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && plaintextPassword.length() >= 8;
     }
