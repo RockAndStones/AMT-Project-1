@@ -33,6 +33,7 @@ public class QuestionFacade {
                 .creator(question.getCreator())
                 .description(question.getDescription())
                 .nbVotes(question.getNbVotes())
+                .date(question.getDate())
                 .type(question.getQuestionType()).build()).collect(Collectors.toList());
 
         return QuestionsDTO.builder()

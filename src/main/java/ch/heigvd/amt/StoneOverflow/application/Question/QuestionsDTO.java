@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Singular;
 
+import java.util.Date;
 import java.util.List;
 
 @Builder
@@ -21,6 +22,7 @@ public class QuestionsDTO {
         private String description;
         private String creator;
         private int nbVotes;
+        private Date date;
         private QuestionType type;
 
         public String shortDescription(){
