@@ -2,15 +2,9 @@ package ch.heigvd.amt.StoneOverflow.application.Question;
 
 import ch.heigvd.amt.StoneOverflow.application.answer.AnswersDTO;
 import ch.heigvd.amt.StoneOverflow.application.comment.CommentsDTO;
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionType;
-import ch.heigvd.amt.StoneOverflow.domain.answer.Answer;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Singular;
+import lombok.*;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Builder
@@ -32,7 +26,9 @@ public class QuestionsDTO {
         private String date;
         private String type;
 
-        private Collection<AnswersDTO.AnswerDTO>   answers;
+        @Setter
+        private Collection<AnswersDTO.AnswerDTO> answers;
+        @Setter
         private Collection<CommentsDTO.CommentDTO> comments;
 
         public String shortDescription(){
