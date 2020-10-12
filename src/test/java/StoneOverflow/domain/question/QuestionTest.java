@@ -21,7 +21,7 @@ public class QuestionTest {
     }
 
     @Test
-    public void questionIdShouldBeAutomaticallGenerated() {
+    public void questionIdShouldBeAutomaticallyGenerated() {
         Question question = Question.builder()
                 .title("My test Question")
                 .description("my question description")
