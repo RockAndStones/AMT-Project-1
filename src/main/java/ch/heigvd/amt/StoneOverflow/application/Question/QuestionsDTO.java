@@ -23,6 +23,7 @@ public class QuestionsDTO {
         private String description;
         private String creator;
         private int nbVotes;
+        private int nbViews;
         private Date date;
         private QuestionType type;
 

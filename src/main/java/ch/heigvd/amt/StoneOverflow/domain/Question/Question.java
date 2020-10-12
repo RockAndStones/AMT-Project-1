@@ -19,6 +19,7 @@ public class Question implements IEntity<Question, QuestionId> {
     private UserId creatorId;
     private String creator;
     private int nbVotes;
+    private int nbViews;
     private Date date;
     @Setter(AccessLevel.NONE)
     private QuestionType questionType;
@@ -63,7 +64,7 @@ public class Question implements IEntity<Question, QuestionId> {
                 questionType = QuestionType.UNCLASSIFIED;
             }
 
-            return new Question(id, title, description, creatorId, creator, nbVotes, date, questionType);
+            return new Question(id, title, description, creatorId, creator, nbVotes, nbViews, date, questionType);
         }
     }
 }

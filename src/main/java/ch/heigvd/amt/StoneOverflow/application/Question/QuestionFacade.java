@@ -22,6 +22,7 @@ public class QuestionFacade {
                 creatorId(command.getCreatorId()).
                 creator(command.getCreator()).
                 nbVotes(command.getNbVotes()).
+                nbViews(command.getNbViews()).
                 questionType(command.getType()).build();
         questionRepository.save(addedQuestion);
     }
@@ -36,6 +37,7 @@ public class QuestionFacade {
                     .creator(question.getCreator())
                     .description(question.getDescription())
                     .nbVotes(question.getNbVotes())
+                    .nbViews(question.getNbViews())
                     .date(question.getDate())
                     .type(question.getQuestionType()).build())
                 .collect(Collectors.toList());

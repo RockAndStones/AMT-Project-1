@@ -26,5 +26,8 @@ public class AddQuestionCommand {
     private int nbVotes = 0;
 
     @Builder.Default
+    private int nbViews = 0;
+
+    @Builder.Default
     private QuestionType type = QuestionType.UNCLASSIFIED;
 }
