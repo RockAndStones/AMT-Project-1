@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Data
 @Builder(toBuilder = true)
 public class Question implements IEntity<Question, QuestionId> {
@@ -17,6 +19,7 @@ public class Question implements IEntity<Question, QuestionId> {
     private UserId creatorId;
     private String creator;
     private int nbVotes;
+    private Date date;
     @Setter(AccessLevel.NONE)
     private QuestionType questionType;
 
@@ -52,11 +55,15 @@ public class Question implements IEntity<Question, QuestionId> {
                 creatorId = new UserId();
             }
 
+            if(date == null){
+                date = new Date();
+            }
+
             if(questionType == null){
                 questionType = QuestionType.UNCLASSIFIED;
             }
 
-            return new Question(id, title, description, creatorId, creator, nbVotes, questionType);
+            return new Question(id, title, description, creatorId, creator, nbVotes, date, questionType);
         }
     }
 }
