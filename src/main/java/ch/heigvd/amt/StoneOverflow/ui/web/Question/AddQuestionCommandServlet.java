@@ -27,7 +27,6 @@ public class AddQuestionCommandServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //todo: verify getSession ?
         AuthenticatedUserDTO user = (AuthenticatedUserDTO)req.getSession().getAttribute("authenticatedUser");
         AddQuestionCommand command = AddQuestionCommand.builder()
                 .creatorId(user.getId())

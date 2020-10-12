@@ -12,6 +12,7 @@ public class LoginPageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //todo: Improve page behavior to show either login / register on error
         String errorMessage = (String)request.getSession().getAttribute("errorMessage");
         request.getSession().removeAttribute("errorMessage");
 
