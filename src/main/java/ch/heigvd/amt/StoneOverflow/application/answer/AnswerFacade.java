@@ -4,6 +4,7 @@ import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionId;
 import ch.heigvd.amt.StoneOverflow.domain.answer.Answer;
 import ch.heigvd.amt.StoneOverflow.domain.answer.IAnswerRepository;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,15 +26,17 @@ public class AnswerFacade {
         answerRepository.save(addAnswer);
     }
 
-    public AnswersDTO getQuestionsByQuestionId(QuestionId questionId) {
+    public AnswersDTO getAnswersFromQuestion(QuestionId questionId) {
         Collection<Answer> answersFromQuestionId = answerRepository.findByQuestionId(questionId);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         List<AnswersDTO.AnswerDTO> answersFromQuestionIdDTO = answersFromQuestionId.stream().map(
                 answer -> AnswersDTO.AnswerDTO.builder()
+                        .uuid(answer.getId().asString())
                         .description(answer.getDescription())
                         .creator(answer.getCreator())
                         .nbVotes(answer.getNbVotes())
-                        .date(answer.getDate()).build()).collect(Collectors.toList());
+                        .date(formatter.format(answer.getDate())).build()).collect(Collectors.toList());
 
         return AnswersDTO.builder().answers(answersFromQuestionIdDTO).build();
     }
