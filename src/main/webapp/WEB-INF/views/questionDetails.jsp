@@ -35,6 +35,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:useBean scope="request" id="question" type="ch.heigvd.amt.StoneOverflow.application.Question.QuestionsDTO.QuestionDTO"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,16 +56,38 @@
         <div class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-700 leading-normal">
             <!-- Details header -->
             <div class="w-full pb-6 mb-4 border-b">
-                <h1 class="leading-normal text-lg font-semibold text-gray-900 mt-0">${question.title}TMP: TITLE</h1>
-                <span>${question.nbViews}TMP: NBVIEWS</span>
+                <h1 class="leading-normal text-lg font-semibold text-gray-900 mt-0">${question.title}</h1>
+                <span>${question.nbViews}</span>
                 <i class="mx-auto mb-2 h-5 w-5 far fa-eye"></i>
-                <span class="ml-2">${questions.comments.size()}TMP: NBRESPONSE</span>
+                <span class="ml-2">${question.comments.size()}</span>
                 <i class="mx-auto mb-2 h-5 w-5 far fa-comment"></i>
             </div>
             <!-- Details body -->
             <div class="pb-8 mb-8 border-b">
                 <div class="flex flex-shrink">
-                    <%@include file="fragments/postVoteAndContent.jsp"%>
+                    <!-- Vote -->
+                    <div class="flex flex-col inline-flex items-center">
+                        <form action="" method="post">
+                            <input type="hidden" name="type" value="question">
+                            <input type="hidden" name="id" value="${question.uuid}">
+                            <input type="hidden" name="vote" value="up">
+                            <button type="submit"><i class="leading-normal fas fa-caret-up text-6xl"></i></button>
+                        </form>
+                        <span class="text-lg">${question.nbVotes}</span>
+                        <form action="" method="post">
+                            <input type="hidden" name="type" value="question">
+                            <input type="hidden" name="id" value="${question.uuid}">
+                            <input type="hidden" name="vote" value="down">
+                            <button type="submit"><i class="leading-normal fas fa-caret-down text-6xl"></i></button>
+                        </form>
+                    </div>
+                    <!-- Post content -->
+                    <div class="ml-6 mt-4 text-gray-700">
+                        <p>
+                            ${question.description}
+                        </p>
+                        <span class="inline-block text-sm font-semibold mt-4">${question.creator}, ${question.date}</span>
+                    </div>
                 </div>
             </div>
             <!-- Details answer(s) -->
@@ -75,7 +98,7 @@
                     </c:when>
                     <c:otherwise>
                         <h2 class="leading-normal text-lg font-semibold text-gray-900 mt-0 mb-4">Answer(s)</h2>
-                        <c:forEach items="${question.answer}" var="post">
+                        <c:forEach items="${question.answers}" var="answer">
                             <%@include file="fragments/answer.jsp" %>
                         </c:forEach>
                     </c:otherwise>
