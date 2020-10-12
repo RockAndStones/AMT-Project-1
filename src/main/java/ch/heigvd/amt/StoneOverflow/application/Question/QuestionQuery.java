@@ -1,5 +1,6 @@
 package ch.heigvd.amt.StoneOverflow.application.Question;
 
+import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class QuestionQuery {
     @Builder.Default
-    private boolean sqlSearch = false;
+    private QuestionType type = QuestionType.SQL;
 
     @Builder.Default
     private boolean byDate = true;

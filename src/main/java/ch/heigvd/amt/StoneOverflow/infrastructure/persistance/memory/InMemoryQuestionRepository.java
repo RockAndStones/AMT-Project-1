@@ -34,4 +34,19 @@ public class InMemoryQuestionRepository extends InMemoryRepository<Question, Que
         //todo: implement question queries
         return super.findAll().stream().sorted(Comparator.comparing(Question::getNbViews).reversed()).collect(Collectors.toList());
     }
+
+    @Override
+    public Collection<Question> findByType(QuestionQuery questionQuery) {
+        Collection<Question> questions = super.findAll();
+        if(questionQuery.getType() == QuestionType.SQL) {
+            ArrayList<Question> queredQuestion = new ArrayList<>();
+            for (Question question : questions) {
+                if (question.getQuestionType() == QuestionType.SQL) {
+                    queredQuestion.add(question);
+                }
+            }
+            return queredQuestion;
+        }
+        return null;
+    }
 }

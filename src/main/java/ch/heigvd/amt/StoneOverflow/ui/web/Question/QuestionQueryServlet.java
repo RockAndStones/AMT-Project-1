@@ -30,7 +30,6 @@ public class QuestionQueryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         QuestionsDTO questionsDTO = questionFacade.getQuestions(QuestionQuery.builder()
-                .sqlSearch(false)
                 .byNbVotes(true)
                 .build());
         req.setAttribute("questions", questionsDTO);

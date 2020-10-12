@@ -32,7 +32,7 @@ public class InMemoryQuestionRepositoryTest {
         inMemoryQuestionRepository.save(Question.builder().build());
         inMemoryQuestionRepository.save(Question.builder().questionType(QuestionType.SQL).build());
 
-        QuestionQuery questionQuery = QuestionQuery.builder().sqlSearch(true).build();
+        QuestionQuery questionQuery = QuestionQuery.builder().type(QuestionType.SQL).build();
 
         assertEquals(inMemoryQuestionRepository.find(questionQuery).size(), 2);
     }

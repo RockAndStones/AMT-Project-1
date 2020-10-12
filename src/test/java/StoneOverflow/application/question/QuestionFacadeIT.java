@@ -106,7 +106,7 @@ public class QuestionFacadeIT {
         AddQuestionCommand questionCommand = AddQuestionCommand.builder().build();
         questionFacade.addQuestion(questionCommand);
 
-        assertEquals(questionFacade.getQuestions(QuestionQuery.builder().sqlSearch(true).build()).getQuestions().get(0),
+        assertEquals(questionFacade.getQuestions(QuestionQuery.builder().type(QuestionType.SQL).build()).getQuestions().get(0),
                 questionDTO);
     }
 }

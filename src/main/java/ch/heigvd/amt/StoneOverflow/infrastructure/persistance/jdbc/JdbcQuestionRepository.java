@@ -35,10 +35,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
 
     @Override
     public Collection<Question> find(QuestionQuery questionQuery) {
-        if (!questionQuery.isSqlSearch())
-            return findAll();
-        else //todo: implement custom query
-            throw new UnsupportedOperationException("Find with query is not yet implemented");
+        return findAll();
     }
 
     @Override
@@ -49,6 +46,12 @@ public class JdbcQuestionRepository implements IQuestionRepository {
 
     @Override
     public Collection<Question> findByViews(QuestionQuery questionQuery) {
+        // TODO
+        return findAll();
+    }
+
+    @Override
+    public Collection<Question> findByType(QuestionQuery questionQuery) {
         // TODO
         return findAll();
     }
