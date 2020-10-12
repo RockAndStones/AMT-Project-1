@@ -88,7 +88,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             Connection con = dataSource.getConnection();
 
             PreparedStatement ps = con.prepareStatement(
-                    "SELECT q.id, q.title, u.username, um.description, um.nbVotes " +
+                    "SELECT q.id, q.title, u.username, um.description, um.nbVotes, um.date " +
                             "FROM Question AS q " +
                             "INNER JOIN UserMessage AS um on q.id = um.id " +
                             "INNER JOIN User AS u ON q.id=u.id WHERE q.id=?");
@@ -127,7 +127,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             Connection con = dataSource.getConnection();
 
             PreparedStatement ps = con.prepareStatement(
-                    "SELECT q.id, q.title, u.username, um.description, um.nbVotes " +
+                    "SELECT q.id, q.title, u.username, um.description, um.nbVotes, um.date " +
                             "FROM Question AS q " +
                             "INNER JOIN UserMessage AS um on q.id = um.id " +
                             "INNER JOIN User AS u ON um.idUser = u.id");
