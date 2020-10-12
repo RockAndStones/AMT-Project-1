@@ -10,4 +10,16 @@ import lombok.Getter;
 public class QuestionQuery {
     @Builder.Default
     private boolean sqlSearch = false;
+
+    @Builder.Default
+    private boolean byDate = false;
+
+    @Builder.Default
+    private boolean byNbResponse = false;
+
+    @Builder.Default
+    private boolean byNbVotes = false;
+
+    @Builder.Default
+    private boolean byNbVues = false;
 }
