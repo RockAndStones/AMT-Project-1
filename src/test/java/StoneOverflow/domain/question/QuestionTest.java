@@ -2,6 +2,7 @@ package StoneOverflow.domain.question;
 
 import ch.heigvd.amt.StoneOverflow.domain.Question.Question;
 import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionType;
+import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,6 +13,7 @@ public class QuestionTest {
         Question question = Question.builder()
                 .title("My test Question")
                 .description("my question description")
+                .creatorId(new UserId())
                 .creator("test")
                 .build();
         Question question2 = question.deepClone();
@@ -25,6 +27,7 @@ public class QuestionTest {
         Question question = Question.builder()
                 .title("My test Question")
                 .description("my question description")
+                .creatorId(new UserId())
                 .creator("test")
                 .build();
 
@@ -36,6 +39,7 @@ public class QuestionTest {
         Question question = Question.builder()
                 .title("My test Question")
                 .description("my question description")
+                .creatorId(new UserId())
                 .creator("test")
                 .build();
 
