@@ -6,25 +6,23 @@
 --%>
 <div class="question flex border-b">
     <div class="w-full flex items-start px-4 py-4">
-        <img class="w-12 h-12 rounded-full object-cover mr-4 shadow" src="https://images.unsplash.com/photo-1542156822-6924d1a71ace?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt="avatar">
         <div class="w-full">
             <div class="flex items-center justify-between">
-                <h2 class="questionTitleClass text-lg font-semibold text-gray-900 -mt-1">${question.title}</h2>
-                <small class="text-left text-sm text-gray-700">${question.formattedDate()} at ${question.formattedTime()}</small>
+                <form action="/questionDetails" method="post">
+                    <input type="hidden" name="questionUUID" value="${question.uuid}">
+                    <button type="submit"><h2 class="questionTitleClass text-lg font-semibold text-gray-900 hover:underline -mt-1">${question.title}</h2></button>
+                </form>
+                <small class="text-sm text-gray-700">${question.date}</small>
             </div>
             <p class="questionDescriptionClass mt-3 text-gray-700 text-sm">
                 ${question.shortDescription()}
             </p>
-            <div class="mt-4 flex items-center">
-                <div class="flex mr-2 text-gray-700 text-sm mr-3">
-                    <svg fill="none" viewBox="0 0 24 24"  class="w-4 h-4 mr-1" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                    </svg>
-                    <span>${question.nbVotes}</span>
-                </div>
-                <div class="flex mr-2 text-gray-700 text-sm mr-4">
-                    <span>${question.creator}</span>
-                </div>
+            <div class="mt-4 text-gray-700">
+                <span>${question.nbVotes}</span>
+                <i class="mr-3 far fa-heart"></i>
+                <span>${question.nbViews}</span>
+                <i class="mr-3 far fa-eye"></i>
+                <span class="inline-block text-sm font-semibold">- ${question.creator}</span>
             </div>
         </div>
     </div>

@@ -15,7 +15,7 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+
     <dependencies>
         <dependency>
             <groupId>jakarta.platform</groupId>
@@ -119,11 +119,6 @@
                     <include>runnable</include>
                 </configuration>
                 -->
-        </plugin>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
-            <version>3.2.3</version>
         </plugin>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
