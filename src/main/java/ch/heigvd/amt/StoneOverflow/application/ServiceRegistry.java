@@ -22,14 +22,14 @@ import javax.inject.Named;
 
 @ApplicationScoped
 public class ServiceRegistry {
-    @Inject @Named("JdbcQuestionRepository")
+    @Inject @Named("InMemoryQuestionRepository")
     IQuestionRepository questionRepository;
 
-    @Inject @Named("JdbcUserRepository")
+    @Inject @Named("InMemoryUserRepository")
     IUserRepository userRepository;
 
     @Inject @Named("InMemoryAnswerRepository")
-    IAnswerRepository  answerRepository;
+    IAnswerRepository answerRepository;
 
     @Inject @Named("InMemoryCommentRepository")
     ICommentRepository commentRepository;
@@ -118,42 +118,47 @@ public class ServiceRegistry {
         Answer a1 = Answer.builder()
                 .answerTo(q1.getId())
                 .description("Yes there is. It's called anise ;)")
+                .creatorId(u1.getId())
                 .creator(u1.getUsername())
                 .nbVotes(542).build();
 
         Answer a2 = Answer.builder()
                 .answerTo(q1.getId())
                 .description("Is this questions a cake?")
+                .creatorId(u1.getId())
                 .creator("IAmALieBecauseIMayBeACakeInsideAndIAmScaredAboutThat")
                 .nbVotes(-4).build();
 
         answerRepository.save(a1);
         answerRepository.save(a2);
 
+        System.out.println("a1 UUID=" + a1.getId().asString());
+        System.out.println("a2 UUID=" + a2.getId().asString());
+
         // Add default comments
         Comment c1 = Comment.builder()
                 .commentTo(q1.getId())
                 .content("Excellent question sir.")
-                .creator("Anonymous1EvenIfYouCannotBeAnonymousInAComment")
-                .creatorId(new UserId()).build();
+                .creatorId(new UserId())
+                .creator("Anonymous1EvenIfYouCannotBeAnonymousInAComment").build();
 
         Comment c2 = Comment.builder()
                 .commentTo(a1.getId())
                 .content("It's also called dog nip by the way.")
-                .creator(u1.getUsername())
-                .creatorId(u1.getId()).build();
+                .creatorId(u1.getId())
+                .creator(u1.getUsername()).build();
 
         Comment c3 = Comment.builder()
                 .commentTo(a1.getId())
                 .content("Yeah it's anise, I've tried it with my dog. But since this event my dog stopped moving but it was fun I would say.")
-                .creator("Anonymous2EvenIfYouCannotBeAnonymousInAComment")
-                .creatorId(new UserId()).build();
+                .creatorId(new UserId())
+                .creator("Anonymous2EvenIfYouCannotBeAnonymousInAComment").build();
 
         Comment c4 = Comment.builder()
                 .commentTo(a2.getId())
                 .content("D*fuck is wrong with you buddy?")
-                .creator("Anonymous3EvenIfYouCannotBeAnonymousInAComment")
-                .creatorId(new UserId()).build();
+                .creatorId(new UserId())
+                .creator("Anonymous3EvenIfYouCannotBeAnonymousInAComment").build();
 
         commentRepository.save(c1);
         commentRepository.save(c2);
@@ -163,6 +168,14 @@ public class ServiceRegistry {
 
     public QuestionFacade getQuestionFacade() {
         return questionFacade;
+    }
+
+    public AnswerFacade getAnswerFacade() {
+        return answerFacade;
+    }
+
+    public CommentFacade getCommentFacade() {
+        return commentFacade;
     }
 
     public IdentityManagementFacade getIdentityManagementFacade() {
