@@ -13,13 +13,14 @@ import java.util.Date;
 @Builder(toBuilder = true)
 public class Question implements IEntity<Question, QuestionId> {
     @Setter(AccessLevel.NONE)
-    private QuestionId id;
-    private String title;
-    private String description;
-    private UserId creatorId;
-    private String creator;
-    private int nbVotes;
-    private Date date;
+    private QuestionId   id;
+    private String       title;
+    private String       description;
+    private UserId       creatorId;
+    private String       creator;
+    private int          nbVotes;
+    private int          nbViews;
+    private Date         date;
     @Setter(AccessLevel.NONE)
     private QuestionType questionType;
 
@@ -35,35 +36,29 @@ public class Question implements IEntity<Question, QuestionId> {
     public static class QuestionBuilder {
 
         public Question build(){
-            if(id == null){
+
+            if(id == null)
                 id = new QuestionId();
-            }
 
-            if(title == null){
+            if(title == null)
                 title = "";
-            }
 
-            if(description == null){
+            if(description == null)
                 description = "";
-            }
 
-            if(creator == null){
-                creator = "";
-            }
-
-            if(creatorId == null){
+            if(creatorId == null)
                 creatorId = new UserId();
-            }
 
-            if(date == null){
-                date = new Date();
-            }
+            if(creator == null)
+                creator = "";
 
-            if(questionType == null){
+            if (date == null)
+                date = new Date(System.currentTimeMillis());
+
+            if(questionType == null)
                 questionType = QuestionType.UNCLASSIFIED;
-            }
 
-            return new Question(id, title, description, creatorId, creator, nbVotes, date, questionType);
+            return new Question(id, title, description, creatorId, creator, nbVotes, nbViews, date, questionType);
         }
     }
 }

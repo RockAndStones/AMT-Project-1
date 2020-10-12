@@ -1,13 +1,12 @@
 package ch.heigvd.amt.StoneOverflow.application.Question;
 
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionType;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Singular;
+import ch.heigvd.amt.StoneOverflow.application.answer.AnswersDTO;
+import ch.heigvd.amt.StoneOverflow.application.comment.CommentsDTO;
+import lombok.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Collection;
 import java.util.List;
 
 @Builder
@@ -18,13 +17,21 @@ public class QuestionsDTO {
     @Builder
     @Getter
     @EqualsAndHashCode
-    public static class QuestionDTO{
+    public static class QuestionDTO {
+        private String uuid;
         private String title;
         private String description;
         private String creator;
-        private int nbVotes;
-        private Date date;
-        private QuestionType type;
+        private int    nbVotes;
+        private int    nbViews;
+        private int    nbAnswers;
+        private Date   date;
+        private String type;
+
+        @Setter
+        private Collection<AnswersDTO.AnswerDTO> answers;
+        @Setter
+        private Collection<CommentsDTO.CommentDTO> comments;
 
         public String shortDescription(){
             int maxLength = 64;

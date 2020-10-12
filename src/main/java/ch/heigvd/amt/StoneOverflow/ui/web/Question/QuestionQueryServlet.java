@@ -4,6 +4,7 @@ import ch.heigvd.amt.StoneOverflow.application.Question.QuestionFacade;
 import ch.heigvd.amt.StoneOverflow.application.Question.QuestionQuery;
 import ch.heigvd.amt.StoneOverflow.application.Question.QuestionsDTO;
 import ch.heigvd.amt.StoneOverflow.application.ServiceRegistry;
+import ch.heigvd.amt.StoneOverflow.application.answer.AnswerFacade;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
