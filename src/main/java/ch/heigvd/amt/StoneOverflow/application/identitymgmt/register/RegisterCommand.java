@@ -11,4 +11,5 @@ public class RegisterCommand {
     private String firstName;
     private String lastName;
     private String plaintextPassword;
+    private String plaintextPasswordConfirmation;
 }

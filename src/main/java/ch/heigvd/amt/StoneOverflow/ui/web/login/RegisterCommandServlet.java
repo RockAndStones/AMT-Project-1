@@ -34,6 +34,7 @@ public class RegisterCommandServlet extends HttpServlet {
                 .firstName(req.getParameter("firstName"))
                 .lastName(req.getParameter("lastName"))
                 .plaintextPassword(req.getParameter("password"))
+                .plaintextPasswordConfirmation(req.getParameter("confirmPassword"))
                 .build();
 
         try {
