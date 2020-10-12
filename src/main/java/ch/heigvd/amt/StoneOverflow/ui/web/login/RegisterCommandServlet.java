@@ -42,7 +42,8 @@ public class RegisterCommandServlet extends HttpServlet {
             //Forward request to login command. !! Only possible because username and password field name match !!
             req.getRequestDispatcher("/loginCommand").forward(req, resp);
         } catch (RegistrationFailedException e) {
-            e.printStackTrace();
+            req.getSession().setAttribute("errorMessage", e.getMessage());
+            resp.sendRedirect(req.getContextPath() + "/login");
         }
     }
 }
