@@ -53,6 +53,10 @@
             <div id="registerSection" class="hidden flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
                 <p id="registerLabel" class="text-center text-3xl">Join Us.</p>
                 <form action="${pageContext.request.contextPath}/registerCommand" method="POST" class="flex flex-col pt-3 md:pt-8">
+                    <c:if test="${errorMessage != null}">
+                        <p class="text-center text-xl text-red-700">${errorMessage}</p>
+                    </c:if>
+
                     <div class="flex flex-col pt-4">
                         <label for="registerUsername" class="text-lg">Username</label>
                         <input type="text" id="registerUsername" name="username" required placeholder="Your awesome username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
