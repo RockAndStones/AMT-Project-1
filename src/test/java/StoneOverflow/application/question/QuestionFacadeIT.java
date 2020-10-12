@@ -47,7 +47,7 @@ public class QuestionFacadeIT {
                 .creator("Anonymous")
                 .nbVotes(0)
                 .nbViews(0)
-                .date(formatter.format(questionDate))
+                .date(questionDate)
                 .type(QuestionType.UNCLASSIFIED.name()).build();
 
         assertEquals(questionFacade.getQuestions(QuestionQuery.builder().build()).getQuestions().get(0),
@@ -99,7 +99,7 @@ public class QuestionFacadeIT {
                 .creator("Anonymous")
                 .nbVotes(0)
                 .nbViews(0)
-                .date(formatter.format(questionDate))
+                .date(questionDate)
                 .type(QuestionType.SQL.name()).build();
 
         // Add other question in repository

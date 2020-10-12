@@ -32,18 +32,19 @@ public class QuestionFacade {
 
     public QuestionsDTO getQuestions(QuestionQuery query) {
         Collection<Question> allQuestions = questionRepository.find(query);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         List<QuestionsDTO.QuestionDTO> allQuestionsDTO = allQuestions.stream()
                 .sorted(Comparator.comparing(Question::getDate).reversed())
                 .map(question -> QuestionsDTO.QuestionDTO.builder()
+                    .uuid(question.getId().asString())
                     .title(question.getTitle())
                     .creator(question.getCreator())
                     .description(question.getDescription())
                     .nbVotes(question.getNbVotes())
                     .nbViews(question.getNbViews())
                     .date(question.getDate())
-                    .type(question.getQuestionType()).build())
+                    .nbViews(question.getNbViews())
+                    .type(question.getQuestionType().name()).build())
                 .collect(Collectors.toList());
 
         return QuestionsDTO.builder().questions(allQuestionsDTO).build();
@@ -62,6 +63,7 @@ public class QuestionFacade {
                 .nbVotes(value.getNbVotes())
                 .nbViews(value.getNbViews())
                 .date(value.getDate())
-                .type(value.getQuestionType()).build()).orElse(null);
+                .type(value.getQuestionType().name()).build()).orElse
+                (null);
     }
 }

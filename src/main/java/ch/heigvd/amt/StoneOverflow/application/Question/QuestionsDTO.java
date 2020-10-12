@@ -23,11 +23,11 @@ public class QuestionsDTO {
         private String title;
         private String description;
         private String creator;
-        private int nbVotes;
-        private int nbViews;
-        private Date date;
-        private QuestionType type;
+        private int    nbVotes;
+        private int    nbViews;
         private int    nbAnswers;
+        private Date   date;
+        private String type;
 
         @Setter
         private Collection<AnswersDTO.AnswerDTO> answers;
