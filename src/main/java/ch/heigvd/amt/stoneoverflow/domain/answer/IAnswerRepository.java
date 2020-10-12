@@ -1,7 +1,7 @@
-package ch.heigvd.amt.StoneOverflow.domain.answer;
+package ch.heigvd.amt.stoneoverflow.domain.answer;
 
-import ch.heigvd.amt.StoneOverflow.domain.IRepository;
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionId;
+import ch.heigvd.amt.stoneoverflow.domain.IRepository;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 
 import java.util.Collection;
 

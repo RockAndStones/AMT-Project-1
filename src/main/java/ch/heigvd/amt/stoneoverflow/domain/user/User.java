@@ -1,6 +1,6 @@
-package ch.heigvd.amt.StoneOverflow.domain.user;
+package ch.heigvd.amt.stoneoverflow.domain.user;
 
-import ch.heigvd.amt.StoneOverflow.domain.IEntity;
+import ch.heigvd.amt.stoneoverflow.domain.IEntity;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;

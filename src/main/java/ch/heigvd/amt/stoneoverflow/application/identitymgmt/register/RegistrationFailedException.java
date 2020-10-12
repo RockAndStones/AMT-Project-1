@@ -1,6 +1,6 @@
-package ch.heigvd.amt.StoneOverflow.application.identitymgmt.register;
+package ch.heigvd.amt.stoneoverflow.application.identitymgmt.register;
 
-import ch.heigvd.amt.StoneOverflow.application.BusinessException;
+import ch.heigvd.amt.stoneoverflow.application.BusinessException;
 
 public class RegistrationFailedException extends BusinessException {
     public RegistrationFailedException(String message) {

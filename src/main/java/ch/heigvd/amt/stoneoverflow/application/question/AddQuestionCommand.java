@@ -1,7 +1,7 @@
-package ch.heigvd.amt.StoneOverflow.application.Question;
+package ch.heigvd.amt.stoneoverflow.application.question;
 
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionType;
-import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

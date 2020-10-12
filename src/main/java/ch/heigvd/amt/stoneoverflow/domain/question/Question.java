@@ -1,7 +1,7 @@
-package ch.heigvd.amt.StoneOverflow.domain.Question;
+package ch.heigvd.amt.stoneoverflow.domain.question;
 
-import ch.heigvd.amt.StoneOverflow.domain.IEntity;
-import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
+import ch.heigvd.amt.stoneoverflow.domain.IEntity;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;

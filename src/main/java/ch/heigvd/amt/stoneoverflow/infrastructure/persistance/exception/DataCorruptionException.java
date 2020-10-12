@@ -1,4 +1,4 @@
-package ch.heigvd.amt.StoneOverflow.infrastructure.persistance.exception;
+package ch.heigvd.amt.stoneoverflow.infrastructure.persistance.exception;
 
 public class DataCorruptionException extends PersistenceException{
     public DataCorruptionException(String message) {

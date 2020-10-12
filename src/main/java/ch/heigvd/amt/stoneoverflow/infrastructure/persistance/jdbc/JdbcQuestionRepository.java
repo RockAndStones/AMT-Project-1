@@ -1,15 +1,9 @@
-package ch.heigvd.amt.StoneOverflow.infrastructure.persistance.jdbc;
+package ch.heigvd.amt.stoneoverflow.infrastructure.persistance.jdbc;
 
-import ch.heigvd.amt.StoneOverflow.application.Question.QuestionQuery;
-import ch.heigvd.amt.StoneOverflow.domain.Question.IQuestionRepository;
-import ch.heigvd.amt.StoneOverflow.domain.Question.Question;
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionId;
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionType;
-import ch.heigvd.amt.StoneOverflow.domain.user.IUserRepository;
-import ch.heigvd.amt.StoneOverflow.domain.user.User;
-import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
-import lombok.AccessLevel;
-import lombok.Setter;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
+import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
+import ch.heigvd.amt.stoneoverflow.domain.question.Question;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;

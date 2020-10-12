@@ -1,19 +1,19 @@
-package ch.heigvd.amt.StoneOverflow.application;
+package ch.heigvd.amt.stoneoverflow.application;
 
-import ch.heigvd.amt.StoneOverflow.application.Question.AddQuestionCommand;
-import ch.heigvd.amt.StoneOverflow.application.Question.QuestionFacade;
-import ch.heigvd.amt.StoneOverflow.application.answer.AnswerFacade;
-import ch.heigvd.amt.StoneOverflow.application.comment.CommentFacade;
-import ch.heigvd.amt.StoneOverflow.application.identitymgmt.IdentityManagementFacade;
-import ch.heigvd.amt.StoneOverflow.domain.Question.IQuestionRepository;
-import ch.heigvd.amt.StoneOverflow.domain.Question.Question;
-import ch.heigvd.amt.StoneOverflow.domain.answer.Answer;
-import ch.heigvd.amt.StoneOverflow.domain.answer.IAnswerRepository;
-import ch.heigvd.amt.StoneOverflow.domain.comment.Comment;
-import ch.heigvd.amt.StoneOverflow.domain.comment.ICommentRepository;
-import ch.heigvd.amt.StoneOverflow.domain.user.IUserRepository;
-import ch.heigvd.amt.StoneOverflow.domain.user.User;
-import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
+import ch.heigvd.amt.stoneoverflow.application.question.AddQuestionCommand;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
+import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
+import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.IdentityManagementFacade;
+import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
+import ch.heigvd.amt.stoneoverflow.domain.question.Question;
+import ch.heigvd.amt.stoneoverflow.domain.answer.Answer;
+import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
+import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
+import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
+import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
+import ch.heigvd.amt.stoneoverflow.domain.user.User;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;

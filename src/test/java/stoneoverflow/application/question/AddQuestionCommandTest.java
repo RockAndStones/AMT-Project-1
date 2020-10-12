@@ -1,7 +1,7 @@
-package StoneOverflow.application.question;
+package stoneoverflow.application.question;
 
-import ch.heigvd.amt.StoneOverflow.application.Question.AddQuestionCommand;
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionType;
+import ch.heigvd.amt.stoneoverflow.application.question.AddQuestionCommand;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

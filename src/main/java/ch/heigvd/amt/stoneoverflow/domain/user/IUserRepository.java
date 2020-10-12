@@ -1,6 +1,6 @@
-package ch.heigvd.amt.StoneOverflow.domain.user;
+package ch.heigvd.amt.stoneoverflow.domain.user;
 
-import ch.heigvd.amt.StoneOverflow.domain.IRepository;
+import ch.heigvd.amt.stoneoverflow.domain.IRepository;
 
 import java.util.Optional;
 

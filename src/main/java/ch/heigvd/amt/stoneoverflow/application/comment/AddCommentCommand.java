@@ -1,7 +1,7 @@
-package ch.heigvd.amt.StoneOverflow.application.comment;
+package ch.heigvd.amt.stoneoverflow.application.comment;
 
-import ch.heigvd.amt.StoneOverflow.domain.Id;
-import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
+import ch.heigvd.amt.stoneoverflow.domain.Id;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

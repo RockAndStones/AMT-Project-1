@@ -1,10 +1,10 @@
-package ch.heigvd.amt.StoneOverflow.application.comment;
+package ch.heigvd.amt.stoneoverflow.application.comment;
 
-import ch.heigvd.amt.StoneOverflow.domain.Id;
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionId;
-import ch.heigvd.amt.StoneOverflow.domain.answer.AnswerId;
-import ch.heigvd.amt.StoneOverflow.domain.comment.Comment;
-import ch.heigvd.amt.StoneOverflow.domain.comment.ICommentRepository;
+import ch.heigvd.amt.stoneoverflow.domain.Id;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
+import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
+import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
+import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;

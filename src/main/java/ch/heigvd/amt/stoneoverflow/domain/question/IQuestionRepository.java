@@ -1,7 +1,7 @@
-package ch.heigvd.amt.StoneOverflow.domain.Question;
+package ch.heigvd.amt.stoneoverflow.domain.question;
 
-import ch.heigvd.amt.StoneOverflow.application.Question.QuestionQuery;
-import ch.heigvd.amt.StoneOverflow.domain.IRepository;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
+import ch.heigvd.amt.stoneoverflow.domain.IRepository;
 
 import java.util.Collection;
 

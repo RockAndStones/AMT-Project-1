@@ -1,6 +1,6 @@
-package ch.heigvd.amt.StoneOverflow.domain.Question;
+package ch.heigvd.amt.stoneoverflow.domain.question;
 
-import ch.heigvd.amt.StoneOverflow.domain.Id;
+import ch.heigvd.amt.stoneoverflow.domain.Id;
 
 import java.util.UUID;
 

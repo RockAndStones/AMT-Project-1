@@ -1,7 +1,4 @@
-package ch.heigvd.amt.StoneOverflow.ui.web.Question;
-
-import ch.heigvd.amt.StoneOverflow.application.Question.QuestionQuery;
-import ch.heigvd.amt.StoneOverflow.application.Question.QuestionsDTO;
+package ch.heigvd.amt.stoneoverflow.ui.web.question;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

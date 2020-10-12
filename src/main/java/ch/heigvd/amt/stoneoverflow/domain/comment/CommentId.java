@@ -1,6 +1,6 @@
-package ch.heigvd.amt.StoneOverflow.domain.comment;
+package ch.heigvd.amt.stoneoverflow.domain.comment;
 
-import ch.heigvd.amt.StoneOverflow.domain.Id;
+import ch.heigvd.amt.stoneoverflow.domain.Id;
 
 import java.util.UUID;
 

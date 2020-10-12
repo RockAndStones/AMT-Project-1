@@ -1,6 +1,6 @@
-package StoneOverflow.domain.question;
+package stoneoverflow.domain.question;
 
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionId;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;

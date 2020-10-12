@@ -1,9 +1,9 @@
-package StoneOverflow.infrastructure.persistance.memory;
+package stoneoverflow.infrastructure.persistance.memory;
 
-import ch.heigvd.amt.StoneOverflow.application.Question.QuestionQuery;
-import ch.heigvd.amt.StoneOverflow.domain.Question.Question;
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionType;
-import ch.heigvd.amt.StoneOverflow.infrastructure.persistance.memory.InMemoryQuestionRepository;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
+import ch.heigvd.amt.stoneoverflow.domain.question.Question;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
+import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory.InMemoryQuestionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

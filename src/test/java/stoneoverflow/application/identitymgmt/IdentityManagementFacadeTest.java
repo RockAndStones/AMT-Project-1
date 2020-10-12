@@ -1,13 +1,13 @@
-package StoneOverflow.application.identitymgmt;
+package stoneoverflow.application.identitymgmt;
 
-import ch.heigvd.amt.StoneOverflow.application.identitymgmt.IdentityManagementFacade;
-import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.AuthenticatedUserDTO;
-import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.LoginCommand;
-import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.LoginFailedException;
-import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegisterCommand;
-import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegistrationFailedException;
-import ch.heigvd.amt.StoneOverflow.domain.user.IUserRepository;
-import ch.heigvd.amt.StoneOverflow.infrastructure.persistance.memory.InMemoryUserRepository;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.IdentityManagementFacade;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginCommand;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginFailedException;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.register.RegisterCommand;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.register.RegistrationFailedException;
+import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
+import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory.InMemoryUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

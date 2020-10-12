@@ -1,4 +1,4 @@
-package ch.heigvd.amt.StoneOverflow.ui.web.login;
+package ch.heigvd.amt.stoneoverflow.ui.web.login;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

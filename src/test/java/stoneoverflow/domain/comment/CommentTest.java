@@ -1,8 +1,8 @@
-package StoneOverflow.domain.comment;
+package stoneoverflow.domain.comment;
 
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionId;
-import ch.heigvd.amt.StoneOverflow.domain.comment.Comment;
-import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
+import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

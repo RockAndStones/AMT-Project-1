@@ -1,10 +1,10 @@
-package ch.heigvd.amt.StoneOverflow.ui.web.login;
+package ch.heigvd.amt.stoneoverflow.ui.web.login;
 
-import ch.heigvd.amt.StoneOverflow.application.ServiceRegistry;
-import ch.heigvd.amt.StoneOverflow.application.identitymgmt.IdentityManagementFacade;
-import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.AuthenticatedUserDTO;
-import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.LoginFailedException;
-import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.LoginCommand;
+import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.IdentityManagementFacade;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginFailedException;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginCommand;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;

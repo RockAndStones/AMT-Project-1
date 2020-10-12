@@ -1,6 +1,6 @@
-package ch.heigvd.amt.StoneOverflow.application.answer;
+package ch.heigvd.amt.stoneoverflow.application.answer;
 
-import ch.heigvd.amt.StoneOverflow.application.comment.CommentsDTO;
+import ch.heigvd.amt.stoneoverflow.application.comment.CommentsDTO;
 import lombok.*;
 
 import java.util.Collection;

@@ -1,7 +1,6 @@
-package StoneOverflow.domain.user;
+package stoneoverflow.domain.user;
 
-import ch.heigvd.amt.StoneOverflow.domain.user.User;
-import org.junit.jupiter.api.BeforeAll;
+import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,8 +1,8 @@
-package ch.heigvd.amt.StoneOverflow.infrastructure.persistance.memory;
+package ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory;
 
-import ch.heigvd.amt.StoneOverflow.domain.IEntity;
-import ch.heigvd.amt.StoneOverflow.domain.IRepository;
-import ch.heigvd.amt.StoneOverflow.domain.Id;
+import ch.heigvd.amt.stoneoverflow.domain.IEntity;
+import ch.heigvd.amt.stoneoverflow.domain.IRepository;
+import ch.heigvd.amt.stoneoverflow.domain.Id;
 
 import java.util.Collection;
 import java.util.Map;

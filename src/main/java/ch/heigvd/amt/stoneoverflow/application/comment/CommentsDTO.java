@@ -1,4 +1,4 @@
-package ch.heigvd.amt.StoneOverflow.application.comment;
+package ch.heigvd.amt.stoneoverflow.application.comment;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

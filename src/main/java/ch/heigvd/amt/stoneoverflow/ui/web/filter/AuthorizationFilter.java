@@ -1,6 +1,6 @@
-package ch.heigvd.amt.StoneOverflow.ui.web.filter;
+package ch.heigvd.amt.stoneoverflow.ui.web.filter;
 
-import ch.heigvd.amt.StoneOverflow.application.identitymgmt.login.AuthenticatedUserDTO;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

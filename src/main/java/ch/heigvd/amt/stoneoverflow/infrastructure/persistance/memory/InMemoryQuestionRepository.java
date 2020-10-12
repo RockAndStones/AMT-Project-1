@@ -1,11 +1,11 @@
-package ch.heigvd.amt.StoneOverflow.infrastructure.persistance.memory;
+package ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory;
 
 
-import ch.heigvd.amt.StoneOverflow.application.Question.QuestionQuery;
-import ch.heigvd.amt.StoneOverflow.domain.Question.IQuestionRepository;
-import ch.heigvd.amt.StoneOverflow.domain.Question.Question;
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionId;
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionType;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
+import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
+import ch.heigvd.amt.stoneoverflow.domain.question.Question;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;

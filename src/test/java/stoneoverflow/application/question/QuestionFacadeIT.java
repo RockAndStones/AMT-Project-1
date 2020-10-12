@@ -1,18 +1,17 @@
-package StoneOverflow.application.question;
+package stoneoverflow.application.question;
 
-import ch.heigvd.amt.StoneOverflow.application.Question.AddQuestionCommand;
-import ch.heigvd.amt.StoneOverflow.application.Question.QuestionFacade;
-import ch.heigvd.amt.StoneOverflow.application.Question.QuestionQuery;
-import ch.heigvd.amt.StoneOverflow.application.Question.QuestionsDTO;
-import ch.heigvd.amt.StoneOverflow.domain.Question.IQuestionRepository;
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionType;
-import ch.heigvd.amt.StoneOverflow.infrastructure.persistance.memory.InMemoryQuestionRepository;
+import ch.heigvd.amt.stoneoverflow.application.question.AddQuestionCommand;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionsDTO;
+import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
+import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory.InMemoryQuestionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

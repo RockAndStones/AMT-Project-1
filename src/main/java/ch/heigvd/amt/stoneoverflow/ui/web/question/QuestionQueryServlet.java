@@ -1,10 +1,9 @@
-package ch.heigvd.amt.StoneOverflow.ui.web.Question;
+package ch.heigvd.amt.stoneoverflow.ui.web.question;
 
-import ch.heigvd.amt.StoneOverflow.application.Question.QuestionFacade;
-import ch.heigvd.amt.StoneOverflow.application.Question.QuestionQuery;
-import ch.heigvd.amt.StoneOverflow.application.Question.QuestionsDTO;
-import ch.heigvd.amt.StoneOverflow.application.ServiceRegistry;
-import ch.heigvd.amt.StoneOverflow.application.answer.AnswerFacade;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionsDTO;
+import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;

@@ -1,10 +1,10 @@
-package ch.heigvd.amt.StoneOverflow.infrastructure.persistance.memory;
+package ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory;
 
-import ch.heigvd.amt.StoneOverflow.domain.user.IUserRepository;
-import ch.heigvd.amt.StoneOverflow.domain.user.User;
-import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
-import ch.heigvd.amt.StoneOverflow.infrastructure.persistance.exception.DataCorruptionException;
-import ch.heigvd.amt.StoneOverflow.infrastructure.persistance.exception.IntegrityConstraintViolationException;
+import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
+import ch.heigvd.amt.stoneoverflow.domain.user.User;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
+import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.exception.DataCorruptionException;
+import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.exception.IntegrityConstraintViolationException;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;

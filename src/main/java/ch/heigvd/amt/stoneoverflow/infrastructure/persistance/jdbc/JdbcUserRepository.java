@@ -1,8 +1,8 @@
-package ch.heigvd.amt.StoneOverflow.infrastructure.persistance.jdbc;
+package ch.heigvd.amt.stoneoverflow.infrastructure.persistance.jdbc;
 
-import ch.heigvd.amt.StoneOverflow.domain.user.IUserRepository;
-import ch.heigvd.amt.StoneOverflow.domain.user.User;
-import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
+import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
+import ch.heigvd.amt.stoneoverflow.domain.user.User;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;

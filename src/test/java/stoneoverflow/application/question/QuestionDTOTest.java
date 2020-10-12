@@ -1,6 +1,6 @@
-package StoneOverflow.application.question;
+package stoneoverflow.application.question;
 
-import ch.heigvd.amt.StoneOverflow.application.Question.QuestionsDTO;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionsDTO;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

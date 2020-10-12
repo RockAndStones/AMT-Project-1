@@ -1,9 +1,9 @@
-package ch.heigvd.amt.StoneOverflow.infrastructure.persistance.memory;
+package ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory;
 
-import ch.heigvd.amt.StoneOverflow.domain.Id;
-import ch.heigvd.amt.StoneOverflow.domain.comment.Comment;
-import ch.heigvd.amt.StoneOverflow.domain.comment.CommentId;
-import ch.heigvd.amt.StoneOverflow.domain.comment.ICommentRepository;
+import ch.heigvd.amt.stoneoverflow.domain.Id;
+import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
+import ch.heigvd.amt.stoneoverflow.domain.comment.CommentId;
+import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;

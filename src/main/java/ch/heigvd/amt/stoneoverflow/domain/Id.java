@@ -1,4 +1,4 @@
-package ch.heigvd.amt.StoneOverflow.domain;
+package ch.heigvd.amt.stoneoverflow.domain;
 
 import lombok.EqualsAndHashCode;
 

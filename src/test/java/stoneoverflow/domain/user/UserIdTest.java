@@ -1,6 +1,6 @@
-package StoneOverflow.domain.user;
+package stoneoverflow.domain.user;
 
-import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;

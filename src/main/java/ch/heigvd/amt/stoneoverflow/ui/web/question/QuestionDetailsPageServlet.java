@@ -1,13 +1,13 @@
-package ch.heigvd.amt.StoneOverflow.ui.web.Question;
+package ch.heigvd.amt.stoneoverflow.ui.web.question;
 
-import ch.heigvd.amt.StoneOverflow.application.Question.QuestionFacade;
-import ch.heigvd.amt.StoneOverflow.application.Question.QuestionsDTO;
-import ch.heigvd.amt.StoneOverflow.application.ServiceRegistry;
-import ch.heigvd.amt.StoneOverflow.application.answer.AnswerFacade;
-import ch.heigvd.amt.StoneOverflow.application.answer.AnswersDTO;
-import ch.heigvd.amt.StoneOverflow.application.comment.CommentFacade;
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionId;
-import ch.heigvd.amt.StoneOverflow.domain.answer.AnswerId;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionsDTO;
+import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
+import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
+import ch.heigvd.amt.stoneoverflow.application.answer.AnswersDTO;
+import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
+import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;

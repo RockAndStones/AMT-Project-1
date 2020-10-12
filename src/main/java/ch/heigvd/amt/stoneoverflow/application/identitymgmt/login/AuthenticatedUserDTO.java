@@ -1,8 +1,7 @@
-package ch.heigvd.amt.StoneOverflow.application.identitymgmt.login;
+package ch.heigvd.amt.stoneoverflow.application.identitymgmt.login;
 
-import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Builder

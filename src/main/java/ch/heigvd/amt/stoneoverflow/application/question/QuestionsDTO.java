@@ -1,8 +1,7 @@
-package ch.heigvd.amt.StoneOverflow.application.Question;
+package ch.heigvd.amt.stoneoverflow.application.question;
 
-import ch.heigvd.amt.StoneOverflow.application.answer.AnswersDTO;
-import ch.heigvd.amt.StoneOverflow.application.comment.CommentsDTO;
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionType;
+import ch.heigvd.amt.stoneoverflow.application.answer.AnswersDTO;
+import ch.heigvd.amt.stoneoverflow.application.comment.CommentsDTO;
 import lombok.*;
 
 import java.text.SimpleDateFormat;

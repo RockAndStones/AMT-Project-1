@@ -1,4 +1,4 @@
-package ch.heigvd.amt.StoneOverflow.domain.Question;
+package ch.heigvd.amt.stoneoverflow.domain.question;
 
 public enum QuestionType {
     DATABASE,

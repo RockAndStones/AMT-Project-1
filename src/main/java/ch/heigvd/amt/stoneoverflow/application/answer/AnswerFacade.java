@@ -1,8 +1,8 @@
-package ch.heigvd.amt.StoneOverflow.application.answer;
+package ch.heigvd.amt.stoneoverflow.application.answer;
 
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionId;
-import ch.heigvd.amt.StoneOverflow.domain.answer.Answer;
-import ch.heigvd.amt.StoneOverflow.domain.answer.IAnswerRepository;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
+import ch.heigvd.amt.stoneoverflow.domain.answer.Answer;
+import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;

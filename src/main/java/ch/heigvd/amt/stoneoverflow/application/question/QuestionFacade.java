@@ -1,13 +1,12 @@
-package ch.heigvd.amt.StoneOverflow.application.Question;
+package ch.heigvd.amt.stoneoverflow.application.question;
 
-import ch.heigvd.amt.StoneOverflow.domain.Question.IQuestionRepository;
-import ch.heigvd.amt.StoneOverflow.domain.Question.Question;
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionId;
-import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionType;
+import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
+import ch.heigvd.amt.stoneoverflow.domain.question.Question;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

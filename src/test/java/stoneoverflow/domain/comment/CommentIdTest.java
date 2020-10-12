@@ -1,7 +1,6 @@
-package StoneOverflow.domain.comment;
+package stoneoverflow.domain.comment;
 
-import ch.heigvd.amt.StoneOverflow.domain.answer.AnswerId;
-import ch.heigvd.amt.StoneOverflow.domain.comment.CommentId;
+import ch.heigvd.amt.stoneoverflow.domain.comment.CommentId;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
