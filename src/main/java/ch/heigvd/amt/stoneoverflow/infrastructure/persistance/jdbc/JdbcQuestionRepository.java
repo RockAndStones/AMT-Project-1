@@ -154,4 +154,25 @@ public class JdbcQuestionRepository implements IQuestionRepository {
 
         return questions;
     }
+
+    @Override
+    public int getRepositorySize() {
+        int size = 0;
+        try {
+            Connection con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement( "SELECT COUNT(*) FROM Question");
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next())
+                size = rs.getInt(1);
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            //todo: log/handle error
+            System.out.println(ex);
+        }
+
+        return size;
+    }
 }
