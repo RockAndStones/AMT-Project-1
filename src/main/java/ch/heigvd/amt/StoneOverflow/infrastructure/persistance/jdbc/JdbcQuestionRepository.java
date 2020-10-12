@@ -51,8 +51,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.setString(2, question.getCreatorId().asString());
             ps.setString(3, question.getDescription());
             ps.setInt(4, question.getNbVotes());
-            //todo: add date in question
-            ps.setDate(5, new Date(new java.util.Date().getTime()));
+            ps.setDate(5, new Date(question.getDate().getTime()));
             ps.executeUpdate();
 
             ps = con.prepareStatement("INSERT INTO Question VALUES (?, ?)");
@@ -96,6 +95,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
                     .description(rs.getString("description"))
                     .creator(rs.getString("username"))
                     .nbVotes(rs.getInt("nbVotes"))
+                    .date(rs.getDate("date"))
                     .build();
 
             ps.close();
@@ -131,6 +131,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
                         .description(rs.getString("description"))
                         .creator(rs.getString("username"))
                         .nbVotes(rs.getInt("nbVotes"))
+                        .date(rs.getDate("date"))
                         .build();
 
                 questions.add(q);
