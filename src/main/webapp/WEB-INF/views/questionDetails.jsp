@@ -35,7 +35,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:useBean scope="request" id="question" type="ch.heigvd.amt.StoneOverflow.application.Question.QuestionsDTO.QuestionDTO"/>
+<jsp:useBean scope="request" id="question" type="ch.heigvd.amt.stoneoverflow.application.question.QuestionsDTO.QuestionDTO"/>
 <!DOCTYPE html>
 <html>
 <head>
