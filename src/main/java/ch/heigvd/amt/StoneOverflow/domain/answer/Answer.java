@@ -2,6 +2,7 @@ package ch.heigvd.amt.StoneOverflow.domain.answer;
 
 import ch.heigvd.amt.StoneOverflow.domain.IEntity;
 import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionId;
+import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,7 @@ public class Answer implements IEntity<Answer, AnswerId> {
     private AnswerId   id;
     private QuestionId answerTo;
     private String     description;
+    private UserId     creatorId;
     private String     creator;
     private int        nbVotes;
     private Date       date;
@@ -39,13 +41,16 @@ public class Answer implements IEntity<Answer, AnswerId> {
             if (description == null || description.isEmpty())
                 throw new IllegalArgumentException("Description cannot be null or empty");
 
+            if (creatorId == null)
+                throw new IllegalArgumentException("CreatorId cannot be null or empty");
+
             if (creator == null || creator.isEmpty())
                 throw new IllegalArgumentException("Creator cannot be null or empty");
 
             if (date == null)
                 date = new Date(System.currentTimeMillis());
 
-            return new Answer(id, answerTo, description, creator, nbVotes, date);
+            return new Answer(id, answerTo, description, creatorId, creator, nbVotes, date);
         }
     }
 }
