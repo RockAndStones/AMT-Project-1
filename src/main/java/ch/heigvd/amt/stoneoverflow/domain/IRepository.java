@@ -9,5 +9,6 @@ public interface IRepository<IEntity,Id> {
     public void remove(Id id);
     public Optional<IEntity> findById(Id id);
     public Collection<IEntity> findAll();
+    public int getRepositorySize();
 
 }
