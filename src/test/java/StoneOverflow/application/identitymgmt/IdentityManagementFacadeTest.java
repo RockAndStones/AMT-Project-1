@@ -34,7 +34,8 @@ public class IdentityManagementFacadeTest {
                     .email("mail@mail.com")
                     .firstName("First name")
                     .lastName("Last name")
-                    .plaintextPassword("pass")
+                    .plaintextPassword("P@ssW0rd")
+                    .plaintextPasswordConfirmation("P@ssW0rd")
                     .build();
 
             assertDoesNotThrow(() -> identityManagementFacade.register(registerCommand));
@@ -49,7 +50,8 @@ public class IdentityManagementFacadeTest {
                     .email("mail@mail.com")
                     .firstName("First name")
                     .lastName("Last name")
-                    .plaintextPassword("pass")
+                    .plaintextPassword("P@ssW0rd")
+                    .plaintextPasswordConfirmation("P@ssW0rd")
                     .build();
 
             identityManagementFacade.register(registerCommand);
@@ -63,7 +65,8 @@ public class IdentityManagementFacadeTest {
             RegisterCommand registerCommand = RegisterCommand.builder()
                     .username(username)
                     .email("mail@mail.com")
-                    .plaintextPassword("pass")
+                    .plaintextPassword("P@ssW0rd")
+                    .plaintextPasswordConfirmation("P@ssW0rd")
                     .build();
 
             assertThrows(RegistrationFailedException.class, () ->
@@ -74,7 +77,7 @@ public class IdentityManagementFacadeTest {
     @Nested
     public class Login {
         private RegisterCommand registerCommand;
-        private final String plaintextPassword = "pass";
+        private final String plaintextPassword = "P@ssW0rd";
 
         @BeforeEach
         public void registerUser() throws RegistrationFailedException {
@@ -84,6 +87,7 @@ public class IdentityManagementFacadeTest {
                     .firstName("First name")
                     .lastName("Last name")
                     .plaintextPassword(plaintextPassword)
+                    .plaintextPasswordConfirmation(plaintextPassword)
                     .build();
             identityManagementFacade.register(registerCommand);
         }
@@ -116,7 +120,7 @@ public class IdentityManagementFacadeTest {
         public void shouldNotLoginNonExistingUser() {
             LoginCommand loginCommand = LoginCommand.builder()
                     .username("IDoNotExist")
-                    .plaintextPassword("Whatever")
+                    .plaintextPassword("Wha7@ver")
                     .build();
 
             assertThrows(LoginFailedException.class, () -> identityManagementFacade.login(loginCommand));
@@ -126,7 +130,7 @@ public class IdentityManagementFacadeTest {
         public void shouldNotLoginInvalidPassword() {
             LoginCommand loginCommand = LoginCommand.builder()
                     .username(registerCommand.getUsername())
-                    .plaintextPassword("InvalidPassword")
+                    .plaintextPassword("Inval1dP@ssword")
                     .build();
 
             assertThrows(LoginFailedException.class, () -> identityManagementFacade.login(loginCommand));
