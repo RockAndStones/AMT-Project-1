@@ -20,7 +20,7 @@ public class IdentityManagementFacade {
     public void register(RegisterCommand registerCommand) throws RegistrationFailedException {
         // If passwords are not equals
         if (!registerCommand.getPlaintextPassword().equals(registerCommand.getPlaintextPasswordConfirmation()))
-            throw new RegistrationFailedException("Password and password confirmation are not equal");
+            throw new RegistrationFailedException("Passwords are not equal");
 
         if (!isPasswordStrong(registerCommand.getPlaintextPassword()))
             throw new RegistrationFailedException("Password does not meet the minimum requirements " +
