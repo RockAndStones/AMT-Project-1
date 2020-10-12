@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Singular;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +37,16 @@ public class QuestionsDTO {
             } else{
                 return this.description;
             }
+        }
+
+        public String formattedDate(){
+            SimpleDateFormat format = new SimpleDateFormat("MMM dd ''yy"); // '' = single quote
+            return format.format(date);
+        }
+
+        public String formattedTime(){
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            return format.format(date);
         }
     }
 

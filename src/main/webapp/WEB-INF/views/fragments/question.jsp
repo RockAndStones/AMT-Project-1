@@ -10,7 +10,7 @@
         <div class="w-full">
             <div class="flex items-center justify-between">
                 <h2 class="questionTitleClass text-lg font-semibold text-gray-900 -mt-1">${question.title}</h2>
-                <small class="text-left text-sm text-gray-700">date</small>
+                <small class="text-left text-sm text-gray-700">${question.formattedDate()} at ${question.formattedTime()}</small>
             </div>
             <p class="questionDescriptionClass mt-3 text-gray-700 text-sm">
                 ${question.shortDescription()}
