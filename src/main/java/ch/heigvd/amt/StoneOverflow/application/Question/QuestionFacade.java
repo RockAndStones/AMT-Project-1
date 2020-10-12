@@ -37,6 +37,7 @@ public class QuestionFacade {
         List<QuestionsDTO.QuestionDTO> allQuestionsDTO = allQuestions.stream()
                 .sorted(Comparator.comparing(Question::getDate).reversed())
                 .map(question -> QuestionsDTO.QuestionDTO.builder()
+                    .uuid(question.getId().asString())
                     .title(question.getTitle())
                     .creator(question.getCreator())
                     .description(question.getDescription())
