@@ -12,7 +12,7 @@ public class QuestionQuery {
     private boolean sqlSearch = false;
 
     @Builder.Default
-    private boolean byDate = false;
+    private boolean byDate = true;
 
     @Builder.Default
     private boolean byNbResponse = false;
@@ -21,5 +21,5 @@ public class QuestionQuery {
     private boolean byNbVotes = false;
 
     @Builder.Default
-    private boolean byNbVues = false;
+    private boolean byNbViews = false;
 }

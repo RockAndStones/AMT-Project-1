@@ -31,6 +31,7 @@ public class QuestionQueryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         QuestionsDTO questionsDTO = questionFacade.getQuestions(QuestionQuery.builder()
                 .sqlSearch(false)
+                .byNbVotes(true)
                 .build());
         req.setAttribute("questions", questionsDTO);
         req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);
