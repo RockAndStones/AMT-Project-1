@@ -7,7 +7,6 @@ import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegisterCom
 import ch.heigvd.amt.StoneOverflow.application.identitymgmt.register.RegistrationFailedException;
 import ch.heigvd.amt.StoneOverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.StoneOverflow.domain.user.User;
-import ch.heigvd.amt.StoneOverflow.domain.user.UserId;
 
 import java.util.Optional;
 
@@ -19,6 +18,14 @@ public class IdentityManagementFacade {
     }
 
     public void register(RegisterCommand registerCommand) throws RegistrationFailedException {
+        // If passwords are not equals
+        if (!registerCommand.getPlaintextPassword().equals(registerCommand.getPlaintextPasswordConfirmation()))
+            throw new RegistrationFailedException("Password and password confirmation are not equal");
+
+        if (!isPasswordStrong(registerCommand.getPlaintextPassword()))
+            throw new RegistrationFailedException("Password does not meet the minimum requirements " +
+                    "(8 characters, 1 lower case, 1 upper case, 1 number, 1 special character)");
+
         Optional<User> existingUsername = userRepository.findByUsername(registerCommand.getUsername());
         if (existingUsername.isPresent())
             throw new RegistrationFailedException("Username is already taken");
@@ -38,7 +45,6 @@ public class IdentityManagementFacade {
         }
     }
 
-
     public AuthenticatedUserDTO login(LoginCommand loginCommand) throws LoginFailedException {
         User user = userRepository.findByUsername(loginCommand.getUsername())
                 .orElseThrow(() -> new LoginFailedException("User not found"));
@@ -53,5 +59,14 @@ public class IdentityManagementFacade {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .build();
+    }
+
+    private boolean isPasswordStrong(String plaintextPassword) {
+        boolean hasUpperCase = plaintextPassword.matches("[A-Z]");
+        boolean hasLowerCase = plaintextPassword.matches("[a-z]");
+        boolean hasNumber = plaintextPassword.matches("[0-9]");
+        boolean hasSpecialChar = plaintextPassword.matches("[^\\W]");
+
+        return hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && plaintextPassword.length() >= 8;
     }
 }
