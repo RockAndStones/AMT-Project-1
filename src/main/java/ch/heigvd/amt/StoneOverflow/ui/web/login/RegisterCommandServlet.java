@@ -28,12 +28,11 @@ public class RegisterCommandServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //todo: Add email, first name, last name to register form
         RegisterCommand registerCommand = RegisterCommand.builder()
                 .username(req.getParameter("username"))
-                .email("Email placeholder " + Math.random())
-                .firstName("First name placeholder")
-                .lastName("Last name placeholder")
+                .email(req.getParameter("email"))
+                .firstName(req.getParameter("firstName"))
+                .lastName(req.getParameter("lastName"))
                 .plaintextPassword(req.getParameter("password"))
                 .build();
 
