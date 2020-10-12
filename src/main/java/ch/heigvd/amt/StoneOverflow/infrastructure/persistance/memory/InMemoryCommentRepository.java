@@ -18,12 +18,19 @@ public class InMemoryCommentRepository extends InMemoryRepository<Comment, Comme
     public Collection<Comment> findByCommentToId(Id commentToId) {
         Collection<Comment> allComments = super.findAll();
 
+        System.out.println("allComments=" + allComments.size());
+        System.out.println("commentToId=" + commentToId.asString());
+
         ArrayList<Comment> commentsWithCommentToId = new ArrayList<>();
         for (Comment comment : allComments) {
-            if (comment.getCommentTo() == commentToId) {
+            System.out.println("comment.getCommentTo=" + comment.getCommentTo().asString());
+            if (comment.getCommentTo().equals(commentToId)) {
                 commentsWithCommentToId.add(comment);
             }
         }
+
+        System.out.println("filteredComments: " + commentsWithCommentToId.size());
+
 
         return commentsWithCommentToId;
     }

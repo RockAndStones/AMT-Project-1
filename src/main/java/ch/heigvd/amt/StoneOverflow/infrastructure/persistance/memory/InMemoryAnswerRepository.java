@@ -20,7 +20,7 @@ public class InMemoryAnswerRepository extends InMemoryRepository<Answer, AnswerI
 
         ArrayList<Answer> answersFromQuestionId = new ArrayList<>();
         for (Answer answer : allAnswers) {
-            if (answer.getAnswerTo() == questionId) {
+            if (answer.getAnswerTo().equals(questionId)) {
                 answersFromQuestionId.add(answer);
             }
         }
