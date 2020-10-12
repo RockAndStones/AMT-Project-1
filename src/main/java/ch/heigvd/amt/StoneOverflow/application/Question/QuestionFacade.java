@@ -3,6 +3,7 @@ package ch.heigvd.amt.StoneOverflow.application.Question;
 import ch.heigvd.amt.StoneOverflow.domain.Question.IQuestionRepository;
 import ch.heigvd.amt.StoneOverflow.domain.Question.Question;
 import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionId;
+import ch.heigvd.amt.StoneOverflow.domain.Question.QuestionType;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -35,10 +36,11 @@ public class QuestionFacade {
         if (query.isByDate()) {
             allQuestions = questionRepository.find(query);
         } else if (query.isByNbVotes()) {
-            allQuestions = questionRepository.find(query);
-
+            allQuestions = questionRepository.findByVotes(query);
         } else if (query.isByNbViews()) {
-
+            allQuestions = questionRepository.findByViews(query);
+        } else if (query.getType() != QuestionType.UNCLASSIFIED) {
+            allQuestions = questionRepository.findByType(query);
         }
         if (allQuestions != null) {
             List<QuestionsDTO.QuestionDTO> allQuestionsDTO = allQuestions.stream()

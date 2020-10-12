@@ -27,13 +27,13 @@ public class InMemoryQuestionRepositoryTest {
     }
 
     @Test
-    public void shouldFindQueryQuestions() {
+    public void shouldFindQueryQuestionsByType() {
         inMemoryQuestionRepository.save(Question.builder().questionType(QuestionType.SQL).build());
         inMemoryQuestionRepository.save(Question.builder().build());
         inMemoryQuestionRepository.save(Question.builder().questionType(QuestionType.SQL).build());
 
-        QuestionQuery questionQuery = QuestionQuery.builder().type(QuestionType.SQL).build();
+        QuestionQuery questionQuery = QuestionQuery.builder().byDate(false).type(QuestionType.SQL).build();
 
-        assertEquals(inMemoryQuestionRepository.find(questionQuery).size(), 2);
+        assertEquals(inMemoryQuestionRepository.findByType(questionQuery).size(), 2);
     }
 }

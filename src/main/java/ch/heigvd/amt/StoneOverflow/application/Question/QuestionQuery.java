@@ -10,7 +10,7 @@ import lombok.Getter;
 @EqualsAndHashCode
 public class QuestionQuery {
     @Builder.Default
-    private QuestionType type = QuestionType.SQL;
+    private QuestionType type = QuestionType.UNCLASSIFIED;
 
     @Builder.Default
     private boolean byDate = true;
