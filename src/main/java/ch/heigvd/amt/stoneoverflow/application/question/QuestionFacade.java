@@ -3,7 +3,6 @@ package ch.heigvd.amt.stoneoverflow.application.question;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
-import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -31,33 +30,21 @@ public class QuestionFacade {
     }
 
     public QuestionsDTO getQuestions(QuestionQuery query) {
-        Collection<Question> allQuestions = null;
-        if (query.isByDate()) {
-            allQuestions = questionRepository.find(query);
-        } else if (query.isByNbVotes()) {
-            allQuestions = questionRepository.findByVotes(query);
-        } else if (query.isByNbViews()) {
-            allQuestions = questionRepository.findByViews(query);
-        } else if (query.getType() != QuestionType.UNCLASSIFIED) {
-            allQuestions = questionRepository.findByType(query);
-        }
-        if (allQuestions != null) {
-            List<QuestionsDTO.QuestionDTO> allQuestionsDTO = allQuestions.stream()
-                    .map(question -> QuestionsDTO.QuestionDTO.builder()
-                            .uuid(question.getId().asString())
-                            .title(question.getTitle())
-                            .creator(question.getCreator())
-                            .description(question.getDescription())
-                            .nbVotes(question.getNbVotes())
-                            .nbViews(question.getNbViews())
-                            .date(question.getDate())
-                            .nbViews(question.getNbViews())
-                            .type(question.getQuestionType().name()).build())
-                    .collect(Collectors.toList());
+        Collection<Question> allQuestions = questionRepository.find(query);
+        List<QuestionsDTO.QuestionDTO> allQuestionsDTO = allQuestions.stream()
+        .map(question -> QuestionsDTO.QuestionDTO.builder()
+                .uuid(question.getId().asString())
+                .title(question.getTitle())
+                .creator(question.getCreator())
+                .description(question.getDescription())
+                .nbVotes(question.getNbVotes())
+                .nbViews(question.getNbViews())
+                .date(question.getDate())
+                .nbViews(question.getNbViews())
+                .type(question.getQuestionType().name()).build())
+        .collect(Collectors.toList());
 
-            return QuestionsDTO.builder().questions(allQuestionsDTO).build();
-        }
-        return null;
+        return QuestionsDTO.builder().questions(allQuestionsDTO).build();
     }
 
     public QuestionsDTO.QuestionDTO getQuestion(QuestionId id) {

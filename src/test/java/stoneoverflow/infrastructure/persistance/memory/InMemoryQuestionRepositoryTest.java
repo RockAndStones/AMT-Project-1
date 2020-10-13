@@ -44,7 +44,7 @@ public class InMemoryQuestionRepositoryTest {
         inMemoryQuestionRepository.save(questionsSortedByVotesResult.get(2));
         inMemoryQuestionRepository.save(questionsSortedByVotesResult.get(0));
 
-        ArrayList<Question> questionsSortedByVotes = new ArrayList<>(inMemoryQuestionRepository.findByVotes(QuestionQuery.builder().build()));
+        ArrayList<Question> questionsSortedByVotes = new ArrayList<>(inMemoryQuestionRepository.find(QuestionQuery.builder().byNbVotes(true).build()));
 
         assertEquals(questionsSortedByVotes, questionsSortedByVotesResult);
     }
@@ -60,7 +60,7 @@ public class InMemoryQuestionRepositoryTest {
         inMemoryQuestionRepository.save(questionsSortedByViewsResult.get(1));
         inMemoryQuestionRepository.save(questionsSortedByViewsResult.get(0));
 
-        ArrayList<Question> questionsSortedByViews = new ArrayList<>(inMemoryQuestionRepository.findByViews(QuestionQuery.builder().build()));
+        ArrayList<Question> questionsSortedByViews = new ArrayList<>(inMemoryQuestionRepository.find(QuestionQuery.builder().byNbViews(true).build()));
 
         assertEquals(questionsSortedByViews, questionsSortedByViewsResult);
     }
@@ -71,8 +71,8 @@ public class InMemoryQuestionRepositoryTest {
         inMemoryQuestionRepository.save(Question.builder().build());
         inMemoryQuestionRepository.save(Question.builder().questionType(QuestionType.SQL).build());
 
-        QuestionQuery questionQuery = QuestionQuery.builder().byDate(false).type(QuestionType.SQL).build();
+        QuestionQuery questionQuery = QuestionQuery.builder().type(QuestionType.SQL).build();
 
-        assertEquals(inMemoryQuestionRepository.findByType(questionQuery).size(), 2);
+        assertEquals(inMemoryQuestionRepository.find(questionQuery).size(), 2);
     }
 }

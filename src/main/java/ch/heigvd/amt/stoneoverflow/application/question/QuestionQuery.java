@@ -13,7 +13,7 @@ public class QuestionQuery {
     private QuestionType type = QuestionType.UNCLASSIFIED;
 
     @Builder.Default
-    private boolean byDate = true;
+    private boolean byDate = false;
 
     @Builder.Default
     private boolean byNbResponse = false;

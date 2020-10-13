@@ -33,24 +33,6 @@ public class JdbcQuestionRepository implements IQuestionRepository {
     }
 
     @Override
-    public Collection<Question> findByVotes(QuestionQuery questionQuery) {
-        // TODO
-        return findAll();
-    }
-
-    @Override
-    public Collection<Question> findByViews(QuestionQuery questionQuery) {
-        // TODO
-        return findAll();
-    }
-
-    @Override
-    public Collection<Question> findByType(QuestionQuery questionQuery) {
-        // TODO
-        return findAll();
-    }
-
-    @Override
     public void save(Question question) {
         try {
             Connection con = dataSource.getConnection();
