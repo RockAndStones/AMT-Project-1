@@ -21,7 +21,6 @@ public class QuestionFacadeIT {
     @BeforeEach
     public void initializeIdentityManagementFacade() {
         this.questionRepository = new InMemoryQuestionRepository();
-
     }
 
     @Test

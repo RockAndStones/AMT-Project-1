@@ -17,12 +17,13 @@ public class AnswerFacade {
     }
 
     public void addAnswer(AddAnswerCommand command) {
-        Answer addAnswer = Answer.builder().
-                answerTo(command.getAnswerTo()).
-                description(command.getDescription()).
-                creator(command.getCreator()).
-                nbVotes(command.getNbVotes()).
-                date(command.getDate()).build();
+        Answer addAnswer = Answer.builder()
+                .answerTo(command.getAnswerTo())
+                .description(command.getDescription())
+                .creatorId(command.getCreatorId())
+                .creator(command.getCreator())
+                .nbVotes(command.getNbVotes())
+                .date(command.getDate()).build();
         answerRepository.save(addAnswer);
     }
 
