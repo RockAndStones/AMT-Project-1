@@ -14,7 +14,7 @@ import java.util.Date;
 public class AddCommentCommand {
 
     @Builder.Default
-    private Id CommentTo = null;
+    private Id commentTo = null;
 
     @Builder.Default
     private String content = "No content";
