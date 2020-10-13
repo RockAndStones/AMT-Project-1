@@ -28,10 +28,10 @@ public class IdentityManagementFacadeTest {
     public class Register {
         @Test
         public void shouldRegisterValidUser() {
-            String username = "MyUniqueUsername";
+            String username = "shouldRegisterValidUser";
             RegisterCommand registerCommand = RegisterCommand.builder()
                     .username(username)
-                    .email("mail@mail.com")
+                    .email("shouldRegisterValidUser@mail.com")
                     .firstName("First name")
                     .lastName("Last name")
                     .plaintextPassword("P@ssW0rd")
@@ -44,10 +44,10 @@ public class IdentityManagementFacadeTest {
 
         @Test
         public void shouldNotRegisterDuplicatedUser() throws RegistrationFailedException {
-            String username = "MyUniqueUsername";
+            String username = "shouldNotRegisterDuplicatedUser";
             RegisterCommand registerCommand = RegisterCommand.builder()
                     .username(username)
-                    .email("mail@mail.com")
+                    .email("shouldNotRegisterDuplicatedUser@mail.com")
                     .firstName("First name")
                     .lastName("Last name")
                     .plaintextPassword("P@ssW0rd")
@@ -61,12 +61,38 @@ public class IdentityManagementFacadeTest {
 
         @Test
         public void shouldNotRegisterUserWithMissingInfo() {
-            String username = "MyUniqueUsername";
+            String username = "shouldNotRegisterUserWithMissingInfo";
             RegisterCommand registerCommand = RegisterCommand.builder()
                     .username(username)
-                    .email("mail@mail.com")
+                    .email("shouldNotRegisterUserWithMissingInfo@mail.com")
                     .plaintextPassword("P@ssW0rd")
                     .plaintextPasswordConfirmation("P@ssW0rd")
+                    .build();
+
+            assertThrows(RegistrationFailedException.class, () ->
+                    identityManagementFacade.register(registerCommand));
+        }
+
+        @Test
+        public void shouldNotRegisterUserWithDifferentPasswords() {
+            RegisterCommand registerCommand = RegisterCommand.builder()
+                    .username("shouldNotRegisterUserWithDifferentPasswords")
+                    .email("shouldNotRegisterUserWithDifferentPasswords@mail.com")
+                    .plaintextPassword("P@ssW0rd")
+                    .plaintextPasswordConfirmation("P4ssW0rd")
+                    .build();
+
+            assertThrows(RegistrationFailedException.class, () ->
+                    identityManagementFacade.register(registerCommand));
+        }
+
+        @Test
+        public void shouldNotRegisterUserWithWeakPassword() {
+            RegisterCommand registerCommand = RegisterCommand.builder()
+                    .username("shouldNotRegisterUserWithWeakPassword")
+                    .email("shouldNotRegisterUserWithWeakPassword@mail.com")
+                    .plaintextPassword("Weak1994")
+                    .plaintextPasswordConfirmation("Weak1994")
                     .build();
 
             assertThrows(RegistrationFailedException.class, () ->

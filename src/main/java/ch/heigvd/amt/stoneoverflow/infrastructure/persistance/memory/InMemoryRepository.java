@@ -39,4 +39,9 @@ public class InMemoryRepository<ENTITY extends IEntity<ENTITY, ID>, ID extends I
                  .map(entity -> entity.deepClone())
                  .collect(Collectors.toList());
      }
+
+    @Override
+    public int getRepositorySize() {
+        return store.size();
+    }
 }
