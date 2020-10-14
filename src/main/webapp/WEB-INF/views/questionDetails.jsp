@@ -54,52 +54,36 @@
         <%@include file="fragments/sidebar.jsp" %>
         <!-- Main content -->
         <div class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-700 leading-normal">
-            <!-- Details header -->
+            <!-- Question header -->
             <div class="w-full pb-6 mb-4 border-b">
                 <h1 class="leading-normal text-lg font-semibold text-gray-900 mt-0">${question.title}</h1>
                 <span>${question.nbViews}</span>
                 <i class="mx-auto mb-2 h-5 w-5 far fa-eye"></i>
-                <span class="ml-2">${question.comments.size()}</span>
+                <span class="ml-2">${question.answers.size()}</span>
                 <i class="mx-auto mb-2 h-5 w-5 far fa-comment"></i>
             </div>
-            <!-- Details body -->
+            <!-- Question message -->
             <div class="pb-8 mb-8 border-b">
-                <div class="flex flex-shrink">
-                    <!-- Vote -->
-                    <div class="flex flex-col inline-flex items-center">
-                        <form action="" method="post">
-                            <input type="hidden" name="type" value="question">
-                            <input type="hidden" name="id" value="${question.uuid}">
-                            <input type="hidden" name="vote" value="up">
-                            <button type="submit"><i class="leading-normal fas fa-caret-up text-6xl"></i></button>
-                        </form>
-                        <span class="text-lg">${question.nbVotes}</span>
-                        <form action="" method="post">
-                            <input type="hidden" name="type" value="question">
-                            <input type="hidden" name="id" value="${question.uuid}">
-                            <input type="hidden" name="vote" value="down">
-                            <button type="submit"><i class="leading-normal fas fa-caret-down text-6xl"></i></button>
-                        </form>
-                    </div>
-                    <!-- Post content -->
-                    <div class="ml-6 mt-4 text-gray-700">
-                        <p>
-                            ${question.description}
-                        </p>
-                        <span class="inline-block text-sm font-semibold mt-4">${question.creator}, ${question.date.dateFormatted()} at ${question.date.timeFormatted()}</span>
-                    </div>
-                </div>
+                <jsp:useBean id="msg" class="ch.heigvd.amt.stoneoverflow.application.usermessage.UserMessageDTO">
+                    <jsp:setProperty name="msg" property="uuid"        value="${question.uuid}" />
+                    <jsp:setProperty name="msg" property="description" value="${question.description}" />
+                    <jsp:setProperty name="msg" property="creator"     value="${question.creator}" />
+                    <jsp:setProperty name="msg" property="nbVotes"     value="${question.nbVotes}" />
+                    <jsp:setProperty name="msg" property="date"        value="${question.date}" />
+                    <jsp:setProperty name="msg" property="comments"    value="${question.comments}" />
+                </jsp:useBean>
+                <%@include file="fragments/userMessage.jsp" %>
             </div>
-            <!-- Details answer(s) -->
+            <!-- Answer(s) -->
             <div class="mb-8 pb-8 border-b">
                 <c:choose>
                     <c:when test="${empty question.answers}">
                         <h2 class="leading-normal text-lg font-semibold text-gray-900 mt-0">No one responded for now <i class="far fa-sad-tear"></i></h2>
                     </c:when>
                     <c:otherwise>
-                        <h2 class="leading-normal text-lg font-semibold text-gray-900 mt-0 mb-4">Answer(s)</h2>
-                        <c:forEach items="${question.answers}" var="answer">
-                            <%@include file="fragments/answer.jsp" %>
+                        <h2 id="answers" class="leading-normal text-lg font-semibold text-gray-900 mt-0 mb-4">Answer(s)</h2>
+                        <c:forEach items="${question.answers}" var="msg">
+                            <%@include file="fragments/userMessage.jsp" %>
                         </c:forEach>
                     </c:otherwise>
                 </c:choose>

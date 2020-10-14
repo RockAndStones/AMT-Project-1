@@ -8,9 +8,7 @@ import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswersDTO;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
-import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
-import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -63,7 +61,7 @@ public class QuestionDetailsPageServlet extends HttpServlet {
         // Get answers & comments of the question
         questionDTO.setAnswers(answerFacade.getAnswersFromQuestion(AnswerQuery.builder()
                 .answerTo(questionId)
-                .byDate(true).build()).getAnswers());
+                .byNbVotes(true).build()).getAnswers());
         questionDTO.setComments(commentFacade.getComments(CommentQuery.builder()
                 .commentTo(questionId)
                 .byDate(true).build()).getComments());
@@ -73,7 +71,6 @@ public class QuestionDetailsPageServlet extends HttpServlet {
             answer.setComments(commentFacade.getComments(CommentQuery.builder()
                     .commentTo(new QuestionId(answer.getUuid()))
                     .byDate(true).build()).getComments());
-
         }
 
         req.setAttribute("question", questionDTO);
