@@ -49,7 +49,6 @@ public class QuestionFacade {
 
     public QuestionsDTO.QuestionDTO getQuestion(QuestionId id) {
         Optional<Question> question = questionRepository.findById(id);
-        // TODO : Is it right ?
         return question.map(value -> QuestionsDTO.QuestionDTO.builder()
                 .uuid(value.getId().asString())
                 .title(value.getTitle())
