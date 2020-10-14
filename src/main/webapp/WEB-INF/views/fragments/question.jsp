@@ -8,7 +8,7 @@
     <div class="w-full flex items-start px-4 py-4">
         <div class="w-full">
             <div class="flex items-center justify-between">
-                <form action="/questionDetails" method="post">
+                <form action="/questionDetails" method="get">
                     <input type="hidden" name="questionUUID" value="${question.uuid}">
                     <button type="submit"><h2 class="questionTitleClass text-lg font-semibold text-gray-900 hover:underline -mt-1">${question.title}</h2></button>
                 </form>
