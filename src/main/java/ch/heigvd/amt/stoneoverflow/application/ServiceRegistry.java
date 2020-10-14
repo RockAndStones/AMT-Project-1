@@ -132,9 +132,6 @@ public class ServiceRegistry {
         answerRepository.save(a1);
         answerRepository.save(a2);
 
-        System.out.println("a1 UUID=" + a1.getId().asString());
-        System.out.println("a2 UUID=" + a2.getId().asString());
-
         // Add default comments
         Comment c1 = Comment.builder()
                 .commentTo(q1.getId())
