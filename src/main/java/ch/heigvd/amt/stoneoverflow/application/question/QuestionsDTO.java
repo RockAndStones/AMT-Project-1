@@ -33,11 +33,11 @@ public class QuestionsDTO {
 
         public String shortDescription(){
             int maxLength = 64;
-            String thereIsmore = "...";
+            String thereIsMore = "...";
 
             if(this.description.length() > maxLength){
                 String shortDescription = this.description.substring(0, maxLength);
-                shortDescription += thereIsmore;
+                shortDescription += thereIsMore;
                 return shortDescription;
             } else{
                 return this.description;
