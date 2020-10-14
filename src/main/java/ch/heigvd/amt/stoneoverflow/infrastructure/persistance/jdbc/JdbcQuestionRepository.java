@@ -4,6 +4,8 @@ import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
+import ch.heigvd.amt.stoneoverflow.domain.user.User;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
@@ -59,6 +61,29 @@ public class JdbcQuestionRepository implements IQuestionRepository {
     }
 
     @Override
+    public void update(Question question) {
+        try {
+            Connection con = dataSource.getConnection();
+
+            PreparedStatement ps = con.prepareStatement("UPDATE UserMessage SET nbVotes=? WHERE id=?");
+            ps.setInt(1, question.getNbVotes());
+            ps.setString(2, question.getId().asString());
+            ps.executeUpdate();
+
+            ps = con.prepareStatement("UPDATE Question SET nbViews=? WHERE id=?");
+            ps.setInt(1, question.getNbViews());
+            ps.setString(2, question.getId().asString());
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            //todo: log/handle error
+            System.out.println(ex);
+        }
+    }
+
+    @Override
     public void remove(QuestionId questionId) {
         //todo: implement remove method
         throw new UnsupportedOperationException("Remove is not yet implemented");
@@ -70,10 +95,10 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             Connection con = dataSource.getConnection();
 
             PreparedStatement ps = con.prepareStatement(
-                    "SELECT q.id, q.title, u.username, um.description, um.nbVotes, um.date " +
+                    "SELECT q.id, q.title, q.nbViews, u.username, um.description, um.nbVotes, um.date " +
                             "FROM Question AS q " +
                             "INNER JOIN UserMessage AS um on q.id = um.id " +
-                            "INNER JOIN User AS u ON q.id=u.id WHERE q.id=?");
+                            "INNER JOIN User AS u ON um.idUser=u.id WHERE q.id=?");
             ps.setString(1, questionId.asString());
 
             ResultSet rs = ps.executeQuery();
@@ -86,6 +111,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
                     .description(rs.getString("description"))
                     .creator(rs.getString("username"))
                     .nbVotes(rs.getInt("nbVotes"))
+                    .nbViews(rs.getInt("nbViews"))
                     .date(rs.getDate("date"))
                     .build();
 
@@ -108,26 +134,26 @@ public class JdbcQuestionRepository implements IQuestionRepository {
         try {
             Connection con = dataSource.getConnection();
 
-            PreparedStatement ps = con.prepareStatement(
-                    "SELECT q.id, q.title, u.username, um.description, um.nbVotes, um.date " +
-                            "FROM Question AS q " +
-                            "INNER JOIN UserMessage AS um on q.id = um.id " +
-                            "INNER JOIN User AS u ON um.idUser = u.id");
-            ResultSet rs = ps.executeQuery();
+            PreparedStatement psQuestion = con.prepareStatement("SELECT q.id, q.title, q.nbViews, u.username, um.idUser, um.description, um.nbVotes, um.date " +
+                                                                    "FROM Question AS q " +
+                                                                    "INNER JOIN UserMessage AS um on q.id = um.id " +
+                                                                    "INNER JOIN User AS u ON um.idUser=u.id");
+            ResultSet rsQuestion = psQuestion.executeQuery();
 
-            while(rs.next()) {
+            while(rsQuestion.next()) {
                 Question q = Question.builder()
-                        .id(new QuestionId(rs.getString("id")))
-                        .title(rs.getString("title"))
-                        .description(rs.getString("description"))
-                        .creator(rs.getString("username"))
-                        .nbVotes(rs.getInt("nbVotes"))
-                        .date(rs.getDate("date"))
+                        .id(new QuestionId(rsQuestion.getString("id")))
+                        .title(rsQuestion.getString("title"))
+                        .description(rsQuestion.getString("description"))
+                        .creator(rsQuestion.getString("username"))
+                        .creatorId(new UserId(rsQuestion.getString("idUser")))
+                        .nbViews(rsQuestion.getInt("nbViews"))
+                        .nbVotes(rsQuestion.getInt("nbVotes"))
+                        .date(rsQuestion.getDate("date"))
                         .build();
-
                 questions.add(q);
             }
-            ps.close();
+            psQuestion.close();
             con.close();
         } catch (SQLException ex) {
             //todo: log/handle error
