@@ -1,16 +1,14 @@
 package stoneoverflow.application.comment;
 
-import ch.heigvd.amt.stoneoverflow.application.answer.AddAnswerCommand;
-import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
-import ch.heigvd.amt.stoneoverflow.application.answer.AnswersDTO;
 import ch.heigvd.amt.stoneoverflow.application.comment.AddCommentCommand;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
+import ch.heigvd.amt.stoneoverflow.application.comment.CommentQuery;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentsDTO;
 import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
+import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
-import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory.InMemoryAnswerRepository;
 import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory.InMemoryCommentRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,12 +53,14 @@ public class CommentFacadeIT {
         // Create the expected result
         // Recover the uuid from the answer in the repository
         CommentsDTO.CommentDTO commentDTO = CommentsDTO.CommentDTO.builder()
-                .uuid(commentFacade.getCommentsFromQuestion(commentTo).getComments().get(0).getUuid())
+                .uuid(commentFacade.getComments(CommentQuery.builder()
+                .commentTo(commentTo).build()).getComments().get(0).getUuid())
                 .content("No content")
                 .creator("Anonymous")
                 .date(formatter.format(commentDate)).build();
 
-        assertEquals(commentFacade.getCommentsFromQuestion(commentTo).getComments().get(0), commentDTO);
+        assertEquals(commentFacade.getComments(CommentQuery.builder()
+                .commentTo(commentTo).build()).getComments().get(0), commentDTO);
     }
 
     @Test
@@ -80,12 +80,14 @@ public class CommentFacadeIT {
         // Create the expected result
         // Recover the uuid from the answer in the repository
         CommentsDTO.CommentDTO commentDTO = CommentsDTO.CommentDTO.builder()
-                .uuid(commentFacade.getCommentsFromAnswer(commentTo).getComments().get(0).getUuid())
+                .uuid(commentFacade.getComments(CommentQuery.builder()
+                        .commentTo(commentTo).build()).getComments().get(0).getUuid())
                 .content("No content")
                 .creator("Anonymous")
                 .date(formatter.format(commentDate)).build();
 
-        assertEquals(commentFacade.getCommentsFromAnswer(commentTo).getComments().get(0), commentDTO);
+        assertEquals(commentFacade.getComments(CommentQuery.builder()
+                .commentTo(commentTo).build()).getComments().get(0), commentDTO);
     }
 
     @Test
@@ -116,12 +118,14 @@ public class CommentFacadeIT {
         // Create the expected result
         // Recover the uuid from the comment in the repository
         CommentsDTO.CommentDTO commentDTO = CommentsDTO.CommentDTO.builder()
-                .uuid(commentFacade.getCommentsFromQuestion(commentTo1).getComments().get(0).getUuid())
+                .uuid(commentFacade.getComments(CommentQuery.builder()
+                        .commentTo(commentTo1).build()).getComments().get(0).getUuid())
                 .content("No content")
                 .creator("Anonymous")
                 .date(formatter.format(commentDate)).build();
 
-        assertEquals(commentFacade.getCommentsFromQuestion(commentTo1).getComments().get(0), commentDTO);
+        assertEquals(commentFacade.getComments(CommentQuery.builder()
+                .commentTo(commentTo1).build()).getComments().get(0), commentDTO);
     }
 
     @Test
@@ -152,11 +156,13 @@ public class CommentFacadeIT {
         // Create the expected result
         // Recover the uuid from the comment in the repository
         CommentsDTO.CommentDTO commentDTO = CommentsDTO.CommentDTO.builder()
-                .uuid(commentFacade.getCommentsFromAnswer(commentTo1).getComments().get(0).getUuid())
+                .uuid(commentFacade.getComments(CommentQuery.builder()
+                        .commentTo(commentTo1).build()).getComments().get(0).getUuid())
                 .content("No content")
                 .creator("Anonymous")
                 .date(formatter.format(commentDate)).build();
 
-        assertEquals(commentFacade.getCommentsFromAnswer(commentTo1).getComments().get(0), commentDTO);
+        assertEquals(commentFacade.getComments(CommentQuery.builder()
+                .commentTo(commentTo1).build()).getComments().get(0), commentDTO);
     }
 }

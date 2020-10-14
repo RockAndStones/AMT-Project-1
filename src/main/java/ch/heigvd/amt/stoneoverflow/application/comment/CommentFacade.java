@@ -28,8 +28,8 @@ public class CommentFacade {
         commentRepository.save(addComment);
     }
 
-    private CommentsDTO getCommentsFromId(Id commentTo) {
-        Collection<Comment> commentsByCommentToId = commentRepository.findByCommentToId(commentTo);
+    public CommentsDTO getComments(CommentQuery commentQuery) {
+        Collection<Comment> commentsByCommentToId = commentRepository.find(commentQuery);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         List<CommentsDTO.CommentDTO> commentsByCommentToIdDTO = commentsByCommentToId.stream().map(
@@ -39,13 +39,5 @@ public class CommentFacade {
                         .date(formatter.format(comment.getDate())).build()).collect(Collectors.toList());
 
         return CommentsDTO.builder().comments(commentsByCommentToIdDTO).build();
-    }
-
-    public CommentsDTO getCommentsFromQuestion(QuestionId commentTo) {
-        return getCommentsFromId(commentTo);
-    }
-
-    public CommentsDTO getCommentsFromAnswer(AnswerId commentTo) {
-        return getCommentsFromId(commentTo);
     }
 }
