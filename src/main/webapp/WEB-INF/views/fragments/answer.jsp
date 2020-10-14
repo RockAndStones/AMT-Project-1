@@ -20,7 +20,7 @@
         <p>
             ${answer.description}
         </p>
-        <span class="inline-block text-sm font-semibold mt-4">${answer.creator}, ${answer.date}</span>
+        <span class="inline-block text-sm font-semibold mt-4">${answer.creator}, ${question.formattedDate()} at ${question.formattedTime()}</span>
     </div>
 </div>
 <!-- TMP TESTING ANSWER -->
