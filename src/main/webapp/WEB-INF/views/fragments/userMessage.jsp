@@ -30,7 +30,7 @@
         <%@include file="comment.jsp" %>
     </c:forEach>
 </c:if>
-<form action="" method="post" class="mt-6">
-    <input type="hidden" name="" value="">
-    <button class="font-semibold hover:text-black">Add a comment</button>
-</form>
+
+<jsp:include page="fragments/commentForm.jsp" >
+    <jsp:param name="commentType" value="${msg.type}" />
+</jsp:include>

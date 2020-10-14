@@ -15,6 +15,7 @@ public class UserMessageDTO {
     private String  creator;
     private int     nbVotes;
     private DateDTO date;
+    private String  type;
 
     private Collection<CommentsDTO.CommentDTO> comments;
 }

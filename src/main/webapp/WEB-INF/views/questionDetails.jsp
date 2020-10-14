@@ -64,17 +64,19 @@
             </div>
             <!-- Question message -->
             <div class="pb-8 mb-8 border-b">
-                <jsp:useBean id="msg" class="ch.heigvd.amt.stoneoverflow.application.usermessage.UserMessageDTO">
-                    <jsp:setProperty name="msg" property="uuid"        value="${question.uuid}" />
-                    <jsp:setProperty name="msg" property="description" value="${question.description}" />
-                    <jsp:setProperty name="msg" property="creator"     value="${question.creator}" />
-                    <jsp:setProperty name="msg" property="nbVotes"     value="${question.nbVotes}" />
-                    <jsp:setProperty name="msg" property="date"        value="${question.date}" />
-                    <jsp:setProperty name="msg" property="comments"    value="${question.comments}" />
-                </jsp:useBean>
+                <jsp:useBean id="msg" class="ch.heigvd.amt.stoneoverflow.application.usermessage.UserMessageDTO" />
+                <jsp:setProperty name="msg" property="uuid"        value="${question.uuid}" />
+                <jsp:setProperty name="msg" property="description" value="${question.description}" />
+                <jsp:setProperty name="msg" property="creator"     value="${question.creator}" />
+                <jsp:setProperty name="msg" property="nbVotes"     value="${question.nbVotes}" />
+                <jsp:setProperty name="msg" property="date"        value="${question.date}" />
+                <jsp:setProperty name="msg" property="type"        value="question" />
+                <jsp:setProperty name="msg" property="comments"    value="${question.comments}" />
+
                 <%@include file="fragments/userMessage.jsp" %>
             </div>
             <!-- Answer(s) -->
+            <!-- Details answer(s) -->
             <div class="mb-8 pb-8 border-b">
                 <c:choose>
                     <c:when test="${empty question.answers}">
@@ -82,7 +84,14 @@
                     </c:when>
                     <c:otherwise>
                         <h2 id="answers" class="leading-normal text-lg font-semibold text-gray-900 mt-0 mb-4">Answer(s)</h2>
-                        <c:forEach items="${question.answers}" var="msg">
+                        <c:forEach items="${question.answers}" var="answer">
+                            <jsp:setProperty name="msg" property="uuid"        value="${answer.uuid}" />
+                            <jsp:setProperty name="msg" property="description" value="${answer.description}" />
+                            <jsp:setProperty name="msg" property="creator"     value="${answer.creator}" />
+                            <jsp:setProperty name="msg" property="nbVotes"     value="${answer.nbVotes}" />
+                            <jsp:setProperty name="msg" property="date"        value="${answer.date}" />
+                            <jsp:setProperty name="msg" property="type"        value="answer" />
+                            <jsp:setProperty name="msg" property="comments"    value="${answer.comments}" />
                             <%@include file="fragments/userMessage.jsp" %>
                         </c:forEach>
                     </c:otherwise>
