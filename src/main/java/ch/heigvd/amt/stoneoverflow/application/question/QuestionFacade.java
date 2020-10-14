@@ -50,6 +50,7 @@ public class QuestionFacade {
     public QuestionsDTO.QuestionDTO getQuestion(QuestionId id) {
         Optional<Question> question = questionRepository.findById(id);
         question.ifPresent(Question::addView);
+        questionRepository.update(question.get());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         // TODO : Is it right ?
         return question.map(value -> QuestionsDTO.QuestionDTO.builder()

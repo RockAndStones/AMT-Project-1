@@ -19,6 +19,11 @@ public class InMemoryRepository<ENTITY extends IEntity<ENTITY, ID>, ID extends I
     }
 
     @Override
+    public void update(ENTITY entity) {
+        store.put(entity.getId(), entity);
+    }
+
+    @Override
     public void remove(ID id) {
         store.remove(id);
     }
