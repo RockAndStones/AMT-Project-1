@@ -1,5 +1,6 @@
 package ch.heigvd.amt.stoneoverflow.application.comment;
 
+import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -16,10 +17,10 @@ public class CommentsDTO {
     @Getter
     @EqualsAndHashCode
     public static class CommentDTO {
-        private String uuid;
-        private String creator;
-        private String content;
-        private String date;
+        private String  uuid;
+        private String  creator;
+        private String  content;
+        private DateDTO date;
     }
 
     @Singular

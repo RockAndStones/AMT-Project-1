@@ -2,10 +2,8 @@ package ch.heigvd.amt.stoneoverflow.application.question;
 
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswersDTO;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentsDTO;
+import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
 import lombok.*;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,15 +16,15 @@ public class QuestionsDTO {
     @Getter
     @EqualsAndHashCode
     public static class QuestionDTO {
-        private String uuid;
-        private String title;
-        private String description;
-        private String creator;
-        private int    nbVotes;
-        private int    nbViews;
-        private int    nbAnswers;
-        private Date   date;
-        private String type;
+        private String  uuid;
+        private String  title;
+        private String  description;
+        private String  creator;
+        private int     nbVotes;
+        private int     nbViews;
+        private int     nbAnswers;
+        private DateDTO date;
+        private String  type;
 
         @Setter
         private Collection<AnswersDTO.AnswerDTO> answers;
@@ -44,16 +42,6 @@ public class QuestionsDTO {
             } else{
                 return this.description;
             }
-        }
-
-        public String formattedDate(){
-            SimpleDateFormat format = new SimpleDateFormat("MMM dd ''yy"); // '' = single quote
-            return format.format(date);
-        }
-
-        public String formattedTime(){
-            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-            return format.format(date);
         }
     }
 

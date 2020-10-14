@@ -1,12 +1,9 @@
 package ch.heigvd.amt.stoneoverflow.application.comment;
 
-import ch.heigvd.amt.stoneoverflow.domain.Id;
-import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
-import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
+import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
 import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,14 +26,14 @@ public class CommentFacade {
     }
 
     public CommentsDTO getComments(CommentQuery commentQuery) {
-        Collection<Comment> commentsByCommentToId = commentRepository.find(commentQuery);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Collection<Comment> comments = commentRepository.find(commentQuery);
 
-        List<CommentsDTO.CommentDTO> commentsByCommentToIdDTO = commentsByCommentToId.stream().map(
+        List<CommentsDTO.CommentDTO> commentsByCommentToIdDTO = comments.stream().map(
                 comment -> CommentsDTO.CommentDTO.builder()
                         .creator(comment.getCreator())
                         .content(comment.getContent())
-                        .date(formatter.format(comment.getDate())).build()).collect(Collectors.toList());
+                        .date(new DateDTO(comment.getDate())).build())
+                .collect(Collectors.toList());
 
         return CommentsDTO.builder().comments(commentsByCommentToIdDTO).build();
     }

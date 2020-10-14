@@ -1,5 +1,6 @@
 package stoneoverflow.application.question;
 
+import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
 import ch.heigvd.amt.stoneoverflow.application.question.AddQuestionCommand;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
@@ -17,19 +18,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class QuestionFacadeIT {
     private IQuestionRepository questionRepository;
+    private DateDTO             questionDate;
 
     @BeforeEach
     public void initializeIdentityManagementFacade() {
         this.questionRepository = new InMemoryQuestionRepository();
+        this.questionDate = new DateDTO(new Date(System.currentTimeMillis()));
     }
 
     @Test
     public void shouldAddQuestion() {
         QuestionFacade questionFacade = new QuestionFacade(questionRepository);
-
-        // Use a fix date for the test
-        Date questionDate = new Date(System.currentTimeMillis());
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         // Add question in repository
         AddQuestionCommand questionCommand = AddQuestionCommand.builder()
@@ -78,10 +77,6 @@ public class QuestionFacadeIT {
     @Test
     public void shouldGetOnlySQLQuestions() {
         QuestionFacade questionFacade = new QuestionFacade(questionRepository);
-
-        // Use a fix date for the test
-        Date questionDate = new Date(System.currentTimeMillis());
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         // Add SQL question in repository
         AddQuestionCommand questionCommandSQL = AddQuestionCommand.builder()

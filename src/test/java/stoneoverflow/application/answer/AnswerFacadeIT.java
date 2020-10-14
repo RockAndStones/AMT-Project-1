@@ -4,6 +4,7 @@ import ch.heigvd.amt.stoneoverflow.application.answer.AddAnswerCommand;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswerQuery;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswersDTO;
+import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
 import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
@@ -11,7 +12,6 @@ import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory.InMemoryAns
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AnswerFacadeIT {
     private IAnswerRepository answerRepository;
     private Date              answerDate;
-    private SimpleDateFormat  formatter;
     private UserId            creatorId;
 
     @BeforeEach
@@ -28,7 +27,6 @@ public class AnswerFacadeIT {
 
         // Use a fix date for all the tests
         this.answerDate       = new Date(System.currentTimeMillis());
-        this.formatter        = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         // Define a UserId to simulate a user responding
         this.creatorId        = new UserId();
@@ -59,7 +57,7 @@ public class AnswerFacadeIT {
                 .description("No content")
                 .creator("Anonymous")
                 .nbVotes(0)
-                .date(formatter.format(answerDate)).build();
+                .date(new DateDTO(answerDate)).build();
 
         assertEquals(answerFacade.getAnswersFromQuestion(answerQuery).getAnswers().get(0), answerDTO);
     }
@@ -100,7 +98,7 @@ public class AnswerFacadeIT {
                 .description("No content")
                 .creator("Anonymous")
                 .nbVotes(0)
-                .date(formatter.format(answerDate)).build();
+                .date(new DateDTO(answerDate)).build();
 
         assertEquals(answerFacade.getAnswersFromQuestion(answerQuery).getAnswers().get(0), answerDTO);
     }

@@ -4,8 +4,8 @@ import ch.heigvd.amt.stoneoverflow.application.comment.AddCommentCommand;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentQuery;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentsDTO;
+import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
 import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
-import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CommentFacadeIT {
     private ICommentRepository commentRepository;
-    private Date               commentDate;
+    private DateDTO            commentDate;
     private SimpleDateFormat   formatter;
     private UserId             creatorId;
 
@@ -29,7 +29,7 @@ public class CommentFacadeIT {
         this.commentRepository = new InMemoryCommentRepository();
 
         // Use a fix date for all the tests
-        this.commentDate       = new Date(System.currentTimeMillis());
+        this.commentDate       = new DateDTO(new Date(System.currentTimeMillis()));
         this.formatter         = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         // Define a UserId to simulate a user responding
@@ -57,7 +57,7 @@ public class CommentFacadeIT {
                 .commentTo(commentTo).build()).getComments().get(0).getUuid())
                 .content("No content")
                 .creator("Anonymous")
-                .date(formatter.format(commentDate)).build();
+                .date(commentDate).build();
 
         assertEquals(commentFacade.getComments(CommentQuery.builder()
                 .commentTo(commentTo).build()).getComments().get(0), commentDTO);
@@ -84,7 +84,7 @@ public class CommentFacadeIT {
                         .commentTo(commentTo).build()).getComments().get(0).getUuid())
                 .content("No content")
                 .creator("Anonymous")
-                .date(formatter.format(commentDate)).build();
+                .date(commentDate).build();
 
         assertEquals(commentFacade.getComments(CommentQuery.builder()
                 .commentTo(commentTo).build()).getComments().get(0), commentDTO);
@@ -122,7 +122,7 @@ public class CommentFacadeIT {
                         .commentTo(commentTo1).build()).getComments().get(0).getUuid())
                 .content("No content")
                 .creator("Anonymous")
-                .date(formatter.format(commentDate)).build();
+                .date(commentDate).build();
 
         assertEquals(commentFacade.getComments(CommentQuery.builder()
                 .commentTo(commentTo1).build()).getComments().get(0), commentDTO);
@@ -160,7 +160,7 @@ public class CommentFacadeIT {
                         .commentTo(commentTo1).build()).getComments().get(0).getUuid())
                 .content("No content")
                 .creator("Anonymous")
-                .date(formatter.format(commentDate)).build();
+                .date(commentDate).build();
 
         assertEquals(commentFacade.getComments(CommentQuery.builder()
                 .commentTo(commentTo1).build()).getComments().get(0), commentDTO);

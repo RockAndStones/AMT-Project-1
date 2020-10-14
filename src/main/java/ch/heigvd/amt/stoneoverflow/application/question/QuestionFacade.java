@@ -1,10 +1,10 @@
 package ch.heigvd.amt.stoneoverflow.application.question;
 
+import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +39,7 @@ public class QuestionFacade {
                 .description(question.getDescription())
                 .nbVotes(question.getNbVotes())
                 .nbViews(question.getNbViews())
-                .date(question.getDate())
+                .date(new DateDTO(question.getDate()))
                 .nbViews(question.getNbViews())
                 .type(question.getQuestionType().name()).build())
         .collect(Collectors.toList());
@@ -51,7 +51,6 @@ public class QuestionFacade {
         Optional<Question> question = questionRepository.findById(id);
         question.ifPresent(Question::addView);
         questionRepository.update(question.get());
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         // TODO : Is it right ?
         return question.map(value -> QuestionsDTO.QuestionDTO.builder()
                 .uuid(value.getId().asString())
@@ -60,7 +59,7 @@ public class QuestionFacade {
                 .creator(value.getCreator())
                 .nbVotes(value.getNbVotes())
                 .nbViews(value.getNbViews())
-                .date(value.getDate())
+                .date(new DateDTO(value.getDate()))
                 .type(value.getQuestionType().name()).build()).orElse
                 (null);
     }

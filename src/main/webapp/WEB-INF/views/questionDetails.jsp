@@ -86,7 +86,7 @@
                         <p>
                             ${question.description}
                         </p>
-                        <span class="inline-block text-sm font-semibold mt-4">${question.creator}, ${question.formattedDate()} at ${question.formattedTime()}</span>
+                        <span class="inline-block text-sm font-semibold mt-4">${question.creator}, ${question.date.dateFormatted()} at ${question.date.timeFormatted()}</span>
                     </div>
                 </div>
             </div>
