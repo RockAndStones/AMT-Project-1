@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 public class DateDTO extends Date {
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd ''yy"); // '' = single quote
