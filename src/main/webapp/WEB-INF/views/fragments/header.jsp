@@ -35,7 +35,14 @@
                 <a class="inline-block py-2 px-4 text-gray-900 font-bold no-underline" href="#">Active</a>
             </li>
             <li class="mr-3 py-2 lg:py-0">
-                <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-2 px-4" href="login">Log in/Sign up</a>
+                <c:choose>
+                    <c:when test="${sessionScope.authenticatedUser != null}">
+                        <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-2 px-4 capitalize" href="#">${sessionScope.authenticatedUser.username}</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-2 px-4" href="login">Log in/Sign up</a>
+                    </c:otherwise>
+                </c:choose>
             </li>
         </ul>
     </div>

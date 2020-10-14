@@ -6,7 +6,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:useBean scope="request" id="questions" type="ch.heigvd.amt.StoneOverflow.application.Question.QuestionsDTO"/>
+<jsp:useBean scope="request" id="questions" type="ch.heigvd.amt.stoneoverflow.application.question.QuestionsDTO"/>
 <!DOCTYPE html>
 <html>
 <head>

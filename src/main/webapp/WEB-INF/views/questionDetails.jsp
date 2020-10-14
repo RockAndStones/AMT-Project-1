@@ -35,7 +35,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:useBean scope="request" id="question" type="ch.heigvd.amt.StoneOverflow.application.Question.QuestionsDTO.QuestionDTO"/>
+<jsp:useBean scope="request" id="question" type="ch.heigvd.amt.stoneoverflow.application.question.QuestionsDTO.QuestionDTO"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -86,7 +86,7 @@
                         <p>
                             ${question.description}
                         </p>
-                        <span class="inline-block text-sm font-semibold mt-4">${question.creator}, ${question.date}</span>
+                        <span class="inline-block text-sm font-semibold mt-4">${question.creator}, ${question.formattedDate()} at ${question.formattedTime()}</span>
                     </div>
                 </div>
             </div>

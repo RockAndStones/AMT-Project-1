@@ -8,11 +8,11 @@
     <div class="w-full flex items-start px-4 py-4">
         <div class="w-full">
             <div class="flex items-center justify-between">
-                <form action="/questionDetails" method="post">
+                <form action="/questionDetails" method="get">
                     <input type="hidden" name="questionUUID" value="${question.uuid}">
                     <button type="submit"><h2 class="questionTitleClass text-lg font-semibold text-gray-900 hover:underline -mt-1">${question.title}</h2></button>
                 </form>
-                <small class="text-sm text-gray-700">${question.date}</small>
+                <small class="text-sm text-gray-700">${question.formattedDate()} at ${question.formattedTime()}</small>
             </div>
             <p class="questionDescriptionClass mt-3 text-gray-700 text-sm">
                 ${question.shortDescription()}

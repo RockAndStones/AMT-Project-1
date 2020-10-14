@@ -53,19 +53,38 @@
             <div id="registerSection" class="hidden flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
                 <p id="registerLabel" class="text-center text-3xl">Join Us.</p>
                 <form action="${pageContext.request.contextPath}/registerCommand" method="POST" class="flex flex-col pt-3 md:pt-8">
+                    <c:if test="${errorMessage != null}">
+                        <p class="text-center text-xl text-red-700">${errorMessage}</p>
+                    </c:if>
+
                     <div class="flex flex-col pt-4">
                         <label for="registerUsername" class="text-lg">Username</label>
-                        <input type="text" id="registerUsername" name="username" placeholder="Your awesome username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                        <input type="text" id="registerUsername" name="username" required placeholder="Your awesome username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+
+                    <div class="flex flex-col pt-4">
+                        <label for="registerUsername" class="text-lg">Email address</label>
+                        <input type="email" id="registerEmail" name="email" required placeholder="Your email address" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+
+                    <div class="flex flex-col pt-4">
+                        <label for="registerUsername" class="text-lg">First name</label>
+                        <input type="text" id="registerFirstName" name="firstName" required placeholder="Your first name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+
+                    <div class="flex flex-col pt-4">
+                        <label for="registerUsername" class="text-lg">Last name</label>
+                        <input type="text" id="registerLastName" name="lastName" required placeholder="Your last name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
 
                     <div class="flex flex-col pt-4">
                         <label for="registerPassword" class="text-lg">Password</label>
-                        <input type="password" id="registerPassword" name="password" placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                        <input type="password" id="registerPassword" name="password" required placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
 
                     <div class="flex flex-col pt-4">
                         <label for="confirmPassword" class="text-lg">Confirm Password</label>
-                        <input type="password" id="confirmPassword" placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
 
                     <input type="submit" value="Register" class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8">
