@@ -2,6 +2,7 @@ package stoneoverflow.application.answer;
 
 import ch.heigvd.amt.stoneoverflow.application.answer.AddAnswerCommand;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
+import ch.heigvd.amt.stoneoverflow.application.answer.AnswerQuery;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswersDTO;
 import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
@@ -47,16 +48,20 @@ public class AnswerFacadeIT {
                 .date(answerDate).build();
         answerFacade.addAnswer(answerCommand);
 
+        // Prepare answer query
+        AnswerQuery answerQuery = AnswerQuery.builder()
+                .answerTo(answerTo).build();
+
         // Create the expected result
         // Recover the uuid from the answer in the repository
         AnswersDTO.AnswerDTO answerDTO = AnswersDTO.AnswerDTO.builder()
-                .uuid(answerFacade.getAnswersFromQuestion(answerTo).getAnswers().get(0).getUuid())
+                .uuid(answerFacade.getAnswersFromQuestion(answerQuery).getAnswers().get(0).getUuid())
                 .description("No content")
                 .creator("Anonymous")
                 .nbVotes(0)
                 .date(formatter.format(answerDate)).build();
 
-        assertEquals(answerFacade.getAnswersFromQuestion(answerTo).getAnswers().get(0), answerDTO);
+        assertEquals(answerFacade.getAnswersFromQuestion(answerQuery).getAnswers().get(0), answerDTO);
     }
 
     @Test
@@ -84,15 +89,19 @@ public class AnswerFacadeIT {
         answerFacade.addAnswer(answerCommand2);
         answerFacade.addAnswer(answerCommand3);
 
+        // Prepare answer query
+        AnswerQuery answerQuery = AnswerQuery.builder()
+                .answerTo(answerTo1).build();
+
         // Create the expected result
         // Recover the uuid from the answer in the repository
         AnswersDTO.AnswerDTO answerDTO = AnswersDTO.AnswerDTO.builder()
-                .uuid(answerFacade.getAnswersFromQuestion(answerTo1).getAnswers().get(0).getUuid())
+                .uuid(answerFacade.getAnswersFromQuestion(answerQuery).getAnswers().get(0).getUuid())
                 .description("No content")
                 .creator("Anonymous")
                 .nbVotes(0)
                 .date(formatter.format(answerDate)).build();
 
-        assertEquals(answerFacade.getAnswersFromQuestion(answerTo1).getAnswers().get(0), answerDTO);
+        assertEquals(answerFacade.getAnswersFromQuestion(answerQuery).getAnswers().get(0), answerDTO);
     }
 }

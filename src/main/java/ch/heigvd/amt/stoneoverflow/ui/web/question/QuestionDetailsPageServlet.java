@@ -1,5 +1,6 @@
 package ch.heigvd.amt.stoneoverflow.ui.web.question;
 
+import ch.heigvd.amt.stoneoverflow.application.answer.AnswerQuery;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionsDTO;
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
@@ -44,7 +45,10 @@ public class QuestionDetailsPageServlet extends HttpServlet {
         // Get question from repository
         QuestionsDTO.QuestionDTO questionDTO = questionFacade.getQuestion(new QuestionId(questionUUID));
         // Get answers & comments of the question
-        questionDTO.setAnswers(answerFacade.getAnswersFromQuestion(new QuestionId(questionDTO.getUuid())).getAnswers());
+        AnswerQuery answerQuery = AnswerQuery.builder()
+                .answerTo(new QuestionId(questionDTO.getUuid()))
+                .byDate(true).build();
+        questionDTO.setAnswers(answerFacade.getAnswersFromQuestion(answerQuery).getAnswers());
         questionDTO.setComments(commentFacade.getCommentsFromQuestion(new QuestionId(questionDTO.getUuid())).getComments());
 
         // Get comments of each answers

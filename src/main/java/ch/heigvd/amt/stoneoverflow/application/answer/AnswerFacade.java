@@ -27,8 +27,8 @@ public class AnswerFacade {
         answerRepository.save(addAnswer);
     }
 
-    public AnswersDTO getAnswersFromQuestion(QuestionId questionId) {
-        Collection<Answer> answersFromQuestionId = answerRepository.findByQuestionId(questionId);
+    public AnswersDTO getAnswersFromQuestion(AnswerQuery answerQuery) {
+        Collection<Answer> answersFromQuestionId = answerRepository.find(answerQuery);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         List<AnswersDTO.AnswerDTO> answersFromQuestionIdDTO = answersFromQuestionId.stream().map(
