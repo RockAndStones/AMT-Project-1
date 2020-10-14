@@ -49,8 +49,6 @@ public class QuestionFacade {
 
     public QuestionsDTO.QuestionDTO getQuestion(QuestionId id) {
         Optional<Question> question = questionRepository.findById(id);
-        question.ifPresent(Question::addView);
-        questionRepository.update(question.get());
         // TODO : Is it right ?
         return question.map(value -> QuestionsDTO.QuestionDTO.builder()
                 .uuid(value.getId().asString())
@@ -60,7 +58,7 @@ public class QuestionFacade {
                 .nbVotes(value.getNbVotes())
                 .nbViews(value.getNbViews())
                 .date(new DateDTO(value.getDate()))
-                .type(value.getQuestionType().name()).build()).orElse
-                (null);
+                .type(value.getQuestionType().name()).build())
+            .orElse(null);
     }
 }

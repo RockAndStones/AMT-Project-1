@@ -45,12 +45,20 @@ public class QuestionDetailsPageServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/");
 
         // Set a QuestionId of requested question
-        QuestionId questionId = new QuestionId(questionUUIDAsString);
+        QuestionId questionId;
+        try {
+            questionId = new QuestionId(questionUUIDAsString);
+        } catch (Exception e) {
+            resp.sendRedirect(req.getContextPath() + "/");
+            return;
+        }
 
         // Get QuestionDTO from repository
         QuestionsDTO.QuestionDTO questionDTO = questionFacade.getQuestion(questionId);
-        if (questionDTO == null)
+        if (questionDTO == null) {
             resp.sendRedirect(req.getContextPath() + "/");
+            return;
+        }
 
         // Get answers & comments of the question
         questionDTO.setAnswers(answerFacade.getAnswersFromQuestion(AnswerQuery.builder()
