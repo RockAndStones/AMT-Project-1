@@ -14,4 +14,7 @@ public class CommentQuery {
 
     @Builder.Default
     private boolean byDate = false;
+
+    @Builder.Default
+    private boolean reverse = false;
 }

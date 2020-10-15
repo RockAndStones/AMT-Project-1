@@ -9,9 +9,7 @@ import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -35,8 +33,12 @@ public class InMemoryCommentRepository extends InMemoryRepository<Comment, Comme
 
         // Sort comments if asked by query
         if (commentQuery.isByDate()) {
-            allComments = allComments.stream().sorted(Comparator.comparing(Comment::getDate).reversed())
+            allComments = allComments.stream().sorted(Comparator.comparing(Comment::getDate))
                     .collect(Collectors.toList());
+        }
+
+        if(commentQuery.isReverse()){
+            Collections.reverse((List<?>) allComments);
         }
 
         return allComments;

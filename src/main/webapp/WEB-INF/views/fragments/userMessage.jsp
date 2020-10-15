@@ -33,4 +33,5 @@
 
 <jsp:include page="fragments/commentForm.jsp" >
     <jsp:param name="commentType" value="${msg.type}" />
+    <jsp:param name="targetUUID" value="${msg.uuid}" />
 </jsp:include>
