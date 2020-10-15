@@ -1,8 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<button onClick="showCommentForm(${param.targetUUID})" class="font-semibold hover:text-black">Add a comment</button>
+<button onClick="showCommentForm('commentForm${param.targetUUID}')" class="font-semibold hover:text-black">Add a comment</button>
 
-<form id="commentForm${param.targetUUID}" action="${pageContext.request.contextPath}/submitComment.do" method="post">
+<form id="commentForm${param.targetUUID}" action="${pageContext.request.contextPath}/submitComment.do" method="post" class="hidden">
     <input type="hidden" name="targetUUID" value="${param.targetUUID}">
     <input type="hidden" name="targetType" value="${param.commentType}">
     <input type="hidden" name="questionUUID" value="${question.uuid}">
