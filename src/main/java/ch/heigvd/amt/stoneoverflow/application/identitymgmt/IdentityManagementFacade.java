@@ -5,6 +5,8 @@ import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginCommand;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginFailedException;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.register.RegisterCommand;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.register.RegistrationFailedException;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.updateprofile.UpdateCommand;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.updateprofile.UpdateProfileFailedException;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
 
@@ -59,6 +61,63 @@ public class IdentityManagementFacade {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .build();
+    }
+
+    public AuthenticatedUserDTO update(UpdateCommand updateCommand) throws UpdateProfileFailedException {
+        boolean newPassword = false;
+        // TODO refactor
+        if(!updateCommand.getPlaintextPassword().isEmpty()) {
+            // If passwords are not equals
+            if (!updateCommand.getPlaintextPassword().equals(updateCommand.getPlaintextPasswordConfirmation()))
+                throw new UpdateProfileFailedException("Passwords are not equal");
+
+            if (!isPasswordStrong(updateCommand.getPlaintextPassword()))
+                throw new UpdateProfileFailedException("Password does not meet the minimum requirements " +
+                        "(8 characters, 1 lower case, 1 upper case, 1 number, 1 special character)");
+
+            newPassword = true;
+        }
+
+        if(!updateCommand.getOldUser().getUsername().equals(updateCommand.getUsername())) {
+            Optional<User> existingUsername = userRepository.findByUsername(updateCommand.getUsername());
+            if (existingUsername.isPresent())
+                throw new UpdateProfileFailedException("Username is already taken");
+        }
+
+        try {
+            User updatedUser;
+            if(!newPassword) {
+                updatedUser = User.builder()
+                        .id(updateCommand.getOldUser().getId())
+                        .username(updateCommand.getUsername())
+                        .email(updateCommand.getEmail())
+                        .firstName(updateCommand.getFirstName())
+                        .lastName(updateCommand.getLastName())
+                        .hashedPassword(userRepository.findByUsername(updateCommand.getOldUser().getUsername()).get().getHashedPassword())
+                        .build();
+            } else{
+                updatedUser = User.builder()
+                        .id(updateCommand.getOldUser().getId())
+                        .username(updateCommand.getUsername())
+                        .email(updateCommand.getEmail())
+                        .firstName(updateCommand.getFirstName())
+                        .lastName(updateCommand.getLastName())
+                        .plaintextPassword(updateCommand.getPlaintextPassword())
+                        .build();
+            }
+
+            userRepository.update(updatedUser);
+
+            return AuthenticatedUserDTO.builder()
+                    .id(updatedUser.getId())
+                    .username(updatedUser.getUsername())
+                    .email(updatedUser.getEmail())
+                    .firstName(updatedUser.getFirstName())
+                    .lastName(updatedUser.getLastName())
+                    .build();
+        } catch (Exception e) {
+            throw new UpdateProfileFailedException(e.getMessage());
+        }
     }
 
     private boolean isPasswordStrong(String plaintextPassword) {
