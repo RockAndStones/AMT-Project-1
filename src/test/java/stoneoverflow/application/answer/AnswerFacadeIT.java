@@ -1,32 +1,56 @@
 package stoneoverflow.application.answer;
 
+import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 import ch.heigvd.amt.stoneoverflow.application.answer.AddAnswerCommand;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswerQuery;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswersDTO;
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
-import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
-import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory.InMemoryAnswerRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
+@RunWith(Arquillian.class)
 public class AnswerFacadeIT {
-    private IAnswerRepository answerRepository;
     private Date              answerDate;
+    private SimpleDateFormat  formatter;
     private UserId            creatorId;
 
-    @BeforeEach
+    private final static String WARNAME = "arquillian-managed.war";
+
+    @Inject
+    private ServiceRegistry serviceRegistry;
+
+    private AnswerFacade answerFacade;
+
+    @Deployment(testable = true)
+    public static WebArchive createDeployment() {
+        WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
+                .addPackages(true, "ch.heigvd.amt")
+                .addPackages(true, "org.springframework.security.crypto.bcrypt")
+                .addPackages(true, "org.springframework.security.crypto.bcrypt.BCrypt");
+        return archive;
+    }
+
+    @Before
     public void initializeIdentityManagementFacade() {
-        this.answerRepository = new InMemoryAnswerRepository();
+        this.answerFacade = serviceRegistry.getAnswerFacade();
 
         // Use a fix date for all the tests
         this.answerDate       = new Date(System.currentTimeMillis());
+        this.formatter        = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         // Define a UserId to simulate a user responding
         this.creatorId        = new UserId();
@@ -34,8 +58,6 @@ public class AnswerFacadeIT {
 
     @Test
     public void shouldAddAnswer() {
-        AnswerFacade answerFacade = new AnswerFacade(answerRepository);
-
         // Define a QuestionId to simulate a response to a question
         QuestionId answerTo = new QuestionId();
 
@@ -64,8 +86,6 @@ public class AnswerFacadeIT {
 
     @Test
     public void shouldGetOnlyAnswersFromAQuestionId() {
-        AnswerFacade answerFacade = new AnswerFacade(answerRepository);
-
         // Define multiple QuestionId to simulate responses to multiple questions
         QuestionId answerTo1 = new QuestionId();
         QuestionId answerTo2 = new QuestionId();
