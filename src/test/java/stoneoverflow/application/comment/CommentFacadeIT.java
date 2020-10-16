@@ -1,32 +1,53 @@
 package stoneoverflow.application.comment;
 
+import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 import ch.heigvd.amt.stoneoverflow.application.comment.AddCommentCommand;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentQuery;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentsDTO;
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
 import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
-import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
-import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory.InMemoryCommentRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.*;
 
+@RunWith(Arquillian.class)
 public class CommentFacadeIT {
-    private ICommentRepository commentRepository;
     private DateDTO            commentDate;
     private SimpleDateFormat   formatter;
     private UserId             creatorId;
 
-    @BeforeEach
+    private final static String WARNAME = "arquillian-managed.war";
+
+    @Inject
+    private ServiceRegistry serviceRegistry;
+
+    private CommentFacade commentFacade;
+
+    @Deployment(testable = true)
+    public static WebArchive createDeployment() {
+        WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
+                .addPackages(true, "ch.heigvd.amt")
+                .addPackages(true, "org.springframework.security.crypto.bcrypt")
+                .addPackages(true, "org.springframework.security.crypto.bcrypt.BCrypt");
+        return archive;
+    }
+
+    @Before
     public void initializeIdentityManagementFacade() {
-        this.commentRepository = new InMemoryCommentRepository();
+        this.commentFacade = serviceRegistry.getCommentFacade();
 
         // Use a fix date for all the tests
         this.commentDate       = new DateDTO(new Date(System.currentTimeMillis()));
@@ -38,7 +59,6 @@ public class CommentFacadeIT {
 
     @Test
     public void shouldAddCommentToQuestion() {
-        CommentFacade commentFacade = new CommentFacade(commentRepository);
 
         // Define a QuestionId to simulate a response to a question
         QuestionId commentTo = new QuestionId();
@@ -54,7 +74,7 @@ public class CommentFacadeIT {
         // Recover the uuid from the answer in the repository
         CommentsDTO.CommentDTO commentDTO = CommentsDTO.CommentDTO.builder()
                 .uuid(commentFacade.getComments(CommentQuery.builder()
-                .commentTo(commentTo).build()).getComments().get(0).getUuid())
+                        .commentTo(commentTo).build()).getComments().get(0).getUuid())
                 .content("No content")
                 .creator("Anonymous")
                 .date(commentDate).build();
@@ -65,7 +85,6 @@ public class CommentFacadeIT {
 
     @Test
     public void shouldAddCommentToAnswer() {
-        CommentFacade commentFacade = new CommentFacade(commentRepository);
 
         // Define a QuestionId to simulate a response to a question
         AnswerId commentTo = new AnswerId();
@@ -92,7 +111,6 @@ public class CommentFacadeIT {
 
     @Test
     public void shouldGetOnlyCommentFromAQuestionId() {
-        CommentFacade commentFacade = new CommentFacade(commentRepository);
 
         // Define multiple QuestionId to simulate responses to multiple questions
         QuestionId commentTo1 = new QuestionId();
@@ -130,7 +148,6 @@ public class CommentFacadeIT {
 
     @Test
     public void shouldGetOnlyCommentFromAAnswerId() {
-        CommentFacade commentFacade = new CommentFacade(commentRepository);
 
         // Define multiple QuestionId to simulate responses to multiple questions
         AnswerId commentTo1 = new AnswerId();
