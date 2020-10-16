@@ -42,7 +42,7 @@ public class RegisterCommandServlet extends HttpServlet {
             req.getRequestDispatcher("/loginCommand").forward(req, resp);
         } catch (RegistrationFailedException e) {
             req.getSession().setAttribute("errorMessage", e.getMessage());
-            resp.sendRedirect(req.getContextPath() + "/login");
+            resp.sendRedirect(req.getContextPath() + "/login?register=y");
         }
     }
 }

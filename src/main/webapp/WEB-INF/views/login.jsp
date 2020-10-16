@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="register" value="${param.register != null}" />
 <html>
 <head>
     <title>Login</title>
@@ -26,10 +27,10 @@
             </div>
 
             <!-- Login Section -->
-            <div id="loginSection" class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
+            <div id="loginSection" class="<c:if test="${register}">hidden </c:if>flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
                 <p id="loginLabel" class="text-center text-3xl">Welcome.</p>
                 <form action="${pageContext.request.contextPath}/loginCommand" method="POST" class="flex flex-col pt-3 md:pt-8">
-                    <c:if test="${errorMessage != null}">
+                    <c:if test="${errorMessage != null && !register}">
                         <p class="text-center text-xl text-red-700">${errorMessage}</p>
                     </c:if>
                     <div class="flex flex-col pt-4">
@@ -50,10 +51,10 @@
             </div>
 
             <!-- Register Section -->
-            <div id="registerSection" class="hidden flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
+            <div id="registerSection" class="<c:if test="${!register}">hidden </c:if>flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
                 <p id="registerLabel" class="text-center text-3xl">Join Us.</p>
                 <form action="${pageContext.request.contextPath}/registerCommand" method="POST" class="flex flex-col pt-3 md:pt-8">
-                    <c:if test="${errorMessage != null}">
+                    <c:if test="${errorMessage != null && register}">
                         <p class="text-center text-xl text-red-700">${errorMessage}</p>
                     </c:if>
 
