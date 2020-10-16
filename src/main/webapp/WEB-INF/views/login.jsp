@@ -60,22 +60,47 @@
 
                     <div class="flex flex-col pt-4">
                         <label for="registerUsername" class="text-lg">Username</label>
-                        <input type="text" id="registerUsername" name="username" required placeholder="Your awesome username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                        <input type="text"
+                               id="registerUsername"
+                               name="username"
+                               required
+                               placeholder="Your awesome username"
+                               value="${registerCommand != null ? registerCommand.username : ""}"
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                        >
                     </div>
 
                     <div class="flex flex-col pt-4">
                         <label for="registerUsername" class="text-lg">Email address</label>
-                        <input type="email" id="registerEmail" name="email" required placeholder="Your email address" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                        <input type="email"
+                               id="registerEmail"
+                               name="email"
+                               required
+                               placeholder="Your email address"
+                               value="${registerCommand != null ? registerCommand.email : ""}"
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
 
                     <div class="flex flex-col pt-4">
                         <label for="registerUsername" class="text-lg">First name</label>
-                        <input type="text" id="registerFirstName" name="firstName" required placeholder="Your first name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                        <input type="text"
+                               id="registerFirstName"
+                               name="firstName"
+                               required
+                               placeholder="Your first name"
+                               value="${registerCommand != null ? registerCommand.firstName : ""}"
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
 
                     <div class="flex flex-col pt-4">
                         <label for="registerUsername" class="text-lg">Last name</label>
-                        <input type="text" id="registerLastName" name="lastName" required placeholder="Your last name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                        <input type="text"
+                               id="registerLastName"
+                               name="lastName"
+                               required
+                               placeholder="Your last name"
+                               value="${registerCommand != null ? registerCommand.lastName : ""}"
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
 
                     <div class="flex flex-col pt-4">
