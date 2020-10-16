@@ -28,7 +28,7 @@ public class InMemoryUserRepository extends InMemoryRepository<User, UserId> imp
     @Override
     public Optional<User> findByUsername(String username) {
         List<User> users = findAll().stream()
-                .filter(user -> user.getUsername().equals(username))
+                .filter(user -> user.getUsername().equalsIgnoreCase(username))
                 .collect(Collectors.toList());
         if (users.size() < 1)
             return Optional.empty();

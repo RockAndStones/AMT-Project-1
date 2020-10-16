@@ -26,13 +26,13 @@ public class IdentityManagementFacade {
             throw new RegistrationFailedException("Password does not meet the minimum requirements " +
                     "(8 characters, 1 lower case, 1 upper case, 1 number, 1 special character)");
 
-        Optional<User> existingUsername = userRepository.findByUsername(registerCommand.getUsername().toLowerCase());
+        Optional<User> existingUsername = userRepository.findByUsername(registerCommand.getUsername());
         if (existingUsername.isPresent())
             throw new RegistrationFailedException("Username is already taken");
 
         try {
             User newUser = User.builder()
-                    .username(registerCommand.getUsername().toLowerCase())
+                    .username(registerCommand.getUsername())
                     .email(registerCommand.getEmail())
                     .firstName(registerCommand.getFirstName())
                     .lastName(registerCommand.getLastName())

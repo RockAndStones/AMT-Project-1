@@ -34,7 +34,7 @@ public class JdbcUserRepository implements IUserRepository {
         try {
             Connection con = dataSource.getConnection();
 
-            PreparedStatement ps = con.prepareStatement("SELECT id, username, mail, firstName, lastName, password FROM User WHERE username=?");
+            PreparedStatement ps = con.prepareStatement("SELECT id, username, mail, firstName, lastName, password FROM User WHERE LOWER(username)=LOWER(?)");
             ps.setString(1, username);
 
             ResultSet rs = ps.executeQuery();
