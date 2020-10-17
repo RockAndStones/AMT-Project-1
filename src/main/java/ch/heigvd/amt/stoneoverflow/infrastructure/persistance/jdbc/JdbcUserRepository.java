@@ -3,6 +3,7 @@ package ch.heigvd.amt.stoneoverflow.infrastructure.persistance.jdbc;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
+import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.exception.IntegrityConstraintViolationException;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
@@ -64,6 +65,9 @@ public class JdbcUserRepository implements IUserRepository {
 
     @Override
     public void save(User user) {
+        if (this.findByUsername(user.getUsername()).isPresent())
+            throw new IntegrityConstraintViolationException("Cannot save user. Integrity constraint violation: username must be unique");
+
         try {
             Connection con = dataSource.getConnection();
 
