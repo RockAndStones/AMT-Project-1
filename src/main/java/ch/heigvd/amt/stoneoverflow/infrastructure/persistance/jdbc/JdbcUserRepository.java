@@ -96,8 +96,16 @@ public class JdbcUserRepository implements IUserRepository {
 
     @Override
     public void remove(UserId userId) {
-        //todo: implement remove method
-        throw new UnsupportedOperationException("Remove is not yet implemented");
+        try {
+            Connection con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement("DELETE FROM User WHERE id=?");
+            ps.setString(1, userId.asString());
+
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            //todo: log/handle error
+            System.out.println(ex);
+        }
     }
 
     @Override
