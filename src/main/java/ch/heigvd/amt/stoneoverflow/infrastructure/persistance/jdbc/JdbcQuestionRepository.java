@@ -50,9 +50,52 @@ public class JdbcQuestionRepository implements IQuestionRepository {
         return questions;
     }
 
+    private String getQuerySQL(String search, String sortFieldName, boolean isSortDescending) {
+        String direction = isSortDescending ? "DESC" : "ASC";
+
+        if (search.isEmpty()) {
+            return String.format("SELECT * FROM vQuestion ORDER BY %s %s",
+                    sortFieldName,
+                    direction);
+        } else {
+            return String.format("SELECT * FROM vQuestion WHERE title LIKE ? ORDER BY %s %s",
+                    sortFieldName,
+                    direction);
+        }
+    }
+
+    private PreparedStatement getQueryStatement(Connection con, QuestionQuery query) throws SQLException {
+        PreparedStatement ps = con.prepareStatement(getQuerySQL(
+                query.getSearchCondition(),
+                query.getSortBy().getSqlFieldName(),
+                query.isSortDescending())
+        );
+
+        if (!query.getSearchCondition().isEmpty())
+            ps.setString(1, "%" + query.getSearchCondition() + "%");
+
+        return ps;
+    }
+
     @Override
     public Collection<Question> find(QuestionQuery questionQuery) {
-        return findAll();
+        Collection<Question> questions = new LinkedList<>();
+
+        try {
+            Connection con = dataSource.getConnection();
+
+            PreparedStatement psQuestion = getQueryStatement(con, questionQuery);
+            ResultSet rsQuestion = psQuestion.executeQuery();
+
+            questions.addAll(resultSetToQuestions(rsQuestion));
+            psQuestion.close();
+            con.close();
+        } catch (SQLException ex) {
+            //todo: log/handle error
+            System.out.println(ex);
+        }
+
+        return questions;
     }
 
     @Override
@@ -68,9 +111,10 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.setDate(5, new Date(question.getDate().getTime()));
             ps.executeUpdate();
 
-            ps = con.prepareStatement("INSERT INTO Question VALUES (?, ?)");
+            ps = con.prepareStatement("INSERT INTO Question VALUES (?, ?, ?)");
             ps.setString(1, question.getId().asString());
             ps.setString(2, question.getTitle());
+            ps.setInt(3, question.getNbViews());
             ps.executeUpdate();
 
             ps.close();
