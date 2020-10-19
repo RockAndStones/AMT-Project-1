@@ -6,6 +6,7 @@ import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
+import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.exception.DataCorruptionException;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
@@ -27,6 +28,26 @@ public class JdbcQuestionRepository implements IQuestionRepository {
 
     public JdbcQuestionRepository(DataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    private Collection<Question> resultSetToQuestions(ResultSet rs) throws SQLException {
+        Collection<Question> questions = new LinkedList<>();
+
+        while(rs.next()) {
+            Question q = Question.builder()
+                    .id(new QuestionId(rs.getString("id")))
+                    .title(rs.getString("title"))
+                    .description(rs.getString("description"))
+                    .creator(rs.getString("creator"))
+                    .creatorId(new UserId(rs.getString("creatorId")))
+                    .nbViews(rs.getInt("nbViews"))
+                    .nbVotes(rs.getInt("nbVotes"))
+                    .date(rs.getDate("date"))
+                    .build();
+            questions.add(q);
+        }
+
+        return questions;
     }
 
     @Override
@@ -99,24 +120,16 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.setString(1, questionId.asString());
 
             ResultSet rs = ps.executeQuery();
-            if (!rs.next())
+            Collection<Question> questions = resultSetToQuestions(rs);
+            if (questions.isEmpty())
                 return Optional.empty();
-
-            Question q = Question.builder()
-                    .id(new QuestionId(rs.getString("id")))
-                    .title(rs.getString("title"))
-                    .description(rs.getString("description"))
-                    .creator(rs.getString("creator"))
-                    .creatorId(new UserId(rs.getString("creatorId")))
-                    .nbVotes(rs.getInt("nbVotes"))
-                    .nbViews(rs.getInt("nbViews"))
-                    .date(rs.getDate("date"))
-                    .build();
+            else if (questions.size() > 1)
+                throw new DataCorruptionException("Data store is corrupted. More than one question with the same id");
 
             ps.close();
             con.close();
 
-            return Optional.of(q);
+            return questions.stream().findFirst();
         } catch (SQLException ex) {
             //todo: log/handle error
             System.out.println(ex);
@@ -135,19 +148,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             PreparedStatement psQuestion = con.prepareStatement("SELECT * FROM vQuestion");
             ResultSet rsQuestion = psQuestion.executeQuery();
 
-            while(rsQuestion.next()) {
-                Question q = Question.builder()
-                        .id(new QuestionId(rsQuestion.getString("id")))
-                        .title(rsQuestion.getString("title"))
-                        .description(rsQuestion.getString("description"))
-                        .creator(rsQuestion.getString("creator"))
-                        .creatorId(new UserId(rsQuestion.getString("creatorId")))
-                        .nbViews(rsQuestion.getInt("nbViews"))
-                        .nbVotes(rsQuestion.getInt("nbVotes"))
-                        .date(rsQuestion.getDate("date"))
-                        .build();
-                questions.add(q);
-            }
+            questions.addAll(resultSetToQuestions(rsQuestion));
             psQuestion.close();
             con.close();
         } catch (SQLException ex) {
