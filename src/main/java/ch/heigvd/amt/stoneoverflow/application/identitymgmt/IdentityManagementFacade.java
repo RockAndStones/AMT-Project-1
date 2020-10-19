@@ -65,6 +65,9 @@ public class IdentityManagementFacade {
     }
 
     public AuthenticatedUserDTO update(UpdateProfileCommand updateProfileCommand) throws UpdateProfileFailedException {
+        if(updateProfileCommand.getOldUser() == null){
+            throw new UpdateProfileFailedException("User is not authenticated");
+        }
         // Boolean that will indicated if a new password has been entered
         boolean newPassword = false;
         // TODO refactor

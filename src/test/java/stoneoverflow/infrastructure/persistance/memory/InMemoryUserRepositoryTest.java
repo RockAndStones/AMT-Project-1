@@ -145,4 +145,30 @@ public class InMemoryUserRepositoryTest {
         inMemoryUserRepository.remove(u.getId());
         assertEquals(inMemoryUserRepository.findAll().size(), 0);
     }
+
+    @Test
+    public void updateUser() {
+        User u = User.builder()
+                .username("test")
+                .email("test@test.com")
+                .firstName("First name")
+                .lastName("Last name")
+                .plaintextPassword("pass")
+                .build();
+        inMemoryUserRepository.save(u);
+
+        User updated = User.builder()
+                .id(u.getId())
+                .username("MyUpdatedTest")
+                .email("test@test.com")
+                .firstName("First name")
+                .lastName("Last name")
+                .plaintextPassword("P@assword")
+                .build();
+
+        inMemoryUserRepository.update(updated);
+
+        assertEquals(inMemoryUserRepository.findAll().size(), 1);
+        assertEquals(inMemoryUserRepository.findById(u.getId()).get(), updated);
+    }
 }
