@@ -15,7 +15,11 @@ public class UserProfilePageServlet extends HttpServlet {
         String errorMessage = (String)request.getSession().getAttribute("errorMessage");
         request.getSession().removeAttribute("errorMessage");
 
+        String message = (String)request.getSession().getAttribute("message");
+        request.getSession().removeAttribute("message");
+
         request.setAttribute("errorMessage", errorMessage);
+        request.setAttribute("message", message);
         request.getRequestDispatcher("/WEB-INF/views/profile.jsp").forward(request, response);
     }
 }

@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Profile</title>
+    <title>User Profile</title>
     <link href="assets/css/custom.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/styles.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/normalize.css" rel="stylesheet" type="text/css"/>
@@ -28,39 +28,42 @@
     <div class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-900 leading-normal">
         <!-- Update Section -->
         <div id="registerSection" class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
-            <p id="registerLabel" class="text-center text-3xl">Profile Page</p>
+            <p id="registerLabel" class="text-center text-3xl">Your Profile</p>
             <form action="${pageContext.request.contextPath}/updateUser.do" method="POST" class="flex flex-col pt-3 md:pt-8">
                 <c:if test="${errorMessage != null}">
                     <p class="text-center text-xl text-red-700">${errorMessage}</p>
                 </c:if>
+                <c:if test="${message != null}">
+                    <p class="text-center text-xl text-green-700">${message}</p>
+                </c:if>
 
                 <div class="flex flex-col pt-4">
-                    <label for="registerUsername" class="text-lg">Username</label>
-                    <input type="text" id="registerUsername" name="username" placeholder="Your awesome username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                    <label for="updateUsername" class="text-lg">Username</label>
+                    <input type="text" id="updateUsername" name="username" placeholder="Your awesome username" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
                     value="<c:if test="${sessionScope.authenticatedUser != null}">${sessionScope.authenticatedUser.username}</c:if>">
                 </div>
 
                 <div class="flex flex-col pt-4">
-                    <label for="registerUsername" class="text-lg">Email address</label>
-                    <input type="email" id="registerEmail" name="email"  placeholder="Your email address" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                    <label for="updateEmail" class="text-lg">Email address</label>
+                    <input type="email" id="updateEmail" name="email"  placeholder="Your email address" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
                            value="<c:if test="${sessionScope.authenticatedUser != null}">${sessionScope.authenticatedUser.email}</c:if>">
                 </div>
 
                 <div class="flex flex-col pt-4">
-                    <label for="registerUsername" class="text-lg">First name</label>
-                    <input type="text" id="registerFirstName" name="firstName" placeholder="Your first name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                    <label for="updateFirstName" class="text-lg">First name</label>
+                    <input type="text" id="updateFirstName" name="firstName" placeholder="Your first name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
                            value="<c:if test="${sessionScope.authenticatedUser != null}">${sessionScope.authenticatedUser.firstName}</c:if>">
                 </div>
 
                 <div class="flex flex-col pt-4">
-                    <label for="registerUsername" class="text-lg">Last name</label>
-                    <input type="text" id="registerLastName" name="lastName" placeholder="Your last name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
+                    <label for="updateLastName" class="text-lg">Last name</label>
+                    <input type="text" id="updateLastName" name="lastName" placeholder="Your last name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"
                            value="<c:if test="${sessionScope.authenticatedUser != null}">${sessionScope.authenticatedUser.lastName}</c:if>">
                 </div>
 
                 <div class="flex flex-col pt-4">
-                    <label for="registerPassword" class="text-lg">Password</label>
-                    <input type="password" id="registerPassword" name="password" placeholder="New Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                    <label for="updatePassword" class="text-lg">Password</label>
+                    <input type="password" id="updatePassword" name="password" placeholder="New Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
 
                 <div class="flex flex-col pt-4">
@@ -68,8 +71,8 @@
                     <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm new Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
 
-                <input type="submit" value="Update" class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8">
-                <input type="submit" value="Cancel" formaction="home" class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8">
+                <input type="submit" value="Update" class="bg-black text-white font-bold text-lg hover:bg-gray-300 p-2 mt-8">
+                <input type="submit" value="Cancel" formaction="home" class="bg-black text-white font-bold text-lg hover:bg-gray-300 p-2 mt-8">
             </form>
         </div>
     </div>

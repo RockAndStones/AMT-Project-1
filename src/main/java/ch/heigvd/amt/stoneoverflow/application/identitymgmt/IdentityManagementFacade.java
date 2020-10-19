@@ -5,7 +5,7 @@ import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginCommand;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginFailedException;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.register.RegisterCommand;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.register.RegistrationFailedException;
-import ch.heigvd.amt.stoneoverflow.application.identitymgmt.updateprofile.UpdateCommand;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.updateprofile.UpdateProfileCommand;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.updateprofile.UpdateProfileFailedException;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
@@ -20,6 +20,7 @@ public class IdentityManagementFacade {
     }
 
     public void register(RegisterCommand registerCommand) throws RegistrationFailedException {
+        // TODO refactor by using same class for exceptions with update
         // If passwords are not equals
         if (!registerCommand.getPlaintextPassword().equals(registerCommand.getPlaintextPasswordConfirmation()))
             throw new RegistrationFailedException("Passwords are not equal");
@@ -63,46 +64,50 @@ public class IdentityManagementFacade {
                 .build();
     }
 
-    public AuthenticatedUserDTO update(UpdateCommand updateCommand) throws UpdateProfileFailedException {
+    public AuthenticatedUserDTO update(UpdateProfileCommand updateProfileCommand) throws UpdateProfileFailedException {
+        // Boolean that will indicated if a new password has been entered
         boolean newPassword = false;
         // TODO refactor
-        if(!updateCommand.getPlaintextPassword().isEmpty()) {
+        if(!updateProfileCommand.getPlaintextPassword().isEmpty()) {
             // If passwords are not equals
-            if (!updateCommand.getPlaintextPassword().equals(updateCommand.getPlaintextPasswordConfirmation()))
+            if (!updateProfileCommand.getPlaintextPassword().equals(updateProfileCommand.getPlaintextPasswordConfirmation()))
                 throw new UpdateProfileFailedException("Passwords are not equal");
 
-            if (!isPasswordStrong(updateCommand.getPlaintextPassword()))
+            if (!isPasswordStrong(updateProfileCommand.getPlaintextPassword()))
                 throw new UpdateProfileFailedException("Password does not meet the minimum requirements " +
                         "(8 characters, 1 lower case, 1 upper case, 1 number, 1 special character)");
 
             newPassword = true;
         }
 
-        if(!updateCommand.getOldUser().getUsername().equals(updateCommand.getUsername())) {
-            Optional<User> existingUsername = userRepository.findByUsername(updateCommand.getUsername());
+        // CHeck if the username is different and check in the repository if he exists
+        if(!updateProfileCommand.getOldUser().getUsername().equals(updateProfileCommand.getUsername())) {
+            Optional<User> existingUsername = userRepository.findByUsername(updateProfileCommand.getUsername());
             if (existingUsername.isPresent())
                 throw new UpdateProfileFailedException("Username is already taken");
         }
 
         try {
             User updatedUser;
+            // If no new password is entered we use the hashed password value in the builder
             if(!newPassword) {
                 updatedUser = User.builder()
-                        .id(updateCommand.getOldUser().getId())
-                        .username(updateCommand.getUsername())
-                        .email(updateCommand.getEmail())
-                        .firstName(updateCommand.getFirstName())
-                        .lastName(updateCommand.getLastName())
-                        .hashedPassword(userRepository.findByUsername(updateCommand.getOldUser().getUsername()).get().getHashedPassword())
+                        .id(updateProfileCommand.getOldUser().getId())
+                        .username(updateProfileCommand.getUsername())
+                        .email(updateProfileCommand.getEmail())
+                        .firstName(updateProfileCommand.getFirstName())
+                        .lastName(updateProfileCommand.getLastName())
+                        .hashedPassword(userRepository.findByUsername(updateProfileCommand.getOldUser().getUsername()).get().getHashedPassword())
                         .build();
             } else{
+                // If a new password is entered we use the plaintextPassword function in the builder
                 updatedUser = User.builder()
-                        .id(updateCommand.getOldUser().getId())
-                        .username(updateCommand.getUsername())
-                        .email(updateCommand.getEmail())
-                        .firstName(updateCommand.getFirstName())
-                        .lastName(updateCommand.getLastName())
-                        .plaintextPassword(updateCommand.getPlaintextPassword())
+                        .id(updateProfileCommand.getOldUser().getId())
+                        .username(updateProfileCommand.getUsername())
+                        .email(updateProfileCommand.getEmail())
+                        .firstName(updateProfileCommand.getFirstName())
+                        .lastName(updateProfileCommand.getLastName())
+                        .plaintextPassword(updateProfileCommand.getPlaintextPassword())
                         .build();
             }
 

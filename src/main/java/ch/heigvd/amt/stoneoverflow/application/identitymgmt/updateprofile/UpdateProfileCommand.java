@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class UpdateCommand {
+public class UpdateProfileCommand {
     private AuthenticatedUserDTO oldUser;
     private String username;
     private String email;
