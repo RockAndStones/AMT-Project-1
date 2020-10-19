@@ -4,6 +4,7 @@ import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
+import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory.InMemoryRepository;
 
 public class StatisticsFacade {
     private final IQuestionRepository questionRepository;
@@ -16,5 +17,13 @@ public class StatisticsFacade {
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
         this.answerRepository = answerRepository;
+    }
+
+    public StatisticsDTO getGlobalStatistics() {
+        return StatisticsDTO.builder()
+                .nbQuestions(questionRepository.getRepositorySize())
+                .nbUsers(userRepository.getRepositorySize())
+                .nbViews(0)
+                .build();
     }
 }
