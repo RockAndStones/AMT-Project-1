@@ -15,6 +15,7 @@ import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
+import lombok.Getter;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -35,11 +36,11 @@ public class ServiceRegistry {
     @Inject @Named("InMemoryCommentRepository")
     ICommentRepository commentRepository;
 
-    IdentityManagementFacade identityManagementFacade;
-    QuestionFacade questionFacade;
-    AnswerFacade  answerFacade;
-    CommentFacade commentFacade;
-    StatisticsFacade statisticsFacade;
+    @Getter IdentityManagementFacade identityManagementFacade;
+    @Getter QuestionFacade questionFacade;
+    @Getter AnswerFacade  answerFacade;
+    @Getter CommentFacade commentFacade;
+    @Getter StatisticsFacade statisticsFacade;
 
     @PostConstruct
     private void initDefaultValues() {
@@ -164,25 +165,5 @@ public class ServiceRegistry {
         commentRepository.save(c2);
         commentRepository.save(c3);
         commentRepository.save(c4);
-    }
-
-    public QuestionFacade getQuestionFacade() {
-        return questionFacade;
-    }
-
-    public AnswerFacade getAnswerFacade() {
-        return answerFacade;
-    }
-
-    public CommentFacade getCommentFacade() {
-        return commentFacade;
-    }
-
-    public IdentityManagementFacade getIdentityManagementFacade() {
-        return identityManagementFacade;
-    }
-
-    public StatisticsFacade getStatisticsFacade() {
-        return statisticsFacade;
     }
 }
