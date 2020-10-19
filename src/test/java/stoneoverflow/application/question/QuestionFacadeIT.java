@@ -2,10 +2,7 @@ package stoneoverflow.application.question;
 
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
-import ch.heigvd.amt.stoneoverflow.application.question.AddQuestionCommand;
-import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
-import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
-import ch.heigvd.amt.stoneoverflow.application.question.QuestionsDTO;
+import ch.heigvd.amt.stoneoverflow.application.question.*;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -89,7 +86,7 @@ public class QuestionFacadeIT {
         // Create the expected result
         // Recover the uuid from the question in the repository
         QuestionsDTO.QuestionDTO questionDTO = QuestionsDTO.QuestionDTO.builder()
-                .uuid(questionFacade.getQuestions(QuestionQuery.builder().byDate(false).type(QuestionType.SQL).build())
+                .uuid(questionFacade.getQuestions(QuestionQuery.builder().sortBy(QuestionQuerySortBy.DATE).type(QuestionType.SQL).build())
                         .getQuestions().get(0).getUuid())
                 .title("My SQL Question")
                 .description("No content")
@@ -103,7 +100,7 @@ public class QuestionFacadeIT {
         AddQuestionCommand questionCommand = AddQuestionCommand.builder().build();
         questionFacade.addQuestion(questionCommand);
 
-        assertEquals(questionFacade.getQuestions(QuestionQuery.builder().byDate(false).type(QuestionType.SQL).build()).getQuestions().get(0),
+        assertEquals(questionFacade.getQuestions(QuestionQuery.builder().sortBy(QuestionQuerySortBy.DATE).type(QuestionType.SQL).build()).getQuestions().get(0),
                 questionDTO);
     }
 

@@ -13,16 +13,10 @@ public class QuestionQuery {
     private QuestionType type = QuestionType.UNCLASSIFIED;
 
     @Builder.Default
-    private boolean byDate = false;
+    private QuestionQuerySortBy sortBy = QuestionQuerySortBy.DATE;
 
     @Builder.Default
-    private boolean byNbResponse = false;
-
-    @Builder.Default
-    private boolean byNbVotes = false;
-
-    @Builder.Default
-    private boolean byNbViews = false;
+    private boolean sortDescending = true;
 
     @Builder.Default
     private String searchCondition = "";
