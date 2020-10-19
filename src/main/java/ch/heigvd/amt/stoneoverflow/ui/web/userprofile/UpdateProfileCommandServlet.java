@@ -28,6 +28,11 @@ public class UpdateProfileCommandServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        // If the cancel button is presses redirection to the page home
+        if(req.getParameter("cancel") != null){
+            resp.sendRedirect(req.getContextPath() + "/home");
+        }
+
         AuthenticatedUserDTO user = (AuthenticatedUserDTO) req.getSession().getAttribute("authenticatedUser");
         UpdateProfileCommand updateProfileCommand = UpdateProfileCommand.builder()
                 .oldUser(user)

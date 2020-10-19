@@ -71,8 +71,8 @@
                     <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm new Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
 
-                <input type="submit" value="Update" class="bg-black text-white font-bold text-lg hover:bg-gray-300 p-2 mt-8">
-                <input type="submit" value="Cancel" formaction="home" class="bg-black text-white font-bold text-lg hover:bg-gray-300 p-2 mt-8">
+                <input type="submit" value="Update" name="update" class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8">
+                <input type="submit" value="Cancel" name="cancel" class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8">
             </form>
         </div>
     </div>
