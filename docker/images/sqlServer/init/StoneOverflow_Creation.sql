@@ -113,6 +113,21 @@ CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Comment` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE VIEW vQuestion AS
+SELECT
+    q.id AS 'id',
+    q.title AS 'title',
+    um.description AS 'description',
+    um.idUser AS 'creatorId',
+    u.username AS 'creator',
+    um.nbVotes AS 'nbVotes',
+    q.nbViews AS 'nbViews',
+    um.date AS 'date'
+FROM Question AS q 
+    INNER JOIN UserMessage AS um 
+        ON q.id = um.id
+    INNER JOIN User AS u 
+        ON um.idUser=u.id
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
