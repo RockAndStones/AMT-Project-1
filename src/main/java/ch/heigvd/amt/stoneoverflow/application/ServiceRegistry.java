@@ -5,6 +5,7 @@ import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.IdentityManagementFacade;
+import ch.heigvd.amt.stoneoverflow.application.statistics.StatisticsFacade;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.answer.Answer;
@@ -38,6 +39,7 @@ public class ServiceRegistry {
     QuestionFacade questionFacade;
     AnswerFacade  answerFacade;
     CommentFacade commentFacade;
+    StatisticsFacade statisticsFacade;
 
     @PostConstruct
     private void initDefaultValues() {
@@ -45,6 +47,7 @@ public class ServiceRegistry {
         questionFacade           = new QuestionFacade(questionRepository);
         answerFacade             = new AnswerFacade(answerRepository);
         commentFacade            = new CommentFacade(commentRepository);
+        statisticsFacade         = new StatisticsFacade(questionRepository, userRepository, commentRepository, answerRepository);
 
         // Add default users
         User u1 = User.builder()
@@ -177,5 +180,9 @@ public class ServiceRegistry {
 
     public IdentityManagementFacade getIdentityManagementFacade() {
         return identityManagementFacade;
+    }
+
+    public StatisticsFacade getStatisticsFacade() {
+        return statisticsFacade;
     }
 }
