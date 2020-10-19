@@ -23,4 +23,7 @@ public class QuestionQuery {
 
     @Builder.Default
     private boolean byNbViews = false;
+
+    @Builder.Default
+    private String searchCondition = "";
 }
