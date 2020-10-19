@@ -7,6 +7,8 @@ import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginCommand;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginFailedException;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.register.RegisterCommand;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.register.RegistrationFailedException;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.updateprofile.UpdateProfileCommand;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.updateprofile.UpdateProfileFailedException;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -16,6 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
 
 import static org.junit.Assert.*;
 
@@ -30,7 +33,8 @@ public class IdentityManagementFacadeIT {
     private IdentityManagementFacade identityManagementFacade;
 
     private static RegisterCommand registerCommandForLogin;
-    private static final String plaintextPasswordLogin = "P@ssW0rd";
+    private static UpdateProfileCommand lastUpdate;
+    private static final String plaintextPassword = "P@ssW0rd";
 
     @Deployment(testable = true)
     public static WebArchive createDeployment() {
@@ -41,7 +45,7 @@ public class IdentityManagementFacadeIT {
     }
 
     @Before
-    public void initializeIdentityManagementFacade() throws RegistrationFailedException {
+    public void initializeIdentityManagementFacade() throws RegistrationFailedException, LoginFailedException {
         this.identityManagementFacade = serviceRegistry.getIdentityManagementFacade();
 
         registerCommandForLogin = RegisterCommand.builder()
@@ -49,13 +53,38 @@ public class IdentityManagementFacadeIT {
                 .email("mail@mail.com")
                 .firstName("First name")
                 .lastName("Last name")
-                .plaintextPassword(plaintextPasswordLogin)
-                .plaintextPasswordConfirmation(plaintextPasswordLogin)
+                .plaintextPassword(plaintextPassword)
+                .plaintextPasswordConfirmation(plaintextPassword)
                 .build();
+
+        RegisterCommand registerCommandForUpdate = RegisterCommand.builder()
+                .username("MyUpdatedTestUsername")
+                .email("mail@mail.com")
+                .firstName("First name")
+                .lastName("Last name")
+                .plaintextPassword(plaintextPassword)
+                .plaintextPasswordConfirmation(plaintextPassword)
+                .build();
+
         try {
-            this.identityManagementFacade.login(LoginCommand.builder().username("MyTestUsername").plaintextPassword(plaintextPasswordLogin).build());
+            this.identityManagementFacade.login(LoginCommand.builder().username("MyTestUsername").plaintextPassword(plaintextPassword).build());
+            this.identityManagementFacade.login(LoginCommand.builder().username(lastUpdate.getUsername()).plaintextPassword(lastUpdate.getPlaintextPassword()).build());
         } catch (LoginFailedException exception) {
             this.identityManagementFacade.register(registerCommandForLogin);
+            this.identityManagementFacade.register(registerCommandForUpdate);
+
+            lastUpdate = UpdateProfileCommand.builder()
+                    .oldUser(this.identityManagementFacade.login(LoginCommand.builder()
+                            .username(registerCommandForUpdate.getUsername())
+                            .plaintextPassword(plaintextPassword)
+                            .build()))
+                    .username(registerCommandForUpdate.getUsername())
+                    .email(registerCommandForUpdate.getEmail())
+                    .firstName(registerCommandForUpdate.getFirstName())
+                    .lastName(registerCommandForUpdate.getLastName())
+                    .plaintextPassword(registerCommandForUpdate.getPlaintextPassword())
+                    .plaintextPasswordConfirmation(registerCommandForUpdate.getPlaintextPasswordConfirmation())
+                    .build();
         }
     }
 
@@ -131,7 +160,7 @@ public class IdentityManagementFacadeIT {
     public void shouldLoginWithRegisteredUser() throws LoginFailedException {
         LoginCommand loginCommand = LoginCommand.builder()
                 .username(registerCommandForLogin.getUsername())
-                .plaintextPassword(plaintextPasswordLogin)
+                .plaintextPassword(plaintextPassword)
                 .build();
 
         assertNotNull(identityManagementFacade.login(loginCommand));
@@ -141,7 +170,7 @@ public class IdentityManagementFacadeIT {
     public void shouldReturnValidUserDTOOnLogin() throws LoginFailedException {
         LoginCommand loginCommand = LoginCommand.builder()
                 .username(registerCommandForLogin.getUsername())
-                .plaintextPassword(plaintextPasswordLogin)
+                .plaintextPassword(plaintextPassword)
                 .build();
 
         AuthenticatedUserDTO userDTO = identityManagementFacade.login(loginCommand);
@@ -169,5 +198,83 @@ public class IdentityManagementFacadeIT {
                 .build();
 
         identityManagementFacade.login(loginCommand);
+    }
+
+    @Test
+    public void shouldUpdateValidUser() throws LoginFailedException, UpdateProfileFailedException {
+        String username = "shouldUpdateUser";
+
+        lastUpdate = UpdateProfileCommand.builder()
+                .oldUser(lastUpdate.getOldUser())
+                .username(username)
+                .email("shouldUpdateValidUser@mail.com")
+                .firstName("First name")
+                .lastName("Last name")
+                .plaintextPassword("P@ssW0rd2")
+                .plaintextPasswordConfirmation("P@ssW0rd2")
+                .build();
+
+        AuthenticatedUserDTO userDTO = identityManagementFacade.update(lastUpdate);
+
+        assertEquals(userDTO.getUsername(), username);
+        assertEquals(userDTO.getEmail(), lastUpdate.getEmail());
+        assertEquals(userDTO.getFirstName(), lastUpdate.getFirstName());
+        assertEquals(userDTO.getLastName(), lastUpdate.getLastName());
+
+        assertNotNull(identityManagementFacade.login(LoginCommand.builder().username("shouldUpdateUser").plaintextPassword("P@ssW0rd2").build()));
+    }
+
+    @Test(expected = UpdateProfileFailedException.class)
+    public void shouldNotUpdateUserWithUsedUsername() throws UpdateProfileFailedException {
+        String username = "MyTestUsername";
+        UpdateProfileCommand updateProfileCommand = UpdateProfileCommand.builder()
+                .oldUser(lastUpdate.getOldUser())
+                .username(username)
+                .email("shouldNotRegisterDuplicatedUser@mail.com")
+                .firstName("First name")
+                .lastName("Last name")
+                .plaintextPassword("P@ssW0rd")
+                .plaintextPasswordConfirmation("P@ssW0rd")
+                .build();
+
+        identityManagementFacade.update(updateProfileCommand);
+    }
+
+    @Test(expected = UpdateProfileFailedException.class)
+    public void shouldNotUpdateUserWithMissingInfo() throws UpdateProfileFailedException {
+        String username = "shouldNotUpdateUserWithMissingInfo";
+        UpdateProfileCommand updateProfileCommand = UpdateProfileCommand.builder()
+                .username(username)
+                .email("shouldNotUpdateUserWithMissingInfo@mail.com")
+                .plaintextPassword("P@ssW0rd")
+                .plaintextPasswordConfirmation("P@ssW0rd")
+                .build();
+        identityManagementFacade.update(updateProfileCommand);
+    }
+
+    @Test(expected = UpdateProfileFailedException.class)
+    public void shouldNotUpdateUserWithDifferentPasswords() throws UpdateProfileFailedException {
+        UpdateProfileCommand updateProfileCommand = UpdateProfileCommand.builder()
+                .oldUser(lastUpdate.getOldUser())
+                .username("shouldNotUpdateUserWithDifferentPasswords")
+                .email("shouldNotUpdateUserWithDifferentPasswords@mail.com")
+                .plaintextPassword("P@ssW0rd")
+                .plaintextPasswordConfirmation("P4ssW0rd")
+                .build();
+
+        identityManagementFacade.update(updateProfileCommand);
+    }
+
+    @Test(expected = UpdateProfileFailedException.class)
+    public void shouldNotUpdateUserWithWeakPassword() throws UpdateProfileFailedException {
+        UpdateProfileCommand updateProfileCommand = UpdateProfileCommand.builder()
+                .oldUser(lastUpdate.getOldUser())
+                .username("shouldNotUpdateUserWithWeakPassword")
+                .email("shouldNotUpdateUserWithWeakPassword@mail.com")
+                .plaintextPassword("Weak1994")
+                .plaintextPasswordConfirmation("Weak1994")
+                .build();
+
+        identityManagementFacade.update(updateProfileCommand);
     }
 }
