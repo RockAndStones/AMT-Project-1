@@ -25,6 +25,7 @@ public class QuestionFacade {
                 creator(command.getCreator()).
                 nbVotes(command.getNbVotes()).
                 nbViews(command.getNbViews()).
+                date(command.getDate()).
                 questionType(command.getType()).build();
         questionRepository.save(addedQuestion);
     }
