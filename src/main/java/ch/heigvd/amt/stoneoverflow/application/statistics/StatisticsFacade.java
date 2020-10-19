@@ -6,10 +6,10 @@ import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 
 public class StatisticsFacade {
-    private IQuestionRepository questionRepository;
-    private IUserRepository userRepository;
-    private ICommentRepository commentRepository;
-    private IAnswerRepository answerRepository;
+    private final IQuestionRepository questionRepository;
+    private final IUserRepository userRepository;
+    private final ICommentRepository commentRepository;
+    private final IAnswerRepository answerRepository;
 
     public StatisticsFacade(IQuestionRepository questionRepository, IUserRepository userRepository, ICommentRepository commentRepository, IAnswerRepository answerRepository) {
         this.questionRepository = questionRepository;
