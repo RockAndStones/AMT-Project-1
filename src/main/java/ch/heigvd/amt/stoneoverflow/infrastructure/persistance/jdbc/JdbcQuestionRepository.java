@@ -42,7 +42,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
                     .creatorId(new UserId(rs.getString("creatorId")))
                     .nbViews(rs.getInt("nbViews"))
                     .nbVotes(rs.getInt("nbVotes"))
-                    .date(rs.getDate("date"))
+                    .date(new Date(rs.getTimestamp("date").getTime()))
                     .build();
             questions.add(q);
         }
@@ -108,7 +108,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.setString(2, question.getCreatorId().asString());
             ps.setString(3, question.getDescription());
             ps.setInt(4, question.getNbVotes());
-            ps.setDate(5, new Date(question.getDate().getTime()));
+            ps.setTimestamp(5, new Timestamp(question.getDate().getTime()));
             ps.executeUpdate();
 
             ps = con.prepareStatement("INSERT INTO Question VALUES (?, ?, ?)");
