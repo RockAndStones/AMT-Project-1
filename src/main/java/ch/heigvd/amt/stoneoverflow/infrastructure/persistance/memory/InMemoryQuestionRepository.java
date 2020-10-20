@@ -10,10 +10,8 @@ import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -37,6 +35,9 @@ public class InMemoryQuestionRepository extends InMemoryRepository<Question, Que
         Stream<Question> stream = allQuestions.stream().sorted(comparator);
         if (questionQuery.getType() != QuestionType.UNCLASSIFIED)
             stream = stream.filter(q -> q.getQuestionType() == questionQuery.getType());
+
+        if (!questionQuery.getSearchCondition().isEmpty())
+            stream = stream.filter(q -> q.getTitle().contains(questionQuery.getSearchCondition()));
 
         allQuestions = stream.collect(Collectors.toList());
         return allQuestions;
