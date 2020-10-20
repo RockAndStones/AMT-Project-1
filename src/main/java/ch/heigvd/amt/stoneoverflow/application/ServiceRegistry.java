@@ -5,6 +5,7 @@ import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.IdentityManagementFacade;
+import ch.heigvd.amt.stoneoverflow.application.statistics.StatisticsFacade;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.answer.Answer;
@@ -14,6 +15,7 @@ import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
+import lombok.Getter;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -34,10 +36,11 @@ public class ServiceRegistry {
     @Inject @Named("InMemoryCommentRepository")
     ICommentRepository commentRepository;
 
-    IdentityManagementFacade identityManagementFacade;
-    QuestionFacade questionFacade;
-    AnswerFacade  answerFacade;
-    CommentFacade commentFacade;
+    @Getter IdentityManagementFacade identityManagementFacade;
+    @Getter QuestionFacade questionFacade;
+    @Getter AnswerFacade  answerFacade;
+    @Getter CommentFacade commentFacade;
+    @Getter StatisticsFacade statisticsFacade;
 
     @PostConstruct
     private void initDefaultValues() {
@@ -45,6 +48,7 @@ public class ServiceRegistry {
         questionFacade           = new QuestionFacade(questionRepository);
         answerFacade             = new AnswerFacade(answerRepository);
         commentFacade            = new CommentFacade(commentRepository);
+        statisticsFacade         = new StatisticsFacade(questionRepository, userRepository, commentRepository, answerRepository);
 
         // Add default users
         User u1 = User.builder()
@@ -161,21 +165,5 @@ public class ServiceRegistry {
         commentRepository.save(c2);
         commentRepository.save(c3);
         commentRepository.save(c4);
-    }
-
-    public QuestionFacade getQuestionFacade() {
-        return questionFacade;
-    }
-
-    public AnswerFacade getAnswerFacade() {
-        return answerFacade;
-    }
-
-    public CommentFacade getCommentFacade() {
-        return commentFacade;
-    }
-
-    public IdentityManagementFacade getIdentityManagementFacade() {
-        return identityManagementFacade;
     }
 }
