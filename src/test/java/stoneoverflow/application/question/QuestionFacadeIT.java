@@ -2,6 +2,9 @@ package stoneoverflow.application.question;
 
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginCommand;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginFailedException;
 import ch.heigvd.amt.stoneoverflow.application.question.*;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -28,6 +31,7 @@ public class QuestionFacadeIT {
     @Inject
     private ServiceRegistry serviceRegistry;
 
+    private AuthenticatedUserDTO testUser;
     private QuestionFacade questionFacade;
     private DateDTO questionDate;
 
@@ -40,19 +44,25 @@ public class QuestionFacadeIT {
     }
 
     @Before
-    public void init(){
+    public void init() throws LoginFailedException {
+        testUser = serviceRegistry.getIdentityManagementFacade().login(LoginCommand.builder()
+                .username("test")
+                .plaintextPassword("test")
+                .build());
+
         questionFacade = serviceRegistry.getQuestionFacade();
         this.questionDate = new DateDTO(new Date(System.currentTimeMillis()));
     }
 
     @Test
     public void shouldAddQuestion() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
         int index = questionFacade.getQuestions(QuestionQuery.builder().build()).getQuestions().size();
         // Add question in repository
         AddQuestionCommand questionCommand = AddQuestionCommand.builder()
-                .date(questionDate).build();
+                .creator(testUser.getUsername())
+                .creatorId(testUser.getId())
+                .date(questionDate)
+                .build();
         questionFacade.addQuestion(questionCommand);
 
         // Create the expected result
@@ -62,7 +72,7 @@ public class QuestionFacadeIT {
                         .getQuestions().get(index).getUuid())
                 .title("My default question")
                 .description("No content")
-                .creator("Anonymous")
+                .creator("test")
                 .nbVotes(0)
                 .nbViews(0)
                 .date(questionDate)
@@ -74,13 +84,14 @@ public class QuestionFacadeIT {
 
     @Test
     public void shouldGetOnlySQLQuestions() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
         // Add SQL question in repository
         AddQuestionCommand questionCommandSQL = AddQuestionCommand.builder()
                 .title("My SQL Question")
+                .creator(testUser.getUsername())
+                .creatorId(testUser.getId())
                 .type(QuestionType.SQL)
-                .date(questionDate).build();
+                .date(questionDate)
+                .build();
         questionFacade.addQuestion(questionCommandSQL);
 
         // Create the expected result
@@ -90,7 +101,7 @@ public class QuestionFacadeIT {
                         .getQuestions().get(0).getUuid())
                 .title("My SQL Question")
                 .description("No content")
-                .creator("Anonymous")
+                .creator(testUser.getUsername())
                 .nbVotes(0)
                 .nbViews(0)
                 .date(questionDate)
@@ -100,19 +111,16 @@ public class QuestionFacadeIT {
         AddQuestionCommand questionCommand = AddQuestionCommand.builder().build();
         questionFacade.addQuestion(questionCommand);
 
-        assertEquals(questionFacade.getQuestions(QuestionQuery.builder().sortBy(QuestionQuerySortBy.DATE).type(QuestionType.SQL).build()).getQuestions().get(0),
-                questionDTO);
+        QuestionsDTO.QuestionDTO q = questionFacade.getQuestions(QuestionQuery.builder().sortBy(QuestionQuerySortBy.DATE).type(QuestionType.SQL).build()).getQuestions().get(0);
+        assertEquals(questionDTO.getUuid(), q.getUuid());
     }
 
     @Test
     public void shouldGetAllQuestions() {
-        AddQuestionCommand questionCommand = AddQuestionCommand.builder().build();
-        QuestionsDTO.QuestionDTO questionDTO = QuestionsDTO.QuestionDTO.builder()
-                .title("My default question")
-                .description("No content")
-                .creator("Anonymous")
-                .nbVotes(0)
-                .type(QuestionType.UNCLASSIFIED.name()).build();
+        AddQuestionCommand questionCommand = AddQuestionCommand.builder()
+                .creator(testUser.getUsername())
+                .creatorId(testUser.getId())
+                .build();
 
         int sizeBefore = questionFacade.getQuestions(QuestionQuery.builder().build()).getQuestions().size();
 
