@@ -6,6 +6,7 @@ import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
+import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.exception.DataCorruptionException;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
@@ -29,9 +30,72 @@ public class JdbcQuestionRepository implements IQuestionRepository {
         this.dataSource = dataSource;
     }
 
+    private Collection<Question> resultSetToQuestions(ResultSet rs) throws SQLException {
+        Collection<Question> questions = new LinkedList<>();
+
+        while(rs.next()) {
+            Question q = Question.builder()
+                    .id(new QuestionId(rs.getString("id")))
+                    .title(rs.getString("title"))
+                    .description(rs.getString("description"))
+                    .creator(rs.getString("creator"))
+                    .creatorId(new UserId(rs.getString("creatorId")))
+                    .nbViews(rs.getInt("nbViews"))
+                    .nbVotes(rs.getInt("nbVotes"))
+                    .date(new Date(rs.getTimestamp("date").getTime()))
+                    .build();
+            questions.add(q);
+        }
+
+        return questions;
+    }
+
+    private String getQuerySQL(String search, String sortFieldName, boolean isSortDescending) {
+        String direction = isSortDescending ? "DESC" : "ASC";
+
+        if (search.isEmpty()) {
+            return String.format("SELECT * FROM vQuestion ORDER BY %s %s",
+                    sortFieldName,
+                    direction);
+        } else {
+            return String.format("SELECT * FROM vQuestion WHERE title LIKE ? ORDER BY %s %s",
+                    sortFieldName,
+                    direction);
+        }
+    }
+
+    private PreparedStatement getQueryStatement(Connection con, QuestionQuery query) throws SQLException {
+        PreparedStatement ps = con.prepareStatement(getQuerySQL(
+                query.getSearchCondition(),
+                query.getSortBy().getSqlFieldName(),
+                query.isSortDescending())
+        );
+
+        if (!query.getSearchCondition().isEmpty())
+            ps.setString(1, "%" + query.getSearchCondition() + "%");
+
+        return ps;
+    }
+
     @Override
     public Collection<Question> find(QuestionQuery questionQuery) {
-        return findAll();
+        Collection<Question> questions = new LinkedList<>();
+
+        try {
+            Connection con = dataSource.getConnection();
+
+            PreparedStatement psQuestion = getQueryStatement(con, questionQuery);
+            ResultSet rsQuestion = psQuestion.executeQuery();
+
+            questions.addAll(resultSetToQuestions(rsQuestion));
+            psQuestion.close();
+            con.close();
+        } catch (SQLException ex) {
+            //todo: log/handle error
+            System.out.println(ex);
+        }
+
+        return questions;
     }
 
     @Override
@@ -44,12 +108,13 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.setString(2, question.getCreatorId().asString());
             ps.setString(3, question.getDescription());
             ps.setInt(4, question.getNbVotes());
-            ps.setDate(5, new Date(question.getDate().getTime()));
+            ps.setTimestamp(5, new Timestamp(question.getDate().getTime()));
             ps.executeUpdate();
 
-            ps = con.prepareStatement("INSERT INTO Question VALUES (?, ?)");
+            ps = con.prepareStatement("INSERT INTO Question VALUES (?, ?, ?)");
             ps.setString(1, question.getId().asString());
             ps.setString(2, question.getTitle());
+            ps.setInt(3, question.getNbViews());
             ps.executeUpdate();
 
             ps.close();
@@ -95,30 +160,20 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             Connection con = dataSource.getConnection();
 
             PreparedStatement ps = con.prepareStatement(
-                    "SELECT q.id, q.title, q.nbViews, u.username, um.description, um.nbVotes, um.date " +
-                            "FROM Question AS q " +
-                            "INNER JOIN UserMessage AS um on q.id = um.id " +
-                            "INNER JOIN User AS u ON um.idUser=u.id WHERE q.id=?");
+                    "SELECT * FROM vQuestion WHERE id=?");
             ps.setString(1, questionId.asString());
 
             ResultSet rs = ps.executeQuery();
-            if (!rs.next())
+            Collection<Question> questions = resultSetToQuestions(rs);
+            if (questions.isEmpty())
                 return Optional.empty();
-
-            Question q = Question.builder()
-                    .id(new QuestionId(rs.getString("id")))
-                    .title(rs.getString("title"))
-                    .description(rs.getString("description"))
-                    .creator(rs.getString("username"))
-                    .nbVotes(rs.getInt("nbVotes"))
-                    .nbViews(rs.getInt("nbViews"))
-                    .date(rs.getDate("date"))
-                    .build();
+            else if (questions.size() > 1)
+                throw new DataCorruptionException("Data store is corrupted. More than one question with the same id");
 
             ps.close();
             con.close();
 
-            return Optional.of(q);
+            return questions.stream().findFirst();
         } catch (SQLException ex) {
             //todo: log/handle error
             System.out.println(ex);
@@ -134,25 +189,10 @@ public class JdbcQuestionRepository implements IQuestionRepository {
         try {
             Connection con = dataSource.getConnection();
 
-            PreparedStatement psQuestion = con.prepareStatement("SELECT q.id, q.title, q.nbViews, u.username, um.idUser, um.description, um.nbVotes, um.date " +
-                                                                    "FROM Question AS q " +
-                                                                    "INNER JOIN UserMessage AS um on q.id = um.id " +
-                                                                    "INNER JOIN User AS u ON um.idUser=u.id");
+            PreparedStatement psQuestion = con.prepareStatement("SELECT * FROM vQuestion");
             ResultSet rsQuestion = psQuestion.executeQuery();
 
-            while(rsQuestion.next()) {
-                Question q = Question.builder()
-                        .id(new QuestionId(rsQuestion.getString("id")))
-                        .title(rsQuestion.getString("title"))
-                        .description(rsQuestion.getString("description"))
-                        .creator(rsQuestion.getString("username"))
-                        .creatorId(new UserId(rsQuestion.getString("idUser")))
-                        .nbViews(rsQuestion.getInt("nbViews"))
-                        .nbVotes(rsQuestion.getInt("nbVotes"))
-                        .date(rsQuestion.getDate("date"))
-                        .build();
-                questions.add(q);
-            }
+            questions.addAll(resultSetToQuestions(rsQuestion));
             psQuestion.close();
             con.close();
         } catch (SQLException ex) {
