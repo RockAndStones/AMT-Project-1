@@ -51,7 +51,7 @@ public class QuestionQueryServlet extends HttpServlet {
             query.setSearchCondition(searchQuery);
 
         QuestionsDTO questionsDTO = questionFacade.getQuestions(query, startQuestion, limit);
-        req.setAttribute("questions", (List<QuestionsDTO.QuestionDTO>) questionsDTO.getQuestions());
+        req.setAttribute("questions", questionsDTO);
         req.setAttribute("nbQuestions", size);
         req.setAttribute("totalPages", totalPages);
         req.setAttribute("startQuestion", startQuestion);
