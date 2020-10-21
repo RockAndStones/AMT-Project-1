@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(name="QuestionsPageServlet", urlPatterns =  {"", "/home"})
 public class QuestionQueryServlet extends HttpServlet {
@@ -36,11 +35,12 @@ public class QuestionQueryServlet extends HttpServlet {
             req.setAttribute("records-limits", req.getParameter("pageSize"));
         }
 
-        int limit = req.getParameter("records-limits") != null ? Integer.parseInt(req.getParameter("records-limits")) : 10;
-        int page = req.getParameter("page") != null ? Integer.parseInt(req.getParameter("page")) : 1;
-        int startQuestion = (page - 1) * limit;
+        int limit = req.getParameter("records-limits") != null ? Integer.parseInt(req.getParameter("records-limits")) : 5;
         int size = questionFacade.getNumberOfQuestions();
-        int totalPages = (int) Math.ceil(size / limit);
+        int totalPages = (int) Math.ceil((double) size / (double) limit);
+        int page = req.getParameter("page") != null && Integer.parseInt(req.getParameter("page")) <= totalPages ?
+                Integer.parseInt(req.getParameter("page")) : 1;
+        int startQuestion = (page - 1) * limit;
 
         QuestionQuery query = QuestionQuery.builder()
                 .sortBy(QuestionQuerySortBy.VOTES)
@@ -54,8 +54,9 @@ public class QuestionQueryServlet extends HttpServlet {
         req.setAttribute("questions", questionsDTO);
         req.setAttribute("nbQuestions", size);
         req.setAttribute("totalPages", totalPages);
-        req.setAttribute("startQuestion", startQuestion);
-        req.setAttribute("lastQuestion", startQuestion + limit);
+        req.setAttribute("page", page);
+        req.setAttribute("startQuestion", startQuestion + 1);
+        req.setAttribute("lastQuestion",startQuestion + limit);
         req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);
     }
 }

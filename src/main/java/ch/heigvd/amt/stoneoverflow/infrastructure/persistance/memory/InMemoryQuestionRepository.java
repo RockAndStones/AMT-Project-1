@@ -43,12 +43,12 @@ public class InMemoryQuestionRepository extends InMemoryRepository<Question, Que
 
 
         List<Question> filteredQuestions = stream.collect(Collectors.toList());
-        // Limit can be greater than the last index
+        // To not be out of bound
         int lastIndex = filteredQuestions.size();
-        if(limit > lastIndex){
-            limit = lastIndex;
+        if(lastIndex > offset + limit){
+            lastIndex = offset + limit;
         }
 
-        return filteredQuestions.subList(offset, limit);
+        return filteredQuestions.subList(offset, lastIndex);
     }
 }
