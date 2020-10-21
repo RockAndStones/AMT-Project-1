@@ -2,6 +2,7 @@ package ch.heigvd.amt.stoneoverflow.ui.web.question;
 
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuerySortBy;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionsDTO;
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name="QuestionsPageServlet", urlPatterns =  {"", "/home"})
 public class QuestionQueryServlet extends HttpServlet {
@@ -39,12 +41,17 @@ public class QuestionQueryServlet extends HttpServlet {
         int startQuestion = (page - 1) * limit;
         int size = questionFacade.getNumberOfQuestions();
         int totalPages = (int) Math.ceil(size / limit);
-        QuestionsDTO questionsDTO = questionFacade.getQuestions(QuestionQuery.builder()
-                .byNbVotes(true)
-                .questionStart(startQuestion)
-                .limit(limit)
-                .build());
-        req.setAttribute("questions", questionsDTO.getQuestions());
+
+        QuestionQuery query = QuestionQuery.builder()
+                .sortBy(QuestionQuerySortBy.VOTES)
+                .build();
+
+        String searchQuery = req.getParameter("s");
+        if (searchQuery != null)
+            query.setSearchCondition(searchQuery);
+
+        QuestionsDTO questionsDTO = questionFacade.getQuestions(query, startQuestion, limit);
+        req.setAttribute("questions", (List<QuestionsDTO.QuestionDTO>) questionsDTO.getQuestions());
         req.setAttribute("nbQuestions", size);
         req.setAttribute("totalPages", totalPages);
         req.setAttribute("startQuestion", startQuestion);

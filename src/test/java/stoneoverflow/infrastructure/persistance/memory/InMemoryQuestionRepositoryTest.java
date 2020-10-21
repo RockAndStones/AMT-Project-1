@@ -1,6 +1,7 @@
 package stoneoverflow.infrastructure.persistance.memory;
 
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuerySortBy;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory.InMemoryQuestionRepository;
@@ -44,7 +45,8 @@ public class InMemoryQuestionRepositoryTest {
         inMemoryQuestionRepository.save(questionsSortedByVotesResult.get(2));
         inMemoryQuestionRepository.save(questionsSortedByVotesResult.get(0));
 
-        ArrayList<Question> questionsSortedByVotes = new ArrayList<>(inMemoryQuestionRepository.find(QuestionQuery.builder().byNbVotes(true).build()));
+        ArrayList<Question> questionsSortedByVotes = new ArrayList<>(inMemoryQuestionRepository.find(
+                QuestionQuery.builder().sortBy(QuestionQuerySortBy.VOTES).build(), 0, inMemoryQuestionRepository.getRepositorySize()));
 
         assertEquals(questionsSortedByVotes, questionsSortedByVotesResult);
     }
@@ -60,7 +62,7 @@ public class InMemoryQuestionRepositoryTest {
         inMemoryQuestionRepository.save(questionsSortedByViewsResult.get(1));
         inMemoryQuestionRepository.save(questionsSortedByViewsResult.get(0));
 
-        ArrayList<Question> questionsSortedByViews = new ArrayList<>(inMemoryQuestionRepository.find(QuestionQuery.builder().byNbViews(true).build()));
+        ArrayList<Question> questionsSortedByViews = new ArrayList<>(inMemoryQuestionRepository.find(QuestionQuery.builder().sortBy(QuestionQuerySortBy.VIEWS).build(), 0, inMemoryQuestionRepository.getRepositorySize()));
 
         assertEquals(questionsSortedByViews, questionsSortedByViewsResult);
     }
@@ -73,6 +75,8 @@ public class InMemoryQuestionRepositoryTest {
 
         QuestionQuery questionQuery = QuestionQuery.builder().type(QuestionType.SQL).build();
 
-        assertEquals(inMemoryQuestionRepository.find(questionQuery).size(), 2);
+        inMemoryQuestionRepository.find(questionQuery,0,inMemoryQuestionRepository.getRepositorySize());
+
+        assertEquals(inMemoryQuestionRepository.find(questionQuery,0,inMemoryQuestionRepository.getRepositorySize()).size(), 2);
     }
 }

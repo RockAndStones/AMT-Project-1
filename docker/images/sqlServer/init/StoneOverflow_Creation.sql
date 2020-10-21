@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`UserMessage` (
   `idUser` CHAR(36) NOT NULL,
   `description` TEXT NULL,
   `nbVotes` INT NULL,
-  `date` DATETIME NULL,
+  `date` DATETIME(3) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_UserMessage_User1_idx` (`idUser` ASC) VISIBLE,
   CONSTRAINT `fk_UserMessage_User1`
@@ -59,6 +59,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Question` (
   `id` CHAR(36) NOT NULL,
   `title` VARCHAR(100) NULL,
+  `nbViews` INTEGER NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_Question_UserMessage1_idx` (`id` ASC) VISIBLE,
   CONSTRAINT `fk_Question_UserMessage1`
@@ -113,6 +114,21 @@ CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Comment` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE VIEW vQuestion AS
+SELECT
+    q.id AS 'id',
+    q.title AS 'title',
+    um.description AS 'description',
+    um.idUser AS 'creatorId',
+    u.username AS 'creator',
+    um.nbVotes AS 'nbVotes',
+    q.nbViews AS 'nbViews',
+    um.date AS 'date'
+FROM Question AS q 
+    INNER JOIN UserMessage AS um 
+        ON q.id = um.id
+    INNER JOIN User AS u 
+        ON um.idUser=u.id;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

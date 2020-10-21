@@ -31,7 +31,7 @@ public class AddQuestionCommand {
     private int nbViews = 0;
 
     @Builder.Default
-    private Date date = null;
+    private Date date = new Date(System.currentTimeMillis());
 
     @Builder.Default
     private QuestionType type = QuestionType.UNCLASSIFIED;

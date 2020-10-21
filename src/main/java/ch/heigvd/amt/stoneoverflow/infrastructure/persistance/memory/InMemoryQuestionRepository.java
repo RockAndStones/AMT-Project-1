@@ -2,6 +2,7 @@ package ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory;
 
 
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
+import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuerySortBy;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
@@ -12,32 +13,42 @@ import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @ApplicationScoped
 @Named("InMemoryQuestionRepository")
 public class InMemoryQuestionRepository extends InMemoryRepository<Question, QuestionId> implements IQuestionRepository {
     @Override
-    public Collection<Question> find(QuestionQuery questionQuery) {
+    public Collection<Question> find(QuestionQuery questionQuery, int offset, int limit) {
         Collection<Question> allQuestions = super.findAll();
-        if (questionQuery.isByDate()) {
-            allQuestions = allQuestions.stream().sorted(Comparator.comparing(Question::getDate).reversed())
-                    .collect(Collectors.toList());
-        } else if (questionQuery.isByNbVotes()) {
-            allQuestions = allQuestions.stream().sorted(Comparator.comparing(Question::getNbVotes).reversed())
-                    .collect(Collectors.toList());
-        } else if (questionQuery.isByNbViews()) {
-            allQuestions = allQuestions.stream().sorted(Comparator.comparing(Question::getNbViews).reversed())
-                    .collect(Collectors.toList());
-        } else if (questionQuery.getType() != QuestionType.UNCLASSIFIED) {
-            ArrayList<Question> queredQuestion = new ArrayList<>();
-            for (Question question : allQuestions) {
-                if (question.getQuestionType() == questionQuery.getType()) {
-                    queredQuestion.add(question);
-                }
-            }
-            allQuestions = queredQuestion;
+
+        Comparator<Question> comparator;
+        if (questionQuery.getSortBy() == QuestionQuerySortBy.DATE)
+            comparator = Comparator.comparing(Question::getDate).reversed();
+        else if (questionQuery.getSortBy() == QuestionQuerySortBy.VOTES)
+            comparator = Comparator.comparing(Question::getNbVotes).reversed();
+        else if (questionQuery.getSortBy() == QuestionQuerySortBy.VIEWS)
+            comparator = Comparator.comparing(Question::getNbViews).reversed();
+        else
+            throw new UnsupportedOperationException("Unsupported question sort");
+
+        Stream<Question> stream = allQuestions.stream().sorted(comparator);
+        if (questionQuery.getType() != QuestionType.UNCLASSIFIED)
+            stream = stream.filter(q -> q.getQuestionType() == questionQuery.getType());
+
+        if (!questionQuery.getSearchCondition().isEmpty())
+            stream = stream.filter(q -> q.getTitle().contains(questionQuery.getSearchCondition()));
+
+
+        List<Question> filteredQuestions = stream.collect(Collectors.toList());
+        // Limit can be greater than the last index
+        int lastIndex = filteredQuestions.size();
+        if(limit > lastIndex){
+            limit = lastIndex;
         }
-        return allQuestions;
+
+        return filteredQuestions.subList(offset, limit);
     }
 }

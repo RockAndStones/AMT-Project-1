@@ -4,24 +4,22 @@ import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 
 @Builder
 @Getter
+@Setter
 @EqualsAndHashCode
 public class QuestionQuery {
     @Builder.Default
     private QuestionType type = QuestionType.UNCLASSIFIED;
 
     @Builder.Default
-    private boolean byDate = false;
+    private QuestionQuerySortBy sortBy = QuestionQuerySortBy.DATE;
 
     @Builder.Default
-    private boolean byNbResponse = false;
+    private boolean sortDescending = true;
 
     @Builder.Default
-    private boolean byNbVotes = false;
-
-    @Builder.Default
-    private boolean byNbViews = false;
-
+    private String searchCondition = "";
 }

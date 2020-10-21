@@ -25,12 +25,13 @@ public class QuestionFacade {
                 creator(command.getCreator()).
                 nbVotes(command.getNbVotes()).
                 nbViews(command.getNbViews()).
+                date(command.getDate()).
                 questionType(command.getType()).build();
         questionRepository.save(addedQuestion);
     }
 
-    public QuestionsDTO getQuestions(QuestionQuery query) {
-        Collection<Question> allQuestions = questionRepository.find(query);
+    public QuestionsDTO getQuestions(QuestionQuery query, int offset, int limit) {
+        Collection<Question> allQuestions = questionRepository.find(query, offset, limit);
         List<QuestionsDTO.QuestionDTO> allQuestionsDTO = allQuestions.stream()
         .map(question -> QuestionsDTO.QuestionDTO.builder()
                 .uuid(question.getId().asString())
