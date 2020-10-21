@@ -28,10 +28,27 @@ public class QuestionQueryServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (req.getParameter("pageSize") != null){
+            req.getSession().removeAttribute("records-limits");
+
+            req.setAttribute("records-limits", req.getParameter("pageSize"));
+        }
+
+        int limit = req.getParameter("records-limits") != null ? Integer.parseInt(req.getParameter("records-limits")) : 10;
+        int page = req.getParameter("page") != null ? Integer.parseInt(req.getParameter("page")) : 1;
+        int startQuestion = (page - 1) * limit;
+        int size = questionFacade.getNumberOfQuestions();
+        int totalPages = (int) Math.ceil(size / limit);
         QuestionsDTO questionsDTO = questionFacade.getQuestions(QuestionQuery.builder()
                 .byNbVotes(true)
+                .questionStart(startQuestion)
+                .limit(limit)
                 .build());
-        req.setAttribute("questions", questionsDTO);
+        req.setAttribute("questions", questionsDTO.getQuestions());
+        req.setAttribute("nbQuestions", size);
+        req.setAttribute("totalPages", totalPages);
+        req.setAttribute("startQuestion", startQuestion);
+        req.setAttribute("lastQuestion", startQuestion + limit);
         req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);
     }
 }

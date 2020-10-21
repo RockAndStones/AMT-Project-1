@@ -23,4 +23,5 @@ public class QuestionQuery {
 
     @Builder.Default
     private boolean byNbViews = false;
+
 }

@@ -60,4 +60,8 @@ public class QuestionFacade {
                 .type(value.getQuestionType().name()).build())
             .orElse(null);
     }
+
+    public int getNumberOfQuestions() {
+        return questionRepository.getRepositorySize();
+    }
 }
