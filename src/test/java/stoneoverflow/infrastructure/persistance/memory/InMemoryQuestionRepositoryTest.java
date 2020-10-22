@@ -39,7 +39,7 @@ public class InMemoryQuestionRepositoryTest {
     Question questionWithType;
 
     @Mock
-    Stream<Question> stream;
+    Question questionWithTypeCopy;
 
     @BeforeEach
     private void initMockito() {
@@ -49,6 +49,11 @@ public class InMemoryQuestionRepositoryTest {
         lenient().when(questionWithType.getQuestionType()).thenReturn(QuestionType.SQL);
         lenient().when(basicQuestion.getId()).thenReturn(new QuestionId());
         lenient().when(basicQuestion.getQuestionType()).thenReturn(QuestionType.UNCLASSIFIED);
+
+        questionWithTypeCopy = Question.builder()
+                .id(new QuestionId(questionWithType.getId().asString()))
+                .build();
+        lenient().when(questionWithType.deepClone()).thenReturn(questionWithTypeCopy);
     }
 
     @BeforeEach
@@ -105,6 +110,7 @@ public class InMemoryQuestionRepositoryTest {
         inMemoryQuestionRepository.save(questionWithType);
         inMemoryQuestionRepository.save(questionWithType);
 
+        lenient().when(questionWithType.deepClone()).thenReturn(questionWithType);
         QuestionQuery questionQuery = QuestionQuery.builder().type(QuestionType.SQL).build();
 
         assertEquals(inMemoryQuestionRepository.find(questionQuery,0,inMemoryQuestionRepository.getRepositorySize()).size(), 2);
