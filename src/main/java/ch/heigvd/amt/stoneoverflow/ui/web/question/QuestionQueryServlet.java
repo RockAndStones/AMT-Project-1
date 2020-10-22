@@ -1,5 +1,7 @@
 package ch.heigvd.amt.stoneoverflow.ui.web.question;
 
+import ch.heigvd.amt.stoneoverflow.application.pagination.PaginationDTO;
+import ch.heigvd.amt.stoneoverflow.application.pagination.PaginationFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuerySortBy;
@@ -20,11 +22,13 @@ public class QuestionQueryServlet extends HttpServlet {
     ServiceRegistry serviceRegistry;
 
     private QuestionFacade questionFacade;
+    private PaginationFacade paginationFacade;
 
     @Override
     public void init() throws ServletException {
         super.init();
         questionFacade = serviceRegistry.getQuestionFacade();
+        paginationFacade = serviceRegistry.getPaginationFacade();
     }
 
     @Override
@@ -37,8 +41,11 @@ public class QuestionQueryServlet extends HttpServlet {
         if (searchQuery != null)
             query.setSearchCondition(searchQuery);
 
-        QuestionsDTO questionsDTO = questionFacade.getQuestions(query);
+        PaginationDTO paginationDTO = paginationFacade.settingPagination(req.getParameter("page"));
+
+        QuestionsDTO questionsDTO = questionFacade.getQuestions(query, paginationDTO.getStartQuestion(), paginationDTO.getLimit());
         req.setAttribute("questions", questionsDTO);
+        req.setAttribute("pagination", paginationDTO);
         req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);
     }
 }

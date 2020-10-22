@@ -78,7 +78,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
     }
 
     @Override
-    public Collection<Question> find(QuestionQuery questionQuery) {
+    public Collection<Question> find(QuestionQuery questionQuery, int offset, int limit) {
         Collection<Question> questions = new LinkedList<>();
 
         try {

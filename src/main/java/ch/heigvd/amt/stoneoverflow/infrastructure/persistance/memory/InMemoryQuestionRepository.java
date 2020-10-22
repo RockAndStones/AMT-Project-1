@@ -10,8 +10,10 @@ import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,7 +21,7 @@ import java.util.stream.Stream;
 @Named("InMemoryQuestionRepository")
 public class InMemoryQuestionRepository extends InMemoryRepository<Question, QuestionId> implements IQuestionRepository {
     @Override
-    public Collection<Question> find(QuestionQuery questionQuery) {
+    public Collection<Question> find(QuestionQuery questionQuery, int offset, int limit) {
         Collection<Question> allQuestions = super.findAll();
 
         Comparator<Question> comparator;
@@ -39,7 +41,14 @@ public class InMemoryQuestionRepository extends InMemoryRepository<Question, Que
         if (!questionQuery.getSearchCondition().isEmpty())
             stream = stream.filter(q -> q.getTitle().contains(questionQuery.getSearchCondition()));
 
-        allQuestions = stream.collect(Collectors.toList());
-        return allQuestions;
+
+        List<Question> filteredQuestions = stream.collect(Collectors.toList());
+        // To not be out of bound
+        int lastIndex = filteredQuestions.size();
+        if(lastIndex > offset + limit){
+            lastIndex = offset + limit;
+        }
+
+        return filteredQuestions.subList(offset, lastIndex);
     }
 }

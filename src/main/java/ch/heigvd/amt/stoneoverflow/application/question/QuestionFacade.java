@@ -30,8 +30,8 @@ public class QuestionFacade {
         questionRepository.save(addedQuestion);
     }
 
-    public QuestionsDTO getQuestions(QuestionQuery query) {
-        Collection<Question> allQuestions = questionRepository.find(query);
+    public QuestionsDTO getQuestions(QuestionQuery query, int offset, int limit) {
+        Collection<Question> allQuestions = questionRepository.find(query, offset, limit);
         List<QuestionsDTO.QuestionDTO> allQuestionsDTO = allQuestions.stream()
         .map(question -> QuestionsDTO.QuestionDTO.builder()
                 .uuid(question.getId().asString())
@@ -60,5 +60,9 @@ public class QuestionFacade {
                 .date(new DateDTO(value.getDate()))
                 .type(value.getQuestionType().name()).build())
             .orElse(null);
+    }
+
+    public int getNumberOfQuestions() {
+        return questionRepository.getRepositorySize();
     }
 }

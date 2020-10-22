@@ -1,5 +1,6 @@
 package ch.heigvd.amt.stoneoverflow.application;
 
+import ch.heigvd.amt.stoneoverflow.application.pagination.PaginationFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.AddQuestionCommand;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
@@ -41,6 +42,7 @@ public class ServiceRegistry {
     @Getter AnswerFacade  answerFacade;
     @Getter CommentFacade commentFacade;
     @Getter StatisticsFacade statisticsFacade;
+    @Getter PaginationFacade paginationFacade;
 
     @PostConstruct
     private void initDefaultValues() {
@@ -49,6 +51,7 @@ public class ServiceRegistry {
         answerFacade             = new AnswerFacade(answerRepository);
         commentFacade            = new CommentFacade(commentRepository);
         statisticsFacade         = new StatisticsFacade(questionRepository, userRepository, commentRepository, answerRepository);
+        paginationFacade         = new PaginationFacade(questionRepository);
 
         // Add default users
         User u1 = User.builder()

@@ -56,7 +56,7 @@ public class QuestionFacadeIT {
 
     @Test
     public void shouldAddQuestion() {
-        int index = questionFacade.getQuestions(QuestionQuery.builder().build()).getQuestions().size();
+        int index = questionFacade.getNumberOfQuestions();
         // Add question in repository
         AddQuestionCommand questionCommand = AddQuestionCommand.builder()
                 .creator(testUser.getUsername())
@@ -68,7 +68,7 @@ public class QuestionFacadeIT {
         // Create the expected result
         // Recover the uuid from the question in the repository
         QuestionsDTO.QuestionDTO questionDTO = QuestionsDTO.QuestionDTO.builder()
-                .uuid(questionFacade.getQuestions(QuestionQuery.builder().build())
+                .uuid(questionFacade.getQuestions(QuestionQuery.builder().build(), 0, questionFacade.getNumberOfQuestions())
                         .getQuestions().get(index).getUuid())
                 .title("My default question")
                 .description("No content")
@@ -78,7 +78,7 @@ public class QuestionFacadeIT {
                 .date(questionDate)
                 .type(QuestionType.UNCLASSIFIED.name()).build();
 
-        assertEquals(questionFacade.getQuestions(QuestionQuery.builder().build()).getQuestions().get(index).getUuid(),
+        assertEquals(questionFacade.getQuestions(QuestionQuery.builder().build(), 0, questionFacade.getNumberOfQuestions()).getQuestions().get(index).getUuid(),
                 questionDTO.getUuid());
     }
 
@@ -97,7 +97,7 @@ public class QuestionFacadeIT {
         // Create the expected result
         // Recover the uuid from the question in the repository
         QuestionsDTO.QuestionDTO questionDTO = QuestionsDTO.QuestionDTO.builder()
-                .uuid(questionFacade.getQuestions(QuestionQuery.builder().sortBy(QuestionQuerySortBy.DATE).type(QuestionType.SQL).build())
+                .uuid(questionFacade.getQuestions(QuestionQuery.builder().sortBy(QuestionQuerySortBy.DATE).type(QuestionType.SQL).build(),0, questionFacade.getNumberOfQuestions())
                         .getQuestions().get(0).getUuid())
                 .title("My SQL Question")
                 .description("No content")
@@ -111,7 +111,7 @@ public class QuestionFacadeIT {
         AddQuestionCommand questionCommand = AddQuestionCommand.builder().build();
         questionFacade.addQuestion(questionCommand);
 
-        QuestionsDTO.QuestionDTO q = questionFacade.getQuestions(QuestionQuery.builder().sortBy(QuestionQuerySortBy.DATE).type(QuestionType.SQL).build()).getQuestions().get(0);
+        QuestionsDTO.QuestionDTO q = questionFacade.getQuestions(QuestionQuery.builder().sortBy(QuestionQuerySortBy.DATE).type(QuestionType.SQL).build(),0, questionFacade.getNumberOfQuestions()).getQuestions().get(0);
         assertEquals(questionDTO.getUuid(), q.getUuid());
     }
 
@@ -122,14 +122,14 @@ public class QuestionFacadeIT {
                 .creatorId(testUser.getId())
                 .build();
 
-        int sizeBefore = questionFacade.getQuestions(QuestionQuery.builder().build()).getQuestions().size();
+        int sizeBefore = questionFacade.getNumberOfQuestions();
 
         questionFacade.addQuestion(questionCommand);
         questionFacade.addQuestion(questionCommand);
         questionFacade.addQuestion(questionCommand);
         questionFacade.addQuestion(questionCommand);
 
-        assertEquals(questionFacade.getQuestions(QuestionQuery.builder().build()).getQuestions().size(),
+        assertEquals(questionFacade.getNumberOfQuestions(),
                 sizeBefore + 4);
     }
 }
