@@ -50,25 +50,31 @@ public class JdbcQuestionRepository implements IQuestionRepository {
         return questions;
     }
 
-    private String getQuerySQL(String search, String sortFieldName, boolean isSortDescending) {
+    private String getQuerySQL(String search, String sortFieldName, boolean isSortDescending, int offset, int limit) {
         String direction = isSortDescending ? "DESC" : "ASC";
 
         if (search.isEmpty()) {
-            return String.format("SELECT * FROM vQuestion ORDER BY %s %s",
+            return String.format("SELECT * FROM vQuestion ORDER BY %s %s LIMIT %d, %d",
                     sortFieldName,
-                    direction);
+                    direction,
+                    offset,
+                    limit);
         } else {
-            return String.format("SELECT * FROM vQuestion WHERE title LIKE ? ORDER BY %s %s",
+            return String.format("SELECT * FROM vQuestion WHERE title LIKE ? ORDER BY %s %s LIMIT %d, %d",
                     sortFieldName,
-                    direction);
+                    direction,
+                    offset,
+                    limit);
         }
     }
 
-    private PreparedStatement getQueryStatement(Connection con, QuestionQuery query) throws SQLException {
+    private PreparedStatement getQueryStatement(Connection con, QuestionQuery query, int offset, int limit) throws SQLException {
         PreparedStatement ps = con.prepareStatement(getQuerySQL(
                 query.getSearchCondition(),
                 query.getSortBy().getSqlFieldName(),
-                query.isSortDescending())
+                query.isSortDescending(),
+                offset,
+                limit)
         );
 
         if (!query.getSearchCondition().isEmpty())
@@ -84,7 +90,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
         try {
             Connection con = dataSource.getConnection();
 
-            PreparedStatement psQuestion = getQueryStatement(con, questionQuery);
+            PreparedStatement psQuestion = getQueryStatement(con, questionQuery, offset, limit);
             ResultSet rsQuestion = psQuestion.executeQuery();
 
             questions.addAll(resultSetToQuestions(rsQuestion));
