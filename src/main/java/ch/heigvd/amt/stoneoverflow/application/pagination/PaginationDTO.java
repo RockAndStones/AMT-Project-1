@@ -12,4 +12,6 @@ public class PaginationDTO {
     int currentPage;
     int startQuestion;
     int lastQuestion;
+    int startPage;
+    int lastPage;
 }

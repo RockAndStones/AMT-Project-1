@@ -40,8 +40,15 @@
                 <a href="home?page=1" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
                     1
                 </a>
+
+                <c:if test="${pagination.startPage != 1}">
+                        <span class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700">
+                          ...
+                        </span>
+                </c:if>
+
                 <!-- Show 2 pages after the current page -->
-                <c:forEach begin="${pagination.currentPage}" end="${pagination.currentPage + 2}" varStatus="loop">
+                <c:forEach begin="${pagination.startPage}" end="${pagination.lastPage}" varStatus="loop">
                     <c:choose>
                         <c:when test="${loop.index <= 1}">
                         </c:when>
@@ -55,23 +62,11 @@
                     </c:choose>
                 </c:forEach>
 
-                <!-- Generate 2 pages before the current page -->
-                <c:forEach var="i" begin="0" end="2" varStatus="loop">
-                    <c:set var="decr" value="${2-i}"/>
-                    <c:choose>
-                        <c:when test="${pagination.currentPage != pagination.currentPage - decr}">
-                        </c:when>
-                        <c:when test="${pagination.currentPage - decr <= 1}">
-                        </c:when>
-                        <c:when test="${pagination.currentPage - decr >= pagination.totalPages}">
-                        </c:when>
-                        <c:otherwise>
-                            <a href="home?page=${pagination.currentPage - decr}" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
-                                    ${pagination.currentPage - decr}
-                            </a>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
+                <c:if test="${pagination.lastPage != pagination.totalPages}">
+                        <span class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700">
+                          ...
+                        </span>
+                </c:if>
 
                 <c:if test="${pagination.totalPages > 1}">
                     <a href="home?page=${pagination.totalPages}" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
