@@ -3,20 +3,52 @@ package stoneoverflow.infrastructure.persistance.memory;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuerySortBy;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory.InMemoryQuestionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.lenient;
 
+@ExtendWith(MockitoExtension.class)
 public class InMemoryQuestionRepositoryTest {
     private InMemoryQuestionRepository inMemoryQuestionRepository;
+
+    @Mock
+    Question basicQuestion;
+
+    @Mock
+    QuestionQuery questionQueryWithType;
+
+    @Mock
+    Question votedQuestion;
+
+    @Mock
+    Question viewedQuestion;
+
+    @Mock
+    Question questionWithType;
+
+    @Mock
+    Stream<Question> stream;
+
+    @BeforeEach
+    private void initMockito() {
+        lenient().when(questionQueryWithType.getType()).thenReturn(QuestionType.SQL);
+        //lenient().when(questionQueryWithType.getType()).thenReturn(Optional.of(Question.builder().build()));
+        lenient().when(questionWithType.getId()).thenReturn(new QuestionId());
+        lenient().when(basicQuestion.getId()).thenReturn(new QuestionId());
+        lenient().when(basicQuestion.getQuestionType()).thenReturn(QuestionType.UNCLASSIFIED);
+    }
 
     @BeforeEach
     public void initInMemoryUserRepository() {
@@ -25,9 +57,9 @@ public class InMemoryQuestionRepositoryTest {
 
     @Test
     public void shouldFindQuestions() {
-        inMemoryQuestionRepository.save(Question.builder().build());
-        inMemoryQuestionRepository.save(Question.builder().build());
-        inMemoryQuestionRepository.save(Question.builder().build());
+        inMemoryQuestionRepository.save(basicQuestion);
+        inMemoryQuestionRepository.save(basicQuestion);
+        inMemoryQuestionRepository.save(basicQuestion);
 
         assertEquals(inMemoryQuestionRepository.findAll().size(), 3);
     }
@@ -69,13 +101,10 @@ public class InMemoryQuestionRepositoryTest {
 
     @Test
     public void shouldFindQueryQuestionsByType() {
-        inMemoryQuestionRepository.save(Question.builder().questionType(QuestionType.SQL).build());
-        inMemoryQuestionRepository.save(Question.builder().build());
-        inMemoryQuestionRepository.save(Question.builder().questionType(QuestionType.SQL).build());
+        inMemoryQuestionRepository.save(questionWithType);
+        inMemoryQuestionRepository.save(questionWithType);
 
         QuestionQuery questionQuery = QuestionQuery.builder().type(QuestionType.SQL).build();
-
-        inMemoryQuestionRepository.find(questionQuery,0,inMemoryQuestionRepository.getRepositorySize());
 
         assertEquals(inMemoryQuestionRepository.find(questionQuery,0,inMemoryQuestionRepository.getRepositorySize()).size(), 2);
     }

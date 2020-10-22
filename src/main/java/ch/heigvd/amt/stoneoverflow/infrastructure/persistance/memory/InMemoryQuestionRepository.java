@@ -44,10 +44,7 @@ public class InMemoryQuestionRepository extends InMemoryRepository<Question, Que
 
         List<Question> filteredQuestions = stream.collect(Collectors.toList());
         // To not be out of bound
-        int lastIndex = filteredQuestions.size();
-        if(lastIndex > offset + limit){
-            lastIndex = offset + limit;
-        }
+        int lastIndex = Math.min(filteredQuestions.size(), offset + limit);
 
         return filteredQuestions.subList(offset, lastIndex);
     }

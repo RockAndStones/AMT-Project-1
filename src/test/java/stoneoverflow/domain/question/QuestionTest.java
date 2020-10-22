@@ -3,17 +3,22 @@ package stoneoverflow.domain.question;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.lenient;
 
 public class QuestionTest {
+
     @Test
     public void deepCloneCreatesNewObject() {
         Question question = Question.builder()
                 .title("My test Question")
                 .description("my question description")
-                .creatorId(new UserId())
                 .creator("test")
                 .build();
         Question question2 = question.deepClone();
@@ -27,7 +32,6 @@ public class QuestionTest {
         Question question = Question.builder()
                 .title("My test Question")
                 .description("my question description")
-                .creatorId(new UserId())
                 .creator("test")
                 .build();
 
@@ -39,7 +43,6 @@ public class QuestionTest {
         Question question = Question.builder()
                 .title("My test Question")
                 .description("my question description")
-                .creatorId(new UserId())
                 .creator("test")
                 .build();
 
