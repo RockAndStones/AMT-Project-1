@@ -5,10 +5,14 @@ let data = []
 let number = 100
 
 for(let i=0;i<number;i++){
-    let password = faker.internet.password();
+    let password = "P@ssword123"
+    let name = faker.name.firstName();
     data.push(
         {
-            USERNAME:faker.name.firstName() + faker.random.word(),
+            USERNAME: name + faker.random.word(),
+            FIRSTNAME: name,
+            LASTNAME: faker.name.lastName(),
+            EMAIL: faker.internet.email(name),
             PASSWORD: password,
             PASSWORD_CHECK: password
         }
