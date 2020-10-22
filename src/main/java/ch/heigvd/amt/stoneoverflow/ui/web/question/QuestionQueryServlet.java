@@ -1,5 +1,7 @@
 package ch.heigvd.amt.stoneoverflow.ui.web.question;
 
+import ch.heigvd.amt.stoneoverflow.application.pagination.PaginationDTO;
+import ch.heigvd.amt.stoneoverflow.application.pagination.PaginationFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuerySortBy;
@@ -20,11 +22,13 @@ public class QuestionQueryServlet extends HttpServlet {
     ServiceRegistry serviceRegistry;
 
     private QuestionFacade questionFacade;
+    private PaginationFacade paginationFacade;
 
     @Override
     public void init() throws ServletException {
         super.init();
         questionFacade = serviceRegistry.getQuestionFacade();
+        paginationFacade = serviceRegistry.getPaginationFacade();
     }
 
     @Override
@@ -35,13 +39,6 @@ public class QuestionQueryServlet extends HttpServlet {
             req.setAttribute("records-limits", req.getParameter("pageSize"));
         }
 
-        int limit = req.getParameter("records-limits") != null ? Integer.parseInt(req.getParameter("records-limits")) : 5;
-        int size = questionFacade.getNumberOfQuestions();
-        int totalPages = (int) Math.ceil((double) size / (double) limit);
-        int page = req.getParameter("page") != null && Integer.parseInt(req.getParameter("page")) <= totalPages ?
-                Integer.parseInt(req.getParameter("page")) : 1;
-        int startQuestion = (page - 1) * limit;
-
         QuestionQuery query = QuestionQuery.builder()
                 .sortBy(QuestionQuerySortBy.VOTES)
                 .build();
@@ -50,13 +47,11 @@ public class QuestionQueryServlet extends HttpServlet {
         if (searchQuery != null)
             query.setSearchCondition(searchQuery);
 
-        QuestionsDTO questionsDTO = questionFacade.getQuestions(query, startQuestion, limit);
+        PaginationDTO paginationDTO = paginationFacade.settingPagination(req.getParameter("page"), req.getParameter("records-limits"));
+
+        QuestionsDTO questionsDTO = questionFacade.getQuestions(query, paginationDTO.getStartQuestion(), paginationDTO.getLimit());
         req.setAttribute("questions", questionsDTO);
-        req.setAttribute("nbQuestions", size);
-        req.setAttribute("totalPages", totalPages);
-        req.setAttribute("page", page);
-        req.setAttribute("startQuestion", startQuestion + 1);
-        req.setAttribute("lastQuestion",startQuestion + limit);
+        req.setAttribute("pagination", paginationDTO);
         req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);
     }
 }
