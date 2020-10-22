@@ -46,6 +46,7 @@ public class InMemoryQuestionRepositoryTest {
         lenient().when(questionQueryWithType.getType()).thenReturn(QuestionType.SQL);
         //lenient().when(questionQueryWithType.getType()).thenReturn(Optional.of(Question.builder().build()));
         lenient().when(questionWithType.getId()).thenReturn(new QuestionId());
+        lenient().when(questionWithType.getQuestionType()).thenReturn(QuestionType.SQL);
         lenient().when(basicQuestion.getId()).thenReturn(new QuestionId());
         lenient().when(basicQuestion.getQuestionType()).thenReturn(QuestionType.UNCLASSIFIED);
     }
