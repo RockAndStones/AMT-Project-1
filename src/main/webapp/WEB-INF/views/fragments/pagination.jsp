@@ -20,7 +20,7 @@
         <div>
             <p class="text-sm leading-5 text-gray-700">
                 Showing
-                <span class="font-medium">${pagination.startQuestion}</span>
+                <span class="font-medium">${pagination.startQuestion + 1}</span>
                 to
                 <span class="font-medium">${pagination.lastQuestion}</span>
                 of
@@ -41,13 +41,13 @@
                     1
                 </a>
 
-                <c:if test="${pagination.startPage != 1}">
+                <c:if test="${pagination.startPage != 1 && pagination.startPage - 1 != 1}">
                         <span class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700">
                           ...
                         </span>
                 </c:if>
 
-                <!-- Show 2 pages after the current page -->
+                <!-- Show the pages available -->
                 <c:forEach begin="${pagination.startPage}" end="${pagination.lastPage}" varStatus="loop">
                     <c:choose>
                         <c:when test="${loop.index <= 1}">
@@ -62,7 +62,7 @@
                     </c:choose>
                 </c:forEach>
 
-                <c:if test="${pagination.lastPage != pagination.totalPages}">
+                <c:if test="${pagination.lastPage != pagination.totalPages && pagination.lastPage + 1 != pagination.totalPages}">
                         <span class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700">
                           ...
                         </span>

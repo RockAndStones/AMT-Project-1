@@ -33,12 +33,6 @@ public class QuestionQueryServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getParameter("pageSize") != null){
-            req.getSession().removeAttribute("records-limits");
-
-            req.setAttribute("records-limits", req.getParameter("pageSize"));
-        }
-
         QuestionQuery query = QuestionQuery.builder()
                 .sortBy(QuestionQuerySortBy.VOTES)
                 .build();
@@ -47,7 +41,7 @@ public class QuestionQueryServlet extends HttpServlet {
         if (searchQuery != null)
             query.setSearchCondition(searchQuery);
 
-        PaginationDTO paginationDTO = paginationFacade.settingPagination(req.getParameter("page"), req.getParameter("records-limits"));
+        PaginationDTO paginationDTO = paginationFacade.settingPagination(req.getParameter("page"));
 
         QuestionsDTO questionsDTO = questionFacade.getQuestions(query, paginationDTO.getStartQuestion(), paginationDTO.getLimit());
         req.setAttribute("questions", questionsDTO);
