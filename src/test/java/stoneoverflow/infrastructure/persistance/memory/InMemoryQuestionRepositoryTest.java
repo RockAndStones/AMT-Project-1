@@ -13,8 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.lenient;
@@ -37,16 +35,20 @@ public class InMemoryQuestionRepositoryTest {
 
     @Mock
     Question questionWithType;
-
     @Mock
-    Stream<Question> stream;
+    Question questionWithType2;
 
     @BeforeEach
     private void initMockito() {
-        lenient().when(questionQueryWithType.getType()).thenReturn(QuestionType.SQL);
-        //lenient().when(questionQueryWithType.getType()).thenReturn(Optional.of(Question.builder().build()));
+        lenient().when(questionWithType.deepClone()).thenReturn(Question.builder().questionType(QuestionType.SQL).build());
         lenient().when(questionWithType.getId()).thenReturn(new QuestionId());
         lenient().when(questionWithType.getQuestionType()).thenReturn(QuestionType.SQL);
+
+        lenient().when(questionWithType2.deepClone()).thenReturn(Question.builder().questionType(QuestionType.SQL).build());
+        lenient().when(questionWithType2.getId()).thenReturn(new QuestionId());
+        lenient().when(questionWithType2.getQuestionType()).thenReturn(QuestionType.SQL);
+
+        lenient().when(basicQuestion.deepClone()).thenReturn(basicQuestion);
         lenient().when(basicQuestion.getId()).thenReturn(new QuestionId());
         lenient().when(basicQuestion.getQuestionType()).thenReturn(QuestionType.UNCLASSIFIED);
     }
@@ -59,10 +61,14 @@ public class InMemoryQuestionRepositoryTest {
     @Test
     public void shouldFindQuestions() {
         inMemoryQuestionRepository.save(basicQuestion);
+        // Will change the id
+        lenient().when(basicQuestion.getId()).thenReturn(new QuestionId());
         inMemoryQuestionRepository.save(basicQuestion);
+        // Will change the id
+        lenient().when(basicQuestion.getId()).thenReturn(new QuestionId());
         inMemoryQuestionRepository.save(basicQuestion);
 
-        assertEquals(inMemoryQuestionRepository.findAll().size(), 3);
+        assertEquals(inMemoryQuestionRepository.getRepositorySize(), 3);
     }
 
     @Test
@@ -103,7 +109,7 @@ public class InMemoryQuestionRepositoryTest {
     @Test
     public void shouldFindQueryQuestionsByType() {
         inMemoryQuestionRepository.save(questionWithType);
-        inMemoryQuestionRepository.save(questionWithType);
+        inMemoryQuestionRepository.save(questionWithType2);
 
         QuestionQuery questionQuery = QuestionQuery.builder().type(QuestionType.SQL).build();
 
