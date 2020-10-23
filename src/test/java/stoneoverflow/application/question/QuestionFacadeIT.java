@@ -20,6 +20,7 @@ import javax.inject.Inject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertEquals;
 
@@ -74,7 +75,7 @@ public class QuestionFacadeIT {
                 .description("No content")
                 .creator("test")
                 .nbVotes(0)
-                .nbViews(0)
+                .nbViews(new AtomicInteger(0))
                 .date(questionDate)
                 .type(QuestionType.UNCLASSIFIED.name()).build();
 
@@ -103,7 +104,7 @@ public class QuestionFacadeIT {
                 .description("No content")
                 .creator(testUser.getUsername())
                 .nbVotes(0)
-                .nbViews(0)
+                .nbViews(new AtomicInteger(0))
                 .date(questionDate)
                 .type(QuestionType.SQL.name()).build();
 

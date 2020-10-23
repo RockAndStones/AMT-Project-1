@@ -6,6 +6,7 @@ import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
 import lombok.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Builder
 @Getter
@@ -21,7 +22,7 @@ public class QuestionsDTO {
         private String  description;
         private String  creator;
         private int     nbVotes;
-        private int     nbViews;
+        private AtomicInteger nbViews;
         private int     nbAnswers;
         private DateDTO date;
         private String  type;

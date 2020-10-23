@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Data
 @Builder(toBuilder = true)
@@ -19,7 +20,7 @@ public class Question implements IEntity<Question, QuestionId> {
     private UserId       creatorId;
     private String       creator;
     private int          nbVotes;
-    private int          nbViews;
+    private AtomicInteger nbViews;
     private Date         date;
     @Setter(AccessLevel.NONE)
     private QuestionType questionType;
@@ -32,7 +33,12 @@ public class Question implements IEntity<Question, QuestionId> {
     }
 
     public void addView(){
-        this.nbViews++;
+        this.nbViews.getAndIncrement();
+    }
+
+    // Rewrite the getter to get an int and not an AtomicInteger
+    public int getNbViews(){
+        return this.nbViews.get();
     }
 
     public void categorizeAs(QuestionType questionType){this.questionType = questionType;}
@@ -55,6 +61,9 @@ public class Question implements IEntity<Question, QuestionId> {
 
             if(creator == null)
                 creator = "";
+
+            if(nbViews == null)
+                nbViews = new AtomicInteger(0);
 
             if (date == null)
                 date = new Date(System.currentTimeMillis());

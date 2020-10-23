@@ -3,55 +3,18 @@ package stoneoverflow.infrastructure.persistance.memory;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuerySortBy;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
-import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory.InMemoryQuestionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.lenient;
 
-@ExtendWith(MockitoExtension.class)
 public class InMemoryQuestionRepositoryTest {
     private InMemoryQuestionRepository inMemoryQuestionRepository;
-
-    @Mock
-    Question basicQuestion;
-
-    @Mock
-    QuestionQuery questionQueryWithType;
-
-    @Mock
-    Question votedQuestion;
-
-    @Mock
-    Question viewedQuestion;
-
-    @Mock
-    Question questionWithType;
-    @Mock
-    Question questionWithType2;
-
-    @BeforeEach
-    private void initMockito() {
-        lenient().when(questionWithType.deepClone()).thenReturn(Question.builder().questionType(QuestionType.SQL).build());
-        lenient().when(questionWithType.getId()).thenReturn(new QuestionId());
-        lenient().when(questionWithType.getQuestionType()).thenReturn(QuestionType.SQL);
-
-        lenient().when(questionWithType2.deepClone()).thenReturn(Question.builder().questionType(QuestionType.SQL).build());
-        lenient().when(questionWithType2.getId()).thenReturn(new QuestionId());
-        lenient().when(questionWithType2.getQuestionType()).thenReturn(QuestionType.SQL);
-
-        lenient().when(basicQuestion.deepClone()).thenReturn(basicQuestion);
-        lenient().when(basicQuestion.getId()).thenReturn(new QuestionId());
-        lenient().when(basicQuestion.getQuestionType()).thenReturn(QuestionType.UNCLASSIFIED);
-    }
 
     @BeforeEach
     public void initInMemoryUserRepository() {
@@ -60,15 +23,11 @@ public class InMemoryQuestionRepositoryTest {
 
     @Test
     public void shouldFindQuestions() {
-        inMemoryQuestionRepository.save(basicQuestion);
-        // Will change the id
-        lenient().when(basicQuestion.getId()).thenReturn(new QuestionId());
-        inMemoryQuestionRepository.save(basicQuestion);
-        // Will change the id
-        lenient().when(basicQuestion.getId()).thenReturn(new QuestionId());
-        inMemoryQuestionRepository.save(basicQuestion);
+        inMemoryQuestionRepository.save(Question.builder().build());
+        inMemoryQuestionRepository.save(Question.builder().build());
+        inMemoryQuestionRepository.save(Question.builder().build());
 
-        assertEquals(inMemoryQuestionRepository.getRepositorySize(), 3);
+        assertEquals(inMemoryQuestionRepository.findAll().size(), 3);
     }
 
     @Test
@@ -93,9 +52,9 @@ public class InMemoryQuestionRepositoryTest {
     @Test
     public void shouldFindQuestionByViews() {
         ArrayList<Question> questionsSortedByViewsResult = new ArrayList<>();
-        questionsSortedByViewsResult.add(Question.builder().nbViews(150).build());
-        questionsSortedByViewsResult.add(Question.builder().nbViews(50).build());
-        questionsSortedByViewsResult.add(Question.builder().nbViews(0).build());
+        questionsSortedByViewsResult.add(Question.builder().nbViews(new AtomicInteger(150)).build());
+        questionsSortedByViewsResult.add(Question.builder().nbViews(new AtomicInteger(50)).build());
+        questionsSortedByViewsResult.add(Question.builder().nbViews(new AtomicInteger(0)).build());
 
         inMemoryQuestionRepository.save(questionsSortedByViewsResult.get(2));
         inMemoryQuestionRepository.save(questionsSortedByViewsResult.get(1));
@@ -108,10 +67,13 @@ public class InMemoryQuestionRepositoryTest {
 
     @Test
     public void shouldFindQueryQuestionsByType() {
-        inMemoryQuestionRepository.save(questionWithType);
-        inMemoryQuestionRepository.save(questionWithType2);
+        inMemoryQuestionRepository.save(Question.builder().questionType(QuestionType.SQL).build());
+        inMemoryQuestionRepository.save(Question.builder().build());
+        inMemoryQuestionRepository.save(Question.builder().questionType(QuestionType.SQL).build());
 
         QuestionQuery questionQuery = QuestionQuery.builder().type(QuestionType.SQL).build();
+
+        inMemoryQuestionRepository.find(questionQuery,0,inMemoryQuestionRepository.getRepositorySize());
 
         assertEquals(inMemoryQuestionRepository.find(questionQuery,0,inMemoryQuestionRepository.getRepositorySize()).size(), 2);
     }

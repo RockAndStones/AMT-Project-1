@@ -16,6 +16,7 @@ import java.sql.*;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @ApplicationScoped
 @Named("JdbcQuestionRepository")
@@ -40,7 +41,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
                     .description(rs.getString("description"))
                     .creator(rs.getString("creator"))
                     .creatorId(new UserId(rs.getString("creatorId")))
-                    .nbViews(rs.getInt("nbViews"))
+                    .nbViews(new AtomicInteger(rs.getInt("nbViews")))
                     .nbVotes(rs.getInt("nbVotes"))
                     .date(new Date(rs.getTimestamp("date").getTime()))
                     .build();

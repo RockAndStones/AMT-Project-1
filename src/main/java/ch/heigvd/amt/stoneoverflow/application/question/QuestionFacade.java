@@ -8,6 +8,7 @@ import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class QuestionFacade {
@@ -39,9 +40,8 @@ public class QuestionFacade {
                 .creator(question.getCreator())
                 .description(question.getDescription())
                 .nbVotes(question.getNbVotes())
-                .nbViews(question.getNbViews())
+                .nbViews(new AtomicInteger(question.getNbViews()))
                 .date(new DateDTO(question.getDate()))
-                .nbViews(question.getNbViews())
                 .type(question.getQuestionType().name()).build())
         .collect(Collectors.toList());
 
@@ -50,13 +50,15 @@ public class QuestionFacade {
 
     public QuestionsDTO.QuestionDTO getQuestion(QuestionId id) {
         Optional<Question> question = questionRepository.findById(id);
+        question.ifPresent(Question::addView);
+        question.ifPresent(value -> questionRepository.update(value));
         return question.map(value -> QuestionsDTO.QuestionDTO.builder()
                 .uuid(value.getId().asString())
                 .title(value.getTitle())
                 .description(value.getDescription())
                 .creator(value.getCreator())
                 .nbVotes(value.getNbVotes())
-                .nbViews(value.getNbViews())
+                .nbViews(new AtomicInteger(value.getNbViews()))
                 .date(new DateDTO(value.getDate()))
                 .type(value.getQuestionType().name()).build())
             .orElse(null);

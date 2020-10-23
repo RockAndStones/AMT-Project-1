@@ -50,4 +50,18 @@ public class QuestionTest {
 
         assertEquals(question.getQuestionType(), QuestionType.C);
     }
+
+    @Test
+    public void questionShouldAddView() {
+        Question question = Question.builder()
+                .title("My test Question")
+                .description("my question description")
+                .creator("test")
+                .build();
+
+        question.addView();
+        question.addView();
+
+        assertEquals(question.getNbViews(), 2);
+    }
 }

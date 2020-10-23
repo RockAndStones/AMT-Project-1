@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Builder
 @Getter
@@ -28,7 +29,7 @@ public class AddQuestionCommand {
     private int nbVotes = 0;
 
     @Builder.Default
-    private int nbViews = 0;
+    private AtomicInteger nbViews = new AtomicInteger(0);
 
     @Builder.Default
     private Date date = new Date(System.currentTimeMillis());

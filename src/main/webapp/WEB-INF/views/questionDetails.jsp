@@ -58,7 +58,7 @@
             <!-- Question header -->
             <div class="w-full pb-6 mb-4 border-b">
                 <h1 class="leading-normal text-lg font-semibold text-gray-900 mt-0">${question.title}</h1>
-                <span>${question.nbViews}</span>
+                <span id="questionViews">${question.nbViews}</span>
                 <i class="mx-auto mb-2 h-5 w-5 far fa-eye"></i>
                 <span class="ml-2">${question.answers.size()}</span>
                 <i class="mx-auto mb-2 h-5 w-5 far fa-comment"></i>
