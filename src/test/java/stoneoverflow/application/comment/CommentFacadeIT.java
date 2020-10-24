@@ -1,11 +1,16 @@
 package stoneoverflow.application.comment;
 
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
+import ch.heigvd.amt.stoneoverflow.application.answer.*;
 import ch.heigvd.amt.stoneoverflow.application.comment.AddCommentCommand;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentQuery;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentsDTO;
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginCommand;
+import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginFailedException;
+import ch.heigvd.amt.stoneoverflow.application.question.*;
 import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
@@ -20,21 +25,23 @@ import org.junit.runner.RunWith;
 import javax.inject.Inject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 @RunWith(Arquillian.class)
 public class CommentFacadeIT {
-    private DateDTO            commentDate;
-    private SimpleDateFormat   formatter;
-    private UserId             creatorId;
 
     private final static String WARNAME = "arquillian-managed.war";
 
     @Inject
     private ServiceRegistry serviceRegistry;
 
-    private CommentFacade commentFacade;
+    private AuthenticatedUserDTO testUser;
+    private QuestionFacade       questionFacade;
+    private AnswerFacade         answerFacade;
+    private CommentFacade        commentFacade;
+    private DateDTO              date;
 
     @Deployment(testable = true)
     public static WebArchive createDeployment() {
@@ -46,140 +53,264 @@ public class CommentFacadeIT {
     }
 
     @Before
-    public void initializeIdentityManagementFacade() {
-        this.commentFacade = serviceRegistry.getCommentFacade();
+    public void init() throws LoginFailedException {
+
+        this.questionFacade = serviceRegistry.getQuestionFacade();
+        this.answerFacade   = serviceRegistry.getAnswerFacade();
+        this.commentFacade  = serviceRegistry.getCommentFacade();
 
         // Use a fix date for all the tests
-        this.commentDate       = new DateDTO(new Date(System.currentTimeMillis()));
-        this.formatter         = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        this.date = new DateDTO(new Date(System.currentTimeMillis()));
 
-        // Define a UserId to simulate a user responding
-        this.creatorId         = new UserId();
+        this.testUser = serviceRegistry.getIdentityManagementFacade().login(LoginCommand.builder()
+                .username("test")
+                .plaintextPassword("test")
+                .build());
     }
 
     @Test
     public void shouldAddCommentToQuestion() {
 
-        // Define a QuestionId to simulate a response to a question
-        QuestionId commentTo = new QuestionId();
+        int questionIndex  = questionFacade.getNumberOfQuestions();
+        int commentIndex   = commentFacade.getNumberOfQuestionComments();
 
-        // Add answer to repository
+        // Add question in repository
+        AddQuestionCommand questionCommand = AddQuestionCommand.builder()
+                .creator(testUser.getUsername())
+                .creatorId(testUser.getId())
+                .date(date)
+                .build();
+        questionFacade.addQuestion(questionCommand);
+
+        // Get the QuestionId of the added question
+        QuestionId questionId = new QuestionId(questionFacade.getQuestions(
+                QuestionQuery.builder()
+                        .sortBy(QuestionQuerySortBy.DATE)
+                        .sortDescending(true).build(),
+                0,
+                questionFacade.getNumberOfQuestions()).getQuestions().get(questionIndex).getUuid());
+
+        // Add comment to repository
         AddCommentCommand commentCommand = AddCommentCommand.builder()
-                .commentTo(commentTo)
-                .creatorId(creatorId)
-                .date(commentDate).build();
+                .commentTo(questionId)
+                .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
+                .date(date).build();
         commentFacade.addComment(commentCommand);
 
         // Create the expected result
         // Recover the uuid from the answer in the repository
         CommentsDTO.CommentDTO commentDTO = CommentsDTO.CommentDTO.builder()
-                .uuid(commentFacade.getComments(CommentQuery.builder()
-                        .commentTo(commentTo).build()).getComments().get(0).getUuid())
+                .uuid(commentFacade.getComments(CommentQuery.builder().build())
+                        .getComments().get(commentIndex).getUuid())
                 .content("No content")
-                .creator("Anonymous")
-                .date(commentDate).build();
+                .creator(testUser.getUsername())
+                .date(date).build();
 
-        assertEquals(commentFacade.getComments(CommentQuery.builder()
-                .commentTo(commentTo).build()).getComments().get(0), commentDTO);
+        assertEquals(commentFacade.getComments(CommentQuery.builder().build())
+                .getComments().get(commentIndex), commentDTO);
     }
 
     @Test
     public void shouldAddCommentToAnswer() {
 
-        // Define a QuestionId to simulate a response to a question
-        AnswerId commentTo = new AnswerId();
+        int questionIndex = questionFacade.getNumberOfQuestions();
+        int answerIndex   = answerFacade.getNumberOfAnswers();
+        int commentIndex  = commentFacade.getNumberOfAnswerComments();
+
+
+
+        // Add question in repository
+        AddQuestionCommand questionCommand = AddQuestionCommand.builder()
+                .creator(testUser.getUsername())
+                .creatorId(testUser.getId())
+                .date(date)
+                .build();
+        questionFacade.addQuestion(questionCommand);
+
+        // Get the QuestionId of the added question
+        QuestionId questionId = new QuestionId(questionFacade.getQuestions(
+                QuestionQuery.builder().build(),
+                0,
+                questionFacade.getNumberOfQuestions()).getQuestions().get(questionIndex).getUuid());
+
+
 
         // Add answer to repository
+        AddAnswerCommand answerCommand = AddAnswerCommand.builder()
+                .answerTo(questionId)
+                .creator(testUser.getUsername())
+                .creatorId(testUser.getId())
+                .date(date)
+                .build();
+        answerFacade.addAnswer(answerCommand);
+
+        // Get the AnswerId of the added answer
+        // Get the QuestionId of the added question
+        AnswerId answerId = new AnswerId(answerFacade.getAnswers(
+                AnswerQuery.builder().build(),
+                0,
+                answerFacade.getNumberOfAnswers()).getAnswers().get(answerIndex).getUuid());
+
+
+
+        // Add comment to repository
         AddCommentCommand commentCommand = AddCommentCommand.builder()
-                .commentTo(commentTo)
-                .creatorId(creatorId)
-                .date(commentDate).build();
+                .commentTo(answerId)
+                .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
+                .date(date).build();
         commentFacade.addComment(commentCommand);
 
         // Create the expected result
         // Recover the uuid from the answer in the repository
         CommentsDTO.CommentDTO commentDTO = CommentsDTO.CommentDTO.builder()
                 .uuid(commentFacade.getComments(CommentQuery.builder()
-                        .commentTo(commentTo).build()).getComments().get(0).getUuid())
+                        .commentView(CommentQuery.CommentView.ANSWER).build())
+                            .getComments().get(commentIndex).getUuid())
                 .content("No content")
-                .creator("Anonymous")
-                .date(commentDate).build();
+                .creator(testUser.getUsername())
+                .date(date).build();
 
         assertEquals(commentFacade.getComments(CommentQuery.builder()
-                .commentTo(commentTo).build()).getComments().get(0), commentDTO);
+                .commentView(CommentQuery.CommentView.ANSWER).build())
+                    .getComments().get(commentIndex), commentDTO);
     }
 
     @Test
     public void shouldGetOnlyCommentFromAQuestionId() {
 
-        // Define multiple QuestionId to simulate responses to multiple questions
-        QuestionId commentTo1 = new QuestionId();
-        QuestionId commentTo2 = new QuestionId();
-        QuestionId commentTo3 = new QuestionId();
+        int questionIndex = questionFacade.getNumberOfQuestions();
 
-        // Add answers to repository
+
+        // Insert 3 questions in the repository to respond to
+        AddQuestionCommand questionCommand = AddQuestionCommand.builder()
+                .creator(testUser.getUsername())
+                .creatorId(testUser.getId())
+                .date(date)
+                .build();
+        questionFacade.addQuestion(questionCommand);
+        questionFacade.addQuestion(questionCommand);
+        questionFacade.addQuestion(questionCommand);
+
+        // Define multiple QuestionId to simulate responses to multiple questions
+        List<QuestionsDTO.QuestionDTO> questionDTOS = questionFacade.getQuestions(
+                QuestionQuery.builder().build(), 0, questionFacade.getNumberOfQuestions()).getQuestions();
+
+        QuestionId  questionId1 = new QuestionId(questionDTOS.get(questionIndex).getUuid());
+        QuestionId  questionId2 = new QuestionId(questionDTOS.get(questionIndex + 1).getUuid());
+        QuestionId  questionId3 = new QuestionId(questionDTOS.get(questionIndex + 2).getUuid());
+
+        // Add comments to repository
         AddCommentCommand answerCommand1 = AddCommentCommand.builder()
-                .commentTo(commentTo1)
-                .creatorId(creatorId)
-                .date(commentDate).build();
+                .commentTo(questionId1)
+                .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
+                .date(date).build();
         AddCommentCommand answerCommand2 = AddCommentCommand.builder()
-                .commentTo(commentTo2)
-                .creatorId(creatorId)
-                .date(commentDate).build();
+                .commentTo(questionId2)
+                .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
+                .date(date).build();
         AddCommentCommand answerCommand3 = AddCommentCommand.builder()
-                .commentTo(commentTo3)
-                .creatorId(creatorId).build();
+                .commentTo(questionId3)
+                .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
+                .build();
         commentFacade.addComment(answerCommand1);
         commentFacade.addComment(answerCommand2);
         commentFacade.addComment(answerCommand3);
 
+        // Prepare comment query
+        CommentQuery commentQuery = CommentQuery.builder().commentTo(questionId1).build();
+
         // Create the expected result
         // Recover the uuid from the comment in the repository
         CommentsDTO.CommentDTO commentDTO = CommentsDTO.CommentDTO.builder()
-                .uuid(commentFacade.getComments(CommentQuery.builder()
-                        .commentTo(commentTo1).build()).getComments().get(0).getUuid())
+                .uuid(commentFacade.getComments(commentQuery).getComments().get(0).getUuid())
                 .content("No content")
-                .creator("Anonymous")
-                .date(commentDate).build();
+                .creator(testUser.getUsername())
+                .date(date).build();
 
-        assertEquals(commentFacade.getComments(CommentQuery.builder()
-                .commentTo(commentTo1).build()).getComments().get(0), commentDTO);
+        assertEquals(commentFacade.getComments(commentQuery).getComments().get(0), commentDTO);
     }
 
     @Test
     public void shouldGetOnlyCommentFromAAnswerId() {
 
-        // Define multiple QuestionId to simulate responses to multiple questions
-        AnswerId commentTo1 = new AnswerId();
-        AnswerId commentTo2 = new AnswerId();
-        AnswerId commentTo3 = new AnswerId();
+        int questionIndex = questionFacade.getNumberOfQuestions();
+        int answerIndex   = answerFacade.getNumberOfAnswers();
 
-        // Add answers to repository
+        // Insert a question in the repository to respond to
+        AddQuestionCommand questionCommand = AddQuestionCommand.builder()
+                .creator(testUser.getUsername())
+                .creatorId(testUser.getId())
+                .date(date)
+                .build();
+        questionFacade.addQuestion(questionCommand);
+
+        // Define multiple QuestionId to simulate responses to multiple questions
+        List<QuestionsDTO.QuestionDTO> questionDTOS = questionFacade.getQuestions(
+                QuestionQuery.builder().build(), 0, questionFacade.getNumberOfQuestions()).getQuestions();
+
+        QuestionId  questionId = new QuestionId(questionDTOS.get(questionIndex).getUuid());
+
+
+
+        // Insert 3 answers in the repository to comment to
+        AddAnswerCommand answerCommand = AddAnswerCommand.builder()
+                .answerTo(questionId)
+                .creator(testUser.getUsername())
+                .creatorId(testUser.getId())
+                .date(date)
+                .build();
+        answerFacade.addAnswer(answerCommand);
+        answerFacade.addAnswer(answerCommand);
+        answerFacade.addAnswer(answerCommand);
+
+        // Define multiple AnswerId to simulate comment to multiple answers
+        List<AnswersDTO.AnswerDTO> answerDTOS = answerFacade.getAnswers(
+                AnswerQuery.builder().build(), 0, answerFacade.getNumberOfAnswers()).getAnswers();
+
+        AnswerId  answerId1 = new AnswerId(answerDTOS.get(answerIndex).getUuid());
+        AnswerId  answerId2 = new AnswerId(answerDTOS.get(answerIndex + 1).getUuid());
+        AnswerId  answerId3 = new AnswerId(answerDTOS.get(answerIndex + 2).getUuid());
+
+
+
+        // Add comments to repository
         AddCommentCommand answerCommand1 = AddCommentCommand.builder()
-                .commentTo(commentTo1)
-                .creatorId(creatorId)
-                .date(commentDate).build();
+                .commentTo(answerId1)
+                .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
+                .date(date).build();
         AddCommentCommand answerCommand2 = AddCommentCommand.builder()
-                .commentTo(commentTo2)
-                .creatorId(creatorId)
-                .date(commentDate).build();
+                .commentTo(answerId2)
+                .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
+                .date(date).build();
         AddCommentCommand answerCommand3 = AddCommentCommand.builder()
-                .commentTo(commentTo3)
-                .creatorId(creatorId).build();
+                .commentTo(answerId3)
+                .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
+                .build();
         commentFacade.addComment(answerCommand1);
         commentFacade.addComment(answerCommand2);
         commentFacade.addComment(answerCommand3);
 
+        // Prepare comment query
+        CommentQuery commentQuery = CommentQuery.builder()
+                .commentView(CommentQuery.CommentView.ANSWER)
+                .commentTo(answerId1).build();
+
         // Create the expected result
         // Recover the uuid from the comment in the repository
         CommentsDTO.CommentDTO commentDTO = CommentsDTO.CommentDTO.builder()
-                .uuid(commentFacade.getComments(CommentQuery.builder()
-                        .commentTo(commentTo1).build()).getComments().get(0).getUuid())
+                .uuid(commentFacade.getComments(commentQuery).getComments().get(0).getUuid())
                 .content("No content")
-                .creator("Anonymous")
-                .date(commentDate).build();
+                .creator(testUser.getUsername())
+                .date(date).build();
 
-        assertEquals(commentFacade.getComments(CommentQuery.builder()
-                .commentTo(commentTo1).build()).getComments().get(0), commentDTO);
+        assertEquals(commentFacade.getComments(commentQuery).getComments().get(0), commentDTO);
     }
 }

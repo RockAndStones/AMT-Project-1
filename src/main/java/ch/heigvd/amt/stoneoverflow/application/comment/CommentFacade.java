@@ -20,7 +20,7 @@ public class CommentFacade {
                 .commentTo(command.getCommentTo())
                 .creatorId(command.getCreatorId())
                 .creator(command.getCreator())
-                .content(command.getContent())
+                .description(command.getContent())
                 .date(command.getDate()).build();
         commentRepository.save(addComment);
     }
@@ -31,10 +31,23 @@ public class CommentFacade {
         List<CommentsDTO.CommentDTO> commentsByCommentToIdDTO = comments.stream().map(
                 comment -> CommentsDTO.CommentDTO.builder()
                         .creator(comment.getCreator())
-                        .content(comment.getContent())
+                        .content(comment.getDescription())
                         .date(new DateDTO(comment.getDate())).build())
                 .collect(Collectors.toList());
 
         return CommentsDTO.builder().comments(commentsByCommentToIdDTO).build();
     }
+
+    public int getNumberOfComments() {
+        return commentRepository.getRepositorySize();
+    }
+
+    public int getNumberOfQuestionComments() {
+        return commentRepository.find(CommentQuery.builder().build()).size();
+    }
+
+    public int getNumberOfAnswerComments() {
+        return commentRepository.find(CommentQuery.builder().commentView(CommentQuery.CommentView.ANSWER).build()).size();
+    }
+
 }

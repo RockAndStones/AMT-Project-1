@@ -7,11 +7,11 @@ import lombok.Getter;
 @Getter
 public class PaginationDTO {
     int limit;
-    int allQuestions;
+    int itemRepoSize;
     int totalPages;
     int currentPage;
-    int startQuestion;
-    int lastQuestion;
+    int startItem;
+    int lastItem;
     int startPage;
     int lastPage;
 }

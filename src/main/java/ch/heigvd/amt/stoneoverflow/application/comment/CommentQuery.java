@@ -9,12 +9,21 @@ import lombok.Getter;
 @Getter
 @EqualsAndHashCode
 public class CommentQuery {
+
+    public enum CommentView {
+        QUESTION,
+        ANSWER
+    }
+
+    @Builder.Default
+    private CommentView commentView = CommentView.QUESTION;
+
     @Builder.Default
     private Id commentTo = null;
 
     @Builder.Default
-    private boolean byDate = false;
+    private CommentQuerySortBy sortBy = CommentQuerySortBy.DATE;
 
     @Builder.Default
-    private boolean reverse = false;
+    private boolean sortDescending = true;
 }

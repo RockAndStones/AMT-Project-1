@@ -2,7 +2,9 @@ package ch.heigvd.amt.stoneoverflow.application.answer;
 
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
 import ch.heigvd.amt.stoneoverflow.domain.answer.Answer;
+import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
 import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 
 import java.util.Collection;
 import java.util.List;
@@ -26,8 +28,8 @@ public class AnswerFacade {
         answerRepository.save(addAnswer);
     }
 
-    public AnswersDTO getAnswersFromQuestion(AnswerQuery answerQuery) {
-        Collection<Answer> answers = answerRepository.find(answerQuery);
+    public AnswersDTO getAnswers(AnswerQuery answerQuery, int offset, int limit) {
+        Collection<Answer> answers = answerRepository.find(answerQuery, offset, limit);
 
         List<AnswersDTO.AnswerDTO> answersFromQuestionIdDTO = answers.stream().map(
                 answer -> AnswersDTO.AnswerDTO.builder()
@@ -39,5 +41,13 @@ public class AnswerFacade {
                 .collect(Collectors.toList());
 
         return AnswersDTO.builder().answers(answersFromQuestionIdDTO).build();
+    }
+
+    public int getNumberOfAnswers() {
+        return answerRepository.getRepositorySize();
+    }
+
+    public int getNumberOfAnswers(QuestionId questionId) {
+        return answerRepository.getNumberOfAnswers(questionId);
     }
 }

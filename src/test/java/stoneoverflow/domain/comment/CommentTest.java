@@ -12,7 +12,7 @@ public class CommentTest {
     public void deepCloneCreatesNewObject() {
         Comment comment = Comment.builder()
                 .commentTo(new QuestionId())
-                .content("My test comment")
+                .description("My test comment")
                 .creatorId(new UserId())
                 .creator("test").build();
         Comment comment2 = comment.deepClone();
@@ -25,7 +25,7 @@ public class CommentTest {
     public void commentIdShouldBeAutomaticallyGenerated() {
         Comment comment = Comment.builder()
                 .commentTo(new QuestionId())
-                .content("My test comment")
+                .description("My test comment")
                 .creatorId(new UserId())
                 .creator("test").build();
 

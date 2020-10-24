@@ -41,9 +41,9 @@ public class QuestionQueryServlet extends HttpServlet {
         if (searchQuery != null)
             query.setSearchCondition(searchQuery);
 
-        PaginationDTO paginationDTO = paginationFacade.settingPagination(req.getParameter("page"));
+        PaginationDTO paginationDTO = paginationFacade.settingQuestionPagination(req.getParameter("page"));
 
-        QuestionsDTO questionsDTO = questionFacade.getQuestions(query, paginationDTO.getStartQuestion(), paginationDTO.getLimit());
+        QuestionsDTO questionsDTO = questionFacade.getQuestions(query, paginationDTO.getStartItem(), paginationDTO.getLimit());
         req.setAttribute("questions", questionsDTO);
         req.setAttribute("pagination", paginationDTO);
         req.getRequestDispatcher("/WEB-INF/views/home.jsp").forward(req, resp);

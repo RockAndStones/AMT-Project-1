@@ -23,14 +23,14 @@
         <span class="inline-block text-sm font-semibold mt-4">${msg.creator}, ${msg.date.dateFormatted()} at ${msg.date.timeFormatted()}</span>
     </div>
 </div>
-<!-- TMP TESTING ANSWER -->
+<!-- Comments -->
 <c:if test="${not empty msg.comments}">
     <h2 class="leading-normal text-lg font-semibold text-gray-900 mt-6 mb-4">Comment(s)</h2>
     <c:forEach items="${msg.comments}" var="comment">
         <%@include file="comment.jsp" %>
     </c:forEach>
 </c:if>
-
+<!-- Comment Form -->
 <jsp:include page="fragments/commentForm.jsp" >
     <jsp:param name="commentType" value="${msg.type}" />
     <jsp:param name="targetUUID" value="${msg.uuid}" />

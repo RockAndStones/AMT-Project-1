@@ -18,7 +18,6 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;

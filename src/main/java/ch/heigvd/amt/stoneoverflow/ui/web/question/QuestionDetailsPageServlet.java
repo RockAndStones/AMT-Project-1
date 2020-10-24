@@ -1,13 +1,18 @@
 package ch.heigvd.amt.stoneoverflow.ui.web.question;
 
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswerQuery;
+import ch.heigvd.amt.stoneoverflow.application.answer.AnswerQuerySortBy;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentQuery;
+import ch.heigvd.amt.stoneoverflow.application.comment.CommentQuerySortBy;
+import ch.heigvd.amt.stoneoverflow.application.pagination.PaginationDTO;
+import ch.heigvd.amt.stoneoverflow.application.pagination.PaginationFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionsDTO;
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswersDTO;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
+import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 
 import javax.inject.Inject;
@@ -23,16 +28,20 @@ public class QuestionDetailsPageServlet extends HttpServlet {
     @Inject
     ServiceRegistry serviceRegistry;
 
-    private QuestionFacade questionFacade;
-    private AnswerFacade   answerFacade;
-    private CommentFacade  commentFacade;
+    private QuestionFacade   questionFacade;
+    private AnswerFacade     answerFacade;
+    private CommentFacade    commentFacade;
+    private PaginationFacade paginationFacade;
+
 
     @Override
     public void init() throws ServletException {
         super.init();
-        questionFacade = serviceRegistry.getQuestionFacade();
-        answerFacade   = serviceRegistry.getAnswerFacade();
-        commentFacade  = serviceRegistry.getCommentFacade();
+        questionFacade   = serviceRegistry.getQuestionFacade();
+        answerFacade     = serviceRegistry.getAnswerFacade();
+        commentFacade    = serviceRegistry.getCommentFacade();
+        paginationFacade = serviceRegistry.getPaginationFacade();
+
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -58,22 +67,30 @@ public class QuestionDetailsPageServlet extends HttpServlet {
             return;
         }
 
+        // Set number of answers of the question
+        questionDTO.setNbAnswers(answerFacade.getNumberOfAnswers(questionId));
+
+        // Set the pagination of current question
+        PaginationDTO paginationDTO = paginationFacade.settingAnswerPagination(req.getParameter("page"), questionDTO.getNbAnswers());
+
         // Get answers & comments of the question
-        questionDTO.setAnswers(answerFacade.getAnswersFromQuestion(AnswerQuery.builder()
+        questionDTO.setAnswers(answerFacade.getAnswers(AnswerQuery.builder()
                 .answerTo(questionId)
-                .byNbVotes(true).build()).getAnswers());
+                .sortBy(AnswerQuerySortBy.VOTES).build(), paginationDTO.getStartItem(), paginationDTO.getLimit()).getAnswers());
         questionDTO.setComments(commentFacade.getComments(CommentQuery.builder()
                 .commentTo(questionId)
-                .byDate(true).build()).getComments());
+                .sortBy(CommentQuerySortBy.DATE).build()).getComments());
 
         // Get comments of each answers
         for (AnswersDTO.AnswerDTO answer : questionDTO.getAnswers()) {
             answer.setComments(commentFacade.getComments(CommentQuery.builder()
-                    .commentTo(new QuestionId(answer.getUuid()))
-                    .byDate(true).build()).getComments());
+                    .commentTo(new AnswerId(answer.getUuid()))
+                    .commentView(CommentQuery.CommentView.ANSWER)
+                    .sortBy(CommentQuerySortBy.DATE).build()).getComments());
         }
 
         req.setAttribute("question", questionDTO);
+        req.setAttribute("pagination", paginationDTO);
         req.getRequestDispatcher("WEB-INF/views/questionDetails.jsp").forward(req, resp);
     }
 }

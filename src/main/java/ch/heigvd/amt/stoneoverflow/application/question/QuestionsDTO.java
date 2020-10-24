@@ -22,6 +22,7 @@ public class QuestionsDTO {
         private String  creator;
         private int     nbVotes;
         private int     nbViews;
+        @Setter
         private int     nbAnswers;
         private DateDTO date;
         private String  type;

@@ -3,35 +3,6 @@
   Authors:      Bécaud Arthur, Egremy Bruno, Muller Robin & Teixeira Carvalho Stéphane
   Date:         07.10.2020
   Description:  Question's details page of StoneOverflow.
-
-  JSP VARIABLE NEEDED:
-
-  question:
-    id,
-    title,
-    nbViews,
-    nbVotes,
-    description,
-    creator,
-    date,
-    answers: [
-        {
-            id,
-            description,
-            creator,
-            date,
-            comments: [
-                {
-                    content,
-                    creator,
-                    date
-                },
-                ...
-            ]
-        },
-        ...
-    ]
-
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -84,7 +55,7 @@
                         <h2 class="leading-normal text-lg font-semibold text-gray-900 mt-0">No one responded for now <i class="far fa-sad-tear"></i></h2>
                     </c:when>
                     <c:otherwise>
-                        <h2 id="answers" class="leading-normal text-lg font-semibold text-gray-900 mt-0 mb-4">Answer(s)</h2>
+                        <h2 id="answers" class="leading-normal text-lg font-semibold text-gray-900 mt-0 mb-4">${question.nbAnswers} Answer(s)</h2>
                         <c:forEach items="${question.answers}" var="answer">
                             <jsp:setProperty name="msg" property="uuid"        value="${answer.uuid}" />
                             <jsp:setProperty name="msg" property="description" value="${answer.description}" />
@@ -98,6 +69,12 @@
                     </c:otherwise>
                 </c:choose>
             </div>
+            <c:if test="${pagination.totalPages > 1}">
+                <!-- Pagination -->
+                <div class="mb-8 pb-8 border-b">
+                    <%@include file="fragments/questionDetailsPagination.jsp" %>
+                </div>
+            </c:if>
             <!-- Response form -->
             <h2 class="leading-normal text-lg font-semibold text-gray-900 mt-0 mb-4">Write your answer</h2>
             <form action="${pageContext.request.contextPath}/submitAnswer.do" method="post">

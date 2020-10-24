@@ -18,7 +18,7 @@ public class Comment implements IEntity<Comment, CommentId> {
     private Id        commentTo;
     private UserId    creatorId;
     private String    creator;
-    private String    content;
+    private String    description;
     private Date      date;
 
     @Override
@@ -43,13 +43,13 @@ public class Comment implements IEntity<Comment, CommentId> {
             if (creator == null)
                 throw new IllegalArgumentException("Creator cannot be null");
 
-            if (content == null || content.isEmpty())
+            if (description == null || description.isEmpty())
                 throw new IllegalArgumentException("Content cannot be null or empty");
 
             if (date == null)
                 date = new Date(System.currentTimeMillis());
 
-            return new Comment(id, commentTo, creatorId, creator, content, date);
+            return new Comment(id, commentTo, creatorId, creator, description, date);
         }
     }
 }

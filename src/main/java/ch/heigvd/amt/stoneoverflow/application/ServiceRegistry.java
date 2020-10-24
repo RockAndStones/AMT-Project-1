@@ -15,7 +15,6 @@ import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
-import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import lombok.Getter;
 
 import javax.annotation.PostConstruct;
@@ -25,16 +24,17 @@ import javax.inject.Named;
 
 @ApplicationScoped
 public class ServiceRegistry {
-    @Inject @Named("InMemoryQuestionRepository")
+    @Inject @Named("JdbcQuestionRepository")
     IQuestionRepository questionRepository;
 
-    @Inject @Named("InMemoryUserRepository")
+
+    @Inject @Named("JdbcUserRepository")
     IUserRepository userRepository;
 
-    @Inject @Named("InMemoryAnswerRepository")
+    @Inject @Named("JdbcAnswerRepository")
     IAnswerRepository answerRepository;
 
-    @Inject @Named("InMemoryCommentRepository")
+    @Inject @Named("JdbcCommentRepository")
     ICommentRepository commentRepository;
 
     @Getter IdentityManagementFacade identityManagementFacade;
@@ -51,7 +51,7 @@ public class ServiceRegistry {
         answerFacade             = new AnswerFacade(answerRepository);
         commentFacade            = new CommentFacade(commentRepository);
         statisticsFacade         = new StatisticsFacade(questionRepository, userRepository, commentRepository, answerRepository);
-        paginationFacade         = new PaginationFacade(questionRepository);
+        paginationFacade         = new PaginationFacade(questionRepository, answerRepository);
 
         // Add default users
         User u1 = User.builder()
@@ -142,27 +142,27 @@ public class ServiceRegistry {
         // Add default comments
         Comment c1 = Comment.builder()
                 .commentTo(q1.getId())
-                .content("Excellent question sir.")
-                .creatorId(new UserId())
-                .creator("Anonymous1EvenIfYouCannotBeAnonymousInAComment").build();
+                .description("Excellent question sir.")
+                .creatorId(u1.getId())
+                .creator(u1.getUsername()).build();
 
         Comment c2 = Comment.builder()
                 .commentTo(a1.getId())
-                .content("It's also called dog nip by the way.")
+                .description("It's also called dog nip by the way.")
                 .creatorId(u1.getId())
                 .creator(u1.getUsername()).build();
 
         Comment c3 = Comment.builder()
                 .commentTo(a1.getId())
-                .content("Yeah it's anise, I've tried it with my dog. But since this event my dog stopped moving but it was fun I would say.")
-                .creatorId(new UserId())
-                .creator("Anonymous2EvenIfYouCannotBeAnonymousInAComment").build();
+                .description("Yeah it's anise, I've tried it with my dog. But since this event my dog stopped moving but it was fun I would say.")
+                .creatorId(u2.getId())
+                .creator(u2.getUsername()).build();
 
         Comment c4 = Comment.builder()
                 .commentTo(a2.getId())
-                .content("D*fuck is wrong with you buddy?")
-                .creatorId(new UserId())
-                .creator("Anonymous3EvenIfYouCannotBeAnonymousInAComment").build();
+                .description("D*fuck is wrong with you buddy?")
+                .creatorId(u2.getId())
+                .creator(u2.getUsername()).build();
 
         commentRepository.save(c1);
         commentRepository.save(c2);

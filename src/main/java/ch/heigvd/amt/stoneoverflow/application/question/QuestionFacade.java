@@ -18,15 +18,15 @@ public class QuestionFacade {
     }
 
     public void addQuestion(AddQuestionCommand command){
-        Question addedQuestion = Question.builder().
-                title(command.getTitle()).
-                description(command.getDescription()).
-                creatorId(command.getCreatorId()).
-                creator(command.getCreator()).
-                nbVotes(command.getNbVotes()).
-                nbViews(command.getNbViews()).
-                date(command.getDate()).
-                questionType(command.getType()).build();
+        Question addedQuestion = Question.builder()
+                .title(command.getTitle())
+                .description(command.getDescription())
+                .creatorId(command.getCreatorId())
+                .creator(command.getCreator())
+                .nbVotes(command.getNbVotes())
+                .nbViews(command.getNbViews())
+                .date(command.getDate())
+                .questionType(command.getType()).build();
         questionRepository.save(addedQuestion);
     }
 

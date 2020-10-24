@@ -70,22 +70,22 @@ public class PaginationFacadeIT {
         }
 
 
-        PaginationDTO resultPagination = paginationFacade.settingPagination("2");
+        PaginationDTO resultPagination = paginationFacade.settingQuestionPagination("2");
 
         PaginationDTO expectedPagination = PaginationDTO.builder()
                 .limit(5)
-                .allQuestions(serviceRegistry.getQuestionFacade().getNumberOfQuestions())
-                .startQuestion(5)
-                .lastQuestion(10)
+                .itemRepoSize(serviceRegistry.getQuestionFacade().getNumberOfQuestions())
+                .startItem(5)
+                .lastItem(10)
                 .startPage(1)
                 .lastPage(3)
                 .currentPage(2)
                 .totalPages(3).build();
 
         assertEquals(expectedPagination.getLimit(), resultPagination.getLimit());
-        assertEquals(expectedPagination.getAllQuestions(), resultPagination.getAllQuestions());
-        assertEquals(expectedPagination.getStartQuestion(), resultPagination.getStartQuestion());
-        assertEquals(expectedPagination.getLastQuestion(), resultPagination.getLastQuestion());
+        assertEquals(expectedPagination.getItemRepoSize(), resultPagination.getItemRepoSize());
+        assertEquals(expectedPagination.getStartItem(), resultPagination.getStartItem());
+        assertEquals(expectedPagination.getLastItem(), resultPagination.getLastItem());
         assertEquals(expectedPagination.getStartPage(), resultPagination.getStartPage());
         assertEquals(expectedPagination.getLastPage(), resultPagination.getLastPage());
         assertEquals(expectedPagination.getCurrentPage(), resultPagination.getCurrentPage());
@@ -94,22 +94,22 @@ public class PaginationFacadeIT {
 
     @Test
     public void shouldSetInitialPagination() {
-        PaginationDTO resultPagination = paginationFacade.settingPagination("1");
+        PaginationDTO resultPagination = paginationFacade.settingQuestionPagination("1");
 
         PaginationDTO expectedPagination = PaginationDTO.builder()
                 .limit(5)
-                .allQuestions(serviceRegistry.getQuestionFacade().getNumberOfQuestions())
-                .startQuestion(0)
-                .lastQuestion(5)
+                .itemRepoSize(serviceRegistry.getQuestionFacade().getNumberOfQuestions())
+                .startItem(0)
+                .lastItem(5)
                 .startPage(1)
                 .lastPage(3)
                 .currentPage(1)
                 .totalPages(3).build();
 
         assertEquals(expectedPagination.getLimit(), resultPagination.getLimit());
-        assertEquals(expectedPagination.getAllQuestions(), resultPagination.getAllQuestions());
-        assertEquals(expectedPagination.getStartQuestion(), resultPagination.getStartQuestion());
-        assertEquals(expectedPagination.getLastQuestion(), resultPagination.getLastQuestion());
+        assertEquals(expectedPagination.getItemRepoSize(), resultPagination.getItemRepoSize());
+        assertEquals(expectedPagination.getStartItem(), resultPagination.getStartItem());
+        assertEquals(expectedPagination.getLastItem(), resultPagination.getLastItem());
         assertEquals(expectedPagination.getStartPage(), resultPagination.getStartPage());
         assertEquals(expectedPagination.getLastPage(), resultPagination.getLastPage());
         assertEquals(expectedPagination.getCurrentPage(), resultPagination.getCurrentPage());

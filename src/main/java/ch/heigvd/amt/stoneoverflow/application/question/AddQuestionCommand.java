@@ -1,5 +1,6 @@
 package ch.heigvd.amt.stoneoverflow.application.question;
 
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import lombok.Builder;
