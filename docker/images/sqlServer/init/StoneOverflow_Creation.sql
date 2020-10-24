@@ -96,20 +96,20 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Comment` (
   `id` CHAR(36) NOT NULL,
-  `idUserMessage` VARCHAR(36) NOT NULL,
   `idUser` VARCHAR(36) NOT NULL,
+  `idUserMessage` VARCHAR(36) NOT NULL,
   `description` TEXT NULL,
+  `date` DATETIME(3) NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Comment_UserMessage1_idx` (`idUserMessage` ASC) VISIBLE,
   INDEX `fk_Comment_User1_idx` (`idUser` ASC) VISIBLE,
-  CONSTRAINT `fk_Comment_UserMessage1`
-    FOREIGN KEY (`idUserMessage`)
-    REFERENCES `db_stoneoverflow`.`UserMessage` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_Comment_User1`
     FOREIGN KEY (`idUser`)
     REFERENCES `db_stoneoverflow`.`User` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Comment_UserMessage1`
+    FOREIGN KEY (`idUserMessage`)
+    REFERENCES `db_stoneoverflow`.`UserMessage` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -124,11 +124,54 @@ SELECT
     um.nbVotes AS 'nbVotes',
     q.nbViews AS 'nbViews',
     um.date AS 'date'
-FROM Question AS q 
-    INNER JOIN UserMessage AS um 
+FROM Question AS q
+    INNER JOIN UserMessage AS um
         ON q.id = um.id
-    INNER JOIN User AS u 
+    INNER JOIN User AS u
         ON um.idUser=u.id;
+
+CREATE VIEW vAnswer AS
+SELECT
+    a.id AS 'id',
+    a.idQuestion AS 'answerTo',
+    um.description AS 'description',
+    um.idUser AS 'creatorId',
+    u.username AS 'creator',
+    um.nbVotes AS 'nbVotes',
+    um.date AS 'date'
+FROM Answer AS a
+         INNER JOIN UserMessage AS um
+                    ON a.id = um.id
+         INNER JOIN User AS u
+                    ON um.idUser=u.id;
+
+CREATE VIEW vQuestionComment AS
+SELECT
+    c.id AS `id`,
+    c.idUserMessage AS 'commentTo',
+    c.idUser AS 'creatorId',
+    u.username AS  'creator',
+    c.description AS 'description',
+    c.date AS 'date'
+FROM Comment AS c
+         INNER JOIN Question AS q
+                    ON c.idUserMessage = q.id
+         INNER JOIN User AS u
+                    ON c.idUser=u.id;
+
+CREATE VIEW vAnswerComment AS
+SELECT
+    c.id AS `id`,
+    c.idUserMessage AS 'commentTo',
+    c.idUser AS 'creatorId',
+    u.username AS  'creator',
+    c.description AS 'description',
+    c.date AS 'date'
+FROM Comment AS c
+         INNER JOIN Answer AS a
+                    ON c.idUserMessage = a.id
+         INNER JOIN User AS u
+                    ON c.idUser=u.id;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
