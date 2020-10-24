@@ -23,7 +23,6 @@ module.exports = {
             I.fillField(this.fields.password, password);
             I.click(this.buttons.submit);
         });
-        I.amOnPage(homePage.url);
     },
 
     showRegisterForm(){

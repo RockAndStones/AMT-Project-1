@@ -27,8 +27,8 @@
     <!-- Main -->
     <div class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-900 leading-normal">
         <!-- Update Section -->
-        <div id="registerSection" class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
-            <p id="registerLabel" class="text-center text-3xl">Your Profile</p>
+        <div id="updateSection" class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
+            <p id="updateLabel" class="text-center text-3xl">Your Profile</p>
             <form action="${pageContext.request.contextPath}/updateUser.do" method="POST" class="flex flex-col pt-3 md:pt-8">
                 <c:if test="${errorMessage != null}">
                     <p class="text-center text-xl text-red-700">${errorMessage}</p>

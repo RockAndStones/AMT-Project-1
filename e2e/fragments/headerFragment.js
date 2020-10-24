@@ -6,7 +6,8 @@ module.exports = {
 
   links: {
       home: {css: 'a[href=home]'},
-      login: {css: 'a[href=login]'}
+      login: {css: 'a[href=login]'},
+      profile: {css: 'a[href=profile]'}
   },
 
   goToHomePage() {
@@ -18,6 +19,12 @@ module.exports = {
   goToLoginPage() {
       within(this.root, () => {
           I.clickLink(this.links.login);
+      });
+  },
+
+  goToProfilePage(){
+      within(this.root, () => {
+          I.clickLink(this.links.profile);
       });
   }
 }
