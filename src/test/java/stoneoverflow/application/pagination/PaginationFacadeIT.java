@@ -69,18 +69,18 @@ public class PaginationFacadeIT {
             questionFacade.addQuestion(questionCommand);
         }
 
-
+        int totalPages = (int) Math.ceil((double) questionFacade.getNumberOfQuestions() / (double) 5);
+        int lastPage = Math.min(5, totalPages);
         PaginationDTO resultPagination = paginationFacade.settingQuestionPagination("2");
-
         PaginationDTO expectedPagination = PaginationDTO.builder()
                 .limit(5)
                 .itemRepoSize(serviceRegistry.getQuestionFacade().getNumberOfQuestions())
                 .startItem(5)
                 .lastItem(10)
                 .startPage(1)
-                .lastPage(3)
+                .lastPage(lastPage)
                 .currentPage(2)
-                .totalPages(3).build();
+                .totalPages(totalPages).build();
 
         assertEquals(expectedPagination.getLimit(), resultPagination.getLimit());
         assertEquals(expectedPagination.getItemRepoSize(), resultPagination.getItemRepoSize());
@@ -96,15 +96,18 @@ public class PaginationFacadeIT {
     public void shouldSetInitialPagination() {
         PaginationDTO resultPagination = paginationFacade.settingQuestionPagination("1");
 
+        int totalPages = (int) Math.ceil((double) questionFacade.getNumberOfQuestions() / (double) 5);
+        int lastPage = Math.min(5, totalPages);
+
         PaginationDTO expectedPagination = PaginationDTO.builder()
                 .limit(5)
                 .itemRepoSize(serviceRegistry.getQuestionFacade().getNumberOfQuestions())
                 .startItem(0)
                 .lastItem(5)
                 .startPage(1)
-                .lastPage(3)
+                .lastPage(lastPage)
                 .currentPage(1)
-                .totalPages(3).build();
+                .totalPages(totalPages).build();
 
         assertEquals(expectedPagination.getLimit(), resultPagination.getLimit());
         assertEquals(expectedPagination.getItemRepoSize(), resultPagination.getItemRepoSize());

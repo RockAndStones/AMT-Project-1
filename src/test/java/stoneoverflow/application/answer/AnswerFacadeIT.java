@@ -82,7 +82,6 @@ public class AnswerFacadeIT {
                 0,
                 questionFacade.getNumberOfQuestions()).getQuestions().get(questionIndex).getUuid());
 
-        DateDTO mydate = new DateDTO(new Date(System.currentTimeMillis()));
         // Add answer to repository
         AddAnswerCommand answerCommand = AddAnswerCommand.builder()
                 .answerTo(questionId)
@@ -102,7 +101,7 @@ public class AnswerFacadeIT {
                 .description("No content")
                 .creator(testUser.getUsername())
                 .nbVotes(0)
-                .date(mydate).build();
+                .date(date).build();
 
         assertEquals(answerFacade.getAnswers(answerQuery, 0, answerFacade.getNumberOfAnswers()).getAnswers().get(answerIndex), answerDTO);
     }
