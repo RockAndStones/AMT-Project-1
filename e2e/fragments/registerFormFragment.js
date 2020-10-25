@@ -7,25 +7,30 @@ module.exports = {
        register: '#registerLabel'
    },
   fields: {
-      username: '#registerUsername',
-      password: '#registerPassword',
+      username:         '#registerUsername',
+      email:            '#registerEmail',
+      firstName:        '#registerFirstName',
+      lastName:         '#registerLastName',
+      password:         '#registerPassword',
       confirmPassword : '#confirmPassword'
   },
   buttons: {
       submit: {css: 'input[value=Register]'},
   },
-    scripts: {
-        showLoginForm: "showLogin()"
-    },
+  scripts: {
+      showLoginForm: "showLogin()"
+  },
 
-  registerUser(username, password) {
+  registerUser(username, email, firstName, lastName, password) {
       within(this.root, () => {
           I.fillField(this.fields.username, username);
+          I.fillField(this.fields.email, email);
+          I.fillField(this.fields.firstName, firstName);
+          I.fillField(this.fields.lastName, lastName);
           I.fillField(this.fields.password, password);
           I.fillField(this.fields.confirmPassword, password);
           I.click(this.buttons.submit);
       });
-      I.amOnPage(homePage.url);
   },
 
   showLoginForm(){

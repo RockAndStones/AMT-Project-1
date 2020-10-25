@@ -3,6 +3,7 @@ package ch.heigvd.amt.stoneoverflow.application.question;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswersDTO;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentsDTO;
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
+import ch.heigvd.amt.stoneoverflow.application.vote.VoteDTO;
 import lombok.*;
 import java.util.Collection;
 import java.util.List;
@@ -17,20 +18,22 @@ public class QuestionsDTO {
     @Getter
     @EqualsAndHashCode
     public static class QuestionDTO {
-        private String  uuid;
-        private String  title;
-        private String  description;
-        private String  creator;
-        private int     nbVotes;
+        private String        uuid;
+        private String        title;
+        private String        description;
+        private String        creator;
+        private int           nbViews;
+        private int           nbVotes;
         private AtomicInteger nbViews;
-        private int     nbAnswers;
-        private DateDTO date;
-        private String  type;
+        private int           nbAnswers;
+        private DateDTO       date;
+        private String        type;
 
-        @Setter
-        private Collection<AnswersDTO.AnswerDTO> answers;
-        @Setter
-        private Collection<CommentsDTO.CommentDTO> comments;
+        @Setter private int nbVotes;
+        @Setter private int nbAnswers;
+        @Setter private VoteDTO voteDTO;
+        @Setter private Collection<AnswersDTO.AnswerDTO>   answers;
+        @Setter private Collection<CommentsDTO.CommentDTO> comments;
 
         public String shortDescription(){
             int maxLength = 64;

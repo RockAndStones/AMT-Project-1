@@ -26,9 +26,6 @@ public class AddQuestionCommand {
     private String creator = "Anonymous";
 
     @Builder.Default
-    private int nbVotes = 0;
-
-    @Builder.Default
     private AtomicInteger nbViews = new AtomicInteger(0);
 
     @Builder.Default

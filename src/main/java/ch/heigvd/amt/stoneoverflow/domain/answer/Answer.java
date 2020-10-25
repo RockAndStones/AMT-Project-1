@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Setter;
 
-import java.util.Date;
+import java.util.*;
 
 @Data
 @Builder(toBuilder = true)
@@ -19,7 +19,6 @@ public class Answer implements IEntity<Answer, AnswerId> {
     private String     description;
     private UserId     creatorId;
     private String     creator;
-    private int        nbVotes;
     private Date       date;
 
     @Override
@@ -50,7 +49,7 @@ public class Answer implements IEntity<Answer, AnswerId> {
             if (date == null)
                 date = new Date(System.currentTimeMillis());
 
-            return new Answer(id, answerTo, description, creatorId, creator, nbVotes, date);
+            return new Answer(id, answerTo, description, creatorId, creator, date);
         }
     }
 }

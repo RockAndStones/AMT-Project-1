@@ -14,14 +14,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Builder(toBuilder = true)
 public class Question implements IEntity<Question, QuestionId> {
     @Setter(AccessLevel.NONE)
-    private QuestionId   id;
-    private String       title;
-    private String       description;
-    private UserId       creatorId;
-    private String       creator;
-    private int          nbVotes;
+    private QuestionId    id;
+    private String        title;
+    private String        description;
+    private UserId        creatorId;
+    private String        creator;
     private AtomicInteger nbViews;
-    private Date         date;
+    private Date          date;
     @Setter(AccessLevel.NONE)
     private QuestionType questionType;
 
@@ -37,7 +36,7 @@ public class Question implements IEntity<Question, QuestionId> {
     }
 
     // Rewrite the getter to get an int and not an AtomicInteger
-    public int getNbViews(){
+    public int getNbViewsAsInt(){
         return this.nbViews.get();
     }
 
@@ -71,7 +70,7 @@ public class Question implements IEntity<Question, QuestionId> {
             if(questionType == null)
                 questionType = QuestionType.UNCLASSIFIED;
 
-            return new Question(id, title, description, creatorId, creator, nbVotes, nbViews, date, questionType);
+            return new Question(id, title, description, creatorId, creator, nbViews, date, questionType);
         }
     }
 }

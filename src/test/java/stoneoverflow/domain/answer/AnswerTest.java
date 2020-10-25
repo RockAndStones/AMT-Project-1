@@ -14,8 +14,7 @@ public class AnswerTest {
                 .answerTo(new QuestionId())
                 .description("My test Answer")
                 .creatorId(new UserId())
-                .creator("test")
-                .nbVotes(17).build();
+                .creator("test").build();
         Answer answer2 = answer.deepClone();
 
         assertEquals(answer, answer2);
@@ -28,8 +27,7 @@ public class AnswerTest {
                 .answerTo(new QuestionId())
                 .description("My test Answer")
                 .creatorId(new UserId())
-                .creator("test")
-                .nbVotes(17).build();
+                .creator("test").build();
 
         assertNotNull(answer.getId());
     }

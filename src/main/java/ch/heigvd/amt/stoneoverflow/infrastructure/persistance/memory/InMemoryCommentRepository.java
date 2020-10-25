@@ -1,8 +1,7 @@
 package ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory;
 
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentQuery;
-import ch.heigvd.amt.stoneoverflow.domain.Id;
-import ch.heigvd.amt.stoneoverflow.domain.answer.Answer;
+import ch.heigvd.amt.stoneoverflow.application.comment.CommentQuerySortBy;
 import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
 import ch.heigvd.amt.stoneoverflow.domain.comment.CommentId;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
@@ -11,6 +10,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @ApplicationScoped
 @Named("InMemoryCommentRepository")
@@ -31,15 +31,14 @@ public class InMemoryCommentRepository extends InMemoryRepository<Comment, Comme
             allComments = queriedComment;
         }
 
-        // Sort comments if asked by query
-        if (commentQuery.isByDate()) {
-            allComments = allComments.stream().sorted(Comparator.comparing(Comment::getDate))
-                    .collect(Collectors.toList());
-        }
+        Comparator<Comment> comparator;
+        if (commentQuery.getSortBy() == CommentQuerySortBy.DATE)
+            comparator = Comparator.comparing(Comment::getDate).reversed();
+        else
+            throw new UnsupportedOperationException("Unsupported question sort");
 
-        if(commentQuery.isReverse()){
-            Collections.reverse((List<?>) allComments);
-        }
+        Stream<Comment> stream = allComments.stream().sorted(comparator);
+        allComments = stream.collect(Collectors.toList());
 
         return allComments;
     }

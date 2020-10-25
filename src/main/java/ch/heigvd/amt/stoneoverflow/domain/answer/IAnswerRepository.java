@@ -7,5 +7,6 @@ import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import java.util.Collection;
 
 public interface IAnswerRepository extends IRepository<Answer, AnswerId> {
-    Collection<Answer> find(AnswerQuery answerQuery);
+    Collection<Answer> find(AnswerQuery answerQuery, int offset, int limit);
+    int getNumberOfAnswers(QuestionId questionId);
 }
