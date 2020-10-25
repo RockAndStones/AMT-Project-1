@@ -34,7 +34,7 @@ public class VoteCommandServlet extends HttpServlet {
     }
 
     private void redirectToQuestionDetails(HttpServletRequest req, HttpServletResponse resp, String questionUUID) throws IOException {
-        resp.sendRedirect(req.getContextPath() + "/questionDetails?questionUUID=" + questionUUID);
+        resp.sendRedirect(req.getContextPath() + "/questionDetails?voted=y&questionUUID=" + questionUUID);
     }
 
     @Override
