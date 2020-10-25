@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -56,8 +57,7 @@ public class JdbcQuestionRepositoryTest {
                 .description(faker.lorem().paragraph())
                 .creatorId(user.getId())
                 .creator(user.getUsername())
-                .nbVotes(faker.number().numberBetween(0, 1000))
-                .nbViews(faker.number().numberBetween(0, 1000))
+                .nbViews(new AtomicInteger(faker.number().numberBetween(0, 1000)))
                 .date(faker.date().birthday())
                 .build();
     }
