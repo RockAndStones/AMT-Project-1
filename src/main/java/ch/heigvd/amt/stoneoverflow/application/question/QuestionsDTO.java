@@ -22,6 +22,7 @@ public class QuestionsDTO {
         private String        title;
         private String        description;
         private String        creator;
+        @EqualsAndHashCode.Exclude
         private AtomicInteger nbViews;
         private DateDTO       date;
         private String        type;
