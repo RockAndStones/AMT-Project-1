@@ -88,7 +88,7 @@ public class ServiceRegistry {
                 .description("Well, you real ????")
                 .creatorId(u1.getId())
                 .creator("SwagMan McSwagenstein")
-                .nbViews(44)
+                .nbViews(new AtomicInteger(44))
                 .build());
 
         questionFacade.addQuestion(AddQuestionCommand.builder()
@@ -96,7 +96,7 @@ public class ServiceRegistry {
                 .description("Start lifting weights today, lift women tomorrow !")
                 .creatorId(u1.getId())
                 .creator("Ricardo")
-                .nbViews(6418)
+                .nbViews(new AtomicInteger(6418))
                 .build());
 
         questionFacade.addQuestion(AddQuestionCommand.builder()
@@ -118,8 +118,7 @@ public class ServiceRegistry {
                         "We are using vue-cli 3.")
                 .creatorId(u1.getId())
                 .creator("Jack Casas")
-                .nbViews(44)
-                .nbViews(884)
+                .nbViews(new AtomicInteger(44))
                 .build());
 
         Question q1 = Question.builder()

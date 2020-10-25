@@ -22,10 +22,7 @@ public class QuestionsDTO {
         private String        title;
         private String        description;
         private String        creator;
-        private int           nbViews;
-        private int           nbVotes;
         private AtomicInteger nbViews;
-        private int           nbAnswers;
         private DateDTO       date;
         private String        type;
 
@@ -35,7 +32,7 @@ public class QuestionsDTO {
         @Setter private Collection<AnswersDTO.AnswerDTO>   answers;
         @Setter private Collection<CommentsDTO.CommentDTO> comments;
 
-        public String shortDescription(){
+        public String shortDescription() {
             int maxLength = 64;
             String thereIsMore = "...";
 
