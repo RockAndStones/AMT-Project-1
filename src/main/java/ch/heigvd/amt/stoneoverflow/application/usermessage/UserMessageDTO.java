@@ -2,6 +2,7 @@ package ch.heigvd.amt.stoneoverflow.application.usermessage;
 
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentsDTO;
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
+import ch.heigvd.amt.stoneoverflow.application.vote.VoteDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ public class UserMessageDTO {
     private int     nbVotes;
     private DateDTO date;
     private String  type;
+    private VoteDTO vote;
 
     private Collection<CommentsDTO.CommentDTO> comments;
 }

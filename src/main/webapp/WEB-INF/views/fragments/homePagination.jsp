@@ -6,13 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean scope="request" id="pagination" type="ch.heigvd.amt.stoneoverflow.application.pagination.PaginationDTO"/>
-<div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+<div class="flex items-center justify-between">
     <div class="flex-1 flex justify-between sm:hidden">
-        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+        <a href="<c:if test="${pagination.currentPage == 1}">#</c:if><c:if test="${pagination.currentPage != 1}">home?page=${pagination.currentPage-1}</c:if>" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
             Previous
         </a>
-        <a href="#" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+        <a href="<c:if test="${pagination.currentPage == pagination.totalPages}">#</c:if><c:if test="${pagination.currentPage != pagination.totalPages}">home?page=${pagination.currentPage+1}</c:if>" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
             Next
         </a>
     </div>
@@ -20,11 +19,11 @@
         <div>
             <p class="text-sm leading-5 text-gray-700">
                 Showing
-                <span class="font-medium">${pagination.startQuestion + 1}</span>
+                <span class="font-medium">${pagination.startItem + 1}</span>
                 to
-                <span class="font-medium">${pagination.lastQuestion}</span>
+                <span class="font-medium">${pagination.lastItem}</span>
                 of
-                <span class="font-medium">${pagination.allQuestions}</span>
+                <span class="font-medium">${pagination.itemRepoSize}</span>
                 results
             </p>
         </div>
