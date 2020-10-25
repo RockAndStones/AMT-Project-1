@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.lenient;
@@ -62,6 +63,6 @@ public class QuestionTest {
         question.addView();
         question.addView();
 
-        assertEquals(question.getNbViews(), 2);
+        assertEquals(question.getNbViews().get(), 2);
     }
 }

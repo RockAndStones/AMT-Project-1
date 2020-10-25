@@ -18,13 +18,13 @@ public class QuestionsDTO {
     @Getter
     @EqualsAndHashCode
     public static class QuestionDTO {
-        private String  uuid;
-        private String  title;
-        private String  description;
-        private String  creator;
+        private String        uuid;
+        private String        title;
+        private String        description;
+        private String        creator;
         private AtomicInteger nbViews;
-        private DateDTO date;
-        private String  type;
+        private DateDTO       date;
+        private String        type;
 
         @Setter private int nbVotes;
         @Setter private int nbAnswers;
@@ -32,7 +32,7 @@ public class QuestionsDTO {
         @Setter private Collection<AnswersDTO.AnswerDTO>   answers;
         @Setter private Collection<CommentsDTO.CommentDTO> comments;
 
-        public String shortDescription(){
+        public String shortDescription() {
             int maxLength = 64;
             String thereIsMore = "...";
 

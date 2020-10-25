@@ -119,7 +119,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps = con.prepareStatement("INSERT INTO Question VALUES (?, ?, ?)");
             ps.setString(1, question.getId().asString());
             ps.setString(2, question.getTitle());
-            ps.setInt(3, question.getNbViews());
+            ps.setInt(3, question.getNbViewsAsInt());
             ps.executeUpdate();
 
             ps.close();
@@ -136,7 +136,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             Connection con = dataSource.getConnection();
 
             PreparedStatement ps = con.prepareStatement("UPDATE Question SET nbViews=? WHERE id=?");
-            ps.setInt(1, question.getNbViews());
+            ps.setInt(1, question.getNbViewsAsInt());
             ps.setString(2, question.getId().asString());
             ps.executeUpdate();
 

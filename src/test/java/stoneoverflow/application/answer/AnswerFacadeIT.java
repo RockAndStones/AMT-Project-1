@@ -43,9 +43,7 @@ public class AnswerFacadeIT {
     public static WebArchive createDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
                 .addPackages(true, "ch.heigvd.amt")
-                .addPackages(true, "org.springframework.security.crypto.bcrypt")
-                .addPackages(true, "org.springframework.security.crypto.bcrypt.BCrypt")
-                .addPackages(true, "java.util.concurrent.atomic");
+                .addPackages(true, "org.springframework.security.crypto.bcrypt");
         return archive;
     }
 
@@ -68,7 +66,7 @@ public class AnswerFacadeIT {
     public void shouldAddAnswer() {
 
         int questionIndex = questionFacade.getNumberOfQuestions();
-        int answerIndex   = answerFacade.getNumberOfAnswers();
+        int answerIndex = answerFacade.getNumberOfAnswers();
 
         // Insert a question in the repository to respond to
         AddQuestionCommand questionCommand = AddQuestionCommand.builder()
@@ -84,11 +82,13 @@ public class AnswerFacadeIT {
                 0,
                 questionFacade.getNumberOfQuestions()).getQuestions().get(questionIndex).getUuid());
 
+        DateDTO mydate = new DateDTO(new Date(System.currentTimeMillis()));
         // Add answer to repository
         AddAnswerCommand answerCommand = AddAnswerCommand.builder()
                 .answerTo(questionId)
                 .creatorId(testUser.getId())
-                .date(date).build();
+                .creator(testUser.getUsername())
+                .build();
         answerFacade.addAnswer(answerCommand);
 
         // Prepare answer query
@@ -102,7 +102,7 @@ public class AnswerFacadeIT {
                 .description("No content")
                 .creator(testUser.getUsername())
                 .nbVotes(0)
-                .date(date).build();
+                .date(mydate).build();
 
         assertEquals(answerFacade.getAnswers(answerQuery, 0, answerFacade.getNumberOfAnswers()).getAnswers().get(answerIndex), answerDTO);
     }
@@ -134,6 +134,7 @@ public class AnswerFacadeIT {
         AddAnswerCommand answerCommand1 = AddAnswerCommand.builder()
                 .answerTo(questionId1)
                 .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
                 .date(date).build();
         AddAnswerCommand answerCommand2 = AddAnswerCommand.builder()
                 .answerTo(questionId2)
@@ -163,7 +164,7 @@ public class AnswerFacadeIT {
     }
 
     @Test
-    public void shouldGetAllQuestions() {
+    public void shouldGetAllAnswers() {
 
         int questionIndex = questionFacade.getNumberOfQuestions();
 

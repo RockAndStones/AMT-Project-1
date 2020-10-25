@@ -6,12 +6,15 @@ import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuerySortBy;
 import ch.heigvd.amt.stoneoverflow.application.vote.VoteFacade;
+import ch.heigvd.amt.stoneoverflow.domain.Id;
+import ch.heigvd.amt.stoneoverflow.domain.UserMessageType;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 import ch.heigvd.amt.stoneoverflow.domain.vote.IVoteRepository;
 import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
+import ch.heigvd.amt.stoneoverflow.domain.vote.VoteId;
 import lombok.Getter;
 
 import javax.annotation.PostConstruct;
@@ -30,18 +33,12 @@ import java.util.stream.Stream;
 @Named("InMemoryQuestionRepository")
 public class InMemoryQuestionRepository extends InMemoryRepository<Question, QuestionId> implements IQuestionRepository {
 
-    @Inject
-    ServiceRegistry serviceRegistry;
-    VoteFacade voteFacade;
+    @Inject @Named("InMemoryVoteRepository")
+    InMemoryVoteRepository voteRepository;
 
-    @PostConstruct
-    private void initDefaultValues() {
-        voteFacade = serviceRegistry.getVoteFacade();
-
-    }
 
     private int nbVotesComparator(QuestionId id) {
-        return voteFacade.getNumberOfVotes(id);
+        return voteRepository.findNbVotes(id, UserMessageType.QUESTION);
     }
 
     @Override
@@ -54,7 +51,7 @@ public class InMemoryQuestionRepository extends InMemoryRepository<Question, Que
         else if (questionQuery.getSortBy() == QuestionQuerySortBy.VOTES)
             comparator = Comparator.comparing((Question q) -> nbVotesComparator(q.getId())).reversed();
         else if (questionQuery.getSortBy() == QuestionQuerySortBy.VIEWS)
-            comparator = Comparator.comparing(Question::getNbViews).reversed();
+            comparator = Comparator.comparing(Question::getNbViewsAsInt).reversed();
         else
             throw new UnsupportedOperationException("Unsupported question sort");
 

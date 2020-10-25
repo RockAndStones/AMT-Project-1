@@ -18,13 +18,13 @@ import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import ch.heigvd.amt.stoneoverflow.domain.vote.IVoteRepository;
 import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.Getter;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @ApplicationScoped
 public class ServiceRegistry {
@@ -125,7 +125,8 @@ public class ServiceRegistry {
                 .description("The question is all about the title :)")
                 .creatorId(u2.getId())
                 .creator(u2.getUsername())
-                .nbViews(new AtomicInteger(772)).build();
+                .nbViews(new AtomicInteger(772))
+                .build();
 
         questionRepository.save(q1);
 

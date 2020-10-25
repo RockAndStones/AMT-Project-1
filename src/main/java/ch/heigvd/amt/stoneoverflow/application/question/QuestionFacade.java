@@ -9,7 +9,6 @@ import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class QuestionFacade {
@@ -39,7 +38,7 @@ public class QuestionFacade {
                 .title(question.getTitle())
                 .creator(question.getCreator())
                 .description(question.getDescription())
-                .nbViews(new AtomicInteger(question.getNbViews()))
+                .nbViews(question.getNbViews())
                 .date(new DateDTO(question.getDate()))
                 .type(question.getQuestionType().name()).build())
         .collect(Collectors.toList());
@@ -58,7 +57,7 @@ public class QuestionFacade {
                 .title(value.getTitle())
                 .description(value.getDescription())
                 .creator(value.getCreator())
-                .nbViews(new AtomicInteger(value.getNbViews()))
+                .nbViews(value.getNbViews())
                 .date(new DateDTO(value.getDate()))
                 .type(value.getQuestionType().name()).build())
             .orElse(null);

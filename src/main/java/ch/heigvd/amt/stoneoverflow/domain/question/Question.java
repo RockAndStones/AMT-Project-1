@@ -31,12 +31,12 @@ public class Question implements IEntity<Question, QuestionId> {
                 .build();
     }
 
-    public void addView() {
-        this.nbViews.incrementAndGet();
+    public void addView(){
+        this.nbViews.getAndIncrement();
     }
 
     // Rewrite the getter to get an int and not an AtomicInteger
-    public int getNbViews(){
+    public int getNbViewsAsInt(){
         return this.nbViews.get();
     }
 
