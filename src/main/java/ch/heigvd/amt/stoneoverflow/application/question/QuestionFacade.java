@@ -4,6 +4,7 @@ import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,15 +20,14 @@ public class QuestionFacade {
     }
 
     public void addQuestion(AddQuestionCommand command){
-        Question addedQuestion = Question.builder().
-                title(command.getTitle()).
-                description(command.getDescription()).
-                creatorId(command.getCreatorId()).
-                creator(command.getCreator()).
-                nbVotes(command.getNbVotes()).
-                nbViews(command.getNbViews()).
-                date(command.getDate()).
-                questionType(command.getType()).build();
+        Question addedQuestion = Question.builder()
+                .title(command.getTitle())
+                .description(command.getDescription())
+                .creatorId(command.getCreatorId())
+                .creator(command.getCreator())
+                .nbViews(command.getNbViews())
+                .date(command.getDate())
+                .questionType(command.getType()).build();
         questionRepository.save(addedQuestion);
     }
 
@@ -39,7 +39,6 @@ public class QuestionFacade {
                 .title(question.getTitle())
                 .creator(question.getCreator())
                 .description(question.getDescription())
-                .nbVotes(question.getNbVotes())
                 .nbViews(new AtomicInteger(question.getNbViews()))
                 .date(new DateDTO(question.getDate()))
                 .type(question.getQuestionType().name()).build())
@@ -50,14 +49,15 @@ public class QuestionFacade {
 
     public QuestionsDTO.QuestionDTO getQuestion(QuestionId id) {
         Optional<Question> question = questionRepository.findById(id);
+
         question.ifPresent(Question::addView);
         question.ifPresent(value -> questionRepository.update(value));
+
         return question.map(value -> QuestionsDTO.QuestionDTO.builder()
                 .uuid(value.getId().asString())
                 .title(value.getTitle())
                 .description(value.getDescription())
                 .creator(value.getCreator())
-                .nbVotes(value.getNbVotes())
                 .nbViews(new AtomicInteger(value.getNbViews()))
                 .date(new DateDTO(value.getDate()))
                 .type(value.getQuestionType().name()).build())

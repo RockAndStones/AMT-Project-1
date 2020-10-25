@@ -26,9 +26,6 @@ public class AddAnswerCommand {
     private String creator = "Anonymous";
 
     @Builder.Default
-    private int nbVotes = 0;
-
-    @Builder.Default
     private Date date = null;
 
 }

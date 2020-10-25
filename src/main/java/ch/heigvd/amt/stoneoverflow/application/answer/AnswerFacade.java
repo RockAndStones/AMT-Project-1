@@ -3,6 +3,7 @@ package ch.heigvd.amt.stoneoverflow.application.answer;
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
 import ch.heigvd.amt.stoneoverflow.domain.answer.Answer;
 import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,23 +22,29 @@ public class AnswerFacade {
                 .description(command.getDescription())
                 .creatorId(command.getCreatorId())
                 .creator(command.getCreator())
-                .nbVotes(command.getNbVotes())
                 .date(command.getDate()).build();
         answerRepository.save(addAnswer);
     }
 
-    public AnswersDTO getAnswersFromQuestion(AnswerQuery answerQuery) {
-        Collection<Answer> answers = answerRepository.find(answerQuery);
+    public AnswersDTO getAnswers(AnswerQuery answerQuery, int offset, int limit) {
+        Collection<Answer> answers = answerRepository.find(answerQuery, offset, limit);
 
         List<AnswersDTO.AnswerDTO> answersFromQuestionIdDTO = answers.stream().map(
                 answer -> AnswersDTO.AnswerDTO.builder()
                         .uuid(answer.getId().asString())
                         .description(answer.getDescription())
                         .creator(answer.getCreator())
-                        .nbVotes(answer.getNbVotes())
                         .date(new DateDTO(answer.getDate())).build())
                 .collect(Collectors.toList());
 
         return AnswersDTO.builder().answers(answersFromQuestionIdDTO).build();
+    }
+
+    public int getNumberOfAnswers() {
+        return answerRepository.getRepositorySize();
+    }
+
+    public int getNumberOfAnswers(QuestionId questionId) {
+        return answerRepository.getNumberOfAnswers(questionId);
     }
 }

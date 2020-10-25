@@ -2,6 +2,7 @@ package ch.heigvd.amt.stoneoverflow.application.answer;
 
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentsDTO;
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
+import ch.heigvd.amt.stoneoverflow.application.vote.VoteDTO;
 import lombok.*;
 
 import java.util.Collection;
@@ -19,11 +20,11 @@ public class AnswersDTO {
         private String  uuid;
         private String  description;
         private String  creator;
-        private int     nbVotes;
         private DateDTO date;
 
-        @Setter
-        private Collection<CommentsDTO.CommentDTO> comments;
+        @Setter private int nbVotes;
+        @Setter private VoteDTO voteDTO;
+        @Setter private Collection<CommentsDTO.CommentDTO> comments;
     }
 
     @Singular

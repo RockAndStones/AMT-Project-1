@@ -14,7 +14,6 @@ public class AddAnswerCommandTest {
         assertNull(addQuestionCommand.getAnswerTo());
         assertEquals(addQuestionCommand.getDescription(), "No content");
         assertEquals(addQuestionCommand.getCreator(), "Anonymous");
-        assertEquals(addQuestionCommand.getNbVotes(), 0);
         assertNull(addQuestionCommand.getDate());
     }
 }

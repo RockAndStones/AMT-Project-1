@@ -6,7 +6,8 @@ import ch.heigvd.amt.stoneoverflow.domain.IRepository;
 import ch.heigvd.amt.stoneoverflow.domain.Id;
 import ch.heigvd.amt.stoneoverflow.domain.answer.Answer;
 
-import java.util.Collection;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public interface ICommentRepository extends IRepository<Comment, CommentId> {
     Collection<Comment> find(CommentQuery commentQuery);

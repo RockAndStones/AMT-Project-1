@@ -13,9 +13,8 @@ public class AnswerQuery {
     private QuestionId answerTo = null;
 
     @Builder.Default
-    private boolean byDate = false;
+    private AnswerQuerySortBy sortBy = AnswerQuerySortBy.DATE;
 
     @Builder.Default
-    private boolean byNbVotes = false;
-
+    private boolean sortDescending = true;
 }
