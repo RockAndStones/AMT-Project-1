@@ -28,7 +28,12 @@
             <c:forEach items="${questions.questions}" var="question">
                 <%@include file="fragments/question.jsp" %>
             </c:forEach>
+            <!-- Pagination -->
+            <div class="mx-3 mt-8">
+                <%@include file="fragments/homePagination.jsp" %>
+            </div>
         </div>
+
     </div>
     <!-- Footer -->
     <%@include file="fragments/footer.jsp" %>

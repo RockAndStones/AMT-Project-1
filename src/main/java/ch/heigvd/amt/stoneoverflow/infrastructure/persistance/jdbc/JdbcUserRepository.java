@@ -91,7 +91,24 @@ public class JdbcUserRepository implements IUserRepository {
 
     @Override
     public void update(User user) {
+        try {
+            Connection con = dataSource.getConnection();
 
+            PreparedStatement ps = con.prepareStatement("UPDATE User SET firstName=?, lastName=?, mail=?, username=?, password=? WHERE id=?");
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getUsername());
+            ps.setString(5, user.getHashedPassword());
+            ps.setString(6, user.getId().asString());
+            ps.executeUpdate();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            //todo: log/handle error
+            System.out.println(ex);
+        }
     }
 
     @Override

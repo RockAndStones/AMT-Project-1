@@ -24,9 +24,15 @@
             <span class="mx-4 font-medium">New Question</span>
         </a>
 
+        <a href="statistics" <c:if test="${baseURL.contains(\"statistics\") == true}">${activeButton}</c:if>
+                             <c:if test="${baseURL.contains(\"statistics\") != true}">${inactiveButton}</c:if>>
+            <i class="h-5 w-5 fas fa-chart-bar"></i>
+            <span class="mx-4 font-medium">Statistics</span>
+        </a>
+
         <c:if test="${sessionScope.authenticatedUser != null}">
             <form action="logout.do" method="post" class="flex items-center mt-5 text-gray-600 border-r-4 border-white hover:bg-gray-200 hover:text-gray-700 hover:border-gray-700">
-                <button type="submit" class="flex items-center w-full leading-normal py-2 px-8">
+                <button id="logoutButton" type="submit" class="flex items-center w-full leading-normal py-2 px-8">
                     <i class="h-5 w-5 fas fa-power-off"></i>
                     <span class="mx-4 tracking-wider font-medium">Logout</span>
                 </button>

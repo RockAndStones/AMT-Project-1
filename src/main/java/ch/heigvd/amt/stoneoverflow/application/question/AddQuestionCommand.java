@@ -25,13 +25,10 @@ public class AddQuestionCommand {
     private String creator = "Anonymous";
 
     @Builder.Default
-    private int nbVotes = 0;
-
-    @Builder.Default
     private int nbViews = 0;
 
     @Builder.Default
-    private Date date = null;
+    private Date date = new Date(System.currentTimeMillis());
 
     @Builder.Default
     private QuestionType type = QuestionType.UNCLASSIFIED;
