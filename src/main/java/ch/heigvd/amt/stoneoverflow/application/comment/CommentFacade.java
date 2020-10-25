@@ -3,10 +3,12 @@ package ch.heigvd.amt.stoneoverflow.application.comment;
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
 import ch.heigvd.amt.stoneoverflow.domain.UserMessageType;
 import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
+import ch.heigvd.amt.stoneoverflow.domain.comment.CommentId;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class CommentFacade {
@@ -16,7 +18,7 @@ public class CommentFacade {
         this.commentRepository = commentRepository;
     }
 
-    public void addComment(AddCommentCommand command) {
+    public CommentId addComment(AddCommentCommand command) {
         Comment addComment = Comment.builder()
                 .commentTo(command.getCommentTo())
                 .creatorId(command.getCreatorId())
@@ -24,6 +26,7 @@ public class CommentFacade {
                 .description(command.getContent())
                 .date(command.getDate()).build();
         commentRepository.save(addComment);
+        return addComment.getId();
     }
 
     public CommentsDTO getComments(CommentQuery commentQuery) {
@@ -31,12 +34,24 @@ public class CommentFacade {
 
         List<CommentsDTO.CommentDTO> commentsByCommentToIdDTO = comments.stream().map(
                 comment -> CommentsDTO.CommentDTO.builder()
+                        .uuid(comment.getId().asString())
                         .creator(comment.getCreator())
-                        .content(comment.getDescription())
+                        .description(comment.getDescription())
                         .date(new DateDTO(comment.getDate())).build())
                 .collect(Collectors.toList());
 
         return CommentsDTO.builder().comments(commentsByCommentToIdDTO).build();
+    }
+
+    public CommentsDTO.CommentDTO getComment(CommentId commentId) {
+        Optional<Comment> comment = commentRepository.findById(commentId);
+
+        return comment.map(value -> CommentsDTO.CommentDTO.builder()
+                .uuid(value.getId().asString())
+                .description(value.getDescription())
+                .creator(value.getCreator())
+                .date(new DateDTO(value.getDate())).build())
+                .orElse(null);
     }
 
     public int getNumberOfComments() {
@@ -50,5 +65,4 @@ public class CommentFacade {
     public int getNumberOfAnswerComments() {
         return commentRepository.find(CommentQuery.builder().userMessageType(UserMessageType.ANSWER).build()).size();
     }
-
 }

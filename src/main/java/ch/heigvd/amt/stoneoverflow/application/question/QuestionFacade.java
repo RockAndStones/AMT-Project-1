@@ -18,7 +18,7 @@ public class QuestionFacade {
         this.questionRepository = questionRepository;
     }
 
-    public void addQuestion(AddQuestionCommand command){
+    public QuestionId addQuestion(AddQuestionCommand command){
         Question addedQuestion = Question.builder()
                 .title(command.getTitle())
                 .description(command.getDescription())
@@ -28,6 +28,7 @@ public class QuestionFacade {
                 .date(command.getDate())
                 .questionType(command.getType()).build();
         questionRepository.save(addedQuestion);
+        return addedQuestion.getId();
     }
 
     public QuestionsDTO getQuestions(QuestionQuery query, int offset, int limit) {

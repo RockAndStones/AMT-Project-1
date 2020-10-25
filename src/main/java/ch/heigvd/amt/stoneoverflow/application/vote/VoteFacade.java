@@ -9,6 +9,7 @@ import ch.heigvd.amt.stoneoverflow.domain.vote.IVoteRepository;
 import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
 import ch.heigvd.amt.stoneoverflow.domain.vote.VoteId;
 
+import java.util.List;
 import java.util.Optional;
 
 public class VoteFacade {
@@ -18,12 +19,13 @@ public class VoteFacade {
         this.voteRepository = voteRepository;
     }
 
-    public void addVote(AddVoteCommand command) {
+    public VoteId addVote(AddVoteCommand command) {
         Vote vote = Vote.builder()
                 .votedBy(command.getVotedBy())
                 .votedObject(command.getVotedObject())
                 .voteType(command.getVoteType()).build();
         voteRepository.save(vote);
+        return vote.getId();
     }
 
     public VoteDTO getVote(VoteId id, UserMessageType userMessageType) {
