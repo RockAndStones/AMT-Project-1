@@ -2,12 +2,14 @@ package stoneoverflow.infrastructure.persistance.jdbc;
 
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.jdbc.JdbcQuestionRepository;
+import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.jdbc.JdbcUserRepository;
 import com.github.javafaker.Faker;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.BeforeClass;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.junit.Before;
 
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import org.junit.Test;
@@ -15,6 +17,7 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -26,21 +29,32 @@ public class JdbcQuestionRepositoryIT {
 
     @Inject @Named("JdbcQuestionRepository")
     private JdbcQuestionRepository jdbcQuestionRepository;
-    private static Faker faker;
-    private static User user;
+    @Inject
+    private JdbcUserRepository jdbcUserRepository;
+    private Faker faker;
+    private User user;
 
     @Deployment(testable = true)
     public static WebArchive createDeployment() {
+        // Dynamically import maven dependencies
+        // Source: https://stackoverflow.com/a/30694968
+        File[] files = Maven.resolver()
+                .loadPomFromFile("pom.xml")
+                .importCompileAndRuntimeDependencies()
+                .resolve()
+                .withTransitivity()
+                .asFile();
+
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
                 .addPackages(true, "ch.heigvd.amt")
                 .addPackages(true, "org.springframework.security.crypto.bcrypt")
-                .addPackages(true, "com.github.javafaker.Faker")
-                .addClass(Faker.class);
+                .addAsLibraries(files);
+//                .addClass(Faker.class);
         return archive;
     }
 
-    @BeforeClass
-    public static void initTests() {
+    @Before
+    public void initTests() {
         faker = new Faker();
         user = User.builder()
                 .username(faker.name().username())
@@ -53,6 +67,7 @@ public class JdbcQuestionRepositoryIT {
                         true,
                         true))
                 .build();
+        jdbcUserRepository.save(user);
     }
 
     private Question generateFakerQuestion() {
@@ -73,7 +88,7 @@ public class JdbcQuestionRepositoryIT {
 
         Optional<Question> foundQuestion = jdbcQuestionRepository.findById(q.getId());
         assertTrue(foundQuestion.isPresent());
-        assertEquals(foundQuestion.get(), q);
+        assertEquals(foundQuestion.get().getId(), q.getId());
     }
 
     @Test
