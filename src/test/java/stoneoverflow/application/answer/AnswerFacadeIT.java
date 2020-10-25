@@ -65,6 +65,7 @@ public class AnswerFacadeIT {
     private QuestionId addQuestion() {
         return questionFacade.addQuestion(AddQuestionCommand.builder()
                 .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
                 .date(date).build());
     }
 
@@ -72,6 +73,7 @@ public class AnswerFacadeIT {
         return answerFacade.addAnswer(AddAnswerCommand.builder()
                 .answerTo(answerTo)
                 .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
                 .date(date).build());
     }
 
@@ -84,7 +86,7 @@ public class AnswerFacadeIT {
         AnswersDTO.AnswerDTO answerDTO = AnswersDTO.AnswerDTO.builder()
                 .uuid(answerId.asString())
                 .description("No content")
-                .creator("Anonymous")
+                .creator(testUser.getUsername())
                 .date(date).build();
 
         assertEquals(answerFacade.getAnswer(answerId), answerDTO);

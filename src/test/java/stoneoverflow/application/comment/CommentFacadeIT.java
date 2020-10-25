@@ -73,6 +73,7 @@ public class CommentFacadeIT {
     private QuestionId addQuestion() {
         return questionFacade.addQuestion(AddQuestionCommand.builder()
                 .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
                 .date(date).build());
     }
 
@@ -80,6 +81,7 @@ public class CommentFacadeIT {
         return answerFacade.addAnswer(AddAnswerCommand.builder()
                 .answerTo(answerTo)
                 .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
                 .date(date).build());
     }
 
@@ -87,6 +89,7 @@ public class CommentFacadeIT {
         return commentFacade.addComment(AddCommentCommand.builder()
                 .commentTo(commentTo)
                 .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
                 .date(date).build());
     }
 
@@ -99,7 +102,7 @@ public class CommentFacadeIT {
         CommentsDTO.CommentDTO commentDTO = CommentsDTO.CommentDTO.builder()
                 .uuid(commentId.asString())
                 .description("No content")
-                .creator("Anonymous")
+                .creator(testUser.getUsername())
                 .date(date).build();
 
         assertEquals(commentFacade.getComment(commentId), commentDTO);
@@ -115,7 +118,7 @@ public class CommentFacadeIT {
         CommentsDTO.CommentDTO commentDTO = CommentsDTO.CommentDTO.builder()
                 .uuid(commentId.asString())
                 .description("No content")
-                .creator("Anonymous")
+                .creator(testUser.getUsername())
                 .date(date).build();
 
         assertEquals(commentFacade.getComment(commentId), commentDTO);
@@ -160,9 +163,9 @@ public class CommentFacadeIT {
         addComment(answerId2);
         addComment(answerId3);
 
-        CommentsDTO commentsDTO = commentFacade.getComments(CommentQuery.builder().commentTo(answerId1).build());
+        CommentsDTO commentsDTO = commentFacade.getComments(CommentQuery.builder().commentTo(answerId1).userMessageType(UserMessageType.ANSWER).build());
 
-        assertEquals(commentsDTO.getComments().size(), 2);
+        assertEquals(2, commentsDTO.getComments().size());
 
         String resultCommentId1 = commentsDTO.getComments().get(0).getUuid();
         String resultCommentId2 = commentsDTO.getComments().get(1).getUuid();

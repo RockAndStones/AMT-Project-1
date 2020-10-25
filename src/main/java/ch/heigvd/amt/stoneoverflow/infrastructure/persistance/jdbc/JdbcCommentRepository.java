@@ -2,11 +2,13 @@ package ch.heigvd.amt.stoneoverflow.infrastructure.persistance.jdbc;
 
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentQuery;
 import ch.heigvd.amt.stoneoverflow.domain.Id;
+import ch.heigvd.amt.stoneoverflow.domain.answer.Answer;
 import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
 import ch.heigvd.amt.stoneoverflow.domain.comment.CommentId;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
+import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.exception.DataCorruptionException;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
@@ -121,7 +123,7 @@ public class JdbcCommentRepository implements ICommentRepository {
             ps.setString(2, comment.getCreatorId().asString());
             ps.setString(3, comment.getCommentTo().asString());
             ps.setString(4, comment.getDescription());
-            ps.setDate(5, new Date(comment.getDate().getTime()));
+            ps.setTimestamp(5, new Timestamp(comment.getDate().getTime()));
             ps.executeUpdate();
 
             ps.close();
@@ -155,8 +157,34 @@ public class JdbcCommentRepository implements ICommentRepository {
 
     @Override
     public Optional<Comment> findById(CommentId commentId) {
-        //todo: unused method?
-        throw new UnsupportedOperationException("findById is not yet implemented");
+        try {
+            Connection con = dataSource.getConnection();
+
+            PreparedStatement ps1 = con.prepareStatement("SELECT * FROM vQuestionComment WHERE id=?");
+            ps1.setString(1, commentId.asString());
+            PreparedStatement ps2 = con.prepareStatement("SELECT * FROM vAnswerComment WHERE id=?");
+            ps2.setString(1, commentId.asString());
+
+            Collection<Comment> comments = new LinkedList<>();
+            comments = resultSetToQuestionComments(ps1.executeQuery());
+
+            if (comments.isEmpty())
+                comments = resultSetToAnswerComments(ps2.executeQuery());
+
+            if (comments.size() > 1)
+                throw new DataCorruptionException("Data store is corrupted. More than one question with the same id");
+
+            ps1.close();
+            ps2.close();
+            con.close();
+
+            return comments.stream().findFirst();
+        } catch (SQLException ex) {
+            //todo: log/handle error
+            System.out.println(ex);
+        }
+
+        return Optional.empty();
     }
 
     @Override

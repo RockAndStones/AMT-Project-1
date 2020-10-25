@@ -110,7 +110,7 @@ public class JdbcAnswerRepository implements IAnswerRepository {
             ps.setString(1, answer.getId().asString());
             ps.setString(2, answer.getCreatorId().asString());
             ps.setString(3, answer.getDescription());
-            ps.setDate(4, new Date(answer.getDate().getTime()));
+            ps.setTimestamp(4, new Timestamp(answer.getDate().getTime()));
             ps.executeUpdate();
 
             ps = con.prepareStatement("INSERT INTO Answer VALUES (?, ?)");

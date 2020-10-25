@@ -4,6 +4,7 @@ import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.exception.DataCorruptionException;
@@ -31,6 +32,12 @@ public class JdbcQuestionRepository implements IQuestionRepository {
         this.dataSource = dataSource;
     }
 
+    private QuestionType getQuestionType(int questionType) {
+        if (questionType > QuestionType.UNCLASSIFIED.ordinal())
+            return QuestionType.UNCLASSIFIED;
+        return QuestionType.values()[questionType];
+    }
+
     private Collection<Question> resultSetToQuestions(ResultSet rs) throws SQLException {
         Collection<Question> questions = new LinkedList<>();
 
@@ -38,6 +45,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             Question q = Question.builder()
                     .id(new QuestionId(rs.getString("id")))
                     .title(rs.getString("title"))
+                    .questionType(getQuestionType(rs.getInt("type")))
                     .description(rs.getString("description"))
                     .creator(rs.getString("creator"))
                     .creatorId(new UserId(rs.getString("creatorId")))
@@ -50,27 +58,35 @@ public class JdbcQuestionRepository implements IQuestionRepository {
         return questions;
     }
 
-    private String getQuerySQL(String search, String sortFieldName, boolean isSortDescending, int offset, int limit) {
+    private String getQuerySQL(String search, QuestionType questionType, String sortFieldName, boolean isSortDescending, int offset, int limit) {
         String direction = isSortDescending ? "DESC" : "ASC";
+        String where = "";
 
-        if (search.isEmpty()) {
-            return String.format("SELECT * FROM vQuestion ORDER BY %s %s LIMIT %d, %d",
-                    sortFieldName,
-                    direction,
-                    offset,
-                    limit);
-        } else {
-            return String.format("SELECT * FROM vQuestion WHERE title LIKE ? ORDER BY %s %s LIMIT %d, %d",
-                    sortFieldName,
-                    direction,
-                    offset,
-                    limit);
+        if (!search.isEmpty())
+            where += " title LIKE ? ";
+
+        if (questionType != QuestionType.UNCLASSIFIED) {
+            if (!where.isEmpty())
+                where += "AND";
+            where += " type=" + questionType.ordinal() + " ";
         }
+
+        if (!where.isEmpty())
+            where = "WHERE" + where;
+
+
+        return String.format("SELECT * FROM vQuestion%s ORDER BY %s %s LIMIT %d, %d",
+                where,
+                sortFieldName,
+                direction,
+                offset,
+                limit);
     }
 
     private PreparedStatement getQueryStatement(Connection con, QuestionQuery query, int offset, int limit) throws SQLException {
         PreparedStatement ps = con.prepareStatement(getQuerySQL(
                 query.getSearchCondition(),
+                query.getType(),
                 query.getSortBy().getSqlFieldName(),
                 query.isSortDescending(),
                 offset,
@@ -116,10 +132,11 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.setTimestamp(4, new Timestamp(question.getDate().getTime()));
             ps.executeUpdate();
 
-            ps = con.prepareStatement("INSERT INTO Question VALUES (?, ?, ?)");
+            ps = con.prepareStatement("INSERT INTO Question VALUES (?, ?, ?, ?)");
             ps.setString(1, question.getId().asString());
             ps.setString(2, question.getTitle());
-            ps.setInt(3, question.getNbViewsAsInt());
+            ps.setInt(3, question.getQuestionType().ordinal());
+            ps.setInt(4, question.getNbViewsAsInt());
             ps.executeUpdate();
 
             ps.close();

@@ -58,6 +58,7 @@ public class QuestionFacadeIT {
     private QuestionId addQuestion(QuestionType questionType) {
         return questionFacade.addQuestion(AddQuestionCommand.builder()
                 .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
                 .date(date)
                 .type(questionType).build());
     }
@@ -70,7 +71,7 @@ public class QuestionFacadeIT {
                 .uuid(questionId.asString())
                 .title("My default question")
                 .description("No content")
-                .creator("Anonymous")
+                .creator(testUser.getUsername())
                 .date(date)
                 .type(QuestionType.UNCLASSIFIED.name()).build();
 
@@ -79,19 +80,12 @@ public class QuestionFacadeIT {
 
     @Test
     public void shouldGetOnlySQLQuestions() {
-        QuestionId questionId = addQuestion(QuestionType.SQL);
+        addQuestion(QuestionType.SQL);
         addQuestion(QuestionType.UNCLASSIFIED);
 
-        QuestionsDTO.QuestionDTO questionDTO = QuestionsDTO.QuestionDTO.builder()
-                .uuid(questionId.asString())
-                .title("My default question")
-                .description("No content")
-                .creator("Anonymous")
-                .date(date)
-                .type(QuestionType.SQL.name()).build();
+        QuestionsDTO questionsDTO = questionFacade.getQuestions(QuestionQuery.builder().sortBy(QuestionQuerySortBy.DATE).type(QuestionType.SQL).build(),0, questionFacade.getNumberOfQuestions());
 
-        QuestionsDTO.QuestionDTO q = questionFacade.getQuestions(QuestionQuery.builder().sortBy(QuestionQuerySortBy.DATE).type(QuestionType.SQL).build(),0, questionFacade.getNumberOfQuestions()).getQuestions().get(0);
-        assertEquals(questionDTO, q);
+        questionsDTO.getQuestions().stream().forEach(value -> assertEquals(QuestionType.SQL.name(), value.getType()));
     }
 
     @Test
