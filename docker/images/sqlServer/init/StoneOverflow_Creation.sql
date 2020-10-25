@@ -58,6 +58,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Question` (
   `id` CHAR(36) NOT NULL,
   `title` VARCHAR(100) NULL,
+  `type` INTEGER NULL,
   `nbViews` INTEGER NULL,
   `type` INTEGER NULL,
   PRIMARY KEY (`id`),
@@ -140,6 +141,7 @@ CREATE VIEW vQuestion AS
 SELECT
     q.id AS 'id',
     q.title AS 'title',
+    q.type AS 'type',
     um.description AS 'description',
     um.idUser AS 'creatorId',
     u.username AS 'creator',

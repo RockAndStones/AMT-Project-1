@@ -5,7 +5,6 @@
             <input type="hidden" name="questionUUID" value="${question.uuid}">
             <input type="hidden" name="targetUUID"   value="${msg.uuid}">
             <input type="hidden" name="targetType"   value="${msg.type}">
-            <input type="hidden" name="voteUUID"     value="${msg.vote.uuid}">
             <input type="hidden" name="voteType"     value="UP">
             <button type="submit"><i class="leading-normal fas fa-caret-up text-6xl <c:if test="${msg.vote.voteType.name() == 'UP' }">text-black</c:if>"></i></button>
         </form>
@@ -14,7 +13,6 @@
             <input type="hidden" name="questionUUID" value="${question.uuid}">
             <input type="hidden" name="targetUUID"   value="${msg.uuid}">
             <input type="hidden" name="targetType"   value="${msg.type}">
-            <input type="hidden" name="voteUUID"     value="${msg.vote.uuid}">
             <input type="hidden" name="voteType"     value="DOWN">
             <button type="submit"><i class="leading-normal fas fa-caret-down text-6xl <c:if test="${msg.vote.voteType.name() == 'DOWN' }">text-black</c:if>"></i></button>
         </form>
