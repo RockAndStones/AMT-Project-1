@@ -14,6 +14,7 @@ import ch.heigvd.amt.stoneoverflow.domain.UserMessageType;
 import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
 import ch.heigvd.amt.stoneoverflow.domain.vote.VoteId;
 
@@ -43,6 +44,36 @@ public class VoteCommandServlet extends HttpServlet {
 
     private void redirectToQuestionDetails(HttpServletRequest req, HttpServletResponse resp, String questionUUID) throws IOException {
         resp.sendRedirect(req.getContextPath() + "/questionDetails?questionUUID=" + questionUUID);
+    }
+
+    private synchronized void applyVote(HttpServletRequest req, HttpServletResponse resp, Id targetId, UserId userId, Vote.VoteType voteType, UserMessageType userMessageType, String questionUUID) throws IOException {
+        VoteDTO vote = voteFacade.getVote(targetId, userId, userMessageType);
+        if (vote == null) {
+            // If no vote found from repo, create a new vote
+            AddVoteCommand command = AddVoteCommand.builder()
+                    .votedBy(userId)
+                    .votedObject(targetId)
+                    .voteType(voteType).build();
+            voteFacade.addVote(command);
+        } else {
+            // Otherwise
+            // Check ownership of the vote
+            if (!userId.asString().equals(vote.getVotedBy()))
+                redirectToQuestionDetails(req, resp, questionUUID);
+
+            // Update the vote
+            if (voteType == vote.getVoteType()) {
+                // If voteType are identical, remove vote from repository
+                voteFacade.remove(new VoteId(vote.getUuid()));
+            } else {
+                // Otherwise change the voteType
+                voteFacade.changeVote(UpdateVoteCommand.builder()
+                        .id(new VoteId(vote.getUuid()))
+                        .votedBy(userId)
+                        .votedObject(targetId)
+                        .voteType(voteType).build());
+            }
+        }
     }
 
     @Override
@@ -91,33 +122,7 @@ public class VoteCommandServlet extends HttpServlet {
         }
 
         // Apply the vote
-        VoteDTO vote = voteFacade.getVote(targetId, user.getId(), userMessageType);
-        if (vote == null) {
-            // If no vote found from repo, create a new vote
-            AddVoteCommand command = AddVoteCommand.builder()
-                    .votedBy(user.getId())
-                    .votedObject(targetId)
-                    .voteType(voteType).build();
-            voteFacade.addVote(command);
-        } else {
-            // Otherwise
-            // Check ownership of the vote
-            if (!user.getId().asString().equals(vote.getVotedBy()))
-                redirectToQuestionDetails(req, resp, questionUUID);
-
-            // Update the vote
-            if (voteType == vote.getVoteType()) {
-                // If voteType are identical, remove vote from repository
-                voteFacade.remove(new VoteId(vote.getUuid()));
-            } else {
-                // Otherwise change the voteType
-                voteFacade.changeVote(UpdateVoteCommand.builder()
-                        .id(new VoteId(vote.getUuid()))
-                        .votedBy(user.getId())
-                        .votedObject(targetId)
-                        .voteType(voteType).build());
-            }
-        }
+        applyVote(req, resp, targetId, user.getId(), voteType, userMessageType, questionUUID);
 
         redirectToQuestionDetails(req, resp, questionUUID);
     }
