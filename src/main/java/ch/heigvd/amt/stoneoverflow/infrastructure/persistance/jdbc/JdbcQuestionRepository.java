@@ -165,8 +165,18 @@ public class JdbcQuestionRepository implements IQuestionRepository {
 
     @Override
     public void remove(QuestionId questionId) {
-        //todo: implement remove method
-        throw new UnsupportedOperationException("Remove is not yet implemented");
+        try {
+            Connection con = dataSource.getConnection();
+
+            PreparedStatement psDeleteFromAnswer = con.prepareStatement("DELETE FROM Question WHERE id=?");
+            psDeleteFromAnswer.setString(1, questionId.asString());
+            psDeleteFromAnswer.execute();
+
+            con.close();
+        } catch (SQLException ex) {
+            //todo: log/handle error
+            System.out.println(ex);
+        }
     }
 
     @Override
