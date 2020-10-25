@@ -1,4 +1,4 @@
-const {homePage, loginPage, newQuestionPage } = inject();
+const {homePage, loginPage, newQuestionPage, profilePage } = inject();
 
 Feature('Navigation');
 
@@ -20,6 +20,12 @@ Scenario('Home => New question', (I) => {
   I.seeInTitle(newQuestionPage.pageTitle);
 });
 
+Scenario('Home => Profile', (I) => {
+  I.loginTestUser();
+  homePage.components.header.goToProfilePage();
+  I.seeInTitle(profilePage.pageTitle);
+});
+
 Scenario('Login => Home', (I) => {
   I.amOnPage('login');
   loginPage.goToHomePage();
@@ -33,11 +39,11 @@ Scenario('New question => Home', (I) => {
   I.seeInTitle(homePage.pageTitle);
 });
 
-Scenario('New question => Login', (I) => {
+Scenario('New question => Profile', (I) => {
   I.loginTestUser();
   I.amOnPage(newQuestionPage.url);
-  newQuestionPage.components.header.goToLoginPage();
-  I.seeInTitle(loginPage.pageTitle);
+  newQuestionPage.components.header.goToProfilePage();
+  I.seeInTitle(profilePage.pageTitle);
 });
 
 

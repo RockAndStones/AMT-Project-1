@@ -1,38 +1,76 @@
-const { loginPage, homePage, newQuestionPage } = inject();
+const { loginPage, homePage } = inject();
 const randomstring= require('randomstring');
 
 Feature('Login');
 
     Scenario('Failed login', (I) => {
-        const wrongUsername = randomstring.generate(10);
-        const wrongPassword = randomstring.generate(10);
+        const wrongUsername = randomstring.generate(15);
+        const wrongPassword = randomstring.generate(15);
 
         I.amOnPage(loginPage.url);
         loginPage.components.loginForm.loginUser(wrongUsername, wrongPassword);
-        I.amOnPage(newQuestionPage.url);
-        I.seeInTitle(loginPage.pageTitle);
+        I.seeInCurrentUrl(loginPage.url);
+        I.see(loginPage.errorMessages.invalidLogin);
     });
+
 
     Scenario('Successful login', (I) => {
-        I.amOnPage(loginPage.url);
         I.loginTestUser();
-        I.amOnPage(newQuestionPage.url);
-        I.seeInTitle(newQuestionPage.pageTitle);
+        I.seeInCurrentUrl(homePage.url);
+        within(homePage.components.header.root, () =>{
+            I.see(I.credentials.username.charAt(0).toUpperCase() + I.credentials.username.slice(1));
+        });
     });
 
+Feature ('Logout');
+    Scenario('Login, logout', (I) => {
+        I.loginTestUser();
+        I.seeInCurrentUrl(homePage.url);
+        within(homePage.components.header.root, () =>{
+            I.see(I.credentials.username.charAt(0).toUpperCase() + I.credentials.username.slice(1));
+        });
+        homePage.components.sidebar.logout();
+        I.seeElement(homePage.components.header.links.login);
+    });
 
 Feature('Register');
 
-    Scenario('Successful register', (I) => {
-        const newUsername = randomstring.generate(10);
-        const newPassword = randomstring.generate(10);
+    let wrongPasswords = new DataTable(['password']);
+    wrongPasswords.add(['Abcde6!']);  // Only 7 chars
+    wrongPasswords.add(['abcdef7!']); // No uppercase
+    wrongPasswords.add(['ABCDEF7!']); // No lowercase
+    wrongPasswords.add(['Abcdefg!']); // No number
+    wrongPasswords.add(['Abcdef78']); // No special char
+
+
+    Data(wrongPasswords).Scenario('Failed register - Missing minimum password requirements', (I, current) => {
+        const newUsername   = randomstring.generate(10);
+        const newEmail      = randomstring.generate(10) + '@e2e-tests.com';
+        const newFirstName  = randomstring.generate(10);
+        const newLastName   = randomstring.generate(10);
 
         I.amOnPage(loginPage);
         loginPage.components.loginForm.showRegisterForm();
         I.seeElement(loginPage.components.registerForm.elements.register);
-        loginPage.components.registerForm.registerUser(newUsername, newPassword);
-        I.seeInTitle(homePage.pageTitle);
-        homePage.components.sidebar.goToNewQuestionPage();
-        I.seeInTitle(newQuestionPage.pageTitle);
+        loginPage.components.registerForm.registerUser(newUsername, newEmail, newFirstName, newLastName, current.password);
+        I.seeInCurrentUrl(loginPage.url);
+        I.see(loginPage.errorMessages.invalidRegisterPassword);
     });
+/*
+    Scenario('Successful register', (I) => {
+        const newUsername   = randomstring.generate(10);
+        const newEmail      = randomstring.generate(10) + '@e2e-tests.com';
+        const newFirstName  = randomstring.generate(10);
+        const newLastName   = randomstring.generate(10);
+        const newPassword   = 'Abcdef7!';
 
+        I.amOnPage(loginPage);
+        loginPage.components.loginForm.showRegisterForm();
+        I.seeElement(loginPage.components.registerForm.elements.register);
+        loginPage.components.registerForm.registerUser(newUsername, newEmail, newFirstName, newLastName, newPassword);
+        I.seeInCurrentUrl(homePage.url);
+        within(homePage.components.header.root, () =>{
+            I.see(newUsername.charAt(0).toUpperCase() + newUsername.slice(1));
+        });
+    });
+*/

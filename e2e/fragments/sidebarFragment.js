@@ -6,7 +6,11 @@ module.exports = {
 
     links: {
         home: {css: 'a[href=home]'},
-        newQuestions: {css: 'a[href=addQuestion]'}
+        newQuestions: {css: 'a[href=addQuestion]'},
+    },
+
+    elements: {
+        logoutButton: 'Logout'
     },
 
     goToHomePage() {
@@ -18,6 +22,12 @@ module.exports = {
     goToNewQuestionPage() {
         within(this.root, () => {
             I.clickLink(this.links.newQuestions);
+        });
+    },
+
+    logout(){
+        within(this.root, () => {
+            I.click(this.elements.logoutButton);
         });
     }
 }
