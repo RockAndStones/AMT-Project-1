@@ -4,11 +4,11 @@ module.exports = function() {
   return actor({
 
     credentials: {
-      username:   'test',
-      email:      'test@test.com',
+      username:   'e2e-tester',
+      email:      'e2e@test.com',
       firstName:  'John',
       lastName:   'Smith',
-      password:   'test'
+      password:   'Abcdef7!'
     },
 
     loginTestUser: function() {

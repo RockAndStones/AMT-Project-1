@@ -34,6 +34,10 @@ module.exports = {
       invalidPassword: 'Password does not meet the minimum requirements (8 characters, 1 lower case, 1 upper case, 1 number, 1 special character)'
     },
 
+    successMessages: {
+      infoUpdated: 'User information updated'
+    },
+
     updateProfile(username, email, firstName, lastName, password){
         within(this.components.profileForm.root, () => {
             I.fillField(this.fields.username, username);

@@ -78,8 +78,17 @@ public class ServiceRegistry {
                 .plaintextPassword("balboa")
                 .build();
 
+        User u3 = User.builder()
+                .username("e2e-tester")
+                .email("e2e@test.com")
+                .firstName("John")
+                .lastName("Smith")
+                .plaintextPassword("Abcdef7!")
+                .build();
+
         userRepository.save(u1);
         userRepository.save(u2);
+        userRepository.save(u3);
 
         // Add default questions
         questionFacade.addQuestion(AddQuestionCommand.builder()

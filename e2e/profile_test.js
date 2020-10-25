@@ -34,25 +34,41 @@ Feature('Handling profile informations');
         })
     });
 
-Scenario('Modifying every informations except password', (I) => {
-    const newUsername   = 'new' + I.credentials.username;
-    const newEmail      = 'new' + I.credentials.email;
-    const newFirstName  = 'new' + I.credentials.firstName;
-    const newLastName   = 'new' + I.credentials.lastName;
+    Scenario('Succeed at modifying password', (I) => {
+        const newPassword = 'new' + I.credentials.password;
 
-    I.loginTestUser();
-    homePage.components.header.goToProfilePage();
-    I.seeInTitle(profilePage.pageTitle);
-    profilePage.updateProfile(newUsername, newEmail, newFirstName, newLastName, "");
-    I.seeInTitle(profilePage.pageTitle);
-    within(profilePage.components.profileForm.root, () => {
-        I.seeInField(profilePage.fields.username, newUsername);
-        I.seeInField(profilePage.fields.email, newEmail);
-        I.seeInField(profilePage.fields.firstName, newFirstName);
-        I.seeInField(profilePage.fields.lastName, newLastName);
-    })
+        I.loginTestUser();
+        homePage.components.header.goToProfilePage();
+        I.seeInTitle(profilePage.pageTitle);
+        profilePage.updateProfile(I.credentials.username, I.credentials.email, I.credentials.firstName, I.credentials.lastName, newPassword);
+        I.seeInTitle(profilePage.pageTitle);
+        within(profilePage.components.profileForm.root, () => {
+            I.see(profilePage.successMessages.infoUpdated);
+        })
+        // Set initial password back
+        profilePage.updateProfile(I.credentials.username, I.credentials.email, I.credentials.firstName, I.credentials.lastName, I.credentials.password);
+    });
 
-    // Set initial values back for all following tests to works
-    profilePage.updateProfile(I.credentials.username, I.credentials.email, I.credentials.firstName, I.credentials.lastName, "");
-});
+    Scenario('Modifying every informations except password', (I) => {
+        const newUsername   = 'new' + I.credentials.username;
+        const newEmail      = 'new' + I.credentials.email;
+        const newFirstName  = 'new' + I.credentials.firstName;
+        const newLastName   = 'new' + I.credentials.lastName;
+
+        I.loginTestUser();
+        homePage.components.header.goToProfilePage();
+        I.seeInTitle(profilePage.pageTitle);
+        profilePage.updateProfile(newUsername, newEmail, newFirstName, newLastName, "");
+        I.seeInTitle(profilePage.pageTitle);
+        within(profilePage.components.profileForm.root, () => {
+            I.see(profilePage.successMessages.infoUpdated);
+            I.seeInField(profilePage.fields.username, newUsername);
+            I.seeInField(profilePage.fields.email, newEmail);
+            I.seeInField(profilePage.fields.firstName, newFirstName);
+            I.seeInField(profilePage.fields.lastName, newLastName);
+        })
+
+        // Set initial values back for all following tests to works
+        profilePage.updateProfile(I.credentials.username, I.credentials.email, I.credentials.firstName, I.credentials.lastName, "");
+    });
 
