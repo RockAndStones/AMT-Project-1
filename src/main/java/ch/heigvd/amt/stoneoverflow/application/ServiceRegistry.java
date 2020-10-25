@@ -134,7 +134,7 @@ public class ServiceRegistry {
                 .description("The question is all about the title :)")
                 .creatorId(u2.getId())
                 .creator(u2.getUsername())
-                .nbViews(new AtomicInteger(772))
+                .nbViews(new AtomicInteger(0))
                 .build();
 
         questionRepository.save(q1);

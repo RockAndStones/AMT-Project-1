@@ -51,9 +51,6 @@ public class QuestionFacade {
     public QuestionsDTO.QuestionDTO getQuestion(QuestionId id) {
         Optional<Question> question = questionRepository.findById(id);
 
-        question.ifPresent(Question::addView);
-        question.ifPresent(value -> questionRepository.update(value));
-
         return question.map(value -> QuestionsDTO.QuestionDTO.builder()
                 .uuid(value.getId().asString())
                 .title(value.getTitle())
@@ -64,6 +61,12 @@ public class QuestionFacade {
                 .date(new DateDTO(value.getDate()))
                 .type(value.getQuestionType().name()).build())
             .orElse(null);
+    }
+
+    public void addViewToQuestion(QuestionId id){
+        Optional<Question> question = questionRepository.findById(id);
+        question.ifPresent(Question::addView);
+        question.ifPresent(value -> questionRepository.update(value));
     }
 
     public int getNumberOfQuestions() {

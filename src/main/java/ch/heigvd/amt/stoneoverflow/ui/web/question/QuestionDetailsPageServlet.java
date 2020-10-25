@@ -74,6 +74,9 @@ public class QuestionDetailsPageServlet extends HttpServlet {
             return;
         }
 
+        if (req.getParameter("voted") == null)
+            questionFacade.addViewToQuestion(questionId);
+
         // Set number of answers of the question
         questionDTO.setNbAnswers(answerFacade.getNumberOfAnswers(questionId));
 
