@@ -23,7 +23,7 @@ public class JdbcCommentRepository implements ICommentRepository {
     @Resource(lookup = "jdbc/StoneOverflowDS")
     private DataSource dataSource;
 
-    private Comment getComment(ResultSet rs, Id commentTo) throws SQLException {
+    private Comment resultSetToComment(ResultSet rs, Id commentTo) throws SQLException {
         return Comment.builder()
                 .id(new CommentId(rs.getString("id")))
                 .commentTo(commentTo)
@@ -37,7 +37,7 @@ public class JdbcCommentRepository implements ICommentRepository {
     private Collection<Comment> resultSetToQuestionComments(ResultSet rs) throws SQLException {
         Collection<Comment> comments = new LinkedList<>();
         while(rs.next()) {
-            comments.add(getComment(rs, new QuestionId(rs.getString("commentTo"))));
+            comments.add(resultSetToComment(rs, new QuestionId(rs.getString("commentTo"))));
         }
         return comments;
     }
@@ -45,7 +45,7 @@ public class JdbcCommentRepository implements ICommentRepository {
     private Collection<Comment> resultSetToAnswerComments(ResultSet rs) throws SQLException {
         Collection<Comment> comments = new LinkedList<>();
         while(rs.next()) {
-            comments.add(getComment(rs, new QuestionId(rs.getString("commentTo"))));
+            comments.add(resultSetToComment(rs, new QuestionId(rs.getString("commentTo"))));
         }
         return comments;
     }
@@ -60,7 +60,7 @@ public class JdbcCommentRepository implements ICommentRepository {
             where = String.format(" WHERE commentTo='%s'", query.getCommentTo().asString());
 
         // Choose the view to SELECT FROM
-        switch (query.getCommentView()) {
+        switch (query.getUserMessageType()) {
             case QUESTION:
                 view = "vQuestionComment";
                 break;
@@ -71,16 +71,12 @@ public class JdbcCommentRepository implements ICommentRepository {
                 break;
         }
 
-        String qr = String.format("SELECT * FROM %s%s ORDER BY %s %s",
+        // Prepare and return final statement
+        return con.prepareStatement(String.format("SELECT * FROM %s%s ORDER BY %s %s",
                 view,
                 where,
                 query.getSortBy().getSqlFieldName(),
-                direction);
-
-        System.out.println(qr);
-
-        // Prepare and return final statement
-        return con.prepareStatement(qr);
+                direction));
     }
 
     @Override
@@ -93,7 +89,7 @@ public class JdbcCommentRepository implements ICommentRepository {
             PreparedStatement psQuestion = getQueryStatement(con, commentQuery);
             ResultSet rsComments = psQuestion.executeQuery();
 
-            switch (commentQuery.getCommentView()) {
+            switch (commentQuery.getUserMessageType()) {
                 case QUESTION:
                     comments.addAll(resultSetToQuestionComments(rsComments));
                     break;

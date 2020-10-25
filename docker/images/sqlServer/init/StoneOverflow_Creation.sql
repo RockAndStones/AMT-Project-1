@@ -41,7 +41,6 @@ CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`UserMessage` (
   `id` CHAR(36) NOT NULL,
   `idUser` CHAR(36) NOT NULL,
   `description` TEXT NULL,
-  `nbVotes` INT NULL,
   `date` DATETIME(3) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_UserMessage_User1_idx` (`idUser` ASC) VISIBLE,
@@ -114,6 +113,28 @@ CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Comment` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `db_stoneoverflow`.`Vote`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Vote` (
+    `id` CHAR(36) NOT NULL,
+    `idUser` VARCHAR(36) NOT NULL,
+    `idUserMessage` VARCHAR(36) NOT NULL,
+    `voteUp` BOOLEAN NOT NULL,
+    PRIMARY KEY (`idUser`, `idUserMessage`),
+    INDEX `fk_Vote_User_idx` (`idUser` ASC) VISIBLE,
+    CONSTRAINT `fk_Vote_User`
+        FOREIGN KEY (`idUser`)
+            REFERENCES `db_stoneoverflow`.`User` (`id`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION,
+    CONSTRAINT `fk_Vote_UserMessage`
+        FOREIGN KEY (`idUserMessage`)
+            REFERENCES `db_stoneoverflow`.`UserMessage` (`id`)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
 CREATE VIEW vQuestion AS
 SELECT
     q.id AS 'id',
@@ -121,8 +142,8 @@ SELECT
     um.description AS 'description',
     um.idUser AS 'creatorId',
     u.username AS 'creator',
-    um.nbVotes AS 'nbVotes',
     q.nbViews AS 'nbViews',
+    ((SELECT COUNT(*) FROM Vote AS v WHERE q.id=v.idUserMessage AND v.voteUp=1)-(SELECT COUNT(*) FROM Vote AS v WHERE q.id=v.idUserMessage AND v.voteUp=0)) AS `nbVotes`,
     um.date AS 'date'
 FROM Question AS q
     INNER JOIN UserMessage AS um
@@ -137,7 +158,7 @@ SELECT
     um.description AS 'description',
     um.idUser AS 'creatorId',
     u.username AS 'creator',
-    um.nbVotes AS 'nbVotes',
+    ((SELECT COUNT(*) FROM Vote AS v WHERE a.id=v.idUserMessage AND v.voteUp=1)-(SELECT COUNT(*) FROM Vote AS v WHERE a.id=v.idUserMessage AND v.voteUp=0)) AS `nbVotes`,
     um.date AS 'date'
 FROM Answer AS a
          INNER JOIN UserMessage AS um
@@ -172,6 +193,26 @@ FROM Comment AS c
                     ON c.idUserMessage = a.id
          INNER JOIN User AS u
                     ON c.idUser=u.id;
+
+CREATE VIEW vQuestionVote AS
+SELECT
+    v.id AS `id`,
+    v.idUser AS 'votedBy',
+    v.idUserMessage AS 'votedObject',
+    v.voteUp AS  'voteType'
+FROM Vote AS v
+         INNER JOIN Question AS q
+                    ON v.idUserMessage = q.id;
+
+CREATE VIEW vAnswerVote AS
+SELECT
+    v.id AS `id`,
+    v.idUser AS 'votedBy',
+    v.idUserMessage AS 'votedObject',
+    v.voteUp AS  'voteType'
+FROM Vote AS v
+         INNER JOIN Answer AS a
+                    ON v.idUserMessage = a.id;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

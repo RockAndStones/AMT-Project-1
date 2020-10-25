@@ -7,6 +7,7 @@ import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.IdentityManagementFacade;
 import ch.heigvd.amt.stoneoverflow.application.statistics.StatisticsFacade;
+import ch.heigvd.amt.stoneoverflow.application.vote.VoteFacade;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.answer.Answer;
@@ -15,12 +16,15 @@ import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
+import ch.heigvd.amt.stoneoverflow.domain.vote.IVoteRepository;
+import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
 import lombok.Getter;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @ApplicationScoped
 public class ServiceRegistry {
@@ -37,12 +41,16 @@ public class ServiceRegistry {
     @Inject @Named("JdbcCommentRepository")
     ICommentRepository commentRepository;
 
+    @Inject @Named("JdbcVoteRepository")
+    IVoteRepository voteRepository;
+
     @Getter IdentityManagementFacade identityManagementFacade;
-    @Getter QuestionFacade questionFacade;
-    @Getter AnswerFacade  answerFacade;
-    @Getter CommentFacade commentFacade;
-    @Getter StatisticsFacade statisticsFacade;
-    @Getter PaginationFacade paginationFacade;
+    @Getter QuestionFacade           questionFacade;
+    @Getter AnswerFacade             answerFacade;
+    @Getter CommentFacade            commentFacade;
+    @Getter VoteFacade               voteFacade;
+    @Getter StatisticsFacade         statisticsFacade;
+    @Getter PaginationFacade         paginationFacade;
 
     @PostConstruct
     private void initDefaultValues() {
@@ -50,6 +58,7 @@ public class ServiceRegistry {
         questionFacade           = new QuestionFacade(questionRepository);
         answerFacade             = new AnswerFacade(answerRepository);
         commentFacade            = new CommentFacade(commentRepository);
+        voteFacade               = new VoteFacade(voteRepository);
         statisticsFacade         = new StatisticsFacade(questionRepository, userRepository, commentRepository, answerRepository);
         paginationFacade         = new PaginationFacade(questionRepository, answerRepository);
 
@@ -79,7 +88,7 @@ public class ServiceRegistry {
                 .description("Well, you real ????")
                 .creatorId(u1.getId())
                 .creator("SwagMan McSwagenstein")
-                .nbVotes(2)
+                .nbViews(44)
                 .build());
 
         questionFacade.addQuestion(AddQuestionCommand.builder()
@@ -87,7 +96,7 @@ public class ServiceRegistry {
                 .description("Start lifting weights today, lift women tomorrow !")
                 .creatorId(u1.getId())
                 .creator("Ricardo")
-                .nbVotes(1038)
+                .nbViews(6418)
                 .build());
 
         questionFacade.addQuestion(AddQuestionCommand.builder()
@@ -109,7 +118,8 @@ public class ServiceRegistry {
                         "We are using vue-cli 3.")
                 .creatorId(u1.getId())
                 .creator("Jack Casas")
-                .nbVotes(6)
+                .nbViews(44)
+                .nbViews(884)
                 .build());
 
         Question q1 = Question.builder()
@@ -117,7 +127,7 @@ public class ServiceRegistry {
                 .description("The question is all about the title :)")
                 .creatorId(u2.getId())
                 .creator(u2.getUsername())
-                .nbVotes(601).build();
+                .nbViews(new AtomicInteger(772)).build();
 
         questionRepository.save(q1);
 
@@ -126,15 +136,13 @@ public class ServiceRegistry {
                 .answerTo(q1.getId())
                 .description("Yes there is. It's called anise ;)")
                 .creatorId(u1.getId())
-                .creator(u1.getUsername())
-                .nbVotes(542).build();
+                .creator(u1.getUsername()).build();
 
         Answer a2 = Answer.builder()
                 .answerTo(q1.getId())
                 .description("Is this questions a cake?")
                 .creatorId(u1.getId())
-                .creator("IAmALieBecauseIMayBeACakeInsideAndIAmScaredAboutThat")
-                .nbVotes(-4).build();
+                .creator("IAmALieBecauseIMayBeACakeInsideAndIAmScaredAboutThat").build();
 
         answerRepository.save(a1);
         answerRepository.save(a2);
@@ -168,5 +176,36 @@ public class ServiceRegistry {
         commentRepository.save(c2);
         commentRepository.save(c3);
         commentRepository.save(c4);
+
+        Vote v1 = Vote.builder()
+                .votedBy(u1.getId())
+                .votedObject(q1.getId())
+                .voteType(Vote.VoteType.UP).build();
+
+        Vote v2 = Vote.builder()
+                .votedBy(u2.getId())
+                .votedObject(q1.getId())
+                .voteType(Vote.VoteType.UP).build();
+
+        Vote v3 = Vote.builder()
+                .votedBy(u1.getId())
+                .votedObject(a2.getId())
+                .voteType(Vote.VoteType.DOWN).build();
+
+        Vote v4 = Vote.builder()
+                .votedBy(u2.getId())
+                .votedObject(a2.getId())
+                .voteType(Vote.VoteType.DOWN).build();
+
+        Vote v5 = Vote.builder()
+                .votedBy(u2.getId())
+                .votedObject(a1.getId())
+                .voteType(Vote.VoteType.UP).build();
+
+        voteRepository.save(v1);
+        voteRepository.save(v2);
+        voteRepository.save(v3);
+        voteRepository.save(v4);
+        voteRepository.save(v5);
     }
 }

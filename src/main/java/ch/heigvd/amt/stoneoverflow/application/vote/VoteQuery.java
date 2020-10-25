@@ -1,4 +1,4 @@
-package ch.heigvd.amt.stoneoverflow.application.comment;
+package ch.heigvd.amt.stoneoverflow.application.vote;
 
 import ch.heigvd.amt.stoneoverflow.domain.Id;
 import ch.heigvd.amt.stoneoverflow.domain.UserMessageType;
@@ -9,17 +9,12 @@ import lombok.Getter;
 @Builder
 @Getter
 @EqualsAndHashCode
-public class CommentQuery {
+public class VoteQuery {
 
     @Builder.Default
     private UserMessageType userMessageType = UserMessageType.QUESTION;
 
     @Builder.Default
-    private Id commentTo = null;
+    private Id votedObject = null;
 
-    @Builder.Default
-    private CommentQuerySortBy sortBy = CommentQuerySortBy.DATE;
-
-    @Builder.Default
-    private boolean sortDescending = true;
 }

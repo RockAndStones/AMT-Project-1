@@ -16,6 +16,7 @@ import java.sql.*;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @ApplicationScoped
 @Named("JdbcQuestionRepository")
@@ -40,8 +41,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
                     .description(rs.getString("description"))
                     .creator(rs.getString("creator"))
                     .creatorId(new UserId(rs.getString("creatorId")))
-                    .nbViews(rs.getInt("nbViews"))
-                    .nbVotes(rs.getInt("nbVotes"))
+                    .nbViews(new AtomicInteger(rs.getInt("nbViews")))
                     .date(new Date(rs.getTimestamp("date").getTime()))
                     .build();
             questions.add(q);
@@ -109,18 +109,17 @@ public class JdbcQuestionRepository implements IQuestionRepository {
         try {
             Connection con = dataSource.getConnection();
 
-            PreparedStatement ps = con.prepareStatement("INSERT INTO UserMessage VALUES (?, ?, ?, ?, ?)");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO UserMessage VALUES (?, ?, ?, ?)");
             ps.setString(1, question.getId().asString());
             ps.setString(2, question.getCreatorId().asString());
             ps.setString(3, question.getDescription());
-            ps.setInt(4, question.getNbVotes());
-            ps.setTimestamp(5, new Timestamp(question.getDate().getTime()));
+            ps.setTimestamp(4, new Timestamp(question.getDate().getTime()));
             ps.executeUpdate();
 
             ps = con.prepareStatement("INSERT INTO Question VALUES (?, ?, ?)");
             ps.setString(1, question.getId().asString());
             ps.setString(2, question.getTitle());
-            ps.setInt(3, question.getNbViews());
+            ps.setInt(3, question.getNbViewsAsInt());
             ps.executeUpdate();
 
             ps.close();
@@ -136,13 +135,8 @@ public class JdbcQuestionRepository implements IQuestionRepository {
         try {
             Connection con = dataSource.getConnection();
 
-            PreparedStatement ps = con.prepareStatement("UPDATE UserMessage SET nbVotes=? WHERE id=?");
-            ps.setInt(1, question.getNbVotes());
-            ps.setString(2, question.getId().asString());
-            ps.executeUpdate();
-
-            ps = con.prepareStatement("UPDATE Question SET nbViews=? WHERE id=?");
-            ps.setInt(1, question.getNbViews());
+            PreparedStatement ps = con.prepareStatement("UPDATE Question SET nbViews=? WHERE id=?");
+            ps.setInt(1, question.getNbViewsAsInt());
             ps.setString(2, question.getId().asString());
             ps.executeUpdate();
 

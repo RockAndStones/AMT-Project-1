@@ -2,7 +2,6 @@ package ch.heigvd.amt.stoneoverflow.application.answer;
 
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
 import ch.heigvd.amt.stoneoverflow.domain.answer.Answer;
-import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
 import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 
@@ -23,7 +22,6 @@ public class AnswerFacade {
                 .description(command.getDescription())
                 .creatorId(command.getCreatorId())
                 .creator(command.getCreator())
-                .nbVotes(command.getNbVotes())
                 .date(command.getDate()).build();
         answerRepository.save(addAnswer);
     }
@@ -36,7 +34,6 @@ public class AnswerFacade {
                         .uuid(answer.getId().asString())
                         .description(answer.getDescription())
                         .creator(answer.getCreator())
-                        .nbVotes(answer.getNbVotes())
                         .date(new DateDTO(answer.getDate())).build())
                 .collect(Collectors.toList());
 

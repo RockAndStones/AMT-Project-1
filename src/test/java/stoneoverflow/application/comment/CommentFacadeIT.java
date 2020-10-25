@@ -11,6 +11,7 @@ import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedU
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginCommand;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginFailedException;
 import ch.heigvd.amt.stoneoverflow.application.question.*;
+import ch.heigvd.amt.stoneoverflow.domain.UserMessageType;
 import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
@@ -166,14 +167,14 @@ public class CommentFacadeIT {
         // Recover the uuid from the answer in the repository
         CommentsDTO.CommentDTO commentDTO = CommentsDTO.CommentDTO.builder()
                 .uuid(commentFacade.getComments(CommentQuery.builder()
-                        .commentView(CommentQuery.CommentView.ANSWER).build())
+                        .userMessageType(UserMessageType.ANSWER).build())
                             .getComments().get(commentIndex).getUuid())
                 .content("No content")
                 .creator(testUser.getUsername())
                 .date(date).build();
 
         assertEquals(commentFacade.getComments(CommentQuery.builder()
-                .commentView(CommentQuery.CommentView.ANSWER).build())
+                .userMessageType(UserMessageType.ANSWER).build())
                     .getComments().get(commentIndex), commentDTO);
     }
 
@@ -300,7 +301,7 @@ public class CommentFacadeIT {
 
         // Prepare comment query
         CommentQuery commentQuery = CommentQuery.builder()
-                .commentView(CommentQuery.CommentView.ANSWER)
+                .userMessageType(UserMessageType.ANSWER)
                 .commentTo(answerId1).build();
 
         // Create the expected result

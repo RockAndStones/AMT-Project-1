@@ -44,6 +44,7 @@
                 <jsp:setProperty name="msg" property="date"        value="${question.date}" />
                 <jsp:setProperty name="msg" property="type"        value="question" />
                 <jsp:setProperty name="msg" property="comments"    value="${question.comments}" />
+                <jsp:setProperty name="msg" property="vote"        value="${question.voteDTO}" />
 
                 <%@include file="fragments/userMessage.jsp" %>
             </div>
@@ -64,6 +65,7 @@
                             <jsp:setProperty name="msg" property="date"        value="${answer.date}" />
                             <jsp:setProperty name="msg" property="type"        value="answer" />
                             <jsp:setProperty name="msg" property="comments"    value="${answer.comments}" />
+                            <jsp:setProperty name="msg" property="vote"        value="${answer.voteDTO}" />
                             <%@include file="fragments/userMessage.jsp" %>
                         </c:forEach>
                     </c:otherwise>

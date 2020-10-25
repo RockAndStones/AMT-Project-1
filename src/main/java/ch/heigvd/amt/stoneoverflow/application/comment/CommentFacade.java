@@ -1,6 +1,7 @@
 package ch.heigvd.amt.stoneoverflow.application.comment;
 
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
+import ch.heigvd.amt.stoneoverflow.domain.UserMessageType;
 import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 
@@ -47,7 +48,7 @@ public class CommentFacade {
     }
 
     public int getNumberOfAnswerComments() {
-        return commentRepository.find(CommentQuery.builder().commentView(CommentQuery.CommentView.ANSWER).build()).size();
+        return commentRepository.find(CommentQuery.builder().userMessageType(UserMessageType.ANSWER).build()).size();
     }
 
 }

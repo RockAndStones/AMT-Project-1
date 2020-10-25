@@ -33,7 +33,6 @@ public class JdbcAnswerRepository implements IAnswerRepository {
                     .description(rs.getString("description"))
                     .creatorId(new UserId(rs.getString("creatorId")))
                     .creator(rs.getString("creator"))
-                    .nbVotes(rs.getInt("nbVotes"))
                     .date(new Date(rs.getTimestamp("date").getTime()))
                     .build();
             answers.add(a);
@@ -50,7 +49,7 @@ public class JdbcAnswerRepository implements IAnswerRepository {
         if (query.getAnswerTo() != null)
             where = String.format(" WHERE answerTo='%s'", query.getAnswerTo().asString());
 
-        String qr = String.format("SELECT * FROM vAnswer%s ORDER BY %s %s LIMIT %d, %d",
+        String qr = String.format("SELECT *FROM vAnswer%s ORDER BY %s %s LIMIT %d, %d",
                 where,
                 query.getSortBy().getSqlFieldName(),
                 direction,
@@ -107,12 +106,11 @@ public class JdbcAnswerRepository implements IAnswerRepository {
         try {
             Connection con = dataSource.getConnection();
 
-            PreparedStatement ps = con.prepareStatement("INSERT INTO UserMessage VALUES (?, ?, ?, ?, ?)");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO UserMessage VALUES (?, ?, ?, ?)");
             ps.setString(1, answer.getId().asString());
             ps.setString(2, answer.getCreatorId().asString());
             ps.setString(3, answer.getDescription());
-            ps.setInt(4, answer.getNbVotes());
-            ps.setDate(5, new Date(answer.getDate().getTime()));
+            ps.setDate(4, new Date(answer.getDate().getTime()));
             ps.executeUpdate();
 
             ps = con.prepareStatement("INSERT INTO Answer VALUES (?, ?)");
@@ -130,20 +128,7 @@ public class JdbcAnswerRepository implements IAnswerRepository {
 
     @Override
     public void update(Answer answer) {
-        try {
-            Connection con = dataSource.getConnection();
-
-            PreparedStatement ps = con.prepareStatement("UPDATE UserMessage SET nbVotes=? WHERE id=?");
-            ps.setInt(1, answer.getNbVotes());
-            ps.setString(2, answer.getId().asString());
-            ps.executeUpdate();
-
-            ps.close();
-            con.close();
-        } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
-        }
+        throw new UnsupportedOperationException("update is not yet implemented");
     }
 
     @Override
