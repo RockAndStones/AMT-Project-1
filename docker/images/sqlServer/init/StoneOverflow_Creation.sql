@@ -124,10 +124,10 @@ SELECT
     um.nbVotes AS 'nbVotes',
     q.nbViews AS 'nbViews',
     um.date AS 'date'
-FROM Question AS q 
-    INNER JOIN UserMessage AS um 
+FROM Question AS q
+    INNER JOIN UserMessage AS um
         ON q.id = um.id
-    INNER JOIN User AS u 
+    INNER JOIN User AS u
         ON um.idUser=u.id;
 
 SET SQL_MODE=@OLD_SQL_MODE;
