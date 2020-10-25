@@ -21,10 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -116,8 +113,8 @@ public class AnswerFacadeIT {
 
         assertTrue(
                 (resultAnswerId1.equals(answerId1.asString()) || resultAnswerId1.equals(answerId2.asString()))
-                &&
-                (resultAnswerId2.equals(answerId1.asString()) || resultAnswerId2.equals(answerId2.asString()))
+                        &&
+                        (resultAnswerId2.equals(answerId1.asString()) || resultAnswerId2.equals(answerId2.asString()))
         );
     }
 }
