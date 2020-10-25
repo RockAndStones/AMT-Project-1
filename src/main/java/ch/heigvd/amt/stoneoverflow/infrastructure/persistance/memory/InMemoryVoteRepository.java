@@ -21,14 +21,12 @@ public class InMemoryVoteRepository extends InMemoryRepository<Vote, VoteId> imp
     public int findNbVotes(Id id, UserMessageType userMessageType) {
         Collection<Vote> allVotes = super.findAll();
 
-        ArrayList<Vote> filteredVotes = new ArrayList<>();
-        for (Vote vote : allVotes) {
-            if (vote.getVotedObject().equals(id)) {
-                filteredVotes.add(vote);
-            }
-        }
+        int nbVotes=0;
+        for (Vote vote : allVotes)
+            if (vote.getVotedObject().equals(id))
+                nbVotes += vote.getVoteType() == Vote.VoteType.UP ? 1 : -1;
 
-        return filteredVotes.size();
+        return nbVotes;
     }
 
     @Override
