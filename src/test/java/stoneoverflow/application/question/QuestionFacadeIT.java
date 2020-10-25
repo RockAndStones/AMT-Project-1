@@ -6,6 +6,7 @@ import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedU
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginCommand;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginFailedException;
 import ch.heigvd.amt.stoneoverflow.application.question.*;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -33,7 +34,7 @@ public class QuestionFacadeIT {
 
     private AuthenticatedUserDTO testUser;
     private QuestionFacade questionFacade;
-    private DateDTO questionDate;
+    private DateDTO date;
 
     @Deployment(testable = true)
     public static WebArchive createDeployment() {
@@ -51,68 +52,46 @@ public class QuestionFacadeIT {
                 .build());
 
         questionFacade = serviceRegistry.getQuestionFacade();
-        this.questionDate = new DateDTO(new Date(System.currentTimeMillis()));
+        this.date = new DateDTO(new Date(System.currentTimeMillis()));
+    }
+
+    private QuestionId addQuestion(QuestionType questionType) {
+        return questionFacade.addQuestion(AddQuestionCommand.builder()
+                .creatorId(testUser.getId())
+                .date(date)
+                .type(questionType).build());
     }
 
     @Test
     public void shouldAddQuestion() {
-        int index = questionFacade.getNumberOfQuestions();
-        // Add question in repository
-        AddQuestionCommand questionCommand = AddQuestionCommand.builder()
-                .creator(testUser.getUsername())
-                .creatorId(testUser.getId())
-                .date(questionDate)
-                .build();
-        questionFacade.addQuestion(questionCommand);
+        QuestionId questionId = addQuestion(QuestionType.UNCLASSIFIED);
 
-        // Create the expected result
-        // Recover the uuid from the question in the repository
         QuestionsDTO.QuestionDTO questionDTO = QuestionsDTO.QuestionDTO.builder()
-                .uuid(questionFacade.getQuestions(QuestionQuery.builder().build(), 0, questionFacade.getNumberOfQuestions())
-                        .getQuestions().get(index).getUuid())
+                .uuid(questionId.asString())
                 .title("My default question")
                 .description("No content")
-                .creator("test")
-                .nbVotes(0)
-                .nbViews(new AtomicInteger(0))
-                .date(questionDate)
+                .creator("Anonymous")
+                .date(date)
                 .type(QuestionType.UNCLASSIFIED.name()).build();
 
-        assertEquals(questionFacade.getQuestions(QuestionQuery.builder().build(), 0, questionFacade.getNumberOfQuestions()).getQuestions().get(index).getUuid(),
-                questionDTO.getUuid());
+        assertEquals(questionFacade.getQuestion(questionId), questionDTO);
     }
 
     @Test
     public void shouldGetOnlySQLQuestions() {
-        // Add SQL question in repository
-        AddQuestionCommand questionCommandSQL = AddQuestionCommand.builder()
-                .title("My SQL Question")
-                .creator(testUser.getUsername())
-                .creatorId(testUser.getId())
-                .type(QuestionType.SQL)
-                .date(questionDate)
-                .build();
-        questionFacade.addQuestion(questionCommandSQL);
+        QuestionId questionId = addQuestion(QuestionType.SQL);
+        addQuestion(QuestionType.UNCLASSIFIED);
 
-        // Create the expected result
-        // Recover the uuid from the question in the repository
         QuestionsDTO.QuestionDTO questionDTO = QuestionsDTO.QuestionDTO.builder()
-                .uuid(questionFacade.getQuestions(QuestionQuery.builder().sortBy(QuestionQuerySortBy.DATE).type(QuestionType.SQL).build(),0, questionFacade.getNumberOfQuestions())
-                        .getQuestions().get(0).getUuid())
-                .title("My SQL Question")
+                .uuid(questionId.asString())
+                .title("My default question")
                 .description("No content")
-                .creator(testUser.getUsername())
-                .nbVotes(0)
-                .nbViews(new AtomicInteger(0))
-                .date(questionDate)
+                .creator("Anonymous")
+                .date(date)
                 .type(QuestionType.SQL.name()).build();
 
-        // Add other question in repository
-        AddQuestionCommand questionCommand = AddQuestionCommand.builder().build();
-        questionFacade.addQuestion(questionCommand);
-
         QuestionsDTO.QuestionDTO q = questionFacade.getQuestions(QuestionQuery.builder().sortBy(QuestionQuerySortBy.DATE).type(QuestionType.SQL).build(),0, questionFacade.getNumberOfQuestions()).getQuestions().get(0);
-        assertEquals(questionDTO.getUuid(), q.getUuid());
+        assertEquals(questionDTO, q);
     }
 
     @Test
