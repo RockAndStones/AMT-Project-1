@@ -19,13 +19,22 @@
                 <span class="block font-medium">New Question</span>
             </a>
         </li>
-        <li class="p-4 border-b-4 border-white text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border-gray-700">
-            <form action="logout.do" method="post" class="flex items-center">
-                <button type="submit">
-                    <i class="mx-auto mb-2 h-5 w-5 h-5 w-5 fas fa-power-off"></i>
-                    <span class="block tracking-wider font-medium">Logout</span>
-                </button>
-            </form>
+        <li <c:if test="${baseURL.contains(\"statistics\") == true}">${activeButton}</c:if>
+            <c:if test="${baseURL.contains(\"statistics\") != true}">${inactiveButton}</c:if>>
+            <a href="statistics">
+                <i class="mx-auto mb-2 h-5 w-5 h-5 w-5 fas fa-chart-bar"></i>
+                <span class="block font-medium">Statistics</span>
+            </a>
         </li>
+        <c:if test="${sessionScope.authenticatedUser != null}">
+            <li class="p-4 border-b-4 border-white text-gray-600 hover:bg-gray-200 hover:text-gray-700 hover:border-gray-700">
+                <form action="logout.do" method="post" class="flex items-center">
+                    <button type="submit">
+                        <i class="mx-auto mb-2 h-5 w-5 h-5 w-5 fas fa-power-off"></i>
+                        <span class="block tracking-wider font-medium">Logout</span>
+                    </button>
+                </form>
+            </li>
+        </c:if>
     </ul>
 </nav>
