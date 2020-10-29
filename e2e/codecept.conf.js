@@ -22,6 +22,7 @@ exports.config = {
     newQuestionPage:          './pages/newQuestionPage.js',
     profilePage:              './pages/profilePage.js',
     questionDetailsPage:      './pages/questionDetailsPage.js',
+    statisticsPage:           './pages/statisticsPage.js',
     __comment2__:             '---------- FRAGMENTS ----------',
     loginFormFragment:        './fragments/loginFormFragment.js',
     registerFormFragment:     './fragments/registerFormFragment.js',
