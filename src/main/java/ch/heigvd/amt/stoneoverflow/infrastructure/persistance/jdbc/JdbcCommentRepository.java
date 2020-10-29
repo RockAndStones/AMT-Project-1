@@ -104,8 +104,7 @@ public class JdbcCommentRepository implements ICommentRepository {
             psQuestion.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return comments;
@@ -127,14 +126,13 @@ public class JdbcCommentRepository implements ICommentRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
     @Override
     public void update(Comment comment) {
-        //todo: unused method?
+        throw new UnsupportedOperationException("Update is not supported on comment");
     }
 
     @Override
@@ -148,15 +146,13 @@ public class JdbcCommentRepository implements ICommentRepository {
 
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
     @Override
     public Optional<Comment> findById(CommentId commentId) {
-        //todo: unused method?
-        throw new UnsupportedOperationException("findById is not yet implemented");
+        throw new UnsupportedOperationException("findById is not supported on comment");
     }
 
     @Override
@@ -199,8 +195,7 @@ public class JdbcCommentRepository implements ICommentRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return size;
