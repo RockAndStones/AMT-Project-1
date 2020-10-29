@@ -36,10 +36,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: NPM install
-        run: |
-        cd e2e
-        npm install
-        cd ..
+        run: cd e2e && npm ci && cd ..
 
       - name: Build with maven
         run: mvn clean package
