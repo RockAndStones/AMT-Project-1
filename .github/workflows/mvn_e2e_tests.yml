@@ -48,15 +48,14 @@ jobs:
           cd docker
           docker-compose up -d sql
 
-      - name: Run maven tests
+      - name: Maven tests
         run: |
           mvn verify
 
-      - name: Run e2e tests
+      - name: E2E tests
         run: |
           cd e2e
           npx codeceptjs run --override '{"helpers": {"Puppeteer": {"show": false}}}' --steps
-          cd ..
 
       - name: Stop servers
         run: |
