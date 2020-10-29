@@ -10,9 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: test
-        run: echo $GITHUB_ACTOR
-
       - uses: actions/checkout@v2
 
       - name: Setup JDK 11
