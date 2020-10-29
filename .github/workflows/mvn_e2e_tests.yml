@@ -46,7 +46,7 @@ jobs:
           mvn liberty:create liberty:install-feature liberty:deploy
           mvn liberty:start
           cd docker
-          docker-compose up -d mysql
+          docker-compose up -d sql
 
       - name: Run maven tests
         run: |
