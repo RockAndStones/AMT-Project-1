@@ -41,6 +41,20 @@ public class QuestionQueryServlet extends HttpServlet {
                 .sortBy(QuestionQuerySortBy.VOTES)
                 .build();
 
+        // Set query filter
+        String filter = req.getParameter("f");
+        if (filter != null) {
+            if (filter.startsWith("date"))
+                query.setSortBy(QuestionQuerySortBy.DATE);
+            else if (filter.startsWith("votes"))
+                query.setSortBy(QuestionQuerySortBy.VOTES);
+            else if (filter.startsWith("views"))
+                query.setSortBy(QuestionQuerySortBy.VIEWS);
+
+            if (filter.endsWith("_asc"))
+                query.setSortDescending(false);
+        }
+
         String searchQuery = req.getParameter("s");
         if (searchQuery != null)
             query.setSearchCondition(searchQuery);
