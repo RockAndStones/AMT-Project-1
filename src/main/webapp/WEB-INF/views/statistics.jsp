@@ -25,8 +25,27 @@
 
         <!-- Main content -->
         <div class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-700 leading-normal">
+            <p>TODO: Update this page</p>
             <p>Number of users: ${statistics.nbUsers}</p>
             <p>Number of questions: ${statistics.nbQuestions}</p>
+            <p>Number of views across all questions: ${statistics.nbViews}</p>
+            <p>Sum of votes across all questions: ${statistics.nbVotes}</p>
+
+            <br />
+            <h2>Most active users (question wise)</h2>
+            <div id="users">
+                <c:forEach items="${statistics.mostActiveUsers}" var="user">
+                    <p>${user.username} - ${user.nbQuestions} questions</p>
+                </c:forEach>
+            </div>
+
+            <br />
+            <h2>Most popular questions (vote wise)</h2>
+            <div id="questions">
+                <c:forEach items="${statistics.mostVotedQuestions.questions}" var="question">
+                    <p>${question.title} - ${question.nbVotes} votes</p>
+                </c:forEach>
+            </div>
             <br /><br /><br /><br /><br /><br /><br /><br />
         </div>
     </div>

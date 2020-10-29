@@ -5,7 +5,6 @@ import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
-import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.exception.DataCorruptionException;
 
@@ -112,8 +111,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             psQuestion.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return questions;
@@ -141,8 +139,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -159,8 +156,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -175,8 +171,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
 
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -201,11 +196,34 @@ public class JdbcQuestionRepository implements IQuestionRepository {
 
             return questions.stream().findFirst();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public Collection<Question> findByUser(UserId userId) {
+        Collection<Question> questions = new LinkedList<>();
+
+        try {
+            Connection con = dataSource.getConnection();
+
+            PreparedStatement ps = con.prepareStatement(
+                    "SELECT * FROM vQuestion WHERE creatorId=?");
+            ps.setString(1, userId.asString());
+
+            ResultSet rs = ps.executeQuery();
+            questions.addAll(resultSetToQuestions(rs));
+
+            ps.close();
+            con.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return questions;
     }
 
     @Override
@@ -222,8 +240,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             psQuestion.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return questions;
@@ -243,8 +260,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return size;

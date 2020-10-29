@@ -5,7 +5,7 @@
   Description:  Question fragment for StoneOverflow.
 --%>
 <div class="question flex border-b">
-    <div class="w-full flex items-start px-4 py-4">
+    <div class="w-full flex items-start p-4">
         <div class="w-full">
             <div class="flex items-center justify-between">
                 <form action="/questionDetails" method="get">

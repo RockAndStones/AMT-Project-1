@@ -74,8 +74,7 @@ public class JdbcAnswerRepository implements IAnswerRepository {
             psAnswer.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return answers;
@@ -94,8 +93,7 @@ public class JdbcAnswerRepository implements IAnswerRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return size;
@@ -121,14 +119,13 @@ public class JdbcAnswerRepository implements IAnswerRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
     @Override
     public void update(Answer answer) {
-        throw new UnsupportedOperationException("update is not yet implemented");
+        throw new UnsupportedOperationException("Update is not supported on Answer");
     }
 
     @Override
@@ -161,8 +158,7 @@ public class JdbcAnswerRepository implements IAnswerRepository {
 
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -187,8 +183,7 @@ public class JdbcAnswerRepository implements IAnswerRepository {
 
             return answers.stream().findFirst();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return Optional.empty();
@@ -209,8 +204,7 @@ public class JdbcAnswerRepository implements IAnswerRepository {
             psQuestion.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return answers;
@@ -230,8 +224,7 @@ public class JdbcAnswerRepository implements IAnswerRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return size;

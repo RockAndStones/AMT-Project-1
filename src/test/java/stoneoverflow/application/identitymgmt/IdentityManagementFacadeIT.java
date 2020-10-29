@@ -19,7 +19,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-import javax.servlet.RequestDispatcher;
 
 import static org.junit.Assert.*;
 
