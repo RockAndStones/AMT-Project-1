@@ -2,7 +2,7 @@ const { loginPage, homePage } = inject();
 const randomstring= require('randomstring');
 
 
-Feature('Login');
+Feature('Login and Register');
 
     Scenario('Failed login', (I) => {
         const wrongUsername = randomstring.generate(15);
@@ -23,7 +23,6 @@ Feature('Login');
         });
     });
 
-Feature ('Logout');
     Scenario('Login, logout', (I) => {
         I.loginTestUser();
         I.seeInCurrentUrl(homePage.url);
@@ -34,7 +33,6 @@ Feature ('Logout');
         I.seeElement(homePage.components.header.links.login);
     });
 
-Feature('Register');
 
     let wrongPasswords = new DataTable(['password']);
     wrongPasswords.add(['Abcde6!']);  // Only 7 chars
