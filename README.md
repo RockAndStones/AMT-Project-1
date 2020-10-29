@@ -1,4 +1,4 @@
-# AMT Project 1 : StoneOverflow
+# AMT Project 1 : StoneOverflow <img src="https://github.com/RockAndStones/AMT-Project-1/workflows/MVN%20&%20E2E%20Tests/badge.svg?branch=dev" alt="Tests">
 
 ## Table of contents
 - [Introduction](#Introduction)  
@@ -33,6 +33,6 @@ cd ./AMT-Project-1/docker
 docker-compose -d sql
 ```
 ### Unit & Integration Tests
-To run the unit & integration tests, use the `run-unit-integration-tests.sh` script from the clone root folder.
+To run the unit & integration tests, use the `run-unit-integration-tests.sh` script from the cloned root folder.
 ### End to End (E2E) Tests
-To run the end to end (E2E) tests, use the `run-e2e-tests.sh` script from the clone root folder.
+To run the end to end (E2E) tests, use the `run-e2e-tests.sh` script from the cloned root folder.
