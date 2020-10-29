@@ -1,4 +1,4 @@
-<div messageuuid="${msg.uuid}" class="userMessageClass flex flex-shrink">
+<div messageuuid="${msg.uuid}" class="userMessageClass flex flex-shrink mb-4">
     <!-- Vote -->
     <div class="voteClass flex flex-col inline-flex items-center">
         <form action="${pageContext.request.contextPath}/vote.do" method="post">
@@ -18,16 +18,15 @@
         </form>
     </div>
     <!-- Post content -->
-    <div class="messageBody ml-6 mt-4 text-gray-700">
+    <div class="messageBody w-full ml-6 mt-4 text-gray-700">
         <p>
             ${msg.description}
         </p>
         <span class="inline-block text-sm font-semibold mt-4">${msg.creator}, ${msg.date.dateFormatted()} at ${msg.date.timeFormatted()}</span>
 
         <!-- Comments -->
-        <div class="commentSectionClass">
+        <div class="commentSectionClass mt-10 border-l pl-4">
             <c:if test="${not empty msg.comments}">
-                <h2 class="leading-normal text-lg font-semibold text-gray-900 mt-6 mb-4">Comment(s)</h2>
                 <c:forEach items="${msg.comments}" var="comment">
                     <%@include file="comment.jsp" %>
                 </c:forEach>

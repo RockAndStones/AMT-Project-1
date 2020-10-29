@@ -4,7 +4,8 @@ import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
-import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory.InMemoryRepository;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class StatisticsFacade {
     private final IQuestionRepository questionRepository;
@@ -20,10 +21,13 @@ public class StatisticsFacade {
     }
 
     public StatisticsDTO getGlobalStatistics() {
+        AtomicInteger nbViews = new AtomicInteger();
+        questionRepository.findAll().stream().map(value -> nbViews.addAndGet(value.getNbViewsAsInt()));
+
         return StatisticsDTO.builder()
                 .nbQuestions(questionRepository.getRepositorySize())
                 .nbUsers(userRepository.getRepositorySize())
-                .nbViews(0)
+                .nbViews(nbViews.get())
                 .build();
     }
 }
