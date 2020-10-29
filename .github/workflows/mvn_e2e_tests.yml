@@ -51,7 +51,8 @@ jobs:
           mvn liberty:create liberty:install-feature liberty:deploy
           mvn liberty:start
 
-      - uses: nev7n/wait_for_response@v1
+      - name: Wait for response n°1
+        uses: nev7n/wait_for_response@v1
         with:
           url: 'http://localhost:8080/'
           responseCode: 200
@@ -62,10 +63,30 @@ jobs:
         run: |
           mvn verify
 
+      - name: Restart SQL container
+        run: |
+          cd docker
+          docker-compose down
+          docker-compose up -d sql
+
+      - name: Restart MVN server
+        run: |
+          mvn liberty:stop
+          mvn liberty:create liberty:install-feature liberty:deploy
+          mvn liberty:start
+
+      - name: Wait for response n°2
+          uses: nev7n/wait_for_response@v1
+          with:
+            url: 'http://localhost:8080/'
+            responseCode: 200
+            timeout: 30000
+            interval: 1000
+
       - name: E2E tests
         run: |
           cd e2e
-          npx codeceptjs run --override '{"helpers": {"Puppeteer": {"show": false}}}' --steps
+          npx codeceptjs run --colors --override '{"helpers": {"Puppeteer": {"show": false}}}'
 
       - name: Stop servers
         run: |
