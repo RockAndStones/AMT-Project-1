@@ -12,7 +12,7 @@ We will also use JUnit for the UnitTest and Codecept.js for the e2e tests.
 If you want to see the specification of the user interface please [click here](https://docs.google.com/document/d/1DSahosKDQq_0yjQDg7r0EOaPcs6QhwXc7yyWqTjHFSo/edit?usp=sharing)
 
 ## Deployment
-The web application can be deployed with a simple [docker-compose](./docker/docker-compose.yml) file downloadable [here](https://githubraw.com/RockAndStones/AMT-Project-1/dev/docker/docker-compose.yml).
+The web application can be deployed with a simple [docker-compose](./docker/docker-compose.yml) file downloadable [here](https://githubraw.com/RockAndStones/AMT-Project-1/master/docker/docker-compose.yml).
 
 Next open a terminal where the docker-compose file is and run the following command. 
 ```
