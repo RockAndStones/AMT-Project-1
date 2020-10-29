@@ -55,8 +55,7 @@ public class JdbcUserRepository implements IUserRepository {
 
             return Optional.of(u);
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return Optional.empty();
@@ -80,8 +79,7 @@ public class JdbcUserRepository implements IUserRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();;
         }
     }
 
@@ -102,15 +100,22 @@ public class JdbcUserRepository implements IUserRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
     @Override
     public void remove(UserId userId) {
-        //todo: implement remove method
-        throw new UnsupportedOperationException("Remove is not yet implemented");
+        try {
+            Connection con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement("DELETE FROM User WHERE id=?");
+            ps.execute();
+
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -139,8 +144,7 @@ public class JdbcUserRepository implements IUserRepository {
 
             return Optional.of(u);
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return Optional.empty();
@@ -170,7 +174,7 @@ public class JdbcUserRepository implements IUserRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
+            ex.printStackTrace();
         }
 
         return users;
@@ -190,8 +194,7 @@ public class JdbcUserRepository implements IUserRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return size;
