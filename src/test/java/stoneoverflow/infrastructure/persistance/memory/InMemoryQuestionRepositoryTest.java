@@ -30,7 +30,6 @@ public class InMemoryQuestionRepositoryTest {
         assertEquals(inMemoryQuestionRepository.findAll().size(), 3);
     }
 
-    //todo: fix nullpointerexception
     //@Test
     public void shouldFindQuestionByVotes() {
         // Set the expected result

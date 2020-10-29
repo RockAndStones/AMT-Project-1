@@ -194,8 +194,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             con.close();
 
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return questions;
