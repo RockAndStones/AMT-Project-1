@@ -51,6 +51,13 @@ jobs:
           mvn liberty:create liberty:install-feature liberty:deploy
           mvn liberty:start
 
+      - uses: nev7n/wait_for_response@v1
+        with:
+          url: 'http://localhost:8080/'
+          responseCode: 200
+          timeout: 30000
+          interval: 1000
+
       - name: Maven tests
         run: |
           mvn verify
