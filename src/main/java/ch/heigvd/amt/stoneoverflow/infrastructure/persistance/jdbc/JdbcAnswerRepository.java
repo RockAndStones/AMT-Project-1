@@ -33,7 +33,7 @@ public class JdbcAnswerRepository implements IAnswerRepository {
                     .description(rs.getString("description"))
                     .creatorId(new UserId(rs.getString("creatorId")))
                     .creator(rs.getString("creator"))
-                    .date(new Date(rs.getTimestamp("date").getTime()))
+                    .date(new java.util.Date(rs.getTimestamp("date").getTime()))
                     .build();
             answers.add(a);
         }
@@ -49,7 +49,7 @@ public class JdbcAnswerRepository implements IAnswerRepository {
         if (query.getAnswerTo() != null)
             where = String.format(" WHERE answerTo='%s'", query.getAnswerTo().asString());
 
-        String qr = String.format("SELECT *FROM vAnswer%s ORDER BY %s %s LIMIT %d, %d",
+        String qr = String.format("SELECT * FROM vAnswer %s ORDER BY %s %s LIMIT %d, %d",
                 where,
                 query.getSortBy().getSqlFieldName(),
                 direction,
