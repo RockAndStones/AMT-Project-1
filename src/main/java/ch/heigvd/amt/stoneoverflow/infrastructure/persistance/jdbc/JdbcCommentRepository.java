@@ -174,8 +174,7 @@ public class JdbcCommentRepository implements ICommentRepository {
             psAnswerComment.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return comments;

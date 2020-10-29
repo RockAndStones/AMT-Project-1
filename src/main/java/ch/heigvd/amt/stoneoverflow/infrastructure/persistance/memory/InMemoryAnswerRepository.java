@@ -7,7 +7,6 @@ import ch.heigvd.amt.stoneoverflow.application.vote.VoteFacade;
 import ch.heigvd.amt.stoneoverflow.domain.answer.Answer;
 import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
 import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
-import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 
 import javax.annotation.PostConstruct;

@@ -4,7 +4,6 @@ import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
-import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 
 import java.util.Collection;
 import java.util.List;

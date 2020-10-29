@@ -4,7 +4,6 @@ import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
-import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.exception.DataCorruptionException;
 
@@ -97,8 +96,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             psQuestion.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return questions;
@@ -125,8 +123,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -143,15 +140,13 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
     @Override
     public void remove(QuestionId questionId) {
-        //todo: implement remove method
-        throw new UnsupportedOperationException("Remove is not yet implemented");
+        throw new UnsupportedOperationException("Remove on question is not supported");
     }
 
     @Override
@@ -175,8 +170,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
 
             return questions.stream().findFirst();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return Optional.empty();
@@ -196,8 +190,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             psQuestion.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return questions;
@@ -217,8 +210,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return size;

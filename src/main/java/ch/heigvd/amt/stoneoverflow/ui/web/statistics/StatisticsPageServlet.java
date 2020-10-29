@@ -1,9 +1,6 @@
 package ch.heigvd.amt.stoneoverflow.ui.web.statistics;
 
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
-import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
-import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
-import ch.heigvd.amt.stoneoverflow.application.question.QuestionsDTO;
 import ch.heigvd.amt.stoneoverflow.application.statistics.StatisticsDTO;
 import ch.heigvd.amt.stoneoverflow.application.statistics.StatisticsFacade;
 

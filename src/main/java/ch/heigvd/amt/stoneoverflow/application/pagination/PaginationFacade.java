@@ -1,10 +1,7 @@
 package ch.heigvd.amt.stoneoverflow.application.pagination;
 
-import ch.heigvd.amt.stoneoverflow.application.answer.AnswerQuery;
-import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
 import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
-import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 
 public class PaginationFacade {
 

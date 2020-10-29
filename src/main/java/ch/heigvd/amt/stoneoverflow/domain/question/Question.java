@@ -2,7 +2,6 @@ package ch.heigvd.amt.stoneoverflow.domain.question;
 
 import ch.heigvd.amt.stoneoverflow.domain.IEntity;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
-import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;

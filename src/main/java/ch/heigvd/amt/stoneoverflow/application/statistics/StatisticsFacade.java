@@ -4,7 +4,6 @@ import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
-import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory.InMemoryRepository;
 
 public class StatisticsFacade {
     private final IQuestionRepository questionRepository;
