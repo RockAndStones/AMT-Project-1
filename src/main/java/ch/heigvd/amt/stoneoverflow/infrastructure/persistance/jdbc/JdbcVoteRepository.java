@@ -79,8 +79,7 @@ public class JdbcVoteRepository implements IVoteRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return size;
@@ -100,8 +99,7 @@ public class JdbcVoteRepository implements IVoteRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
         return vote;
     }
@@ -121,8 +119,7 @@ public class JdbcVoteRepository implements IVoteRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
         return vote;
     }
@@ -150,8 +147,7 @@ public class JdbcVoteRepository implements IVoteRepository {
 
             return votes.stream().findFirst();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return Optional.empty();
@@ -172,8 +168,7 @@ public class JdbcVoteRepository implements IVoteRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -190,8 +185,7 @@ public class JdbcVoteRepository implements IVoteRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -207,8 +201,7 @@ public class JdbcVoteRepository implements IVoteRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -250,8 +243,7 @@ public class JdbcVoteRepository implements IVoteRepository {
 
             return votes.stream().findFirst();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return Optional.empty();
@@ -276,8 +268,7 @@ public class JdbcVoteRepository implements IVoteRepository {
             psAnswerVote.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return votes;
@@ -297,8 +288,7 @@ public class JdbcVoteRepository implements IVoteRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
         return size;
     }

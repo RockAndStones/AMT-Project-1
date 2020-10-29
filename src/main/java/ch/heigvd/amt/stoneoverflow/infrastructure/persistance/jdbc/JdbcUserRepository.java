@@ -56,8 +56,7 @@ public class JdbcUserRepository implements IUserRepository {
 
             return Optional.of(u);
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return Optional.empty();
@@ -84,8 +83,7 @@ public class JdbcUserRepository implements IUserRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();;
         }
     }
 
@@ -106,8 +104,7 @@ public class JdbcUserRepository implements IUserRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -151,8 +148,7 @@ public class JdbcUserRepository implements IUserRepository {
 
             return Optional.of(u);
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return Optional.empty();
@@ -182,7 +178,7 @@ public class JdbcUserRepository implements IUserRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
+            ex.printStackTrace();
         }
 
         return users;
@@ -202,8 +198,7 @@ public class JdbcUserRepository implements IUserRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return size;

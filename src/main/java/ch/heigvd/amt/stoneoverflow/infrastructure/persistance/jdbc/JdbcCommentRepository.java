@@ -2,7 +2,6 @@ package ch.heigvd.amt.stoneoverflow.infrastructure.persistance.jdbc;
 
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentQuery;
 import ch.heigvd.amt.stoneoverflow.domain.Id;
-import ch.heigvd.amt.stoneoverflow.domain.answer.Answer;
 import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
 import ch.heigvd.amt.stoneoverflow.domain.comment.CommentId;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
@@ -106,8 +105,7 @@ public class JdbcCommentRepository implements ICommentRepository {
             psQuestion.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return comments;
@@ -129,14 +127,13 @@ public class JdbcCommentRepository implements ICommentRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
     @Override
     public void update(Comment comment) {
-        //todo: unused method?
+        throw new UnsupportedOperationException("Update is not supported on comment");
     }
 
     @Override
@@ -150,8 +147,7 @@ public class JdbcCommentRepository implements ICommentRepository {
 
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -180,8 +176,7 @@ public class JdbcCommentRepository implements ICommentRepository {
 
             return comments.stream().findFirst();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return Optional.empty();
@@ -206,8 +201,7 @@ public class JdbcCommentRepository implements ICommentRepository {
             psAnswerComment.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return comments;
@@ -227,8 +221,7 @@ public class JdbcCommentRepository implements ICommentRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return size;

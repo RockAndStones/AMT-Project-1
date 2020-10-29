@@ -18,7 +18,6 @@ public class User implements IEntity<User, UserId> {
     @EqualsAndHashCode.Exclude
     private String hashedPassword;
 
-    //todo: Verify whether to move the authentication outside of the user or not
     public boolean authenticate(String plaintextPassword) {
         return BCrypt.checkpw(plaintextPassword, this.hashedPassword);
     }
@@ -35,8 +34,6 @@ public class User implements IEntity<User, UserId> {
             if (password == null || password.isEmpty())
                 throw new IllegalArgumentException("Password cannot be null or empty");
 
-            //todo: Check password strength ?
-
             hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
             return this;
         }
@@ -51,7 +48,6 @@ public class User implements IEntity<User, UserId> {
             if (hashedPassword == null || hashedPassword.isEmpty())
                 throw new IllegalArgumentException("Password cannot be null or empty");
 
-            //todo: Check email validity w/ regex ?
             if (email == null || email.isEmpty())
                 throw new IllegalArgumentException("Email cannot be null or empty");
 
