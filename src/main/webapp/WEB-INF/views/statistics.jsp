@@ -16,42 +16,88 @@
     <link href="assets/css/normalize.css" rel="stylesheet" type="text/css"/>
 </head>
 <body class="bg-white tracking-wider tracking-normal border-gray-400">
-    <!-- Navigation -->
-    <%@include file="fragments/header.jsp" %>
-    <!-- Main -->
-    <div class="w-full flex flex-wrap">
-        <!-- Sidebar -->
-        <%@include file="fragments/sidebar.jsp" %>
+<!-- Navigation -->
+<%@include file="fragments/header.jsp" %>
+<!-- Main -->
+<div class="w-full flex flex-wrap">
+    <!-- Sidebar -->
+    <%@include file="fragments/sidebar.jsp" %>
 
-        <!-- Main content -->
-        <div class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-700 leading-normal">
-            <p>TODO: Update this page</p>
-            <p>Number of users: ${statistics.nbUsers}</p>
-            <p>Number of questions: ${statistics.nbQuestions}</p>
-            <p>Number of views across all questions: ${statistics.nbViews}</p>
-            <p>Sum of votes across all questions: ${statistics.nbVotes}</p>
+    <!-- Main content -->
+    <div class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-700 leading-normal">
+        <div class="pb-8 mb-8 border-b">
+            <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">A few numbers</span>
+        </div>
+        <div class="pb-0 md:pb-8 mb-8 border-b">
+            <ul class="flex flex-grow flex-wrap ">
+                <li class="flex-grow min-w-1/3 p-8 mx-4 mb-8 md:mb-0 shadow-xl border border-gray-200">
+                    <span class="block text-gray-500">Total users</span>
+                    <span class="block text-gray-900 text-2xl">${statistics.nbUsers}</span>
+                </li>
+                <li class="flex-grow min-w-1/3 p-8 mx-4 mb-8 md:mb-0 shadow-xl border border-gray-200">
+                    <span class="block text-gray-500">Total questions</span>
+                    <span class="block text-gray-900 text-2xl">${statistics.nbQuestions}</span>
+                </li>
+                <li class="flex-grow min-w-1/3 p-8 mx-4 mb-8 md:mb-0 shadow-xl border border-gray-200">
+                    <span class="block text-gray-500">Total views</span>
+                    <span class="block text-gray-900 text-2xl">${statistics.nbViews}</span>
+                </li>
+                <li class="flex-grow min-w-1/3 p-8 mx-4 md:mb-0 shadow-xl border border-gray-200">
+                    <span class="block text-gray-500">Total votes</span>
+                    <span class="block text-gray-900 text-2xl">${statistics.nbVotes}</span>
+                </li>
 
-            <br />
-            <h2>Most active users (question wise)</h2>
-            <div id="users">
+            </ul>
+        </div>
+        <div class="pb-8 mb-8 border-b">
+            <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most active users</span>
+            <span class="leading-normal text-lg italic text-gray-600 mt-1">(question wise)</span>
+        </div>
+        <div class="pb-0 md:pb-8 mb-8 border-b">
+            <table class="table-auto">
+                <thead>
+                <tr>
+                    <th class="border px-4 py-2">User</th>
+                    <th class="border px-4 py-2">Number of questions</th>
+                </tr>
+                </thead>
+                <tbody>
                 <c:forEach items="${statistics.mostActiveUsers}" var="user">
-                    <p>${user.username} - ${user.nbQuestions} questions</p>
+                    <tr class="userRow">
+                        <td class="border px-4 py-2">${user.username}</td>
+                        <td class="border px-4 py-2 text-center">${user.nbQuestions}</td>
+                    </tr>
                 </c:forEach>
-            </div>
-
-            <br />
-            <h2>Most popular questions (vote wise)</h2>
-            <div id="questions">
+                </tbody>
+            </table>
+        </div>
+        <div class="pb-8 mb-8 border-b">
+            <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most popular questions</span>
+            <span class="leading-normal text-lg italic text-gray-600 mt-1">(vote wise)</span>
+        </div>
+        <div>
+            <table class="table-auto w-full">
+                <thead>
+                <tr>
+                    <th class="border px-4 py-2 text-left">User</th>
+                    <th class="border px-4 py-2">Number of votes</th>
+                </tr>
+                </thead>
+                <tbody>
                 <c:forEach items="${statistics.mostVotedQuestions.questions}" var="question">
-                    <p>${question.title} - ${question.nbVotes} votes</p>
+                    <tr class="userRow">
+                        <td class="border px-4 py-2">${question.title}</td>
+                        <td class="border px-4 py-2 text-center">${question.nbVotes}</td>
+                    </tr>
                 </c:forEach>
-            </div>
-            <br /><br /><br /><br /><br /><br /><br /><br />
+                </tbody>
+            </table>
         </div>
     </div>
-    <!-- Footer -->
-    <%@include file="fragments/footer.jsp" %>
-    <!-- BottomBar -->
-    <%@include file="fragments/bottombar.jsp" %>
+</div>
+<!-- Footer -->
+<%@include file="fragments/footer.jsp" %>
+<!-- BottomBar -->
+<%@include file="fragments/bottombar.jsp" %>
 </body>
 </html>
