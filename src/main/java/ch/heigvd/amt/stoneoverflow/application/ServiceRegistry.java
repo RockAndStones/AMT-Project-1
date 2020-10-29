@@ -272,10 +272,6 @@ public class ServiceRegistry {
                 .votedObject(qE2e.getId())
                 .voteType(Vote.VoteType.UP).build());
         voteRepository.save(Vote.builder()
-                .votedBy(uE2e.getId())
-                .votedObject(qE2e.getId())
-                .voteType(Vote.VoteType.UP).build());
-        voteRepository.save(Vote.builder()
                 .votedBy(uE2eVoter.getId())
                 .votedObject(qE2e.getId())
                 .voteType(Vote.VoteType.UP).build());
