@@ -76,15 +76,15 @@ public class InMemoryQuestionRepositoryIT {
         inMemoryQuestionRepository.save(questionsSortedByVotesResult.get(2));
         inMemoryQuestionRepository.save(questionsSortedByVotesResult.get(0));
 
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < 3; i++){
             addVoteQuestion(questionsSortedByVotesResult.get(0).getId());
         }
 
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 2; i++){
             addVoteQuestion(questionsSortedByVotesResult.get(1).getId());
         }
 
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < 1; i++){
             addVoteQuestion(questionsSortedByVotesResult.get(2).getId());
         }
 

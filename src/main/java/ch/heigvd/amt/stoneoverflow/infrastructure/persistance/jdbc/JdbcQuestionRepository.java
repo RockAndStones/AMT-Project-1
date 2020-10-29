@@ -14,6 +14,7 @@ import javax.inject.Named;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -48,7 +49,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
                     .creator(rs.getString("creator"))
                     .creatorId(new UserId(rs.getString("creatorId")))
                     .nbViews(new AtomicInteger(rs.getInt("nbViews")))
-                    .date(new Date(rs.getTimestamp("date").getTime()))
+                    .date(new java.util.Date(rs.getTimestamp("date").getTime()))
                     .build();
             questions.add(q);
         }
@@ -66,14 +67,14 @@ public class JdbcQuestionRepository implements IQuestionRepository {
         if (questionType != QuestionType.UNCLASSIFIED) {
             if (!where.isEmpty())
                 where += "AND";
-            where += " type=" + questionType.ordinal() + " ";
+            where += " type = " + questionType.ordinal() + " ";
         }
 
         if (!where.isEmpty())
             where = "WHERE" + where;
 
 
-        return String.format("SELECT * FROM vQuestion%s ORDER BY %s %s LIMIT %d, %d",
+        return String.format("SELECT * FROM vQuestion %s ORDER BY %s %s LIMIT %d, %d",
                 where,
                 sortFieldName,
                 direction,

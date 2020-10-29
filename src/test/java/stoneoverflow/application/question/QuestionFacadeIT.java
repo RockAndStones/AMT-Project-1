@@ -79,16 +79,6 @@ public class QuestionFacadeIT {
     }
 
     @Test
-    public void shouldGetOnlySQLQuestions() {
-        addQuestion(QuestionType.SQL);
-        addQuestion(QuestionType.UNCLASSIFIED);
-
-        QuestionsDTO questionsDTO = questionFacade.getQuestions(QuestionQuery.builder().sortBy(QuestionQuerySortBy.DATE).type(QuestionType.SQL).build(),0, questionFacade.getNumberOfQuestions());
-
-        questionsDTO.getQuestions().stream().forEach(value -> assertEquals(QuestionType.SQL.name(), value.getType()));
-    }
-
-    @Test
     public void shouldGetAllQuestions() {
         AddQuestionCommand questionCommand = AddQuestionCommand.builder()
                 .creator(testUser.getUsername())
