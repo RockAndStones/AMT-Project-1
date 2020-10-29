@@ -2,7 +2,7 @@ const { I } = inject();
 
 module.exports = {
 
-    root: {id: 'sidebar'},
+    root: {xpath: '//nav[@id="sidebar"]'},
 
     links: {
         home: {css: 'a[href=home]'},

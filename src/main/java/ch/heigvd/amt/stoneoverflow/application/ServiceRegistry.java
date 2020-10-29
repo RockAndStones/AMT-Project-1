@@ -78,8 +78,8 @@ public class ServiceRegistry {
                 .plaintextPassword("balboa")
                 .build();
 
-        User u3 = User.builder()
-                .username("e2e-tester")
+        User uE2e = User.builder()
+                .username("e2eTester")
                 .email("e2e@test.com")
                 .firstName("John")
                 .lastName("Smith")
@@ -88,7 +88,7 @@ public class ServiceRegistry {
 
         userRepository.save(u1);
         userRepository.save(u2);
-        userRepository.save(u3);
+        userRepository.save(uE2e); // e2e testing
 
         // Add default questions
         questionFacade.addQuestion(AddQuestionCommand.builder()
@@ -137,7 +137,16 @@ public class ServiceRegistry {
                 .nbViews(new AtomicInteger(0))
                 .build();
 
+        Question qE2e = Question.builder()
+                .title("E2e testing question")
+                .description("E2e testing question description")
+                .creatorId(uE2e.getId())
+                .creator(uE2e.getUsername())
+                .nbViews(new AtomicInteger(0))
+                .build();
+
         questionRepository.save(q1);
+        questionRepository.save(qE2e); // e2e testing
 
         // Add default answers
         Answer a1 = Answer.builder()
@@ -152,8 +161,15 @@ public class ServiceRegistry {
                 .creatorId(u1.getId())
                 .creator("IAmALieBecauseIMayBeACakeInsideAndIAmScaredAboutThat").build();
 
+        Answer aE2e = Answer.builder()
+                .answerTo(qE2e.getId())
+                .description("E2e testing answer")
+                .creatorId(uE2e.getId())
+                .creator(uE2e.getUsername()).build();
+
         answerRepository.save(a1);
         answerRepository.save(a2);
+        answerRepository.save(aE2e);
 
         // Add default comments
         Comment c1 = Comment.builder()
@@ -180,10 +196,24 @@ public class ServiceRegistry {
                 .creatorId(u2.getId())
                 .creator(u2.getUsername()).build();
 
+        Comment cE2e = Comment.builder()
+                .commentTo(aE2e.getId())
+                .description("E2e testing comment to answer")
+                .creatorId(uE2e.getId())
+                .creator(uE2e.getUsername()).build();
+
+        Comment c2E2e = Comment.builder()
+                .commentTo(qE2e.getId())
+                .description("E2e testing comment to question")
+                .creatorId(uE2e.getId())
+                .creator(uE2e.getUsername()).build();
+
         commentRepository.save(c1);
         commentRepository.save(c2);
         commentRepository.save(c3);
         commentRepository.save(c4);
+        commentRepository.save(cE2e); // e2e testing
+        commentRepository.save(c2E2e); // e2e testing
 
         Vote v1 = Vote.builder()
                 .votedBy(u1.getId())
