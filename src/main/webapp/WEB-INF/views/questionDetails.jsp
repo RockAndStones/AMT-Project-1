@@ -59,7 +59,7 @@
                         <h2 class="leading-normal text-lg font-semibold text-gray-900 mt-0">No one responded for now <i class="far fa-sad-tear"></i></h2>
                     </c:when>
                     <c:otherwise>
-                        <h2 id="answers" class="leading-normal text-lg font-semibold text-gray-900 mt-0 mb-4">${question.nbAnswers} Answer(s)</h2>
+                        <h2 id="answers" class="leading-normal text-lg font-semibold text-gray-900 m-0 mb-4">${question.nbAnswers} Answer<c:if test="${question.nbAnswers > 1}">s</c:if></h2>
                         <c:forEach items="${question.answers}" var="answer">
                             <jsp:setProperty name="msg" property="uuid"        value="${answer.uuid}" />
                             <jsp:setProperty name="msg" property="description" value="${answer.description}" />
@@ -81,7 +81,7 @@
                 </div>
             </c:if>
             <!-- Response form -->
-            <h2 class="leading-normal text-lg font-semibold text-gray-900 mt-0 mb-4">Write your answer</h2>
+            <h2 class="leading-normal text-lg font-semibold text-gray-900 m-0">Write your answer</h2>
             <form action="${pageContext.request.contextPath}/submitAnswer.do" method="post">
                 <input type="hidden" name="questionUUID" value="${question.uuid}">
                 <div class="flex flex-col">
