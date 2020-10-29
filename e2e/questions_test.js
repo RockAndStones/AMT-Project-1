@@ -35,6 +35,19 @@ Feature('Question details');
         I.see(I.sampleData.initialComments.toAnswer);
     });
 
+    Scenario('Add an answer', ( I ) => {
+        const answer = randomstring.generate(30);
+
+        I.loginTestUser();
+        I.amOnPage(homePage.url);
+        within(homePage.components.questionList.root, () => {
+            I.click(I.sampleData.initialQuestion.title);
+        });
+        I.seeInCurrentUrl(questionDetailsPage.url);
+        questionDetailsPage.addAnswer(answer);
+        I.see(answer);
+    });
+
 Feature('Comments');
 
 Scenario('Adding a comment to a question', async( I ) => {

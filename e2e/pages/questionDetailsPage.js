@@ -2,6 +2,7 @@ const { I, headerFragment, sidebarFragment } = inject();
 
 module.exports = {
     url: 'questionDetails',
+
     pageTitle: 'Question details',
 
     components: {
@@ -22,6 +23,14 @@ module.exports = {
             fields: {
                 commentContent: '.textAreaCommentClass'
             },
+        },
+        voteForm: {
+            voteUp: '',
+            voteDown: ''
+        },
+        answerForm: {
+            answer: '#responseDescription',
+            submit: '#answerFormSubmit'
         }
     },
 
@@ -31,6 +40,10 @@ module.exports = {
             I.fillField(this.components.commentForm.fields.commentContent, commentContent);
             I.click(this.components.commentForm.buttons.submitComment);
         });
-    }
+    },
 
+    addAnswer(answerContent){
+        I.fillField(this.components.answerForm.answer, answerContent);
+        I.click(this.components.answerForm.submit);
+    }
 }
