@@ -131,10 +131,11 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.setTimestamp(4, new Timestamp(question.getDate().getTime()));
             ps.executeUpdate();
 
-            ps = con.prepareStatement("INSERT INTO Question VALUES (?, ?, ?)");
+            ps = con.prepareStatement("INSERT INTO Question VALUES (?, ?, ?, ?)");
             ps.setString(1, question.getId().asString());
             ps.setString(2, question.getTitle());
-            ps.setInt(3, question.getQuestionType().ordinal());
+            ps.setInt(3, question.getNbViewsAsInt());
+            ps.setInt(4, question.getQuestionType().ordinal());
             ps.executeUpdate();
 
             ps.close();
