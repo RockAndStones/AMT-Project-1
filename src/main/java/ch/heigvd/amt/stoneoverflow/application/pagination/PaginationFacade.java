@@ -12,7 +12,7 @@ public class PaginationFacade {
     private final IAnswerRepository answerRepository;
 
     // Number of question showed per page
-    private static final int QUESTION_PER_PAGE = 5;
+    private static final int QUESTION_PER_PAGE = 10;
     // Number of answer showed per page
     private static final int ANSWER_PER_PAGE = 10;
     // The starting page

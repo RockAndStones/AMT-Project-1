@@ -1,4 +1,4 @@
-const {homePage, newQuestionPage, questionDetailsPage } = inject();
+const {I, homePage, newQuestionPage, questionDetailsPage } = inject();
 const randomstring= require('randomstring');
 
 Feature('Adding a new question');
@@ -17,6 +17,7 @@ Feature('Adding a new question');
             I.see(description);
         })
     });
+
 
 Feature('Question details');
 
@@ -101,9 +102,15 @@ Feature('Question details');
             I.click(I.sampleData.initialQuestion.title);
         });
         I.seeInCurrentUrl(questionDetailsPage.url);
+
         await within(questionDetailsPage.components.answersList, async () => {
             answerUUID = await I.grabAttributeFrom(questionDetailsPage.components.answer, 'messageuuid');
         });
+
+        if(answerUUID instanceof  Array){
+            answerUUID = answerUUID[0];
+        }
+
         var voteCount = await I.grabTextFrom(questionDetailsPage.components.voteForm.voteCount + answerUUID);
         voteCount = parseInt(voteCount);
         voteCount++;
@@ -128,9 +135,15 @@ Feature('Question details');
             I.click(I.sampleData.initialQuestion.title);
         });
         I.seeInCurrentUrl(questionDetailsPage.url);
+
         await within(questionDetailsPage.components.answersList, async () => {
             answerUUID = await I.grabAttributeFrom(questionDetailsPage.components.answer, 'messageuuid');
         });
+
+        if(answerUUID instanceof  Array){
+            answerUUID = answerUUID[0];
+        }
+
         var voteCount = await I.grabTextFrom(questionDetailsPage.components.voteForm.voteCount + answerUUID);
         voteCount = parseInt(voteCount);
         voteCount--;
@@ -174,6 +187,11 @@ Feature('Comments');
         await within(questionDetailsPage.components.answersList, async () => {
             answerUUID = await I.grabAttributeFrom(questionDetailsPage.components.answer, 'messageuuid');
         });
+
+        if(answerUUID instanceof  Array){
+            answerUUID = answerUUID[0];
+        }
+
         questionDetailsPage.addComment(answerUUID, commentContent);
         I.see(commentContent, questionDetailsPage.components.commentForm.elements.comment);
     });
