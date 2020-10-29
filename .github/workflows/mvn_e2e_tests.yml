@@ -43,10 +43,10 @@ jobs:
 
       - name: Start servers
         run: |
-          mvn liberty:create liberty:install-feature liberty:deploy
-          mvn liberty:start
           cd docker
           docker-compose up -d sql
+          mvn liberty:create liberty:install-feature liberty:deploy
+          mvn liberty:start
 
       - name: Maven tests
         run: |
