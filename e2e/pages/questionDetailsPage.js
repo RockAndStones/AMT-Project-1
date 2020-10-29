@@ -25,8 +25,9 @@ module.exports = {
             },
         },
         voteForm: {
-            voteUp: '',
-            voteDown: ''
+            voteUp: '#voteUp',
+            voteDown: '#voteDown',
+            voteCount: '#nbVotes'
         },
         answerForm: {
             answer: '#responseDescription',
@@ -45,5 +46,13 @@ module.exports = {
     addAnswer(answerContent){
         I.fillField(this.components.answerForm.answer, answerContent);
         I.click(this.components.answerForm.submit);
+    },
+
+    voteUp(uuid){
+        I.click(this.components.voteForm.voteUp + uuid);
+    },
+
+    voteDown(uuid){
+        I.click(this.components.voteForm.voteDown + uuid);
     }
 }

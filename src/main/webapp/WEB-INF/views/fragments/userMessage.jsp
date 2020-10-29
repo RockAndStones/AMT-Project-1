@@ -6,15 +6,15 @@
             <input type="hidden" name="targetUUID"   value="${msg.uuid}">
             <input type="hidden" name="targetType"   value="${msg.type}">
             <input type="hidden" name="voteType"     value="UP">
-            <button class="voteUp" type="submit"><i class="leading-normal fas fa-caret-up text-6xl <c:if test="${msg.vote.voteType.name() == 'UP' }">text-black</c:if>"></i></button>
+            <button id="voteUp${msg.uuid}" class="voteUp" type="submit"><i class="leading-normal fas fa-caret-up text-6xl <c:if test="${msg.vote.voteType.name() == 'UP' }">text-black</c:if>"></i></button>
         </form>
-        <span id="nbVotes" class="text-lg">${msg.nbVotes}</span>
+        <span id="nbVotes${msg.uuid}" class="text-lg">${msg.nbVotes}</span>
         <form action="${pageContext.request.contextPath}/vote.do" method="post">
             <input type="hidden" name="questionUUID" value="${question.uuid}">
             <input type="hidden" name="targetUUID"   value="${msg.uuid}">
             <input type="hidden" name="targetType"   value="${msg.type}">
             <input type="hidden" name="voteType"     value="DOWN">
-            <button class="voteDown" type="submit"><i class="leading-normal fas fa-caret-down text-6xl <c:if test="${msg.vote.voteType.name() == 'DOWN' }">text-black</c:if>"></i></button>
+            <button id="voteDown${msg.uuid}" class="voteDown" type="submit"><i class="leading-normal fas fa-caret-down text-6xl <c:if test="${msg.vote.voteType.name() == 'DOWN' }">text-black</c:if>"></i></button>
         </form>
     </div>
     <!-- Post content -->
