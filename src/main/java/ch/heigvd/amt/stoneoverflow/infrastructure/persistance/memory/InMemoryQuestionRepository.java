@@ -10,6 +10,7 @@ import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import ch.heigvd.amt.stoneoverflow.domain.vote.IVoteRepository;
 import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
 import lombok.Getter;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -74,5 +76,12 @@ public class InMemoryQuestionRepository extends InMemoryRepository<Question, Que
         }
 
         return filteredQuestions.subList(offset, lastIndex);
+    }
+
+    @Override
+    public Collection<Question> findByUser(UserId userId) {
+        return super.findAll().stream()
+                .filter(q -> q.getCreatorId().equals(userId))
+                .collect(Collectors.toList());
     }
 }
