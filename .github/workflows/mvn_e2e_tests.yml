@@ -38,7 +38,7 @@ jobs:
       - name: NPM install
         run: |
         cd e2e
-        npm ci
+        npm install
         cd ..
 
       - name: Build with maven
