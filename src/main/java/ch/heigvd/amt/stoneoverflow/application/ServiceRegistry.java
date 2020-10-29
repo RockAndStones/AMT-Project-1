@@ -16,6 +16,7 @@ import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import ch.heigvd.amt.stoneoverflow.domain.vote.IVoteRepository;
 import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
 
@@ -30,19 +31,19 @@ import javax.inject.Named;
 
 @ApplicationScoped
 public class ServiceRegistry {
-    @Inject @Named("InMemoryQuestionRepository")
+    @Inject @Named("JdbcQuestionRepository")
     IQuestionRepository questionRepository;
 
-    @Inject @Named("InMemoryUserRepository")
+    @Inject @Named("JdbcUserRepository")
     IUserRepository userRepository;
 
-    @Inject @Named("InMemoryAnswerRepository")
+    @Inject @Named("JdbcAnswerRepository")
     IAnswerRepository answerRepository;
 
-    @Inject @Named("InMemoryCommentRepository")
+    @Inject @Named("JdbcCommentRepository")
     ICommentRepository commentRepository;
 
-    @Inject @Named("InMemoryVoteRepository")
+    @Inject @Named("JdbcVoteRepository")
     IVoteRepository voteRepository;
 
     @Getter IdentityManagementFacade identityManagementFacade;
@@ -63,14 +64,18 @@ public class ServiceRegistry {
         statisticsFacade         = new StatisticsFacade(questionRepository, userRepository, commentRepository, answerRepository);
         paginationFacade         = new PaginationFacade(questionRepository, answerRepository);
 
+        if(userRepository.getRepositorySize() > 0) {
+            return;
+        }
+
         // Add default users
         User u1 = User.builder()
-                    .username("test")
-                    .email("test@test.com")
-                    .firstName("John")
-                    .lastName("Smith")
-                    .plaintextPassword("test")
-                    .build();
+                .username("test")
+                .email("test@test.com")
+                .firstName("John")
+                .lastName("Smith")
+                .plaintextPassword("test")
+                .build();
 
         User u2 = User.builder()
                 .username("rocky")
@@ -90,7 +95,7 @@ public class ServiceRegistry {
 
         User uE2eVoter = User.builder()
                 .username("e2eVoter")
-                .email("e2e@test.com")
+                .email("e2eVoter@test.com")
                 .firstName("Voter")
                 .lastName("McVote")
                 .plaintextPassword("Abcdef7!")
@@ -115,7 +120,7 @@ public class ServiceRegistry {
                 .description("Start lifting weights today, lift women tomorrow !")
                 .creatorId(u1.getId())
                 .creator("Ricardo")
-                .nbViews(new AtomicInteger(6418))
+                .nbViews(new AtomicInteger(40))
                 .build());
 
         questionFacade.addQuestion(AddQuestionCommand.builder()
@@ -258,11 +263,21 @@ public class ServiceRegistry {
         voteRepository.save(v5);
 
         // Place the E2E question in the front page by giving it the biggest upvote count
-        for (int i = 0; i < 1000; i++) {
-            voteRepository.save(Vote.builder()
-                    .votedBy(uE2eVoter.getId())
-                    .votedObject(qE2e.getId())
-                    .voteType(Vote.VoteType.UP).build());
-        }
+        voteRepository.save(Vote.builder()
+                .votedBy(u1.getId())
+                .votedObject(qE2e.getId())
+                .voteType(Vote.VoteType.UP).build());
+        voteRepository.save(Vote.builder()
+                .votedBy(u2.getId())
+                .votedObject(qE2e.getId())
+                .voteType(Vote.VoteType.UP).build());
+        voteRepository.save(Vote.builder()
+                .votedBy(uE2e.getId())
+                .votedObject(qE2e.getId())
+                .voteType(Vote.VoteType.UP).build());
+        voteRepository.save(Vote.builder()
+                .votedBy(uE2eVoter.getId())
+                .votedObject(qE2e.getId())
+                .voteType(Vote.VoteType.UP).build());
     }
 }
