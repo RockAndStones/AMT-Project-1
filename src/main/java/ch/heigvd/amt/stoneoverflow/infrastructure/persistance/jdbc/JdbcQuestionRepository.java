@@ -177,6 +177,31 @@ public class JdbcQuestionRepository implements IQuestionRepository {
     }
 
     @Override
+    public Collection<Question> findByUser(UserId userId) {
+        Collection<Question> questions = new LinkedList<>();
+
+        try {
+            Connection con = dataSource.getConnection();
+
+            PreparedStatement ps = con.prepareStatement(
+                    "SELECT * FROM vQuestion WHERE creatorId=?");
+            ps.setString(1, userId.asString());
+
+            ResultSet rs = ps.executeQuery();
+            questions.addAll(resultSetToQuestions(rs));
+
+            ps.close();
+            con.close();
+
+        } catch (SQLException ex) {
+            //todo: log/handle error
+            System.out.println(ex);
+        }
+
+        return questions;
+    }
+
+    @Override
     public Collection<Question> findAll() {
         Collection<Question> questions = new LinkedList<>();
 

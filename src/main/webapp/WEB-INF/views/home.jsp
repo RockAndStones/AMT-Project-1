@@ -24,7 +24,8 @@
         <%@include file="fragments/sidebar.jsp" %>
         <!-- Main content -->
         <div id="questionList" class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-900 leading-normal">
-            <form name="filter-form" method="get">
+            <form name="filter-form" method="get" class="pb-8 border-b flex justify-between">
+                <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Welcome to StoneOverflow</span>
                 <c:if test="${param.s != null}">
                     <input type="hidden" name="s" value="${param.s}"/>
                 </c:if>

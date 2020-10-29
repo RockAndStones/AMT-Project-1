@@ -9,6 +9,7 @@ import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -68,5 +69,12 @@ public class InMemoryQuestionRepository extends InMemoryRepository<Question, Que
         }
 
         return filteredQuestions.subList(offset, lastIndex);
+    }
+
+    @Override
+    public Collection<Question> findByUser(UserId userId) {
+        return super.findAll().stream()
+                .filter(q -> q.getCreatorId().equals(userId))
+                .collect(Collectors.toList());
     }
 }
