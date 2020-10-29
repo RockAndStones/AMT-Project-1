@@ -55,6 +55,9 @@ public class AuthorizationFilter implements Filter {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
+    @Override
+    public void destroy() { }
+
     private boolean isPublicResource(String path) {
         if (path.startsWith("/assets"))
             return true;
