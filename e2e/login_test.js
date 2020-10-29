@@ -18,7 +18,7 @@ Feature('Login');
         I.loginTestUser();
         I.seeInCurrentUrl(homePage.url);
         within(homePage.components.header.root, () =>{
-            I.see(I.credentials.username.charAt(0).toUpperCase() + I.credentials.username.slice(1));
+            I.see(I.sampleData.userInfo.username.charAt(0).toUpperCase() + I.sampleData.userInfo.username.slice(1));
         });
     });
 
@@ -27,7 +27,7 @@ Feature ('Logout');
         I.loginTestUser();
         I.seeInCurrentUrl(homePage.url);
         within(homePage.components.header.root, () =>{
-            I.see(I.credentials.username.charAt(0).toUpperCase() + I.credentials.username.slice(1));
+            I.see(I.sampleData.userInfo.username.charAt(0).toUpperCase() + I.sampleData.userInfo.username.slice(1));
         });
         homePage.components.sidebar.logout();
         I.seeElement(homePage.components.header.links.login);
@@ -45,7 +45,7 @@ Feature('Register');
 
     Data(wrongPasswords).Scenario('Failed register - Missing minimum password requirements', (I, current) => {
         const newUsername   = randomstring.generate(10);
-        const newEmail      = randomstring.generate(10) + '@e2e-tests.com';
+        const newEmail      = randomstring.generate(10) + '@test.com';
         const newFirstName  = randomstring.generate(10);
         const newLastName   = randomstring.generate(10);
 
@@ -59,10 +59,10 @@ Feature('Register');
 /*
     Scenario('Successful register', (I) => {
         const newUsername   = randomstring.generate(10);
-        const newEmail      = randomstring.generate(10) + '@e2e-tests.com';
+        const newEmail      = randomstring.generate(10) + '@test.com';
         const newFirstName  = randomstring.generate(10);
         const newLastName   = randomstring.generate(10);
-        const newPassword   = 'Abcdef7!';
+        const newPassword   = I.sampleData.userInfo.password;
 
         I.amOnPage(loginPage);
         loginPage.components.loginForm.showRegisterForm();

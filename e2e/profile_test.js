@@ -1,5 +1,4 @@
 const { profilePage, homePage } = inject();
-const randomstring= require('randomstring');
 
 Feature('Handling profile informations');
 
@@ -9,10 +8,10 @@ Feature('Handling profile informations');
         homePage.components.header.goToProfilePage();
         I.seeInTitle(profilePage.pageTitle);
         within(profilePage.components.profileForm.root, () => {
-            I.seeInField(profilePage.fields.username, I.credentials.username);
-            I.seeInField(profilePage.fields.firstName, I.credentials.firstName);
-            I.seeInField(profilePage.fields.lastName, I.credentials.lastName);
-            I.seeInField(profilePage.fields.email, I.credentials.email);
+            I.seeInField(profilePage.fields.username, I.sampleData.userInfo.username);
+            I.seeInField(profilePage.fields.firstName, I.sampleData.userInfo.firstName);
+            I.seeInField(profilePage.fields.lastName, I.sampleData.userInfo.lastName);
+            I.seeInField(profilePage.fields.email, I.sampleData.userInfo.email);
         })
     });
 
@@ -27,7 +26,7 @@ Feature('Handling profile informations');
         I.loginTestUser();
         homePage.components.header.goToProfilePage();
         I.seeInTitle(profilePage.pageTitle);
-        profilePage.updateProfile(I.credentials.username, I.credentials.email, I.credentials.firstName, I.credentials.lastName, current.password);
+        profilePage.updateProfile(I.sampleData.userInfo.username, I.sampleData.userInfo.email, I.sampleData.userInfo.firstName, I.sampleData.userInfo.lastName, current.password);
         I.seeInTitle(profilePage.pageTitle);
         within(profilePage.components.profileForm.root, () => {
             I.see(profilePage.errorMessages.invalidPassword);
@@ -35,25 +34,25 @@ Feature('Handling profile informations');
     });
 
     Scenario('Succeed at modifying password', (I) => {
-        const newPassword = 'new' + I.credentials.password;
+        const newPassword = 'new' + I.sampleData.userInfo.password;
 
         I.loginTestUser();
         homePage.components.header.goToProfilePage();
         I.seeInTitle(profilePage.pageTitle);
-        profilePage.updateProfile(I.credentials.username, I.credentials.email, I.credentials.firstName, I.credentials.lastName, newPassword);
+        profilePage.updateProfile(I.sampleData.userInfo.username, I.sampleData.userInfo.email, I.sampleData.userInfo.firstName, I.sampleData.userInfo.lastName, newPassword);
         I.seeInTitle(profilePage.pageTitle);
         within(profilePage.components.profileForm.root, () => {
             I.see(profilePage.successMessages.infoUpdated);
         })
         // Set initial password back
-        profilePage.updateProfile(I.credentials.username, I.credentials.email, I.credentials.firstName, I.credentials.lastName, I.credentials.password);
+        profilePage.updateProfile(I.sampleData.userInfo.username, I.sampleData.userInfo.email, I.sampleData.userInfo.firstName, I.sampleData.userInfo.lastName, I.sampleData.userInfo.password);
     });
 
     Scenario('Modifying every informations except password', (I) => {
-        const newUsername   = 'new' + I.credentials.username;
-        const newEmail      = 'new' + I.credentials.email;
-        const newFirstName  = 'new' + I.credentials.firstName;
-        const newLastName   = 'new' + I.credentials.lastName;
+        const newUsername   = 'new' + I.sampleData.userInfo.username;
+        const newEmail      = 'new' + I.sampleData.userInfo.email;
+        const newFirstName  = 'new' + I.sampleData.userInfo.firstName;
+        const newLastName   = 'new' + I.sampleData.userInfo.lastName;
 
         I.loginTestUser();
         homePage.components.header.goToProfilePage();
@@ -69,6 +68,6 @@ Feature('Handling profile informations');
         })
 
         // Set initial values back for all following tests to works
-        profilePage.updateProfile(I.credentials.username, I.credentials.email, I.credentials.firstName, I.credentials.lastName, "");
+        profilePage.updateProfile(I.sampleData.userInfo.username, I.sampleData.userInfo.email, I.sampleData.userInfo.firstName, I.sampleData.userInfo.lastName, "");
     });
 
