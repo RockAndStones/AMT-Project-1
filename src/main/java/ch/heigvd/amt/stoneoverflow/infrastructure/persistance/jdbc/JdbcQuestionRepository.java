@@ -5,7 +5,6 @@ import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
-import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.exception.DataCorruptionException;
 
@@ -15,6 +14,7 @@ import javax.inject.Named;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -49,7 +49,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
                     .creator(rs.getString("creator"))
                     .creatorId(new UserId(rs.getString("creatorId")))
                     .nbViews(new AtomicInteger(rs.getInt("nbViews")))
-                    .date(new Date(rs.getTimestamp("date").getTime()))
+                    .date(new java.util.Date(rs.getTimestamp("date").getTime()))
                     .build();
             questions.add(q);
         }
@@ -67,14 +67,14 @@ public class JdbcQuestionRepository implements IQuestionRepository {
         if (questionType != QuestionType.UNCLASSIFIED) {
             if (!where.isEmpty())
                 where += "AND";
-            where += " type=" + questionType.ordinal() + " ";
+            where += " type = " + questionType.ordinal() + " ";
         }
 
         if (!where.isEmpty())
             where = "WHERE" + where;
 
 
-        return String.format("SELECT * FROM vQuestion%s ORDER BY %s %s LIMIT %d, %d",
+        return String.format("SELECT * FROM vQuestion %s ORDER BY %s %s LIMIT %d, %d",
                 where,
                 sortFieldName,
                 direction,
@@ -112,8 +112,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             psQuestion.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return questions;
@@ -141,8 +140,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -159,8 +157,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -175,8 +172,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
 
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -201,11 +197,34 @@ public class JdbcQuestionRepository implements IQuestionRepository {
 
             return questions.stream().findFirst();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public Collection<Question> findByUser(UserId userId) {
+        Collection<Question> questions = new LinkedList<>();
+
+        try {
+            Connection con = dataSource.getConnection();
+
+            PreparedStatement ps = con.prepareStatement(
+                    "SELECT * FROM vQuestion WHERE creatorId=?");
+            ps.setString(1, userId.asString());
+
+            ResultSet rs = ps.executeQuery();
+            questions.addAll(resultSetToQuestions(rs));
+
+            ps.close();
+            con.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return questions;
     }
 
     @Override
@@ -222,8 +241,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             psQuestion.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return questions;
@@ -243,8 +261,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return size;

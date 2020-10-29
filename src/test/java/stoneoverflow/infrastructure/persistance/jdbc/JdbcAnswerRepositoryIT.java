@@ -26,6 +26,7 @@ import org.junit.runner.RunWith;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.File;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
@@ -113,7 +114,7 @@ public class JdbcAnswerRepositoryIT {
     }
 
     private Answer generateFakerAnswer(QuestionId answerTo) {
-        return generateFakerAnswer(answerTo, new Date());
+        return generateFakerAnswer(answerTo, Date.from(new Date().toInstant().truncatedTo(ChronoUnit.MILLIS)));
     }
 
     private void addVoteAnswer(AnswerId id) {
@@ -159,9 +160,10 @@ public class JdbcAnswerRepositoryIT {
 
         // Expected result
         ArrayList<Answer> answersSortedByDate = new ArrayList<>();
-        answersSortedByDate.add(generateFakerAnswer(question.getId()));
-        answersSortedByDate.add(generateFakerAnswer(question.getId()));
-        answersSortedByDate.add(generateFakerAnswer(question.getId()));
+        answersSortedByDate.add(generateFakerAnswer(question.getId(), new Date(System.currentTimeMillis())));
+        answersSortedByDate.add(generateFakerAnswer(question.getId(), new Date(System.currentTimeMillis() - 1000)));
+        answersSortedByDate.add(generateFakerAnswer(question.getId(), new Date(System.currentTimeMillis() - 2000)));
+
 
         // Add the answers not in the same order
         jdbcAnswerRepository.save(answersSortedByDate.get(1));

@@ -2,16 +2,14 @@ package ch.heigvd.amt.stoneoverflow.domain.question;
 
 import ch.heigvd.amt.stoneoverflow.domain.IEntity;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Data
 @Builder(toBuilder = true)
+@EqualsAndHashCode
 public class Question implements IEntity<Question, QuestionId> {
     @Setter(AccessLevel.NONE)
     private QuestionId    id;
@@ -19,6 +17,7 @@ public class Question implements IEntity<Question, QuestionId> {
     private String        description;
     private UserId        creatorId;
     private String        creator;
+    @EqualsAndHashCode.Exclude
     private AtomicInteger nbViews;
     private Date          date;
     @Setter(AccessLevel.NONE)

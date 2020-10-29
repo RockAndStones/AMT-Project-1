@@ -25,8 +25,8 @@ import org.junit.runner.RunWith;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.File;
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.util.Date;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -63,7 +63,6 @@ public class JdbcQuestionRepositoryIT { /*
                 .addPackages(true, "ch.heigvd.amt")
                 .addPackages(true, "org.springframework.security.crypto.bcrypt")
                 .addAsLibraries(files);
-//                .addClass(Faker.class);
         return archive;
     }
 
@@ -125,9 +124,15 @@ public class JdbcQuestionRepositoryIT { /*
     public void shouldFindQuestionByVotes() {
         // Set the expected result
         ArrayList<Question> questionsSortedByVotesResult = new ArrayList<>();
-        questionsSortedByVotesResult.add(Question.builder().build());
-        questionsSortedByVotesResult.add(Question.builder().build());
-        questionsSortedByVotesResult.add(Question.builder().build());
+        questionsSortedByVotesResult.add(Question.builder()
+                .creator(user.getUsername())
+                .creatorId(user.getId()).build());
+        questionsSortedByVotesResult.add(Question.builder()
+                .creator(user.getUsername())
+                .creatorId(user.getId()).build());
+        questionsSortedByVotesResult.add(Question.builder()
+                .creator(user.getUsername())
+                .creatorId(user.getId()).build());
 
         // Add the question not in the same order
         jdbcQuestionRepository.save(questionsSortedByVotesResult.get(1));
@@ -139,12 +144,12 @@ public class JdbcQuestionRepositoryIT { /*
             addVoteQuestion(questionsSortedByVotesResult.get(0).getId());
         }
 
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 7; i++){
             generateUser();
             addVoteQuestion(questionsSortedByVotesResult.get(1).getId());
         }
 
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < 5; i++){
             generateUser();
             addVoteQuestion(questionsSortedByVotesResult.get(2).getId());
         }
@@ -159,13 +164,13 @@ public class JdbcQuestionRepositoryIT { /*
     public void shouldFindQuestionByViews() {
         ArrayList<Question> questionsSortedByViewsResult = new ArrayList<>();
         questionsSortedByViewsResult.add(Question.builder().creator(user.getUsername()).creatorId(user.getId()).nbViews(new AtomicInteger(150))
-                .date(new Timestamp(System.currentTimeMillis()))
+                .date(Date.from(new Date().toInstant().truncatedTo(ChronoUnit.MILLIS)))
                 .build());
         questionsSortedByViewsResult.add(Question.builder().creator(user.getUsername()).creatorId(user.getId()).nbViews(new AtomicInteger(50))
-                .date(new Timestamp(System.currentTimeMillis()))
+                .date(Date.from(new Date().toInstant().truncatedTo(ChronoUnit.MILLIS)))
                 .build());
-        questionsSortedByViewsResult.add(Question.builder().creator(user.getUsername()).creatorId(user.getId()).nbViews(new AtomicInteger(3))
-                .date(new Timestamp(System.currentTimeMillis()))
+        questionsSortedByViewsResult.add(Question.builder().creator(user.getUsername()).creatorId(user.getId()).nbViews(new AtomicInteger(45))
+                .date(Date.from(new Date().toInstant().truncatedTo(ChronoUnit.MILLIS)))
                 .build());
 
         jdbcQuestionRepository.save(questionsSortedByViewsResult.get(2));
@@ -175,6 +180,9 @@ public class JdbcQuestionRepositoryIT { /*
         ArrayList<Question> questionsSortedByViews = new ArrayList<>(jdbcQuestionRepository.find(QuestionQuery.builder().sortBy(QuestionQuerySortBy.VIEWS).build(), 0, 3));
 
         assertEquals(questionsSortedByViews, questionsSortedByViewsResult);
+        assertEquals(questionsSortedByViews.get(0).getNbViewsAsInt(), questionsSortedByViewsResult.get(0).getNbViewsAsInt());
+        assertEquals(questionsSortedByViews.get(1).getNbViewsAsInt(), questionsSortedByViewsResult.get(1).getNbViewsAsInt());
+        assertEquals(questionsSortedByViews.get(2).getNbViewsAsInt(), questionsSortedByViewsResult.get(2).getNbViewsAsInt());
     }
 
     @Test
