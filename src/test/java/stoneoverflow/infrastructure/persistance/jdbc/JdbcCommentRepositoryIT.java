@@ -150,14 +150,4 @@ public class JdbcCommentRepositoryIT {
 
         assertEquals(initialSize + 4, jdbcCommentRepository.getRepositorySize());
     }
-
-    @Test
-    public void shouldFindCommentsByCommentTo() {
-
-    }
-
-    @Test
-    public void shouldFindCommentsByDate() {
-
-    }
 }
