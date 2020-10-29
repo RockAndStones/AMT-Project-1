@@ -1,7 +1,7 @@
-const {homePage, newQuestionPage, questionDetailsPage } = inject();
+const {I, homePage, newQuestionPage, questionDetailsPage } = inject();
 const randomstring= require('randomstring');
 
-Feature('Adding a new question');
+Feature('Questions');
 
     Scenario('Adding a new question', (I) => {
         const title = randomstring.generate(10);
@@ -15,10 +15,8 @@ Feature('Adding a new question');
         within(homePage.components.questionList.root, () => {
             I.see(title);
             I.see(description);
-        })
+        });
     });
-
-Feature('Question details');
 
     Scenario('Verify question details', ( I ) => {
         I.loginTestUser();
@@ -101,9 +99,15 @@ Feature('Question details');
             I.click(I.sampleData.initialQuestion.title);
         });
         I.seeInCurrentUrl(questionDetailsPage.url);
+
         await within(questionDetailsPage.components.answersList, async () => {
             answerUUID = await I.grabAttributeFrom(questionDetailsPage.components.answer, 'messageuuid');
         });
+
+        if(answerUUID instanceof  Array){
+            answerUUID = answerUUID[0];
+        }
+
         var voteCount = await I.grabTextFrom(questionDetailsPage.components.voteForm.voteCount + answerUUID);
         voteCount = parseInt(voteCount);
         voteCount++;
@@ -128,9 +132,15 @@ Feature('Question details');
             I.click(I.sampleData.initialQuestion.title);
         });
         I.seeInCurrentUrl(questionDetailsPage.url);
+
         await within(questionDetailsPage.components.answersList, async () => {
             answerUUID = await I.grabAttributeFrom(questionDetailsPage.components.answer, 'messageuuid');
         });
+
+        if(answerUUID instanceof  Array){
+            answerUUID = answerUUID[0];
+        }
+
         var voteCount = await I.grabTextFrom(questionDetailsPage.components.voteForm.voteCount + answerUUID);
         voteCount = parseInt(voteCount);
         voteCount--;
@@ -144,8 +154,6 @@ Feature('Question details');
 
         I.see(voteCount.toString(), questionDetailsPage.components.voteForm.voteCount + answerUUID);
     });
-
-Feature('Comments');
 
     Scenario('Adding a comment to a question', async( I ) => {
         const commentContent = randomstring.generate(20);
@@ -174,6 +182,11 @@ Feature('Comments');
         await within(questionDetailsPage.components.answersList, async () => {
             answerUUID = await I.grabAttributeFrom(questionDetailsPage.components.answer, 'messageuuid');
         });
+
+        if(answerUUID instanceof  Array){
+            answerUUID = answerUUID[0];
+        }
+
         questionDetailsPage.addComment(answerUUID, commentContent);
         I.see(commentContent, questionDetailsPage.components.commentForm.elements.comment);
-    });
+    }); 

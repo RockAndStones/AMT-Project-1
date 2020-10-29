@@ -1,7 +1,8 @@
 const { loginPage, homePage } = inject();
 const randomstring= require('randomstring');
 
-Feature('Login');
+
+Feature('Login and Register');
 
     Scenario('Failed login', (I) => {
         const wrongUsername = randomstring.generate(15);
@@ -22,7 +23,6 @@ Feature('Login');
         });
     });
 
-Feature ('Logout');
     Scenario('Login, logout', (I) => {
         I.loginTestUser();
         I.seeInCurrentUrl(homePage.url);
@@ -33,7 +33,6 @@ Feature ('Logout');
         I.seeElement(homePage.components.header.links.login);
     });
 
-Feature('Register');
 
     let wrongPasswords = new DataTable(['password']);
     wrongPasswords.add(['Abcde6!']);  // Only 7 chars
@@ -56,7 +55,26 @@ Feature('Register');
         I.seeInCurrentUrl(loginPage.url);
         I.see(loginPage.errorMessages.invalidRegisterPassword);
     });
-/*
+
+    let wrongEmails = new DataTable(['email']);
+    wrongEmails.add(['@invalid.invalid']); // No username
+    wrongEmails.add(['invalid@.invalid']); // No domain name
+    wrongEmails.add(['invalid@invalid.']); // No root domain name
+    wrongEmails.add(['invalidinvalid.invalid']); // No @ symbol
+
+    Data(wrongEmails).Scenario('Failed register - Missing minimum emails requirements', (I, current) => {
+        const newUsername   = randomstring.generate(10);
+        const newFirstName  = randomstring.generate(10);
+        const newLastName   = randomstring.generate(10);
+
+        I.amOnPage(loginPage);
+        loginPage.components.loginForm.showRegisterForm();
+        I.seeElement(loginPage.components.registerForm.elements.register);
+        loginPage.components.registerForm.registerUser(newUsername, current.email, newFirstName, newLastName, I.sampleData.userInfo.password);
+        I.seeInCurrentUrl(loginPage.url);
+    });
+
+    /*
     Scenario('Successful register', (I) => {
         const newUsername   = randomstring.generate(10);
         const newEmail      = randomstring.generate(10) + '@test.com';
@@ -68,9 +86,9 @@ Feature('Register');
         loginPage.components.loginForm.showRegisterForm();
         I.seeElement(loginPage.components.registerForm.elements.register);
         loginPage.components.registerForm.registerUser(newUsername, newEmail, newFirstName, newLastName, newPassword);
-        I.seeInCurrentUrl(homePage.url);
+        I.waitInUrl(homePage.url);
         within(homePage.components.header.root, () =>{
             I.see(newUsername.charAt(0).toUpperCase() + newUsername.slice(1));
         });
     });
-*/
+     */
