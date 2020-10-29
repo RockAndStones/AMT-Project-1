@@ -41,10 +41,13 @@ jobs:
       - name: npm ci
         run: cd e2e && npm ci && cd ..
 
-      - name: Start servers
+      - name: Start SQL container
         run: |
           cd docker
           docker-compose up -d sql
+
+      - name: Start MVN server
+        run: |
           mvn liberty:create liberty:install-feature liberty:deploy
           mvn liberty:start
 
