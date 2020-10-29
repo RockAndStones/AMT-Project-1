@@ -128,6 +128,8 @@ public class JdbcCommentRepositoryIT {
     public void shouldSaveComments() {
         Comment comment1 = generateFakerComment(question.getId());
         Comment comment2 = generateFakerComment(answer.getId());
+        jdbcCommentRepository.save(comment1);
+        jdbcCommentRepository.save(comment2);
 
         Optional<Comment> foundComment1 = jdbcCommentRepository.findById(comment1.getId());
         Optional<Comment> foundComment2 = jdbcCommentRepository.findById(comment2.getId());
