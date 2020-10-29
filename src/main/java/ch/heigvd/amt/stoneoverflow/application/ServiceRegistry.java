@@ -61,7 +61,7 @@ public class ServiceRegistry {
         answerFacade             = new AnswerFacade(answerRepository);
         commentFacade            = new CommentFacade(commentRepository);
         voteFacade               = new VoteFacade(voteRepository);
-        statisticsFacade         = new StatisticsFacade(questionRepository, userRepository, commentRepository, answerRepository);
+        statisticsFacade         = new StatisticsFacade(questionRepository, userRepository, commentRepository, answerRepository, voteRepository, questionFacade, voteFacade);
         paginationFacade         = new PaginationFacade(questionRepository, answerRepository);
 
         if(userRepository.getRepositorySize() > 0) {

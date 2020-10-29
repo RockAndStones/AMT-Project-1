@@ -1,7 +1,7 @@
 const {I, homePage, newQuestionPage, questionDetailsPage } = inject();
 const randomstring= require('randomstring');
 
-Feature('Adding a new question');
+Feature('Questions');
 
     Scenario('Adding a new question', (I) => {
         const title = randomstring.generate(10);
@@ -15,11 +15,8 @@ Feature('Adding a new question');
         within(homePage.components.questionList.root, () => {
             I.see(title);
             I.see(description);
-        })
+        });
     });
-
-
-Feature('Question details');
 
     Scenario('Verify question details', ( I ) => {
         I.loginTestUser();
@@ -158,8 +155,6 @@ Feature('Question details');
         I.see(voteCount.toString(), questionDetailsPage.components.voteForm.voteCount + answerUUID);
     });
 
-Feature('Comments');
-
     Scenario('Adding a comment to a question', async( I ) => {
         const commentContent = randomstring.generate(20);
 
@@ -194,4 +189,4 @@ Feature('Comments');
 
         questionDetailsPage.addComment(answerUUID, commentContent);
         I.see(commentContent, questionDetailsPage.components.commentForm.elements.comment);
-    });
+    }); 

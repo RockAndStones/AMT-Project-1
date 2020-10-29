@@ -1,7 +1,6 @@
 package ch.heigvd.amt.stoneoverflow.application.identitymgmt.updateprofile;
 
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
-import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import lombok.Builder;
 import lombok.Getter;
 
