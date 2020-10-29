@@ -18,6 +18,8 @@ import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import ch.heigvd.amt.stoneoverflow.domain.vote.IVoteRepository;
 import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
+
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.Getter;
 
@@ -86,9 +88,18 @@ public class ServiceRegistry {
                 .plaintextPassword("Abcdef7!")
                 .build();
 
+        User uE2eVoter = User.builder()
+                .username("e2eVoter")
+                .email("e2e@test.com")
+                .firstName("Voter")
+                .lastName("McVote")
+                .plaintextPassword("Abcdef7!")
+                .build();
+
         userRepository.save(u1);
         userRepository.save(u2);
         userRepository.save(uE2e); // e2e testing
+        userRepository.save(uE2eVoter); // e2e testing
 
         // Add default questions
         questionFacade.addQuestion(AddQuestionCommand.builder()
@@ -245,5 +256,13 @@ public class ServiceRegistry {
         voteRepository.save(v3);
         voteRepository.save(v4);
         voteRepository.save(v5);
+
+        // Place the E2E question in the front page by giving it the biggest upvote count
+        for (int i = 0; i < 1000; i++) {
+            voteRepository.save(Vote.builder()
+                    .votedBy(uE2eVoter.getId())
+                    .votedObject(qE2e.getId())
+                    .voteType(Vote.VoteType.UP).build());
+        }
     }
 }
