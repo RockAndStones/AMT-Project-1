@@ -8,7 +8,7 @@ on:
     branches: [ dev ]
 
 jobs:
-  test:
+  mvn_e2e_tests:
     runs-on: ubuntu-latest
 
     strategy:
@@ -45,6 +45,7 @@ jobs:
         run: |
           mvn liberty:create liberty:install-feature liberty:deploy
           mvn liberty:start
+          cd docker
           docker-compose up -d mysql
 
       - name: Run maven tests
