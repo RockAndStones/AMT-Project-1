@@ -2,7 +2,7 @@
     border: none;
 }
 
-.userMessage:last-child {
+.userMessageClass:last-child {
     margin-bottom: 0;
 }
 
