@@ -49,7 +49,7 @@
             </c:forEach>
             <c:choose>
                 <c:when test="${empty questions.questions}">
-                    <div class="flex items-center justify-center flex-col h-48">
+                    <div class="flex items-center justify-center flex-col pt-8 h-48">
                         <i class="fas fa-search fa-3x mb-4 text-gray-700"></i>
                         <h2 class="leading-normal text-lg font-semibold text-gray-900">We couldn't find any question</h2>
                     </div>
