@@ -47,10 +47,21 @@
             <c:forEach items="${questions.questions}" var="question">
                 <%@include file="fragments/question.jsp" %>
             </c:forEach>
-            <!-- Pagination -->
-            <div class="mx-3 mt-8">
-                <%@include file="fragments/homePagination.jsp" %>
-            </div>
+            <c:choose>
+                <c:when test="${empty questions.questions}">
+                    <div class="flex items-center justify-center flex-col h-48">
+                        <i class="fas fa-search fa-3x mb-4 text-gray-700"></i>
+                        <h2 class="leading-normal text-lg font-semibold text-gray-900">We couldn't find any question</h2>
+                    </div>
+
+                </c:when>
+                <c:otherwise>
+                    <!-- Pagination -->
+                    <div class="mx-3 mt-8">
+                        <%@include file="fragments/homePagination.jsp" %>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </div>
 
     </div>

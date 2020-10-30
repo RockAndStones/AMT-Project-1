@@ -2,17 +2,14 @@ package ch.heigvd.amt.stoneoverflow.domain.question;
 
 import ch.heigvd.amt.stoneoverflow.domain.IEntity;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
-import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.*;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Data
 @Builder(toBuilder = true)
+@EqualsAndHashCode
 public class Question implements IEntity<Question, QuestionId> {
     @Setter(AccessLevel.NONE)
     private QuestionId    id;
@@ -20,6 +17,7 @@ public class Question implements IEntity<Question, QuestionId> {
     private String        description;
     private UserId        creatorId;
     private String        creator;
+    @EqualsAndHashCode.Exclude
     private AtomicInteger nbViews;
     private Date          date;
     @Setter(AccessLevel.NONE)
@@ -32,12 +30,13 @@ public class Question implements IEntity<Question, QuestionId> {
                 .build();
     }
 
-    public void addView() {
-        this.nbViews.incrementAndGet();
+    public void addView(){
+        this.nbViews.getAndIncrement();
     }
 
-    public int getNbViewsAsInt() {
-        return nbViews.get();
+    // Rewrite the getter to get an int and not an AtomicInteger
+    public int getNbViewsAsInt(){
+        return this.nbViews.get();
     }
 
     public void categorizeAs(QuestionType questionType){this.questionType = questionType;}
@@ -60,6 +59,9 @@ public class Question implements IEntity<Question, QuestionId> {
 
             if(creator == null)
                 creator = "";
+
+            if(nbViews == null)
+                nbViews = new AtomicInteger(0);
 
             if (date == null)
                 date = new Date(System.currentTimeMillis());

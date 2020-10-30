@@ -11,7 +11,7 @@
                 <div class="px-8">
                     <h3 class="font-bold text-gray-900">About</h3>
                     <p class="py-4 text-gray-600 text-sm">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel mi ut felis tempus commodo nec id erat. Suspendisse consectetur dapibus velit ut lacinia.
+                        StoneOverflow is an alternative to StackOverflow<br /> made by a group of stoned students from the <a class="no-underline hover:text-gray-900" href="https://heig-vd.ch/">HEIG-VD</a>.
                     </p>
                 </div>
             </div>
@@ -19,8 +19,11 @@
                 <div class="px-8">
                     <h3 class="font-bold text-gray-900">Social</h3>
                     <ul class="list-reset items-center text-sm pt-3">
-                        <li>
-                            <a class="inline-block text-gray-600 no-underline hover:text-gray-900 hover:underline py-1" href="#">Add social links</a>
+                        <li class="inline-block">
+                            <a class="text-gray-600 mr-1 no-underline hover:text-gray-900 hover:underline py-1" href="https://github.com/RockAndStones/AMT-Project-1"><i class="fab fa-github fa-lg"></i></a>
+                        </li>
+                        <li class="inline-block">
+                            <a class="text-gray-600 no-underline hover:text-gray-900 hover:underline py-1" href="https://heig-vd.ch/"><i class="fas fa-school fa-lg"></i></a>
                         </li>
                     </ul>
                 </div>

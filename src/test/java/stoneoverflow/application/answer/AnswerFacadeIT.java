@@ -10,6 +10,7 @@ import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedU
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginCommand;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginFailedException;
 import ch.heigvd.amt.stoneoverflow.application.question.*;
+import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -21,7 +22,6 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -43,8 +43,7 @@ public class AnswerFacadeIT {
     public static WebArchive createDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
                 .addPackages(true, "ch.heigvd.amt")
-                .addPackages(true, "org.springframework.security.crypto.bcrypt")
-                .addPackages(true, "org.springframework.security.crypto.bcrypt.BCrypt");
+                .addPackages(true, "org.springframework.security.crypto.bcrypt");
         return archive;
     }
 
@@ -63,136 +62,61 @@ public class AnswerFacadeIT {
                 .build());
     }
 
+    private QuestionId addQuestion() {
+        return questionFacade.addQuestion(AddQuestionCommand.builder()
+                .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
+                .date(date).build());
+    }
+
+    private AnswerId addAnswer(QuestionId answerTo) {
+        return answerFacade.addAnswer(AddAnswerCommand.builder()
+                .answerTo(answerTo)
+                .creatorId(testUser.getId())
+                .creator(testUser.getUsername())
+                .date(date).build());
+    }
+
     @Test
     public void shouldAddAnswer() {
 
-        int questionIndex = questionFacade.getNumberOfQuestions();
-        int answerIndex   = answerFacade.getNumberOfAnswers();
+        QuestionId questionId = addQuestion();
+        AnswerId answerId = addAnswer(questionId);
 
-        // Insert a question in the repository to respond to
-        AddQuestionCommand questionCommand = AddQuestionCommand.builder()
-                .creator(testUser.getUsername())
-                .creatorId(testUser.getId())
-                .date(date)
-                .build();
-        questionFacade.addQuestion(questionCommand);
-
-        // Get the QuestionId of the added question
-        QuestionId questionId = new QuestionId(questionFacade.getQuestions(
-                QuestionQuery.builder().build(),
-                0,
-                questionFacade.getNumberOfQuestions()).getQuestions().get(questionIndex).getUuid());
-
-        // Add answer to repository
-        AddAnswerCommand answerCommand = AddAnswerCommand.builder()
-                .answerTo(questionId)
-                .creatorId(testUser.getId())
-                .date(date).build();
-        answerFacade.addAnswer(answerCommand);
-
-        // Prepare answer query
-        AnswerQuery answerQuery = AnswerQuery.builder().build();
-
-        // Create the expected result
-        // Recover the uuid from the answer in the repository
         AnswersDTO.AnswerDTO answerDTO = AnswersDTO.AnswerDTO.builder()
-                .uuid(answerFacade.getAnswers(answerQuery, 0, answerFacade.getNumberOfAnswers())
-                        .getAnswers().get(answerIndex).getUuid())
+                .uuid(answerId.asString())
                 .description("No content")
                 .creator(testUser.getUsername())
-                .nbVotes(0)
                 .date(date).build();
 
-        assertEquals(answerFacade.getAnswers(answerQuery, 0, answerFacade.getNumberOfAnswers()).getAnswers().get(answerIndex), answerDTO);
+        assertEquals(answerFacade.getAnswer(answerId), answerDTO);
     }
 
     @Test
     public void shouldGetOnlyAnswersFromAQuestionId() {
 
-        int questionIndex = questionFacade.getNumberOfQuestions();
+        QuestionId  questionId1 = addQuestion();
+        QuestionId  questionId2 = addQuestion();
+        QuestionId  questionId3 = addQuestion();
 
-        // Insert 3 questions in the repository to respond to
-        AddQuestionCommand questionCommand = AddQuestionCommand.builder()
-                .creator(testUser.getUsername())
-                .creatorId(testUser.getId())
-                .date(date)
-                .build();
-        questionFacade.addQuestion(questionCommand);
-        questionFacade.addQuestion(questionCommand);
-        questionFacade.addQuestion(questionCommand);
+        AnswerId answerId1 = addAnswer(questionId1);
+        AnswerId answerId2 = addAnswer(questionId1);
+        addAnswer(questionId2);
+        addAnswer(questionId3);
 
-        // Define multiple QuestionId to simulate responses to multiple questions
-        List<QuestionsDTO.QuestionDTO> questionDTOS = questionFacade.getQuestions(
-                QuestionQuery.builder().build(), 0, questionFacade.getNumberOfQuestions()).getQuestions();
-
-        QuestionId  questionId1 = new QuestionId(questionDTOS.get(questionIndex).getUuid());
-        QuestionId  questionId2 = new QuestionId(questionDTOS.get(questionIndex + 1).getUuid());
-        QuestionId  questionId3 = new QuestionId(questionDTOS.get(questionIndex + 2).getUuid());
-
-        // Add answers to repository
-        AddAnswerCommand answerCommand1 = AddAnswerCommand.builder()
-                .answerTo(questionId1)
-                .creatorId(testUser.getId())
-                .date(date).build();
-        AddAnswerCommand answerCommand2 = AddAnswerCommand.builder()
-                .answerTo(questionId2)
-                .creatorId(testUser.getId())
-                .date(date).build();
-        AddAnswerCommand answerCommand3 = AddAnswerCommand.builder()
-                .answerTo(questionId3)
-                .creatorId(testUser.getId()).build();
-        answerFacade.addAnswer(answerCommand1);
-        answerFacade.addAnswer(answerCommand2);
-        answerFacade.addAnswer(answerCommand3);
-
-        // Prepare answer query
-        AnswerQuery answerQuery = AnswerQuery.builder()
-                .answerTo(questionId1).build();
-
-        // Create the expected result
-        // Recover the uuid from the answer in the repository
-        AnswersDTO.AnswerDTO answerDTO = AnswersDTO.AnswerDTO.builder()
-                .uuid(answerFacade.getAnswers(answerQuery, 0, answerFacade.getNumberOfAnswers()).getAnswers().get(0).getUuid())
-                .description("No content")
-                .creator(testUser.getUsername())
-                .nbVotes(0)
-                .date(date).build();
-
-        assertEquals(answerFacade.getAnswers(answerQuery, 0, answerFacade.getNumberOfAnswers()).getAnswers().get(0), answerDTO);
-    }
-
-    @Test
-    public void shouldGetAllQuestions() {
-
-        int questionIndex = questionFacade.getNumberOfQuestions();
-
-        // Add question to question repo
-        AddQuestionCommand questionCommand = AddQuestionCommand.builder()
-                .creator(testUser.getUsername())
-                .creatorId(testUser.getId())
-                .build();
-        questionFacade.addQuestion(questionCommand);
-
-        // Retrieve questionId from added question
-        QuestionId  questionId = new QuestionId(questionFacade.getQuestions(
-                QuestionQuery.builder().build(),
+        AnswersDTO answersDTO = answerFacade.getAnswers(AnswerQuery.builder().answerTo(questionId1).build(),
                 0,
-                questionFacade.getNumberOfQuestions()).getQuestions().get(questionIndex).getUuid());
+                answerFacade.getNumberOfAnswers());
 
+        assertEquals(answersDTO.getAnswers().size(), 2);
 
-        int sizeBefore = answerFacade.getNumberOfAnswers();
+        String resultAnswerId1 = answersDTO.getAnswers().get(0).getUuid();
+        String resultAnswerId2 = answersDTO.getAnswers().get(1).getUuid();
 
-        // Add 4 new answers to answer repo
-        AddAnswerCommand answerCommand = AddAnswerCommand.builder()
-                .answerTo(questionId)
-                .creatorId(testUser.getId())
-                .date(date).build();
-        answerFacade.addAnswer(answerCommand);
-        answerFacade.addAnswer(answerCommand);
-        answerFacade.addAnswer(answerCommand);
-        answerFacade.addAnswer(answerCommand);
-
-        assertEquals(answerFacade.getNumberOfAnswers(),
-                sizeBefore + 4);
+        assertTrue(
+                (resultAnswerId1.equals(answerId1.asString()) || resultAnswerId1.equals(answerId2.asString()))
+                        &&
+                        (resultAnswerId2.equals(answerId1.asString()) || resultAnswerId2.equals(answerId2.asString()))
+        );
     }
 }

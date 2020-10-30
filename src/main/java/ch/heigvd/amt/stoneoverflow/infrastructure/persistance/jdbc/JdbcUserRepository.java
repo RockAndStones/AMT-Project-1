@@ -3,6 +3,7 @@ package ch.heigvd.amt.stoneoverflow.infrastructure.persistance.jdbc;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
+import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.exception.IntegrityConstraintViolationException;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
@@ -55,8 +56,7 @@ public class JdbcUserRepository implements IUserRepository {
 
             return Optional.of(u);
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return Optional.empty();
@@ -64,6 +64,9 @@ public class JdbcUserRepository implements IUserRepository {
 
     @Override
     public void save(User user) {
+        if (this.findByUsername(user.getUsername()).isPresent())
+            throw new IntegrityConstraintViolationException("Cannot save user. Integrity constraint violation: username must be unique");
+
         try {
             Connection con = dataSource.getConnection();
 
@@ -80,8 +83,7 @@ public class JdbcUserRepository implements IUserRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();;
         }
     }
 
@@ -102,15 +104,22 @@ public class JdbcUserRepository implements IUserRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
     @Override
     public void remove(UserId userId) {
-        //todo: implement remove method
-        throw new UnsupportedOperationException("Remove is not yet implemented");
+        try {
+            Connection con = dataSource.getConnection();
+            PreparedStatement ps = con.prepareStatement("DELETE FROM User WHERE id=?");
+            ps.setString(1, userId.asString());
+
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            //todo: log/handle error
+            System.out.println(ex);
+        }
     }
 
     @Override
@@ -139,8 +148,7 @@ public class JdbcUserRepository implements IUserRepository {
 
             return Optional.of(u);
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return Optional.empty();
@@ -170,7 +178,7 @@ public class JdbcUserRepository implements IUserRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
+            ex.printStackTrace();
         }
 
         return users;
@@ -190,8 +198,7 @@ public class JdbcUserRepository implements IUserRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return size;

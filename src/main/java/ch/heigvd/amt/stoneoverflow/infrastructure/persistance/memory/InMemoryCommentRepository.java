@@ -33,7 +33,11 @@ public class InMemoryCommentRepository extends InMemoryRepository<Comment, Comme
 
         Comparator<Comment> comparator;
         if (commentQuery.getSortBy() == CommentQuerySortBy.DATE)
-            comparator = Comparator.comparing(Comment::getDate).reversed();
+            if(commentQuery.isSortDescending()) {
+                comparator = Comparator.comparing(Comment::getDate);
+            } else {
+                comparator = Comparator.comparing(Comment::getDate).reversed();
+            }
         else
             throw new UnsupportedOperationException("Unsupported question sort");
 

@@ -7,6 +7,7 @@ import ch.heigvd.amt.stoneoverflow.application.vote.VoteDTO;
 import lombok.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Builder
 @Getter
@@ -17,13 +18,14 @@ public class QuestionsDTO {
     @Getter
     @EqualsAndHashCode
     public static class QuestionDTO {
-        private String  uuid;
-        private String  title;
-        private String  description;
-        private String  creator;
-        private int     nbViews;
-        private DateDTO date;
-        private String  type;
+        private String        uuid;
+        private String        title;
+        private String        description;
+        private String        creator;
+        @EqualsAndHashCode.Exclude
+        private AtomicInteger nbViews;
+        private DateDTO       date;
+        private String        type;
 
         @Setter private int nbVotes;
         @Setter private int nbAnswers;
@@ -31,7 +33,7 @@ public class QuestionsDTO {
         @Setter private Collection<AnswersDTO.AnswerDTO>   answers;
         @Setter private Collection<CommentsDTO.CommentDTO> comments;
 
-        public String shortDescription(){
+        public String shortDescription() {
             int maxLength = 64;
             String thereIsMore = "...";
 

@@ -2,11 +2,12 @@ const { I } = inject();
 
 module.exports = {
 
-    root: {id: 'sidebar'},
+    root: {xpath: '//nav[@id="sidebar"]'},
 
     links: {
         home: {css: 'a[href=home]'},
         newQuestions: {css: 'a[href=addQuestion]'},
+        statistics: {css: 'a[href=statistics]'}
     },
 
     elements: {
@@ -22,6 +23,12 @@ module.exports = {
     goToNewQuestionPage() {
         within(this.root, () => {
             I.clickLink(this.links.newQuestions);
+        });
+    },
+
+    goToStatisticsPage(){
+        within(this.root, () => {
+            I.clickLink(this.links.statistics);
         });
     },
 

@@ -2,29 +2,24 @@ package ch.heigvd.amt.stoneoverflow.infrastructure.persistance.memory;
 
 
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
-import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuerySortBy;
 import ch.heigvd.amt.stoneoverflow.application.vote.VoteFacade;
+import ch.heigvd.amt.stoneoverflow.domain.Id;
+import ch.heigvd.amt.stoneoverflow.domain.UserMessageType;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
-import ch.heigvd.amt.stoneoverflow.domain.vote.IVoteRepository;
-import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
-import lombok.Getter;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.sql.DatabaseMetaData;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,18 +27,12 @@ import java.util.stream.Stream;
 @Named("InMemoryQuestionRepository")
 public class InMemoryQuestionRepository extends InMemoryRepository<Question, QuestionId> implements IQuestionRepository {
 
-    @Inject
-    ServiceRegistry serviceRegistry;
-    VoteFacade voteFacade;
+    @Inject @Named("InMemoryVoteRepository")
+    InMemoryVoteRepository voteRepository;
 
-    @PostConstruct
-    private void initDefaultValues() {
-        voteFacade = serviceRegistry.getVoteFacade();
-
-    }
 
     private int nbVotesComparator(QuestionId id) {
-        return voteFacade.getNumberOfVotes(id);
+        return voteRepository.findNbVotes(id, UserMessageType.QUESTION);
     }
 
     @Override
@@ -70,10 +59,7 @@ public class InMemoryQuestionRepository extends InMemoryRepository<Question, Que
 
         List<Question> filteredQuestions = stream.collect(Collectors.toList());
         // To not be out of bound
-        int lastIndex = filteredQuestions.size();
-        if(lastIndex > offset + limit){
-            lastIndex = offset + limit;
-        }
+        int lastIndex = Math.min(filteredQuestions.size(), offset + limit);
 
         return filteredQuestions.subList(offset, lastIndex);
     }

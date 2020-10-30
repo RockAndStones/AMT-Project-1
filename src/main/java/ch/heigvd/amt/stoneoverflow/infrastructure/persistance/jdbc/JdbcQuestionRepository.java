@@ -4,7 +4,7 @@ import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
-import ch.heigvd.amt.stoneoverflow.domain.user.User;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.exception.DataCorruptionException;
 
@@ -14,6 +14,7 @@ import javax.inject.Named;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -31,6 +32,12 @@ public class JdbcQuestionRepository implements IQuestionRepository {
         this.dataSource = dataSource;
     }
 
+    private QuestionType getQuestionType(int questionType) {
+        if (questionType > QuestionType.UNCLASSIFIED.ordinal())
+            return QuestionType.UNCLASSIFIED;
+        return QuestionType.values()[questionType];
+    }
+
     private Collection<Question> resultSetToQuestions(ResultSet rs) throws SQLException {
         Collection<Question> questions = new LinkedList<>();
 
@@ -42,7 +49,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
                     .creator(rs.getString("creator"))
                     .creatorId(new UserId(rs.getString("creatorId")))
                     .nbViews(new AtomicInteger(rs.getInt("nbViews")))
-                    .date(new Date(rs.getTimestamp("date").getTime()))
+                    .date(new java.util.Date(rs.getTimestamp("date").getTime()))
                     .build();
             questions.add(q);
         }
@@ -50,27 +57,35 @@ public class JdbcQuestionRepository implements IQuestionRepository {
         return questions;
     }
 
-    private String getQuerySQL(String search, String sortFieldName, boolean isSortDescending, int offset, int limit) {
+    private String getQuerySQL(String search, QuestionType questionType, String sortFieldName, boolean isSortDescending, int offset, int limit) {
         String direction = isSortDescending ? "DESC" : "ASC";
+        String where = "";
 
-        if (search.isEmpty()) {
-            return String.format("SELECT * FROM vQuestion ORDER BY %s %s LIMIT %d, %d",
-                    sortFieldName,
-                    direction,
-                    offset,
-                    limit);
-        } else {
-            return String.format("SELECT * FROM vQuestion WHERE title LIKE ? ORDER BY %s %s LIMIT %d, %d",
-                    sortFieldName,
-                    direction,
-                    offset,
-                    limit);
+        if (!search.isEmpty())
+            where += " title LIKE ? ";
+
+        if (questionType != QuestionType.UNCLASSIFIED) {
+            if (!where.isEmpty())
+                where += "AND";
+            where += " type = " + questionType.ordinal() + " ";
         }
+
+        if (!where.isEmpty())
+            where = "WHERE" + where;
+
+
+        return String.format("SELECT * FROM vQuestion %s ORDER BY %s %s LIMIT %d, %d",
+                where,
+                sortFieldName,
+                direction,
+                offset,
+                limit);
     }
 
     private PreparedStatement getQueryStatement(Connection con, QuestionQuery query, int offset, int limit) throws SQLException {
         PreparedStatement ps = con.prepareStatement(getQuerySQL(
                 query.getSearchCondition(),
+                query.getType(),
                 query.getSortBy().getSqlFieldName(),
                 query.isSortDescending(),
                 offset,
@@ -97,8 +112,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             psQuestion.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return questions;
@@ -116,17 +130,17 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.setTimestamp(4, new Timestamp(question.getDate().getTime()));
             ps.executeUpdate();
 
-            ps = con.prepareStatement("INSERT INTO Question VALUES (?, ?, ?)");
+            ps = con.prepareStatement("INSERT INTO Question VALUES (?, ?, ?, ?)");
             ps.setString(1, question.getId().asString());
             ps.setString(2, question.getTitle());
             ps.setInt(3, question.getNbViewsAsInt());
+            ps.setInt(4, question.getQuestionType().ordinal());
             ps.executeUpdate();
 
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -143,15 +157,23 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
     @Override
     public void remove(QuestionId questionId) {
-        //todo: implement remove method
-        throw new UnsupportedOperationException("Remove is not yet implemented");
+        try {
+            Connection con = dataSource.getConnection();
+
+            PreparedStatement psDeleteFromAnswer = con.prepareStatement("DELETE FROM Question WHERE id=?");
+            psDeleteFromAnswer.setString(1, questionId.asString());
+            psDeleteFromAnswer.execute();
+
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -175,8 +197,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
 
             return questions.stream().findFirst();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return Optional.empty();
@@ -200,8 +221,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             con.close();
 
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return questions;
@@ -221,8 +241,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             psQuestion.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return questions;
@@ -242,8 +261,7 @@ public class JdbcQuestionRepository implements IQuestionRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return size;

@@ -21,13 +21,15 @@ exports.config = {
     loginPage:                './pages/loginPage.js',
     newQuestionPage:          './pages/newQuestionPage.js',
     profilePage:              './pages/profilePage.js',
+    questionDetailsPage:      './pages/questionDetailsPage.js',
+    statisticsPage:           './pages/statisticsPage.js',
     __comment2__:             '---------- FRAGMENTS ----------',
     loginFormFragment:        './fragments/loginFormFragment.js',
     registerFormFragment:     './fragments/registerFormFragment.js',
     headerFragment:           './fragments/headerFragment.js',
     sidebarFragment:          './fragments/sidebarFragment.js',
     newQuestionFormFragment:  './fragments/newQuestionFormFragment.js',
-    questionListFragment:     './fragments/questionListFragment.js'
+    questionListFragment:     './fragments/questionListFragment.js',
   },
   name: 'e2e',
   plugins: {

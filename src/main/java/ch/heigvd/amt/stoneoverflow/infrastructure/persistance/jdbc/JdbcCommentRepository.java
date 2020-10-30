@@ -7,6 +7,7 @@ import ch.heigvd.amt.stoneoverflow.domain.comment.CommentId;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
+import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.exception.DataCorruptionException;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
@@ -104,8 +105,7 @@ public class JdbcCommentRepository implements ICommentRepository {
             psQuestion.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return comments;
@@ -121,20 +121,19 @@ public class JdbcCommentRepository implements ICommentRepository {
             ps.setString(2, comment.getCreatorId().asString());
             ps.setString(3, comment.getCommentTo().asString());
             ps.setString(4, comment.getDescription());
-            ps.setDate(5, new Date(comment.getDate().getTime()));
+            ps.setTimestamp(5, new Timestamp(comment.getDate().getTime()));
             ps.executeUpdate();
 
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
     @Override
     public void update(Comment comment) {
-        //todo: unused method?
+        throw new UnsupportedOperationException("Update is not supported on comment");
     }
 
     @Override
@@ -148,15 +147,39 @@ public class JdbcCommentRepository implements ICommentRepository {
 
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
     @Override
     public Optional<Comment> findById(CommentId commentId) {
-        //todo: unused method?
-        throw new UnsupportedOperationException("findById is not yet implemented");
+        try {
+            Connection con = dataSource.getConnection();
+
+            PreparedStatement ps1 = con.prepareStatement("SELECT * FROM vQuestionComment WHERE id=?");
+            ps1.setString(1, commentId.asString());
+            PreparedStatement ps2 = con.prepareStatement("SELECT * FROM vAnswerComment WHERE id=?");
+            ps2.setString(1, commentId.asString());
+
+            Collection<Comment> comments = new LinkedList<>();
+            comments = resultSetToQuestionComments(ps1.executeQuery());
+
+            if (comments.isEmpty())
+                comments = resultSetToAnswerComments(ps2.executeQuery());
+
+            if (comments.size() > 1)
+                throw new DataCorruptionException("Data store is corrupted. More than one question with the same id");
+
+            ps1.close();
+            ps2.close();
+            con.close();
+
+            return comments.stream().findFirst();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return Optional.empty();
     }
 
     @Override
@@ -178,8 +201,7 @@ public class JdbcCommentRepository implements ICommentRepository {
             psAnswerComment.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return comments;
@@ -199,8 +221,7 @@ public class JdbcCommentRepository implements ICommentRepository {
             ps.close();
             con.close();
         } catch (SQLException ex) {
-            //todo: log/handle error
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         return size;

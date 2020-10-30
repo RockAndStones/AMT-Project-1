@@ -1,10 +1,7 @@
 package ch.heigvd.amt.stoneoverflow.application.pagination;
 
-import ch.heigvd.amt.stoneoverflow.application.answer.AnswerQuery;
-import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
 import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
-import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 
 public class PaginationFacade {
 
@@ -12,7 +9,7 @@ public class PaginationFacade {
     private final IAnswerRepository answerRepository;
 
     // Number of question showed per page
-    private static final int QUESTION_PER_PAGE = 5;
+    private static final int QUESTION_PER_PAGE = 10;
     // Number of answer showed per page
     private static final int ANSWER_PER_PAGE = 10;
     // The starting page

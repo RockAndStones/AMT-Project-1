@@ -16,21 +16,23 @@ import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import ch.heigvd.amt.stoneoverflow.domain.vote.IVoteRepository;
 import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
+
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 import lombok.Getter;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @ApplicationScoped
 public class ServiceRegistry {
     @Inject @Named("JdbcQuestionRepository")
     IQuestionRepository questionRepository;
-
 
     @Inject @Named("JdbcUserRepository")
     IUserRepository userRepository;
@@ -62,14 +64,18 @@ public class ServiceRegistry {
         statisticsFacade         = new StatisticsFacade(questionRepository, userRepository, commentRepository, answerRepository, voteRepository, questionFacade, voteFacade);
         paginationFacade         = new PaginationFacade(questionRepository, answerRepository);
 
+        if(userRepository.getRepositorySize() > 0) {
+            return;
+        }
+
         // Add default users
         User u1 = User.builder()
-                    .username("test")
-                    .email("test@test.com")
-                    .firstName("John")
-                    .lastName("Smith")
-                    .plaintextPassword("test")
-                    .build();
+                .username("test")
+                .email("test@test.com")
+                .firstName("John")
+                .lastName("Smith")
+                .plaintextPassword("test")
+                .build();
 
         User u2 = User.builder()
                 .username("rocky")
@@ -79,8 +85,26 @@ public class ServiceRegistry {
                 .plaintextPassword("balboa")
                 .build();
 
+        User uE2e = User.builder()
+                .username("e2eTester")
+                .email("e2e@test.com")
+                .firstName("John")
+                .lastName("Smith")
+                .plaintextPassword("Abcdef7!")
+                .build();
+
+        User uE2eVoter = User.builder()
+                .username("e2eVoter")
+                .email("e2eVoter@test.com")
+                .firstName("Voter")
+                .lastName("McVote")
+                .plaintextPassword("Abcdef7!")
+                .build();
+
         userRepository.save(u1);
         userRepository.save(u2);
+        userRepository.save(uE2e); // e2e testing
+        userRepository.save(uE2eVoter); // e2e testing
 
         // Add default questions
         questionFacade.addQuestion(AddQuestionCommand.builder()
@@ -88,7 +112,7 @@ public class ServiceRegistry {
                 .description("Well, you real ????")
                 .creatorId(u1.getId())
                 .creator("SwagMan McSwagenstein")
-                .nbViews(44)
+                .nbViews(new AtomicInteger(44))
                 .build());
 
         questionFacade.addQuestion(AddQuestionCommand.builder()
@@ -96,7 +120,7 @@ public class ServiceRegistry {
                 .description("Start lifting weights today, lift women tomorrow !")
                 .creatorId(u1.getId())
                 .creator("Ricardo")
-                .nbViews(6418)
+                .nbViews(new AtomicInteger(40))
                 .build());
 
         questionFacade.addQuestion(AddQuestionCommand.builder()
@@ -118,8 +142,7 @@ public class ServiceRegistry {
                         "We are using vue-cli 3.")
                 .creatorId(u1.getId())
                 .creator("Jack Casas")
-                .nbViews(44)
-                .nbViews(884)
+                .nbViews(new AtomicInteger(44))
                 .build());
 
         Question q1 = Question.builder()
@@ -127,9 +150,19 @@ public class ServiceRegistry {
                 .description("The question is all about the title :)")
                 .creatorId(u2.getId())
                 .creator(u2.getUsername())
-                .nbViews(new AtomicInteger(772)).build();
+                .nbViews(new AtomicInteger(0))
+                .build();
+
+        Question qE2e = Question.builder()
+                .title("E2e testing question")
+                .description("E2e testing question description")
+                .creatorId(uE2e.getId())
+                .creator(uE2e.getUsername())
+                .nbViews(new AtomicInteger(0))
+                .build();
 
         questionRepository.save(q1);
+        questionRepository.save(qE2e); // e2e testing
 
         // Add default answers
         Answer a1 = Answer.builder()
@@ -144,8 +177,15 @@ public class ServiceRegistry {
                 .creatorId(u1.getId())
                 .creator("IAmALieBecauseIMayBeACakeInsideAndIAmScaredAboutThat").build();
 
+        Answer aE2e = Answer.builder()
+                .answerTo(qE2e.getId())
+                .description("E2e testing answer")
+                .creatorId(uE2e.getId())
+                .creator(uE2e.getUsername()).build();
+
         answerRepository.save(a1);
         answerRepository.save(a2);
+        answerRepository.save(aE2e);
 
         // Add default comments
         Comment c1 = Comment.builder()
@@ -172,10 +212,24 @@ public class ServiceRegistry {
                 .creatorId(u2.getId())
                 .creator(u2.getUsername()).build();
 
+        Comment cE2e = Comment.builder()
+                .commentTo(aE2e.getId())
+                .description("E2e testing comment to answer")
+                .creatorId(uE2e.getId())
+                .creator(uE2e.getUsername()).build();
+
+        Comment c2E2e = Comment.builder()
+                .commentTo(qE2e.getId())
+                .description("E2e testing comment to question")
+                .creatorId(uE2e.getId())
+                .creator(uE2e.getUsername()).build();
+
         commentRepository.save(c1);
         commentRepository.save(c2);
         commentRepository.save(c3);
         commentRepository.save(c4);
+        commentRepository.save(cE2e); // e2e testing
+        commentRepository.save(c2E2e); // e2e testing
 
         Vote v1 = Vote.builder()
                 .votedBy(u1.getId())
@@ -207,5 +261,19 @@ public class ServiceRegistry {
         voteRepository.save(v3);
         voteRepository.save(v4);
         voteRepository.save(v5);
+
+        // Place the E2E question in the front page by giving it the biggest upvote count
+        voteRepository.save(Vote.builder()
+                .votedBy(u1.getId())
+                .votedObject(qE2e.getId())
+                .voteType(Vote.VoteType.UP).build());
+        voteRepository.save(Vote.builder()
+                .votedBy(u2.getId())
+                .votedObject(qE2e.getId())
+                .voteType(Vote.VoteType.UP).build());
+        voteRepository.save(Vote.builder()
+                .votedBy(uE2eVoter.getId())
+                .votedObject(qE2e.getId())
+                .voteType(Vote.VoteType.UP).build());
     }
 }

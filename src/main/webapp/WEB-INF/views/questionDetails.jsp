@@ -26,37 +26,40 @@
         <%@include file="fragments/sidebar.jsp" %>
         <!-- Main content -->
         <div class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-700 leading-normal">
-            <!-- Question header -->
-            <div class="w-full pb-6 mb-4 border-b">
-                <h1 class="leading-normal text-lg font-semibold text-gray-900 mt-0">${question.title}</h1>
-                <span>${question.nbViews}</span>
-                <i class="mx-auto mb-2 h-5 w-5 far fa-eye"></i>
-                <span class="ml-2">${question.answers.size()}</span>
-                <i class="mx-auto mb-2 h-5 w-5 far fa-comment"></i>
-            </div>
-            <!-- Question message -->
-            <div class="pb-8 mb-8 border-b">
-                <jsp:useBean id="msg" class="ch.heigvd.amt.stoneoverflow.application.usermessage.UserMessageDTO" />
-                <jsp:setProperty name="msg" property="uuid"        value="${question.uuid}" />
-                <jsp:setProperty name="msg" property="description" value="${question.description}" />
-                <jsp:setProperty name="msg" property="creator"     value="${question.creator}" />
-                <jsp:setProperty name="msg" property="nbVotes"     value="${question.nbVotes}" />
-                <jsp:setProperty name="msg" property="date"        value="${question.date}" />
-                <jsp:setProperty name="msg" property="type"        value="question" />
-                <jsp:setProperty name="msg" property="comments"    value="${question.comments}" />
-                <jsp:setProperty name="msg" property="vote"        value="${question.voteDTO}" />
+            <!-- Question -->
+            <div id="question" questionuuid="${question.uuid}">
+                <!-- Question header -->
+                <div id="questionHeader" class="w-full pb-6 mb-4 border-b">
+                    <h1 id="questionTitle" class="leading-normal text-lg font-semibold text-gray-900 mt-0">${question.title}</h1>
+                    <span id="questionViews">${question.nbViews}</span>
+                    <i class="mx-auto mb-2 h-5 w-5 far fa-eye"></i>
+                    <span id="questionAnswerCount" class="ml-2">${question.answers.size()}</span>
+                    <i class="mx-auto mb-2 h-5 w-5 far fa-comment"></i>
+                </div>
+                <!-- Question message -->
+                <div id="questionBody" class="pb-8 mb-8 border-b">
+                    <jsp:useBean id="msg" class="ch.heigvd.amt.stoneoverflow.application.usermessage.UserMessageDTO" />
+                    <jsp:setProperty name="msg" property="uuid"        value="${question.uuid}" />
+                    <jsp:setProperty name="msg" property="description" value="${question.description}" />
+                    <jsp:setProperty name="msg" property="creator"     value="${question.creator}" />
+                    <jsp:setProperty name="msg" property="nbVotes"     value="${question.nbVotes}" />
+                    <jsp:setProperty name="msg" property="date"        value="${question.date}" />
+                    <jsp:setProperty name="msg" property="type"        value="question" />
+                    <jsp:setProperty name="msg" property="comments"    value="${question.comments}" />
+                    <jsp:setProperty name="msg" property="vote"        value="${question.voteDTO}" />
 
-                <%@include file="fragments/userMessage.jsp" %>
+                    <%@include file="fragments/userMessage.jsp" %>
+                </div>
             </div>
             <!-- Answer(s) -->
             <!-- Details answer(s) -->
-            <div class="mb-8 pb-8 border-b">
+            <div id="answersList" class="mb-8 pb-8 border-b">
                 <c:choose>
                     <c:when test="${empty question.answers}">
                         <h2 class="leading-normal text-lg font-semibold text-gray-900 mt-0">No one responded for now <i class="far fa-sad-tear"></i></h2>
                     </c:when>
                     <c:otherwise>
-                        <h2 id="answers" class="leading-normal text-lg font-semibold text-gray-900 mt-0 mb-4">${question.nbAnswers} Answer(s)</h2>
+                        <h2 id="answers" class="leading-normal text-lg font-semibold text-gray-900 m-0 mb-4">${question.nbAnswers} Answer<c:if test="${question.nbAnswers > 1}">s</c:if></h2>
                         <c:forEach items="${question.answers}" var="answer">
                             <jsp:setProperty name="msg" property="uuid"        value="${answer.uuid}" />
                             <jsp:setProperty name="msg" property="description" value="${answer.description}" />
@@ -78,14 +81,14 @@
                 </div>
             </c:if>
             <!-- Response form -->
-            <h2 class="leading-normal text-lg font-semibold text-gray-900 mt-0 mb-4">Write your answer</h2>
+            <h2 class="leading-normal text-lg font-semibold text-gray-900 m-0">Write your answer</h2>
             <form action="${pageContext.request.contextPath}/submitAnswer.do" method="post">
                 <input type="hidden" name="questionUUID" value="${question.uuid}">
                 <div class="flex flex-col">
                     <label for="responseDescription" class="text-lg">Description</label>
                     <textarea id="responseDescription" name="description" placeholder="Please be sure to provide a clear and detailed answer to contribute to StoneOverflow." class="h-48 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"></textarea>
                 </div>
-                <button type="submit" class="w-auto bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8">Submit</button>
+                <button id="answerFormSubmit" type="submit" class="w-auto bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8">Submit</button>
             </form>
         </div>
     </div>

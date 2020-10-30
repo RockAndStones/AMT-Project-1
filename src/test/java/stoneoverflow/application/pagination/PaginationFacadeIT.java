@@ -35,6 +35,9 @@ public class PaginationFacadeIT {
     private QuestionFacade questionFacade;
     private DateDTO questionDate;
 
+    // Should be equal to the question per page stored in the class PaginationFacade
+    private static final int QUESTION_PER_PAGE = 10;
+
     @Deployment(testable = true)
     public static WebArchive createDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
@@ -70,17 +73,20 @@ public class PaginationFacadeIT {
         }
 
 
-        PaginationDTO resultPagination = paginationFacade.settingQuestionPagination("2");
 
+        int totalPages = (int) Math.ceil((double) questionFacade.getNumberOfQuestions() / (double) QUESTION_PER_PAGE);
+        int lastPage = Math.min(5, totalPages);
+        int lastItem = Math.min(20, questionFacade.getNumberOfQuestions());
+        PaginationDTO resultPagination = paginationFacade.settingQuestionPagination("2");
         PaginationDTO expectedPagination = PaginationDTO.builder()
-                .limit(5)
+                .limit(QUESTION_PER_PAGE)
                 .itemRepoSize(serviceRegistry.getQuestionFacade().getNumberOfQuestions())
-                .startItem(5)
-                .lastItem(10)
+                .startItem(10)
+                .lastItem(lastItem)
                 .startPage(1)
-                .lastPage(3)
+                .lastPage(lastPage)
                 .currentPage(2)
-                .totalPages(3).build();
+                .totalPages(totalPages).build();
 
         assertEquals(expectedPagination.getLimit(), resultPagination.getLimit());
         assertEquals(expectedPagination.getItemRepoSize(), resultPagination.getItemRepoSize());
@@ -96,15 +102,18 @@ public class PaginationFacadeIT {
     public void shouldSetInitialPagination() {
         PaginationDTO resultPagination = paginationFacade.settingQuestionPagination("1");
 
+        int totalPages = (int) Math.ceil((double) questionFacade.getNumberOfQuestions() / (double) QUESTION_PER_PAGE);
+        int lastPage = Math.min(5, totalPages);
+
         PaginationDTO expectedPagination = PaginationDTO.builder()
-                .limit(5)
+                .limit(QUESTION_PER_PAGE)
                 .itemRepoSize(serviceRegistry.getQuestionFacade().getNumberOfQuestions())
                 .startItem(0)
-                .lastItem(5)
+                .lastItem(10)
                 .startPage(1)
-                .lastPage(3)
+                .lastPage(lastPage)
                 .currentPage(1)
-                .totalPages(3).build();
+                .totalPages(totalPages).build();
 
         assertEquals(expectedPagination.getLimit(), resultPagination.getLimit());
         assertEquals(expectedPagination.getItemRepoSize(), resultPagination.getItemRepoSize());

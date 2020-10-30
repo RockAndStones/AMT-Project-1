@@ -1,8 +1,6 @@
 package ch.heigvd.amt.stoneoverflow.ui.web.comment;
 
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
-import ch.heigvd.amt.stoneoverflow.application.answer.AddAnswerCommand;
-import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
 import ch.heigvd.amt.stoneoverflow.application.comment.AddCommentCommand;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
@@ -28,6 +26,11 @@ public class AddCommentCommandServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         commentFacade = serviceRegistry.getCommentFacade();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req, resp);
     }
 
     @Override

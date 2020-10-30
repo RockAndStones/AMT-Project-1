@@ -19,7 +19,7 @@ public class CommentsDTO {
     public static class CommentDTO {
         private String  uuid;
         private String  creator;
-        private String  content;
+        private String  description;
         private DateDTO date;
     }
 

@@ -4,10 +4,10 @@ import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswerQuery;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswerQuerySortBy;
 import ch.heigvd.amt.stoneoverflow.application.vote.VoteFacade;
+import ch.heigvd.amt.stoneoverflow.domain.UserMessageType;
 import ch.heigvd.amt.stoneoverflow.domain.answer.Answer;
 import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
 import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
-import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 
 import javax.annotation.PostConstruct;
@@ -25,18 +25,12 @@ import java.util.stream.Stream;
 @Named("InMemoryAnswerRepository")
 public class InMemoryAnswerRepository extends InMemoryRepository<Answer, AnswerId> implements IAnswerRepository {
 
-    @Inject
-    ServiceRegistry serviceRegistry;
-    VoteFacade voteFacade;
+    @Inject @Named("InMemoryVoteRepository")
+    InMemoryVoteRepository voteRepository;
 
-    @PostConstruct
-    private void initDefaultValues() {
-        voteFacade = serviceRegistry.getVoteFacade();
-
-    }
 
     private int nbVotesComparator(AnswerId id) {
-        return voteFacade.getNumberOfVotes(id);
+        return voteRepository.findNbVotes(id, UserMessageType.ANSWER);
     }
 
     @Override
@@ -56,7 +50,11 @@ public class InMemoryAnswerRepository extends InMemoryRepository<Answer, AnswerI
 
         Comparator<Answer> comparator;
         if (answerQuery.getSortBy() == AnswerQuerySortBy.DATE)
-            comparator = Comparator.comparing(Answer::getDate).reversed();
+            if(answerQuery.isSortDescending()) {
+                comparator = Comparator.comparing(Answer::getDate);
+            } else{
+                comparator = Comparator.comparing(Answer::getDate).reversed();
+            }
         else if (answerQuery.getSortBy() == AnswerQuerySortBy.VOTES)
             comparator = Comparator.comparing((Answer a) -> nbVotesComparator(a.getId())).reversed();
         else

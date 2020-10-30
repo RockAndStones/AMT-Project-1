@@ -14,11 +14,11 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-import javax.servlet.RequestDispatcher;
 
 import static org.junit.Assert.*;
 
@@ -59,18 +59,38 @@ public class IdentityManagementFacadeIT {
 
         RegisterCommand registerCommandForUpdate = RegisterCommand.builder()
                 .username("MyUpdatedTestUsername")
-                .email("mail@mail.com")
-                .firstName("First name")
-                .lastName("Last name")
+                .email("updatemail@mail.com")
+                .firstName("Update First name")
+                .lastName("Update Last name")
                 .plaintextPassword(plaintextPassword)
                 .plaintextPasswordConfirmation(plaintextPassword)
                 .build();
 
         try {
             this.identityManagementFacade.login(LoginCommand.builder().username("MyTestUsername").plaintextPassword(plaintextPassword).build());
-            this.identityManagementFacade.login(LoginCommand.builder().username(lastUpdate.getUsername()).plaintextPassword(lastUpdate.getPlaintextPassword()).build());
         } catch (LoginFailedException exception) {
             this.identityManagementFacade.register(registerCommandForLogin);
+        }
+
+        try{
+            // start of the test lastUpdate is null
+            if(lastUpdate == null){
+                // Will throw an exception if oldUser cannot login or will set the lastUpdate in case we work with jdbc user can already be set
+                lastUpdate = UpdateProfileCommand.builder()
+                        .oldUser(this.identityManagementFacade.login(LoginCommand.builder()
+                                .username(registerCommandForUpdate.getUsername())
+                                .plaintextPassword(plaintextPassword)
+                                .build()))
+                        .username(registerCommandForUpdate.getUsername())
+                        .email(registerCommandForUpdate.getEmail())
+                        .firstName(registerCommandForUpdate.getFirstName())
+                        .lastName(registerCommandForUpdate.getLastName())
+                        .plaintextPassword(registerCommandForUpdate.getPlaintextPassword())
+                        .plaintextPasswordConfirmation(registerCommandForUpdate.getPlaintextPasswordConfirmation())
+                        .build();
+            }
+            this.identityManagementFacade.login(LoginCommand.builder().username(lastUpdate.getUsername()).plaintextPassword(lastUpdate.getPlaintextPassword()).build());
+        } catch (LoginFailedException exception) {
             this.identityManagementFacade.register(registerCommandForUpdate);
 
             lastUpdate = UpdateProfileCommand.builder()

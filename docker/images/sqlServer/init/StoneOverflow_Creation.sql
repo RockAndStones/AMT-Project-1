@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Question` (
   `id` CHAR(36) NOT NULL,
   `title` VARCHAR(100) NULL,
   `nbViews` INTEGER NULL,
+  `type` INTEGER NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_Question_UserMessage1_idx` (`id` ASC) VISIBLE,
   CONSTRAINT `fk_Question_UserMessage1`
@@ -143,6 +144,7 @@ SELECT
     um.idUser AS 'creatorId',
     u.username AS 'creator',
     q.nbViews AS 'nbViews',
+    q.type AS 'type',
     ((SELECT COUNT(*) FROM Vote AS v WHERE q.id=v.idUserMessage AND v.voteUp=1)-(SELECT COUNT(*) FROM Vote AS v WHERE q.id=v.idUserMessage AND v.voteUp=0)) AS `nbVotes`,
     um.date AS 'date'
 FROM Question AS q

@@ -6,7 +6,11 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.Console;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Enumeration;
 
 @WebFilter(filterName = "AuthorizationFilter", urlPatterns = "/*")
 public class AuthorizationFilter implements Filter {
@@ -28,8 +32,19 @@ public class AuthorizationFilter implements Filter {
         AuthenticatedUserDTO authenticatedUser = (AuthenticatedUserDTO)req.getSession().getAttribute("authenticatedUser");
         if (authenticatedUser == null) {
             String targetReq = reqPath;
-            if (req.getQueryString() != null)
-                targetReq += "?" + req.getQueryString();
+
+            // Enumerate parameters from request and add them to targetReq
+            Enumeration<String> e = servletRequest.getParameterNames();
+            if (e.hasMoreElements()) {
+                String targetReqParams = "?";
+                do {
+                    String param = e.nextElement();
+                    targetReqParams += param + '=' + URLEncoder.encode(servletRequest.getParameter(param), StandardCharsets.UTF_8.toString()) + '&';
+                } while (e.hasMoreElements());
+                targetReq += targetReqParams.substring(0, targetReqParams.length() - 1);
+            }
+
+            System.out.println(targetReq);
 
             req.getSession().setAttribute("targetReq", targetReq);
             resp.sendRedirect(req.getContextPath() + "/login");
@@ -39,6 +54,12 @@ public class AuthorizationFilter implements Filter {
         //User is authenticated and resource is not public
         filterChain.doFilter(servletRequest, servletResponse);
     }
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException { }
+
+    @Override
+    public void destroy() { }
 
     private boolean isPublicResource(String path) {
         if (path.startsWith("/assets"))
