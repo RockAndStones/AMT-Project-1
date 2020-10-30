@@ -5,7 +5,6 @@ import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuerySortBy;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionType;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
-import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
 import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.jdbc.JdbcQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.infrastructure.persistance.jdbc.JdbcUserRepository;
@@ -33,8 +32,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.*;
 
-//@RunWith(Arquillian.class)
-public class JdbcQuestionRepositoryIT { /*
+@RunWith(Arquillian.class)
+public class JdbcQuestionRepositoryIT {
     private final static String WARNAME = "arquillian-managed.war";
 
     @Inject @Named("JdbcQuestionRepository")
@@ -196,5 +195,5 @@ public class JdbcQuestionRepositoryIT { /*
         jdbcQuestionRepository.find(questionQuery,0,jdbcQuestionRepository.getRepositorySize());
 
         assertEquals(jdbcQuestionRepository.find(questionQuery,0,jdbcQuestionRepository.getRepositorySize()).size(), 2);
-    }*/
+    }
 }
