@@ -51,14 +51,14 @@
         </div>
         <div class="pb-8 mb-8 border-b">
             <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most active users</span>
-            <span class="leading-normal text-lg italic text-gray-600 mt-1">(question wise)</span>
+            <span class="leading-normal text-lg italic text-gray-600 mt-1">(by questions asked)</span>
         </div>
         <div class="pb-0 md:pb-8 mb-8 border-b">
             <table class="table-auto">
                 <thead>
                 <tr>
                     <th class="border px-4 py-2">User</th>
-                    <th class="border px-4 py-2">Number of questions</th>
+                    <th class="border px-4 py-2">Number of questions asked</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -73,7 +73,7 @@
         </div>
         <div class="pb-8 mb-8 border-b">
             <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most popular questions</span>
-            <span class="leading-normal text-lg italic text-gray-600 mt-1">(vote wise)</span>
+            <span class="leading-normal text-lg italic text-gray-600 mt-1">(by number of votes)</span>
         </div>
         <div>
             <table class="table-auto w-full">

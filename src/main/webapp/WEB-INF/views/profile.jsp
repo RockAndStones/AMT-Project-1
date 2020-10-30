@@ -72,8 +72,10 @@
                 </div>
 
                 <input type="submit" value="Update" name="update" class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8">
-                <input type="submit" value="Cancel" name="cancel" class="bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8">
             </form>
+            <a href="${pageContext.request.contextPath}/">
+                <button class="w-full bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8" >Cancel</button>
+            </a>
         </div>
     </div>
 </div>

@@ -31,12 +31,12 @@
             <form action="${pageContext.request.contextPath}/submitQuestion.do" method="POST" class="flex flex-col pt-3 md:pt-8">
                 <div class="flex flex-col pt-4">
                     <label for="questionTitle" class="text-lg">Title</label>
-                    <input type="text" id="questionTitle" name="title" placeholder="Your awesome question's title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline">
+                    <input type="text" id="questionTitle" name="title" placeholder="Your awesome question's title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" required>
                 </div>
 
                 <div class="flex flex-col pt-4">
                     <label for="questionDescription" class="text-lg">Description</label>
-                    <textarea id="questionDescription" name="description" placeholder="Include all the information someone would need to answer your question" class="h-48 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                    <textarea id="questionDescription" name="description" placeholder="Include all the information someone would need to answer your question" class="h-48 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
                 </div>
 
                 <button id="newQuestionSubmitButton" type="submit" class="self-center w-auto bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8">Submit</button>
