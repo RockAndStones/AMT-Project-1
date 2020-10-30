@@ -82,7 +82,7 @@
             </c:if>
             <!-- Response form -->
             <h2 class="leading-normal text-lg font-semibold text-gray-900 m-0">Write your answer</h2>
-            <form action="${pageContext.request.contextPath}/submitAnswer.do" method="post">
+            <form action="${pageContext.request.contextPath}/submitAnswer.do" method="post" class="mt-6">
                 <input type="hidden" name="questionUUID" value="${question.uuid}">
                 <div class="flex flex-col">
                     <label for="responseDescription" class="text-lg">Description</label>
