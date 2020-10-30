@@ -997,7 +997,7 @@
           <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="Extract nbVotes from HTML" enabled="true">
             <stringProp name="RegexExtractor.useHeaders">false</stringProp>
             <stringProp name="RegexExtractor.refname">nbVotes</stringProp>
-            <stringProp name="RegexExtractor.regex"> &lt;span id=&quot;nbVotes&quot; class=&quot;text-lg&quot;&gt;(.+?)&lt;/span&gt;</stringProp>
+            <stringProp name="RegexExtractor.regex">&lt;span id=&quot;nbVotes&quot; hidden class=&quot;text-lg&quot;&gt;(.+?)&lt;/span&gt;</stringProp>
             <stringProp name="RegexExtractor.template">$1$</stringProp>
             <stringProp name="RegexExtractor.default"></stringProp>
             <stringProp name="RegexExtractor.match_number">1</stringProp>
@@ -1005,14 +1005,14 @@
           <hashTree/>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
             <collectionProp name="Asserion.test_strings">
-              <stringProp name="49">1</stringProp>
+              <stringProp name="50">2</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_data</stringProp>
             <boolProp name="Assertion.assume_success">false</boolProp>
-            <intProp name="Assertion.test_type">16</intProp>
+            <intProp name="Assertion.test_type">1</intProp>
             <stringProp name="Assertion.scope">variable</stringProp>
-            <stringProp name="Scope.variable">nbViews</stringProp>
+            <stringProp name="Scope.variable">nbVotes</stringProp>
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
