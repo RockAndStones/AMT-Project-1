@@ -57,7 +57,7 @@ public class StatisticsFacade {
 
     Collection<UserStatisticsDTO> getMostActiveUsers(int limit) {
         return userRepository.findAll().stream()
-                .sorted(Comparator.comparing(u -> questionRepository.findByUser(u.getId()).size()))
+                .sorted(Comparator.comparing(u -> questionRepository.findByUser(u.getId()).size(), Comparator.reverseOrder()))
                 .limit(limit)
                 .map(q -> UserStatisticsDTO.builder()
                         .id(q.getId())
