@@ -20,7 +20,6 @@ public class IdentityManagementFacade {
     }
 
     public void register(RegisterCommand registerCommand) throws RegistrationFailedException {
-        // TODO refactor by using same class for exceptions with update
         // If passwords are not equals
         if (!registerCommand.getPlaintextPassword().equals(registerCommand.getPlaintextPasswordConfirmation()))
             throw new RegistrationFailedException("Passwords are not equal");
@@ -70,7 +69,6 @@ public class IdentityManagementFacade {
         }
         // Boolean that will indicated if a new password has been entered
         boolean newPassword = false;
-        // TODO refactor
         if(!updateProfileCommand.getPlaintextPassword().isEmpty()) {
             // If passwords are not equals
             if (!updateProfileCommand.getPlaintextPassword().equals(updateProfileCommand.getPlaintextPasswordConfirmation()))

@@ -1,4 +1,4 @@
-const { loginPage, homePage } = inject();
+const { loginPage, homePage, sidebarFragment } = inject();
 const randomstring= require('randomstring');
 
 
@@ -29,6 +29,7 @@ Feature('Login and Register');
         within(homePage.components.header.root, () =>{
             I.see(I.sampleData.userInfo.username.charAt(0).toUpperCase() + I.sampleData.userInfo.username.slice(1));
         });
+        I.waitForElement(sidebarFragment.root, 5);
         homePage.components.sidebar.logout();
         I.seeElement(homePage.components.header.links.login);
     });

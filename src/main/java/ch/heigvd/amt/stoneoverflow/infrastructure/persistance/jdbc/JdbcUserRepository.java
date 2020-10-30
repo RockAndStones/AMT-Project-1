@@ -117,7 +117,6 @@ public class JdbcUserRepository implements IUserRepository {
 
             ps.executeUpdate();
         } catch (SQLException ex) {
-            //todo: log/handle error
             System.out.println(ex);
         }
     }

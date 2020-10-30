@@ -16,11 +16,9 @@ import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
-import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 import ch.heigvd.amt.stoneoverflow.domain.vote.IVoteRepository;
 import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
 
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import lombok.Getter;
 
@@ -111,7 +109,7 @@ public class ServiceRegistry {
                 .title("Is it real life ??")
                 .description("Well, you real ????")
                 .creatorId(u1.getId())
-                .creator("SwagMan McSwagenstein")
+                .creator(u1.getUsername())
                 .nbViews(new AtomicInteger(44))
                 .build());
 
@@ -119,7 +117,7 @@ public class ServiceRegistry {
                 .title("Do you even lift bro ?!")
                 .description("Start lifting weights today, lift women tomorrow !")
                 .creatorId(u1.getId())
-                .creator("Ricardo")
+                .creator(u1.getUsername())
                 .nbViews(new AtomicInteger(40))
                 .build());
 
@@ -141,7 +139,7 @@ public class ServiceRegistry {
                         "\n" +
                         "We are using vue-cli 3.")
                 .creatorId(u1.getId())
-                .creator("Jack Casas")
+                .creator(u1.getUsername())
                 .nbViews(new AtomicInteger(44))
                 .build());
 

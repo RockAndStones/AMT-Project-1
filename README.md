@@ -2,6 +2,7 @@
 
 ## Table of contents
 - [Introduction](#Introduction)  
+- [Sql Schema](#Sql-Schema)  
 - [Deployment](#Deployment)
 - [Tests](#Tests)
 
@@ -11,6 +12,12 @@ As part of the course AMT we were asked to create a site that will be a simple v
 We will also use JUnit for the UnitTest and Codecept.js for the e2e tests.
 
 If you want to see the specification of the user interface please [click here](https://docs.google.com/document/d/1DSahosKDQq_0yjQDg7r0EOaPcs6QhwXc7yyWqTjHFSo/edit?usp=sharing)
+
+##Sql Schema
+
+The project contains a sql database and below you will see the different tables and views used in this database.
+
+![Sql Model](./img/SqlModel.PNG)
 
 ## Deployment
 The web application can be deployed with a simple [docker-compose](./docker/docker-compose.yml) file.
