@@ -19,6 +19,6 @@ services:
        - "8080:8080"
        - "9443:9443"
      volumes:
-       - ./src/main/liberty/config/server.env:/config/server.env
+       - ../src/main/liberty/config/server.env:/config/server.env
      depends_on:
        - sql

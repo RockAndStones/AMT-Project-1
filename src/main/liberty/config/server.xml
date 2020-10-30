@@ -16,8 +16,8 @@
 
     <dataSource id="mySQL" jndiName="jdbc/StoneOverflowDS" type="javax.sql.DataSource">
         <jdbcDriver libraryRef="MySQLLib"/>
-        <properties databaseName="db_stoneoverflow" serverName="localhost" portNumber="3306"
-            user="root" password="mysql"/>
+        <properties databaseName="${DB_DATABASE}" serverName="${DB_HOST}" portNumber="${DB_PORT}"
+            user="${DB_USER}" password="${DB_PASSWORD}"/>
     </dataSource>
 
     <library id="MySQLLib">

@@ -31,19 +31,19 @@ import javax.inject.Named;
 
 @ApplicationScoped
 public class ServiceRegistry {
-    @Inject @Named("JdbcQuestionRepository")
+    @Inject @Named("InMemoryQuestionRepository")
     IQuestionRepository questionRepository;
 
-    @Inject @Named("JdbcUserRepository")
+    @Inject @Named("InMemoryUserRepository")
     IUserRepository userRepository;
 
-    @Inject @Named("JdbcAnswerRepository")
+    @Inject @Named("InMemoryAnswerRepository")
     IAnswerRepository answerRepository;
 
-    @Inject @Named("JdbcCommentRepository")
+    @Inject @Named("InMemoryCommentRepository")
     ICommentRepository commentRepository;
 
-    @Inject @Named("JdbcVoteRepository")
+    @Inject @Named("InMemoryVoteRepository")
     IVoteRepository voteRepository;
 
     @Getter IdentityManagementFacade identityManagementFacade;
@@ -237,21 +237,16 @@ public class ServiceRegistry {
                 .voteType(Vote.VoteType.UP).build();
 
         Vote v2 = Vote.builder()
-                .votedBy(u2.getId())
-                .votedObject(q1.getId())
-                .voteType(Vote.VoteType.UP).build();
-
-        Vote v3 = Vote.builder()
                 .votedBy(u1.getId())
                 .votedObject(a2.getId())
                 .voteType(Vote.VoteType.DOWN).build();
 
-        Vote v4 = Vote.builder()
+        Vote v3 = Vote.builder()
                 .votedBy(u2.getId())
                 .votedObject(a2.getId())
                 .voteType(Vote.VoteType.DOWN).build();
 
-        Vote v5 = Vote.builder()
+        Vote v4 = Vote.builder()
                 .votedBy(u2.getId())
                 .votedObject(a1.getId())
                 .voteType(Vote.VoteType.UP).build();
@@ -260,7 +255,6 @@ public class ServiceRegistry {
         voteRepository.save(v2);
         voteRepository.save(v3);
         voteRepository.save(v4);
-        voteRepository.save(v5);
 
         // Place the E2E question in the front page by giving it the biggest upvote count
         voteRepository.save(Vote.builder()
