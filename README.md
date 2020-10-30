@@ -1,35 +1,38 @@
-# AMT Project 1 : StoneOverflow
+# AMT Project 1 : StoneOverflow <img src="https://github.com/RockAndStones/AMT-Project-1/workflows/MVN%20&%20E2E%20Tests/badge.svg?branch=dev" alt="Tests">
 
-## Table des matières
+## Table of contents
 - [Introduction](#Introduction)  
 - [Installation](#Installation)
 
 ## Introduction
-
 As part of the course AMT we were asked to create a site that will be a simple version of Stack Overflow. We will have to use the Jakarat EE technology to be able to create a site using Java language.
 
 We will also use JUnit for the UnitTest and Codecept.js for the e2e tests.
 
 If you want to see the specification of the user interface please [click here](https://docs.google.com/document/d/1DSahosKDQq_0yjQDg7r0EOaPcs6QhwXc7yyWqTjHFSo/edit?usp=sharing)
 
-## Installation
+## Deployment
+The web application can be deployed with a simple [docker-compose](./docker/docker-compose.yml) file downloadable [here](https://githubraw.com/RockAndStones/AMT-Project-1/master/docker/docker-compose.yml).
 
-The site can be installed in two different ways according to your preference.
+Next open a terminal where the docker-compose file is and run the following command. 
+```
+docker-compose up -d
+```
+You will then be able to access the web application at the url http://localhost:8080 when docker-compose is up and running.
 
-First you can install it with an OpenLiberty server for that you will have to do the following steps :
+## Running Tests
+If you want to run the tests you will first need start the docker database container.
 
-1. Clone the project using the command git clone :  
-  `git clone git@github.com:RockAndStones/AMT-Project-1.git`
-
-2. Go in the directory `docker/images/stoneoverflow` and run the script `build-image.sh`.  
-    This script will make an **mvn clean package** on the project and copy the **.war** in the current directory(`docker/images/stoneoverflow`) and then build a docker image named **liberty/stoneoverflow**.  
-    It will also copy the configuration of the liberty server stores in `src/main/liberty`
-
-3. Go to the directory `docker/topologies/test` and run the command : `docker compose up`  
-   This command will start the OpenLiberty server and you will now be able to access the application through the port `9080` or `9443` for HTTPS of your **localhost** or the **ip address** of your docker machine(`192.168.99.100:8080` for instance).
-
-The second way is the one when you can directly download a docker image with the package available on github :
-
- 1. First run the following command `docker pull ghcr.io/rockandstones/stoneoverflow:latest`.  
- 2. Then, run the command `docker run -p 9080:9080 -p 9443:94443 ghcr.io/rockandstones/stoneoverflow`.    
-    After that you can see the website using the same method as before `localhost:9080` or `192.168.99.100:9080` if you have docker machine.
+First clone the repository.
+```
+git clone https://github.com/RockAndStones/AMT-Project-1.git
+```
+Then run the docker database container with the docker-compose file available in docker folder.
+```
+cd ./AMT-Project-1/docker
+docker-compose -d sql
+```
+### Unit & Integration Tests
+To run the unit & integration tests, use the `run-unit-integration-tests.sh` script from the cloned root folder.
+### End to End (E2E) Tests
+To run the end to end (E2E) tests, use the `run-e2e-tests.sh` script from the cloned root folder.
