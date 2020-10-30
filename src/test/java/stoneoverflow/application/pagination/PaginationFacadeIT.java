@@ -75,7 +75,7 @@ public class PaginationFacadeIT {
 
 
         int totalPages = (int) Math.ceil((double) questionFacade.getNumberOfQuestions() / (double) QUESTION_PER_PAGE);
-        int lastPage = Math.min(QUESTION_PER_PAGE, totalPages);
+        int lastPage = Math.min(5, totalPages);
         int lastItem = Math.min(20, questionFacade.getNumberOfQuestions());
         PaginationDTO resultPagination = paginationFacade.settingQuestionPagination("2");
         PaginationDTO expectedPagination = PaginationDTO.builder()
@@ -103,7 +103,7 @@ public class PaginationFacadeIT {
         PaginationDTO resultPagination = paginationFacade.settingQuestionPagination("1");
 
         int totalPages = (int) Math.ceil((double) questionFacade.getNumberOfQuestions() / (double) QUESTION_PER_PAGE);
-        int lastPage = Math.min(QUESTION_PER_PAGE, totalPages);
+        int lastPage = Math.min(5, totalPages);
 
         PaginationDTO expectedPagination = PaginationDTO.builder()
                 .limit(QUESTION_PER_PAGE)
