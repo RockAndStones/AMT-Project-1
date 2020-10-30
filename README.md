@@ -3,7 +3,7 @@
 ## Table of contents
 - [Introduction](#Introduction)  
 - [Deployment](#Deployment)
-- [Running Tests](#Running Tests)
+- [Tests](#Tests)
 
 ## Introduction
 As part of the course AMT we were asked to create a site that will be a simple version of Stack Overflow. We will have to use the Jakarat EE technology to be able to create a site using Java language.
@@ -25,7 +25,7 @@ docker-compose up -d
 ```
 You will then be able to access the web application at the url http://localhost:8080 when docker-compose is up and running.
 
-## Running Tests
+## Tests
 If you want to run the tests you will first need start the docker database container.
 
 First clone the repository.
