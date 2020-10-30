@@ -30,6 +30,8 @@ jobs:
       - name: Build Docker image (includes mvn clean package)
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u Naludrag --password-stdin
+          cp -R src/main/liberty docker/images/stoneoverflow/
+          cp target/StoneOverflow.war docker/images/stoneoverflow/
           docker build -t rockandstones/stoneoverflow docker/images/stoneoverflow
           docker tag rockandstones/stoneoverflow ghcr.io/rockandstones/stoneoverflow
           docker push ghcr.io/rockandstones/stoneoverflow
