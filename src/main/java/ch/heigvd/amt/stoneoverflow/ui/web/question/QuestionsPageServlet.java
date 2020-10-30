@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(name="QuestionsPageServlet", urlPatterns =  {"", "/home"})
-public class QuestionQueryServlet extends HttpServlet {
+public class QuestionsPageServlet extends HttpServlet {
     @Inject
     ServiceRegistry serviceRegistry;
 

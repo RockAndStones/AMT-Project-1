@@ -7,7 +7,7 @@
     <input type="hidden" name="targetType" value="${param.commentType}">
     <input type="hidden" name="questionUUID" value="${question.uuid}">
     <div class="flex flex-col mt-1 mb-2">
-        <textarea name="commentContent" placeholder="Please be sure to provide a clear and detailed comment to contribute to StoneOverflow." class="textAreaCommentClass h-16 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+        <textarea name="commentContent" placeholder="Please be sure to provide a clear and detailed comment to contribute to StoneOverflow." class="textAreaCommentClass h-16 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
     </div>
     <button type="submit" class="submitCommentClass w-auto bg-black text-white font-bold text-lg hover:bg-gray-700 p-2">Submit</button>
 </form>

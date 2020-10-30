@@ -86,7 +86,7 @@
                 <input type="hidden" name="questionUUID" value="${question.uuid}">
                 <div class="flex flex-col">
                     <label for="responseDescription" class="text-lg">Description</label>
-                    <textarea id="responseDescription" name="description" placeholder="Please be sure to provide a clear and detailed answer to contribute to StoneOverflow." class="h-48 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                    <textarea id="responseDescription" name="description" placeholder="Please be sure to provide a clear and detailed answer to contribute to StoneOverflow." class="h-48 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
                 </div>
                 <button id="answerFormSubmit" type="submit" class="w-auto bg-black text-white font-bold text-lg hover:bg-gray-700 p-2 mt-8">Submit</button>
             </form>
