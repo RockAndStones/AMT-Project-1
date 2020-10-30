@@ -2,7 +2,8 @@
 
 ## Table of contents
 - [Introduction](#Introduction)  
-- [Installation](#Installation)
+- [Deployment](#Deployment)
+- [Running Tests](#Running Tests)
 
 ## Introduction
 As part of the course AMT we were asked to create a site that will be a simple version of Stack Overflow. We will have to use the Jakarat EE technology to be able to create a site using Java language.
