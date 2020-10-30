@@ -31,19 +31,19 @@ import javax.inject.Named;
 
 @ApplicationScoped
 public class ServiceRegistry {
-    @Inject @Named("InMemoryQuestionRepository")
+    @Inject @Named("JdbcQuestionRepository")
     IQuestionRepository questionRepository;
 
-    @Inject @Named("InMemoryUserRepository")
+    @Inject @Named("JdbcUserRepository")
     IUserRepository userRepository;
 
-    @Inject @Named("InMemoryAnswerRepository")
+    @Inject @Named("JdbcAnswerRepository")
     IAnswerRepository answerRepository;
 
-    @Inject @Named("InMemoryCommentRepository")
+    @Inject @Named("JdbcCommentRepository")
     ICommentRepository commentRepository;
 
-    @Inject @Named("InMemoryVoteRepository")
+    @Inject @Named("JdbcVoteRepository")
     IVoteRepository voteRepository;
 
     @Getter IdentityManagementFacade identityManagementFacade;
