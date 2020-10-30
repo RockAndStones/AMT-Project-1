@@ -9,6 +9,7 @@
             <button id="voteUp${msg.uuid}" class="voteUp" type="submit"><i class="leading-normal fas fa-caret-up text-6xl <c:if test="${msg.vote.voteType.name() == 'UP' }">text-black</c:if>"></i></button>
         </form>
         <span id="nbVotes${msg.uuid}" class="text-lg">${msg.nbVotes}</span>
+        <span id="nbVotes" hidden class="text-lg">${msg.nbVotes}</span>
         <form action="${pageContext.request.contextPath}/vote.do" method="post">
             <input type="hidden" name="questionUUID" value="${question.uuid}">
             <input type="hidden" name="targetUUID"   value="${msg.uuid}">
