@@ -48,6 +48,7 @@ jobs:
 
       - name: Start MVN server
         run: |
+          sed -i '/DB_HOST/s/=.*/=localhost/' src/main/liberty/config/server.env
           mvn liberty:create liberty:install-feature liberty:deploy
           mvn liberty:start
 
