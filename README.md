@@ -34,16 +34,10 @@ docker-compose up -d
 You will then be able to access the web application at the url http://localhost:8080 when docker-compose is up and running.
 
 ## Tests
-If you want to run the tests you will first need start the docker database container.
+If you want to run the tests you will first need to clone the repository here is the command.
 
-First clone the repository.
 ```
 git clone https://github.com/RockAndStones/AMT-Project-1.git
-```
-Then run the docker database container with the docker-compose file available in docker folder.
-```
-cd ./AMT-Project-1/docker
-docker-compose -d sql
 ```
 ### Unit & Integration Tests
 To run the unit & integration tests, use the `run-unit-integration-tests.sh` script from the cloned root folder.

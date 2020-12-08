@@ -79,7 +79,7 @@
             <table class="table-auto w-full">
                 <thead>
                 <tr>
-                    <th class="border px-4 py-2 text-left">User</th>
+                    <th class="border px-4 py-2 text-left">Question</th>
                     <th class="border px-4 py-2">Number of votes</th>
                 </tr>
                 </thead>
