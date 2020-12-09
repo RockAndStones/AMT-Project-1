@@ -54,9 +54,9 @@ jobs:
       - name: Wait on the services
         run: |
           cd docker
-          chmod +x wait-for-it.sh
-          ./wait-for-it.sh --timeout=30000 localhost:8081
-          ./wait-for-it.sh --timeout=30000 localhost:8080
+          chmod +x wait-for-it.unix.sh
+          ./wait-for-it.unix.sh --timeout=30000 localhost:8081
+          ./wait-for-it.unix.sh --timeout=30000 localhost:8080
           curl localhost:8080
 
       - name: MVN verify webapp
@@ -76,9 +76,8 @@ jobs:
       - name: Wait on the services
         run: |
           cd docker
-          chmod +x wait-for-it.sh
-          ./wait-for-it.sh --timeout=30000 localhost:8081
-          ./wait-for-it.sh --timeout=30000 localhost:8080
+          ./wait-for-it.unix.sh --timeout=30000 localhost:8081
+          ./wait-for-it.unix.sh --timeout=30000 localhost:8080
           curl localhost:8080
 
       - name: E2E tests
