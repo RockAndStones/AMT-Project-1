@@ -35,10 +35,10 @@ jobs:
       - name: Maven Clean Package
         run: mvn clean package
 
-      - name: E2E npm ci
+      - name: E2E npm install
         run: |
           cd e2e
-          npm ci
+          npm install
 
       - name: Start docker dependencies (stoneoverflow-db, gamification-db/api)
         run: |
