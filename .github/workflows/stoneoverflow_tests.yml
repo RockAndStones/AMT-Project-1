@@ -68,6 +68,7 @@ jobs:
       - name: Restart docker dependencies (stoneoverflow-db, gamification-db/api)
         run: |
           cd docker
+          docker-compose down
           docker-compose up -d stoneoverflow-db gamification-api
 
       - name: MVN start webapp
