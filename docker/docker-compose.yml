@@ -9,8 +9,6 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=mysql
       - MYSQL_DATABASE=gamification_engine_db
-    volumes:
-      - ./images/gamification-db/init/:/docker-entrypoint-initdb.d/
 
   gamification-api:
     image: ghcr.io/rockandstones/gamification-api:latest
@@ -36,7 +34,7 @@ services:
       - MYSQL_ROOT_PASSWORD=mysql
       - MYSQL_DATABASE=stoneoverflow-db
     volumes:
-      - ./images/sqlServer/init/:/docker-entrypoint-initdb.d/
+      - ./images/stoneoverflow-db/init/:/docker-entrypoint-initdb.d/
 
   stoneoverflow-webapp:
     image: ghcr.io/rockandstones/stoneoverflow:latest
