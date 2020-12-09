@@ -1,5 +1,6 @@
 package ch.heigvd.amt.stoneoverflow.application;
 
+import ch.heigvd.amt.stoneoverflow.infrastructure.gamification.GamificationApiManager;
 import ch.heigvd.amt.stoneoverflow.application.pagination.PaginationFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.AddQuestionCommand;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
@@ -20,6 +21,7 @@ import ch.heigvd.amt.stoneoverflow.domain.vote.IVoteRepository;
 import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
 
 import java.util.concurrent.atomic.AtomicInteger;
+
 import lombok.Getter;
 
 import javax.annotation.PostConstruct;
@@ -44,6 +46,7 @@ public class ServiceRegistry {
     @Inject @Named("JdbcVoteRepository")
     IVoteRepository voteRepository;
 
+    @Getter GamificationApiManager   gamificationApiManager;
     @Getter IdentityManagementFacade identityManagementFacade;
     @Getter QuestionFacade           questionFacade;
     @Getter AnswerFacade             answerFacade;
@@ -54,6 +57,8 @@ public class ServiceRegistry {
 
     @PostConstruct
     private void initDefaultValues() {
+        gamificationApiManager = new GamificationApiManager("StoneOverflow");
+
         identityManagementFacade = new IdentityManagementFacade(userRepository);
         questionFacade           = new QuestionFacade(questionRepository);
         answerFacade             = new AnswerFacade(answerRepository);
