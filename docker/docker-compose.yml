@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   gamification-db:
     image: mysql:8.0.21
@@ -9,8 +9,6 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=mysql
       - MYSQL_DATABASE=gamification_engine_db
-    volumes:
-      - ./images/gamification-db/init/:/docker-entrypoint-initdb.d/
 
   gamification-api:
     image: ghcr.io/rockandstones/gamification-api:latest
@@ -26,29 +24,29 @@ services:
       - gamification-db
     command: bash -c "/usr/wait-for-it.sh --timeout=0 gamification-db:3306 && java -Djava.security.egd=file:/dev/./urandom -jar /app/gamification-api.jar"
 
-  sql:
+  stoneoverflow-db:
     image: mysql:8.0.21
-    container_name: stoneoverflow_db
+    container_name: stoneoverflow-db
     restart: always
     ports:
       - "3306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=mysql
-      - MYSQL_DATABASE=db_stoneoverflow
+      - MYSQL_DATABASE=stoneoverflow-db
     volumes:
-      - ./images/sqlServer/init/:/docker-entrypoint-initdb.d/
+      - ./images/stoneoverflow-db/init/:/docker-entrypoint-initdb.d/
 
-  webapp:
-     image: ghcr.io/rockandstones/stoneoverflow:latest
-     container_name: stoneoverflow
-     ports:
-       - "8080:8080"
-       - "9443:9443"
-     volumes:
-       - ../src/main/liberty/config/server.env:/config/server.env
-     depends_on:
-       - sql
-       - gamification-api
+  stoneoverflow-webapp:
+    image: ghcr.io/rockandstones/stoneoverflow:latest
+    container_name: stoneoverflow-webapp
+    ports:
+      - "8080:8080"
+      - "9443:9443"
+    volumes:
+      - ../src/main/liberty/config/server.env:/config/server.env
+    depends_on:
+      - stoneoverflow-db
+      - gamification-api
 
 
 

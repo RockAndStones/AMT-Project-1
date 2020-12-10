@@ -8,20 +8,20 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema db_stoneoverflow
+-- Schema stoneoverflow-db
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `db_stoneoverflow` ;
+DROP SCHEMA IF EXISTS `stoneoverflow-db` ;
 
 -- -----------------------------------------------------
--- Schema db_stoneoverflow
+-- Schema stoneoverflow-db
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `db_stoneoverflow` DEFAULT CHARACTER SET utf8 ;
-USE `db_stoneoverflow` ;
+CREATE SCHEMA IF NOT EXISTS `stoneoverflow-db` DEFAULT CHARACTER SET utf8 ;
+USE `stoneoverflow-db` ;
 
 -- -----------------------------------------------------
--- Table `db_stoneoverflow`.`User`
+-- Table `stoneoverflow-db`.`User`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`User` (
+CREATE TABLE IF NOT EXISTS `stoneoverflow-db`.`User` (
   `id` CHAR(36) NOT NULL,
   `firstName` VARCHAR(45) NULL,
   `lastName` VARCHAR(45) NULL,
@@ -35,9 +35,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `db_stoneoverflow`.`UserMessage`
+-- Table `stoneoverflow-db`.`UserMessage`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`UserMessage` (
+CREATE TABLE IF NOT EXISTS `stoneoverflow-db`.`UserMessage` (
   `id` CHAR(36) NOT NULL,
   `idUser` CHAR(36) NOT NULL,
   `description` TEXT NULL,
@@ -46,16 +46,16 @@ CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`UserMessage` (
   INDEX `fk_UserMessage_User1_idx` (`idUser` ASC) VISIBLE,
   CONSTRAINT `fk_UserMessage_User1`
     FOREIGN KEY (`idUser`)
-    REFERENCES `db_stoneoverflow`.`User` (`id`)
+    REFERENCES `stoneoverflow-db`.`User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `db_stoneoverflow`.`Question`
+-- Table `stoneoverflow-db`.`Question`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Question` (
+CREATE TABLE IF NOT EXISTS `stoneoverflow-db`.`Question` (
   `id` CHAR(36) NOT NULL,
   `title` VARCHAR(100) NULL,
   `nbViews` INTEGER NULL,
@@ -64,37 +64,37 @@ CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Question` (
   INDEX `fk_Question_UserMessage1_idx` (`id` ASC) VISIBLE,
   CONSTRAINT `fk_Question_UserMessage1`
     FOREIGN KEY (`id`)
-    REFERENCES `db_stoneoverflow`.`UserMessage` (`id`)
+    REFERENCES `stoneoverflow-db`.`UserMessage` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `db_stoneoverflow`.`Answer`
+-- Table `stoneoverflow-db`.`Answer`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Answer` (
+CREATE TABLE IF NOT EXISTS `stoneoverflow-db`.`Answer` (
   `id` CHAR(36) NOT NULL,
   `idQuestion` CHAR(36) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_Answer_Question1_idx` (`idQuestion` ASC) VISIBLE,
   CONSTRAINT `fk_Answer_UserMessage1`
     FOREIGN KEY (`id`)
-    REFERENCES `db_stoneoverflow`.`UserMessage` (`id`)
+    REFERENCES `stoneoverflow-db`.`UserMessage` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Answer_Question1`
     FOREIGN KEY (`idQuestion`)
-    REFERENCES `db_stoneoverflow`.`Question` (`id`)
+    REFERENCES `stoneoverflow-db`.`Question` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `db_stoneoverflow`.`Comment`
+-- Table `stoneoverflow-db`.`Comment`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Comment` (
+CREATE TABLE IF NOT EXISTS `stoneoverflow-db`.`Comment` (
   `id` CHAR(36) NOT NULL,
   `idUser` VARCHAR(36) NOT NULL,
   `idUserMessage` VARCHAR(36) NOT NULL,
@@ -104,20 +104,20 @@ CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Comment` (
   INDEX `fk_Comment_User1_idx` (`idUser` ASC) VISIBLE,
   CONSTRAINT `fk_Comment_User1`
     FOREIGN KEY (`idUser`)
-    REFERENCES `db_stoneoverflow`.`User` (`id`)
+    REFERENCES `stoneoverflow-db`.`User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Comment_UserMessage1`
     FOREIGN KEY (`idUserMessage`)
-    REFERENCES `db_stoneoverflow`.`UserMessage` (`id`)
+    REFERENCES `stoneoverflow-db`.`UserMessage` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `db_stoneoverflow`.`Vote`
+-- Table `stoneoverflow-db`.`Vote`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Vote` (
+CREATE TABLE IF NOT EXISTS `stoneoverflow-db`.`Vote` (
     `id` CHAR(36) NOT NULL,
     `idUser` VARCHAR(36) NOT NULL,
     `idUserMessage` VARCHAR(36) NOT NULL,
@@ -126,12 +126,12 @@ CREATE TABLE IF NOT EXISTS `db_stoneoverflow`.`Vote` (
     INDEX `fk_Vote_User_idx` (`idUser` ASC) VISIBLE,
     CONSTRAINT `fk_Vote_User`
         FOREIGN KEY (`idUser`)
-            REFERENCES `db_stoneoverflow`.`User` (`id`)
+            REFERENCES `stoneoverflow-db`.`User` (`id`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION,
     CONSTRAINT `fk_Vote_UserMessage`
         FOREIGN KEY (`idUserMessage`)
-            REFERENCES `db_stoneoverflow`.`UserMessage` (`id`)
+            REFERENCES `stoneoverflow-db`.`UserMessage` (`id`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION)
     ENGINE = InnoDB;
