@@ -1,6 +1,5 @@
 package ch.heigvd.amt.stoneoverflow.infrastructure.gamification;
 
-import com.github.javafaker.App;
 import kong.unirest.GenericType;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
