@@ -15,7 +15,7 @@ import java.util.TimeZone;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GamificationApiManagerTest {
+public class GamificationApiManagerIT {
     GamificationApiManager gApiManager = new GamificationApiManager("unitTests-" +  RandomStringUtils.random(10, true, true));
 
     private static final DefaultApi api = new DefaultApi();
@@ -23,7 +23,7 @@ public class GamificationApiManagerTest {
     @BeforeAll
     static void initApi() throws IOException {
         Properties properties = new Properties();
-        properties.load(GamificationApiManagerTest.class.getClassLoader().getResourceAsStream("environment.properties"));
+        properties.load(GamificationApiManagerIT.class.getClassLoader().getResourceAsStream("environment.properties"));
         String url = properties.getProperty("ch.heigvd.amt.gamification.server.url");
         api.getApiClient().setBasePath(url);
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
