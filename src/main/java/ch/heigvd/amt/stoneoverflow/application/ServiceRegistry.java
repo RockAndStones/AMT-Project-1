@@ -1,5 +1,6 @@
 package ch.heigvd.amt.stoneoverflow.application;
 
+import ch.heigvd.amt.gamification.ApiException;
 import ch.heigvd.amt.stoneoverflow.infrastructure.gamification.GamificationApiManager;
 import ch.heigvd.amt.stoneoverflow.application.pagination.PaginationFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.AddQuestionCommand;
@@ -57,7 +58,11 @@ public class ServiceRegistry {
 
     @PostConstruct
     private void initDefaultValues() {
-        gamificationApiManager = new GamificationApiManager("StoneOverflow");
+        try {
+            gamificationApiManager = new GamificationApiManager("StoneOverflow");
+        } catch (ApiException exception) {
+            // todo: handle exception
+        }
 
         identityManagementFacade = new IdentityManagementFacade(userRepository);
         questionFacade           = new QuestionFacade(questionRepository);

@@ -20,6 +20,9 @@ public class GamificationApiManagerIT {
 
     private static final DefaultApi api = new DefaultApi();
 
+    public GamificationApiManagerIT() throws ApiException {
+    }
+
     @BeforeAll
     static void initApi() throws IOException {
         Properties properties = new Properties();

@@ -1,23 +1,21 @@
 package ch.heigvd.amt.stoneoverflow.infrastructure.gamification;
 
-import kong.unirest.GenericType;
-import kong.unirest.HttpResponse;
-import kong.unirest.Unirest;
-import kong.unirest.UnirestException;
+import ch.heigvd.amt.gamification.*;
+import ch.heigvd.amt.gamification.api.DefaultApi;
+import ch.heigvd.amt.gamification.api.dto.*;
 
 import java.util.List;
 
-
 public class GamificationApiManager {
+
     private enum Endpoint {
         APPLICATIONS("applications"),
         BADGES("badges"),
         EVENTS("events"),
-        POINTSCALES("pointscales"),
+        POINT_SCALES("pointscales"),
         RANKINGS("rankings"),
         RULES("rules"),
         USERS("users");
-
 
         public final String value;
 
@@ -26,9 +24,24 @@ public class GamificationApiManager {
         }
     }
 
-    private boolean gotApiKey = false;
+    private boolean hasApiKey = false;
 
-    public GamificationApiManager(String appName) {
+    private DefaultApi api;
+
+    public GamificationApiManager(String appName) throws ApiException {
+
+        ApiClient apiClient = new ApiClient();
+        apiClient.setBasePath("http://localhost:8081");
+
+        this.api = new DefaultApi(apiClient);
+
+        NewApplication app = new NewApplication();
+        app.setName(appName);
+        ApiResponse<Void> resp = api.createApplicationWithHttpInfo(app);
+
+        System.out.println("api response: " + resp.getStatusCode());
+
+        /*
         // Setting a default base url and default headers
         Unirest.config()
                 .defaultBaseUrl("http://localhost:8081/")
@@ -54,37 +67,50 @@ public class GamificationApiManager {
         } catch (UnirestException e) {
             e.printStackTrace();
         }
+        */
     }
 
     public int createApplication(String name){
+        /*
         HttpResponse createApplicationResponse
                 = Unirest.post(Endpoint.APPLICATIONS.value)
                 .body(new Application(name, null))
                 .asEmpty();
 
         return createApplicationResponse.getStatus();
+         */
+        return 0;
     }
 
     public Application getApplication(String name){
+        /*
         HttpResponse<Application> applicationResponse
                 = Unirest.get(Endpoint.APPLICATIONS.value + "/" + name)
                 .asObject(Application.class);
 
         return applicationResponse.getBody();
+
+          */
+        return null;
     }
 
     public List<Badge> getBadges(){
-        if(!gotApiKey){ return null; }
+        /*
+        if(!hasApiKey){ return null; }
 
         HttpResponse<List<Badge>> badgesResponse =
                 Unirest.get(Endpoint.BADGES.value)
                         .asObject(new GenericType<List<Badge>>() {});
 
         return badgesResponse.getBody();
+
+         */
+        return null;
     }
 
     public int createBadge(String description, String name){
-        if(!gotApiKey){ return 0; }
+        /*
+        if(!hasApiKey){ return 0; }
 
         HttpResponse createBadgeResponse
                 = Unirest.post(Endpoint.BADGES.value)
@@ -92,38 +118,53 @@ public class GamificationApiManager {
                 .asEmpty();
 
         return createBadgeResponse.getStatus();
+         */
+        return 0;
     }
 
     public Badge getBadge(String name){
-        if(!gotApiKey){ return null; }
+        /*
+        if(!hasApiKey){ return null; }
 
         HttpResponse<Badge> badgeResponse =
                 Unirest.get(Endpoint.BADGES.value + "/" + name)
                         .asObject(Badge.class);
 
         return badgeResponse.getBody();
+
+         */
+        return null;
     }
 
     public int putBadge(String description, String name){
-        if(!gotApiKey){ return 0; }
+
+        //if(!hasApiKey){ return 0; }
 
         /* TODO Add the Usable query field */
+        /*
         HttpResponse putBadgeResponse
                 = Unirest.put(Endpoint.BADGES.value)
                 .body(new Badge(description, name))
                 .asEmpty();
 
         return putBadgeResponse.getStatus();
+
+         */
+        return 0;
     }
 
     public int removeBadge(String name){
-        if(!gotApiKey){ return 0; }
+        /*
+        if(!hasApiKey){ return 0; }
 
         HttpResponse removeBadgeResponse
                 = Unirest.post(Endpoint.BADGES.value + "/" + name)
                 .asEmpty();
 
         return removeBadgeResponse.getStatus();
+
+         */
+        return 0;
     }
 
 }
