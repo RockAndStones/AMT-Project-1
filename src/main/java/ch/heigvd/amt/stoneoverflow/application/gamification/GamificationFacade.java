@@ -214,7 +214,9 @@ public class GamificationFacade {
         return gamificationApi != null;
     }
 
-    /*public Boolean newQuestion(User user) {
+    /*
+    todo: implement method
+    public Boolean newQuestion(User user) {
         try {
             gamificationApi.createEventAsync(Event(
                     user.getId().asString(),
@@ -239,6 +241,58 @@ public class GamificationFacade {
             apiException.printStackTrace();
         }
     }*/
+
+    /**
+     * Add a reply in the gamification engine.
+     * @param user The user who performed the action.
+     * @return True if successful.
+     */
+    public Boolean addReply(User user) {
+        // todo: implement the method using callback
+        return false;
+    }
+
+    /**
+     * Add a comment in the gamification engine.
+     * @param user The user who performed the action.
+     * @return True if successful.
+     */
+    public Boolean addComment(User user) {
+        // todo: implement the method using callback
+        return false;
+    }
+
+    /**
+     * Add a reply in the gamification engine.
+     * @param user The user who performed the action.
+     * @return True if successful.
+     */
+    public Boolean addVote(User user) {
+        // todo: implement the method using callback
+        return false;
+    }
+
+    /**
+     * Add a vote in the gamification engine.
+     * @param user The user who performed the action.
+     * @return True if successful.
+     */
+    public Boolean removeVote(User user) {
+        // todo: implement the method using callback
+        return false;
+    }
+
+    /**
+     * Remove a vote in the gamification engine.
+     * @param user The user who performed the action.
+     * @return True if successful.
+     */
+    public Boolean removeReply(User user) {
+        // todo: implement the method using callback
+        return false;
+    }
+
+    // todo: handle stoner event
 
     /**
      * Constructor of Badge.
