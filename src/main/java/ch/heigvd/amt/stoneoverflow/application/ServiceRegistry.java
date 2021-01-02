@@ -1,8 +1,6 @@
 package ch.heigvd.amt.stoneoverflow.application;
 
-import ch.heigvd.amt.gamification.ApiException;
-import ch.heigvd.amt.gamification.api.DefaultApi;
-import ch.heigvd.amt.gamification.api.dto.*;
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.application.pagination.PaginationFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.AddQuestionCommand;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
@@ -22,9 +20,6 @@ import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import ch.heigvd.amt.stoneoverflow.domain.vote.IVoteRepository;
 import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import lombok.Getter;
@@ -36,6 +31,7 @@ import javax.inject.Named;
 
 @ApplicationScoped
 public class ServiceRegistry {
+
     @Inject @Named("JdbcQuestionRepository")
     IQuestionRepository questionRepository;
 
@@ -51,7 +47,7 @@ public class ServiceRegistry {
     @Inject @Named("JdbcVoteRepository")
     IVoteRepository voteRepository;
 
-    @Getter DefaultApi               gamificationApi;
+    @Getter GamificationFacade       gamificationFacade;
     @Getter IdentityManagementFacade identityManagementFacade;
     @Getter QuestionFacade           questionFacade;
     @Getter AnswerFacade             answerFacade;
@@ -62,11 +58,6 @@ public class ServiceRegistry {
 
     @PostConstruct
     private void initDefaultValues() {
-        try {
-            initGamificationApi();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         initFacades();
         if(userRepository.getRepositorySize() > 0) {
             return;
@@ -85,6 +76,7 @@ public class ServiceRegistry {
         voteFacade               = new VoteFacade(voteRepository);
         statisticsFacade         = new StatisticsFacade(questionRepository, userRepository, commentRepository, answerRepository, voteRepository, questionFacade, voteFacade);
         paginationFacade         = new PaginationFacade(questionRepository, answerRepository);
+        gamificationFacade       = new GamificationFacade();
     }
 
     /**
@@ -292,202 +284,5 @@ public class ServiceRegistry {
                 .votedBy(uE2eVoter.getId())
                 .votedObject(qE2e.getId())
                 .voteType(Vote.VoteType.UP).build());
-    }
-
-    /**
-     * Initialize the gamification functionality.
-     * Set the application, the badges, the point scales, & the rules in the gamification engine
-     * if application is not set.
-     * @throws IOException Threw if environment.properties file cannot be loaded.
-     */
-    private void initGamificationApi() throws IOException {
-        Properties properties = new Properties();
-        properties.load(ServiceRegistry.class.getClassLoader().getResourceAsStream("environment.properties"));
-        gamificationApi = new DefaultApi();
-        gamificationApi.getApiClient().setBasePath(properties.getProperty("ch.heigvd.amt.gamification.server.url"));
-
-        String appName = properties.getProperty("ch.heigvd.amt.gamification.app.name");
-
-        Application app = null;
-        try {
-            app = gamificationApi.getApplication(appName);
-        } catch (ApiException e) {
-            if (e.getCode() == 404) {
-                System.out.println("Application '" + appName + "' does not exist");
-            } else {
-                e.printStackTrace();
-            }
-        }
-
-        if (app == null) {
-            NewApplication newApp = new NewApplication();
-            newApp.setName(appName);
-            try {
-                gamificationApi.createApplicationWithHttpInfo(newApp);
-                app = gamificationApi.getApplication(appName);
-                gamificationApi.getApiClient().setApiKey(app.getApiKey());
-            } catch (ApiException e) {
-                e.printStackTrace();
-            }
-
-            // Create badges
-            Badge[] questionBadges = new Badge[4];
-            questionBadges[0] = Badge("First question", "You asked your first question ! Congrats !");
-            questionBadges[1] = Badge("Pebble questionner", "We see you're getting used to ask questions. Keep going !");
-            questionBadges[2] = Badge("Rock questionner", "Almost a stonfessional in the asking game ?!");
-            questionBadges[3] = Badge("Mountain questionner", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
-
-            Badge[] replyBadges = new Badge[4];
-            replyBadges[0] = Badge("First reply", "You replied for the first time ! Congrats !");
-            replyBadges[1] = Badge("Earth replier", "We see you're getting used to reply questions. Keep going !");
-            replyBadges[2] = Badge("Cobblestone replier", "Almost a stonfessional in the replying game ?!");
-            replyBadges[3] = Badge("Mineral replier", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
-
-            Badge[] commentBadges = new Badge[4];
-            commentBadges[0] = Badge("First comment", "You wrote your first comment ! Congrats !");
-            commentBadges[1] = Badge("Sand commenter", "We see you're getting used to commenting. Keep going !");
-            commentBadges[2] = Badge("Gravel commenter", "Almost a stonfessional in the commenting game ?!");
-            commentBadges[3] = Badge("Crag commenter", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
-
-            Badge[] voteBadges = new Badge[4];
-            voteBadges[0] = Badge("First vote", "You voted for the first time ! Congrats !");
-            voteBadges[1] = Badge("Rubble voter", "We see you're getting used to voting. Keep going !");
-            voteBadges[2] = Badge("Boulder voter", "Almost a stonfessional in the voting game ?!");
-            voteBadges[3] = Badge("Peak voter", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
-
-            Badge[] stonerBadges = new Badge[4];
-            stonerBadges[0] = Badge("Newcomer", "Welcome to the StoneOverflow family !");
-            stonerBadges[1] = Badge("Rookie", "");
-            stonerBadges[2] = Badge("Confirmed", "");
-            stonerBadges[3] = Badge("Veteran", "");
-
-            // Create point scales
-            PointScale questionPointScale = PointScale(Arrays.asList(
-                    Stage(1d, questionBadges[0]),
-                    Stage(5d, questionBadges[1]),
-                    Stage(10d, questionBadges[2]),
-                    Stage(20d, questionBadges[3])));
-
-            PointScale replyPointScale = PointScale(Arrays.asList(
-                    Stage(1d, replyBadges[0]),
-                    Stage(5d, replyBadges[1]),
-                    Stage(10d, replyBadges[2]),
-                    Stage(20d, replyBadges[3])));
-
-            PointScale commentPointScale = PointScale(Arrays.asList(
-                    Stage(1d, commentBadges[0]),
-                    Stage(5d, commentBadges[1]),
-                    Stage(10d, commentBadges[2]),
-                    Stage(20d, commentBadges[3])));
-
-            PointScale votePointScale = PointScale(Arrays.asList(
-                    Stage(1d, voteBadges[0]),
-                    Stage(5d, voteBadges[1]),
-                    Stage(10d, voteBadges[2]),
-                    Stage(20d, voteBadges[3])));
-
-            PointScale stonerPointScale = PointScale(Arrays.asList(
-                    Stage(1d, stonerBadges[0]),
-                    Stage(5d, stonerBadges[1]),
-                    Stage(10d, stonerBadges[2]),
-                    Stage(20d, stonerBadges[3])));
-
-            //todo: create rules
-
-            // Send badges, point scales, & rules to the api
-            try {
-                createBadges(questionBadges, replyBadges, commentBadges, voteBadges, stonerBadges);
-                createPointScales(questionPointScale, replyPointScale, commentPointScale, votePointScale, stonerPointScale);
-            } catch (ApiException exception) {
-                //todo: handle exception
-                exception.printStackTrace();
-            }
-
-        }
-    }
-
-    /**
-     * Constructor of Badge.
-     * @param name
-     * @param description
-     * @return an instance of Badge.
-     */
-    private Badge Badge(String name, String description) {
-        Badge badge = new Badge();
-        badge.name(name);
-        badge.description(description);
-        return badge;
-    }
-
-    /**
-     * Constructor of Stage.
-     * @param points
-     * @param badge
-     * @return an instance of Stage.
-     */
-    private Stage Stage(Double points, Badge badge) {
-        Stage stage = new Stage();
-        stage.points(points);
-        stage.badge(badge);
-        return stage;
-    }
-
-    /**
-     * Constructor of PointScale.
-     * @param stages
-     * @return an instance of PointScale.
-     */
-    private PointScale PointScale(List<Stage> stages) {
-        PointScale pointScale = new PointScale();
-        pointScale.stages(stages);
-        return pointScale;
-    }
-
-    /**
-     * Constructor of Rule.
-     * @param name
-     * @param description
-     * @param eventType
-     * @param pointsToAdd
-     * @param badgeName
-     * @param pointScaleId
-     * @return an instance of Rule.
-     */
-    private Rule Rule(String name, String description, String eventType, Double pointsToAdd, String badgeName, Integer pointScaleId) {
-        //todo: implement method
-        return null;
-    }
-
-    /**
-     * Create provided badges in the gamification engine.
-     * @param badges
-     * @throws ApiException Threw if API communication return an error.
-     */
-    private void createBadges(Badge[]... badges) throws ApiException {
-        for (Badge[] badgesX : badges) {
-            for (Badge badge : badgesX) {
-                gamificationApi.createBadge(badge);
-            }
-        }
-    }
-
-    /**
-     * Create provided point scales in the gamification engine.
-     * @param pointScales
-     * @throws ApiException Threw if API communication return an error.
-     */
-    private void createPointScales(PointScale... pointScales) throws ApiException {
-        for (PointScale pointScale : pointScales) {
-            gamificationApi.createPointScale(pointScale);
-        }
-    }
-
-    /**
-     * Create provided rules in the gamification engine.
-     * @param rules
-     * @throws ApiException Threw if API communication return an error.
-     */
-    private void createRules(Rule... rules) throws ApiException {
-        //todo: implement method
     }
 }
