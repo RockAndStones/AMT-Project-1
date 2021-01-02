@@ -210,6 +210,10 @@ public class GamificationFacade {
         }
     }
 
+    public Boolean isInstantiate() {
+        return gamificationApi != null;
+    }
+
     /*public Boolean newQuestion(User user) {
         try {
             gamificationApi.createEventAsync(Event(
