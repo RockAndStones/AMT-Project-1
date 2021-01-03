@@ -125,6 +125,11 @@
             <artifactId>unirest-java</artifactId>
             <version>3.11.04</version>
         </dependency>
+        <dependency>
+            <groupId>com.konghq</groupId>
+            <artifactId>unirest-objectmapper-jackson</artifactId>
+            <version>3.11.04</version>
+        </dependency>
         <!-- Dependencies for the API -->
         <dependency>
             <groupId>io.swagger</groupId>
