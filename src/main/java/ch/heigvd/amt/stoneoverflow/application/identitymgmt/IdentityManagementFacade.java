@@ -9,7 +9,9 @@ import ch.heigvd.amt.stoneoverflow.application.identitymgmt.updateprofile.Update
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.updateprofile.UpdateProfileFailedException;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 public class IdentityManagementFacade {
@@ -19,7 +21,7 @@ public class IdentityManagementFacade {
         this.userRepository = userRepository;
     }
 
-    public void register(RegisterCommand registerCommand) throws RegistrationFailedException {
+    public UserId register(RegisterCommand registerCommand) throws RegistrationFailedException {
         // If passwords are not equals
         if (!registerCommand.getPlaintextPassword().equals(registerCommand.getPlaintextPasswordConfirmation()))
             throw new RegistrationFailedException("Passwords are not equal");
@@ -42,6 +44,7 @@ public class IdentityManagementFacade {
                     .build();
 
             userRepository.save(newUser);
+            return userRepository.findByUsername(registerCommand.getUsername()).map(User::getId).orElse(null);
         } catch (Exception e) {
             throw new RegistrationFailedException(e.getMessage());
         }
