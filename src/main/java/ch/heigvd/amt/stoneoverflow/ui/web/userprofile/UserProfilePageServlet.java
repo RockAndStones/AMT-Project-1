@@ -33,16 +33,12 @@ public class UserProfilePageServlet extends HttpServlet {
         String message = (String)request.getSession().getAttribute("message");
         request.getSession().removeAttribute("message");
 
-        System.out.println(user.getId().asString());
-
         UserInfo userInfo = gamificationFacade.getUserInfo(user.getId().asString());
         if (userInfo == null) {
             userInfo = new UserInfo();
             request.setAttribute("isGamificationOn", false);
         } else request.setAttribute("isGamificationOn", true);
         request.setAttribute("userGameInfo", userInfo);
-
-        System.out.println(userInfo);
 
         request.setAttribute("errorMessage", errorMessage);
         request.setAttribute("message", message);

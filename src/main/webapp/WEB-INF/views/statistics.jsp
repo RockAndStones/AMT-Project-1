@@ -7,6 +7,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:useBean scope="request" id="badgesRank" type="java.util.HashMap"/>
+<jsp:useBean scope="request" id="pointsRank" type="java.util.HashMap"/>
+<jsp:useBean scope="request" id="isGamificationOn" type="java.lang.Boolean"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -75,7 +78,7 @@
             <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most popular questions</span>
             <span class="leading-normal text-lg italic text-gray-600 mt-1">(by number of votes)</span>
         </div>
-        <div>
+        <div class="pb-0 md:pb-8 mb-8 border-b">
             <table class="table-auto w-full">
                 <thead>
                 <tr>
@@ -93,6 +96,52 @@
                 </tbody>
             </table>
         </div>
+        <c:if test="${isGamificationOn}">
+            <div class="pb-8 mb-8 border-b">
+                <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most active users</span>
+                <span class="leading-normal text-lg italic text-gray-600 mt-1">(by number of points)</span>
+            </div>
+            <div class="pb-0 md:pb-8 mb-8 border-b">
+                <table class="table-auto w-full">
+                    <thead>
+                    <tr>
+                        <th class="border px-4 py-2 text-left">User</th>
+                        <th class="border px-4 py-2">Number of points</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${pointsRank}" var="rank">
+                        <tr class="userRow">
+                            <td class="border px-4 py-2">${rank.key}</td>
+                            <td class="border px-4 py-2 text-center">${rank.value}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pb-8 mb-8 border-b">
+                <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most active users</span>
+                <span class="leading-normal text-lg italic text-gray-600 mt-1">(by number of badges)</span>
+            </div>
+            <div>
+                <table class="table-auto w-full">
+                    <thead>
+                    <tr>
+                        <th class="border px-4 py-2 text-left">User</th>
+                        <th class="border px-4 py-2">Number of badges</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${badgesRank}" var="rank">
+                        <tr class="userRow">
+                            <td class="border px-4 py-2">${rank.key}</td>
+                            <td class="border px-4 py-2 text-center">${rank.value}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </c:if>
     </div>
 </div>
 <!-- Footer -->

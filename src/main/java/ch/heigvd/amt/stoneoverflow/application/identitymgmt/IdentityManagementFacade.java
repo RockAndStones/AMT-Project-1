@@ -11,7 +11,6 @@ import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 public class IdentityManagementFacade {
@@ -127,6 +126,10 @@ public class IdentityManagementFacade {
         } catch (Exception e) {
             throw new UpdateProfileFailedException(e.getMessage());
         }
+    }
+
+    public String getUsername(UserId userId) {
+        return userRepository.findById(userId).map(User::getUsername).orElse(null);
     }
 
     private boolean isPasswordStrong(String plaintextPassword) {
