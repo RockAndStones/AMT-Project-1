@@ -42,7 +42,8 @@ public class RegisterCommandServlet extends HttpServlet {
 
         try {
             UserId userId = identityManagementFacade.register(registerCommand);
-            gamificationFacade.stonerProgressAsync(userId.asString(), null);
+            if (userId != null)
+                gamificationFacade.stonerProgressAsync(userId.asString(), null);
             //Forward request to login command. !! Only possible because username and password field name match !!
             req.getRequestDispatcher("/loginCommand").forward(req, resp);
         } catch (RegistrationFailedException e) {

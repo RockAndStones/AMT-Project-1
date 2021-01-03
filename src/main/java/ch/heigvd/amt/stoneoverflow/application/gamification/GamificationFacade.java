@@ -45,6 +45,7 @@ public class GamificationFacade {
         Application app = null;
         try {
             app = gamificationApi.getApplication(appName);
+            gamificationApi.getApiClient().setApiKey(app.getApiKey());
         } catch (ApiException e) {
             if (e.getCode() == 404) {
                 System.out.println("Application '" + appName + "' does not exist");
