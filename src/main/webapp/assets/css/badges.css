@@ -1,0 +1,94 @@
+.question .questioner{
+
+}
+
+.reply .replier{
+
+}
+
+.comment .commenter{
+
+}
+
+.vote .voter{
+
+}
+
+.Newcomer {
+    background-color: #555555;
+    color: white;
+}
+
+.Rookie {
+    background-color: #CBD9E5;
+}
+
+.Confirmed {
+    background-color: #544F56;
+    color: white;
+}
+
+.Veteran {
+    background-color: #262722;
+    color: white;
+}
+
+.First {
+    background-color: #CEBDAF;
+}
+
+.Pebble {
+    background-color: #7D7E83;
+    color: white;
+}
+
+.Rock {
+    background-color: #DACABA;
+}
+
+.Mountain {
+    background-color: #B79B8F;
+}
+
+.Earth {
+    background-color: #152773;
+    color: white;
+}
+
+.Cobblestone {
+    background-color: #666666;
+    color: white;
+}
+
+.Mineral {
+    background-color: #856264;
+    color: white;
+}
+
+.Sand {
+    background-color: #E7CDA9;
+}
+
+.Gravel {
+    background-color: #50514C;
+    color: white;
+}
+
+.Crag {
+    background-color: #A1683A;
+    color: white;
+}
+
+.Rubble {
+    background-color: #8C8A8A;
+    color: white;
+}
+
+.Boulder {
+    background-color: #4C2928;
+    color: white;
+}
+
+.Peak {
+    background-color: #B5BCCD;
+}
