@@ -6,7 +6,6 @@ import ch.heigvd.amt.gamification.ApiResponse;
 import ch.heigvd.amt.gamification.api.DefaultApi;
 import ch.heigvd.amt.gamification.api.dto.*;
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
-import ch.heigvd.amt.stoneoverflow.domain.user.User;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -212,6 +211,10 @@ public class GamificationFacade {
         }
     }
 
+    /**
+     * Check if the gamification engine communication is ready.
+     * @return True if ready.
+     */
     public Boolean isInstantiate() {
         return gamificationApi != null;
     }
@@ -322,6 +325,56 @@ public class GamificationFacade {
     }
 
     /**
+     * Get user info (points & badges).
+     * @param userId The userId of the requested user.
+     * @return an instance of UserInfo.
+     */
+    public UserInfo getUserInfo(String userId) {
+        if (isInstantiate()) {
+            try {
+                return gamificationApi.getUser(userId);
+            } catch (ApiException apiException) {
+                apiException.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get the paginated badges rankings.
+     * @param page The requested page.
+     * @param pageSize Amount of badges per page.
+     * @return an instance of PaginatedBadgesRankings.
+     */
+    public PaginatedBadgesRankings getBadgesRankings(Integer page, Integer pageSize)  {
+        if (isInstantiate()) {
+            try {
+                return gamificationApi.getRankingsByTotalBadges(page, pageSize);
+            } catch (ApiException apiException) {
+                apiException.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get the paginated points rankings.
+     * @param page The requested page.
+     * @param pageSize Amount of badges per page.
+     * @return an instance of PaginatedPointsRankings.
+     */
+    public  PaginatedPointsRankings getPointsRankings(Integer page, Integer pageSize)  {
+        if (isInstantiate()) {
+            try {
+                return gamificationApi.getRankingsByTotalPoints(page, pageSize);
+            } catch (ApiException apiException) {
+                apiException.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
      * Add an Event in the gamification engine.
      * @param userId The userId of the user who performed the action.
      * @param eventType Type of event to add.
@@ -353,8 +406,8 @@ public class GamificationFacade {
 
     /**
      * Constructor of Badge.
-     * @param name
-     * @param description
+     * @param name        Badge's attribute.
+     * @param description Badge's attribute.
      * @return an instance of Badge.
      */
     private Badge Badge(String name, String description) {
@@ -366,8 +419,8 @@ public class GamificationFacade {
 
     /**
      * Constructor of Stage.
-     * @param points
-     * @param badge
+     * @param points Stage's attribute.
+     * @param badge  Stage's attribute.
      * @return an instance of Stage.
      */
     private Stage Stage(Double points, Badge badge) {
@@ -379,7 +432,7 @@ public class GamificationFacade {
 
     /**
      * Constructor of PointScale.
-     * @param stages
+     * @param stages PointScale's attribute.
      * @return an instance of PointScale.
      */
     private PointScale PointScale(List<Stage> stages) {
@@ -390,12 +443,12 @@ public class GamificationFacade {
 
     /**
      * Constructor of Rule.
-     * @param name
-     * @param description
-     * @param eventType
-     * @param pointsToAdd
-     * @param badgeName
-     * @param pointScaleId
+     * @param name         Rule's attribute.
+     * @param description  Rule's attribute.
+     * @param eventType    Rule's attribute.
+     * @param pointsToAdd  Rule's attribute.
+     * @param badgeName    Rule's attribute.
+     * @param pointScaleId Rule's attribute.
      * @return an instance of Rule.
      */
     private Rule Rule(String name, String description, String eventType, Double pointsToAdd, String badgeName, Integer pointScaleId) {
@@ -409,6 +462,14 @@ public class GamificationFacade {
         return rule;
     }
 
+    /**
+     * Constructor of Event.
+     * @param userAppId       Event's attribute.
+     * @param timestamp       Event's attribute.
+     * @param eventType       Event's attribute.
+     * @param eventProperties Event's attribute.
+     * @return an instance of Event.
+     */
     private Event Event(String userAppId, OffsetDateTime timestamp, String eventType, Object eventProperties) {
         Event event = new Event();
         event.userAppId(userAppId);
@@ -420,7 +481,7 @@ public class GamificationFacade {
 
     /**
      * Create provided badges in the gamification engine.
-     * @param badges
+     * @param badges Badges list.
      * @throws ApiException Threw if API communication return an error.
      */
     private void createBadges(Badge[]... badges) throws ApiException {
@@ -433,7 +494,7 @@ public class GamificationFacade {
 
     /**
      * Create provided point scale in the gamification engine.
-     * @param pointScale
+     * @param pointScale PointScale to create.
      * @throws ApiException Threw if API communication return an error.
      * @return The ApiResponse to parse with [processApiResponse] method.
      */
@@ -443,7 +504,7 @@ public class GamificationFacade {
 
     /**
      * Create provided rules in the gamification engine.
-     * @param rules
+     * @param rules Rules  list.
      * @throws ApiException Threw if API communication return an error.
      */
     private void createRules(Rule... rules) throws ApiException {
@@ -454,7 +515,7 @@ public class GamificationFacade {
 
     /**
      * Process an [ApiResponse] and return the 'Location' header field.
-     * @param apiResponse
+     * @param apiResponse Response to process.
      * @return The 'Location' header field or null if field not present.
      */
     private String getLastFieldOfLocationHeader(ApiResponse apiResponse) throws ApiException {
@@ -466,6 +527,10 @@ public class GamificationFacade {
         throw new ApiException("One or many returned point scale id are null.");
     }
 
+    /**
+     * Close the gamification engine communication and print a error message.
+     * @param apiException Exception which caused the closing action.
+     */
     private void closeGamificationApi(ApiException apiException) {
         gamificationApi = null;
         System.out.println("An error occurred with the gamification engine:");
