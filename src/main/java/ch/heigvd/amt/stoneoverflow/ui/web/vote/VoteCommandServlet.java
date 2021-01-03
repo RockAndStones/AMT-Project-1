@@ -2,6 +2,7 @@ package ch.heigvd.amt.stoneoverflow.ui.web.vote;
 
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionsDTO;
@@ -33,6 +34,7 @@ public class VoteCommandServlet extends HttpServlet {
     QuestionFacade questionFacade;
     AnswerFacade answerFacade;
     VoteFacade voteFacade;
+    GamificationFacade gamificationFacade;
 
     @Override
     public void init() throws ServletException {
@@ -40,6 +42,7 @@ public class VoteCommandServlet extends HttpServlet {
         questionFacade = serviceRegistry.getQuestionFacade();
         answerFacade = serviceRegistry.getAnswerFacade();
         voteFacade = serviceRegistry.getVoteFacade();
+        gamificationFacade = serviceRegistry.getGamificationFacade();
     }
 
     private void redirectToQuestionDetails(HttpServletRequest req, HttpServletResponse resp, String questionUUID) throws IOException {
@@ -55,6 +58,8 @@ public class VoteCommandServlet extends HttpServlet {
                     .votedObject(targetId)
                     .voteType(voteType).build();
             voteFacade.addVote(command);
+            gamificationFacade.addVoteAsync(userId.asString(), null);
+            gamificationFacade.stonerProgressAsync(userId.asString(), null);
         } else {
             // Otherwise
             // Check ownership of the vote
@@ -65,6 +70,8 @@ public class VoteCommandServlet extends HttpServlet {
             if (voteType == vote.getVoteType()) {
                 // If voteType are identical, remove vote from repository
                 voteFacade.remove(new VoteId(vote.getUuid()));
+                gamificationFacade.removeVoteAsync(userId.asString(), null);
+                gamificationFacade.stonerRegressAsync(userId.asString(), null);
             } else {
                 // Otherwise change the voteType
                 voteFacade.changeVote(UpdateVoteCommand.builder()

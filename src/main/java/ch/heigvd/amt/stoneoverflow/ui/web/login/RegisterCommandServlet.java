@@ -1,9 +1,11 @@
 package ch.heigvd.amt.stoneoverflow.ui.web.login;
 
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.IdentityManagementFacade;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.register.RegistrationFailedException;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.register.RegisterCommand;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -18,11 +20,13 @@ public class RegisterCommandServlet extends HttpServlet {
     @Inject
     ServiceRegistry serviceRegistry;
     IdentityManagementFacade identityManagementFacade;
+    GamificationFacade gamificationFacade;
 
     @Override
     public void init() throws ServletException {
         super.init();
         identityManagementFacade = serviceRegistry.getIdentityManagementFacade();
+        gamificationFacade = serviceRegistry.getGamificationFacade();
     }
 
     @Override
@@ -37,7 +41,8 @@ public class RegisterCommandServlet extends HttpServlet {
                 .build();
 
         try {
-            identityManagementFacade.register(registerCommand);
+            UserId userId = identityManagementFacade.register(registerCommand);
+            gamificationFacade.stonerProgressAsync(userId.asString(), null);
             //Forward request to login command. !! Only possible because username and password field name match !!
             req.getRequestDispatcher("/loginCommand").forward(req, resp);
         } catch (RegistrationFailedException e) {

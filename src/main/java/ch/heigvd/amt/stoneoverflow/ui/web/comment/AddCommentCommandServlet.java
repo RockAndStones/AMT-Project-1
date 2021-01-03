@@ -3,6 +3,7 @@ package ch.heigvd.amt.stoneoverflow.ui.web.comment;
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 import ch.heigvd.amt.stoneoverflow.application.comment.AddCommentCommand;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
 import ch.heigvd.amt.stoneoverflow.domain.Id;
 import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
@@ -21,11 +22,13 @@ public class AddCommentCommandServlet extends HttpServlet {
     @Inject
     ServiceRegistry serviceRegistry;
     CommentFacade commentFacade;
+    GamificationFacade gamificationFacade;
 
     @Override
     public void init() throws ServletException {
         super.init();
         commentFacade = serviceRegistry.getCommentFacade();
+        gamificationFacade = serviceRegistry.getGamificationFacade();
     }
 
     @Override
@@ -38,7 +41,7 @@ public class AddCommentCommandServlet extends HttpServlet {
         AuthenticatedUserDTO user = (AuthenticatedUserDTO)req.getSession().getAttribute("authenticatedUser");
 
         String questionUUID = req.getParameter("questionUUID");
-        Id targetId = null;
+        Id targetId;
 
         if(req.getParameter("targetType").equals("answer")){
             targetId = new AnswerId(req.getParameter("targetUUID"));
@@ -52,6 +55,9 @@ public class AddCommentCommandServlet extends HttpServlet {
                 .creator(user.getUsername())
                 .content(req.getParameter("commentContent")).build();
         commentFacade.addComment(command);
+
+        gamificationFacade.addCommentAsync(user.getId().asString(), null);
+        gamificationFacade.stonerProgressAsync(user.getId().asString(), null);
 
         resp.sendRedirect(req.getContextPath() + "/questionDetails?questionUUID=" + questionUUID);
     }
