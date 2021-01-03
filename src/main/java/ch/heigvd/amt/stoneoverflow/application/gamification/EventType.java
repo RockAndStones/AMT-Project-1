@@ -6,7 +6,8 @@ public enum EventType {
     NEW_COMMENT("newComment"),
     NEW_VOTE("newVote"),
     REMOVE_VOTE("removeVote"),
-    NEW_STONER("newStoner");
+    STONER_PROGRESS("stonerProgress"),
+    STONER_REGRESS("stonerRegress");
 
     EventType(String eventName) {
         this.name = eventName;
