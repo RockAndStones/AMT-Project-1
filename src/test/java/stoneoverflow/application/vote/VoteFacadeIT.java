@@ -33,6 +33,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -57,7 +58,8 @@ public class VoteFacadeIT {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
                 .addPackages(true, "ch.heigvd.amt")
                 .addPackages(true, "org.springframework.security.crypto.bcrypt")
-                .addPackages(true, "org.springframework.security.crypto.bcrypt.BCrypt");
+                .addPackages(true, "org.springframework.security.crypto.bcrypt.BCrypt")
+                .addAsResource(new File("src/main/resources/environment.properties"), "environment.properties");
         return archive;
     }
 

@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
@@ -42,7 +43,8 @@ public class PaginationFacadeIT {
     public static WebArchive createDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
                 .addPackages(true, "ch.heigvd.amt")
-                .addPackage("org.springframework.security.crypto.bcrypt");
+                .addPackage("org.springframework.security.crypto.bcrypt")
+                .addAsResource(new File("src/main/resources/environment.properties"), "environment.properties");
         return archive;
     }
 

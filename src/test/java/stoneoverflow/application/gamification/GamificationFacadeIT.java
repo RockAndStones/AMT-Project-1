@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
+import java.io.File;
 
 public class GamificationFacadeIT {
 
@@ -27,7 +28,8 @@ public class GamificationFacadeIT {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
                 .addPackages(true, "ch.heigvd.amt")
                 .addPackages(true, "org.springframework.security.crypto.bcrypt")
-                .addPackages(true, "org.springframework.security.crypto.bcrypt.BCrypt");
+                .addPackages(true, "org.springframework.security.crypto.bcrypt.BCrypt")
+                .addAsResource(new File("src/main/resources/environment.properties"), "environment.properties");
         return archive;
     }
 

@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 
+import java.io.File;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -40,7 +41,8 @@ public class QuestionFacadeIT {
     public static WebArchive createDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
                 .addPackages(true, "ch.heigvd.amt")
-                .addPackage("org.springframework.security.crypto.bcrypt");
+                .addPackage("org.springframework.security.crypto.bcrypt")
+                .addAsResource(new File("src/main/resources/environment.properties"), "environment.properties");
         return archive;
     }
 

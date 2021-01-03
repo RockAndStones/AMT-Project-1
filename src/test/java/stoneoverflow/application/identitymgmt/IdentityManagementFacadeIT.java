@@ -20,6 +20,8 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 
+import java.io.File;
+
 import static org.junit.Assert.*;
 
 @RunWith(Arquillian.class)
@@ -40,7 +42,8 @@ public class IdentityManagementFacadeIT {
     public static WebArchive createDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
                 .addPackages(true, "ch.heigvd.amt")
-                .addPackages(true, "org.springframework.security.crypto.bcrypt");
+                .addPackages(true, "org.springframework.security.crypto.bcrypt")
+                .addAsResource(new File("src/main/resources/environment.properties"), "environment.properties");
         return archive;
     }
 
