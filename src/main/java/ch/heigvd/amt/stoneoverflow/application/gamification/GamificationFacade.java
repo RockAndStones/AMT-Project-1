@@ -28,7 +28,7 @@ public class GamificationFacade {
      * Set the application, the badges, the point scales, & the rules in the gamification engine
      * if application is not set.
      */
-    public GamificationFacade() {
+    public GamificationFacade(String appName) {
         Properties properties = new Properties();
         try {
             properties.load(ServiceRegistry.class.getClassLoader().getResourceAsStream(ENV_PROPERTIES));
@@ -39,7 +39,8 @@ public class GamificationFacade {
         gamificationApi = new DefaultApi();
         gamificationApi.getApiClient().setBasePath(properties.getProperty("ch.heigvd.amt.gamification.server.url"));
 
-        String appName = properties.getProperty("ch.heigvd.amt.gamification.app.name");
+        if (appName == null)
+            appName = properties.getProperty("ch.heigvd.amt.gamification.app.name");
 
         // Check if application is already set in the gamification engine
         Application app = null;

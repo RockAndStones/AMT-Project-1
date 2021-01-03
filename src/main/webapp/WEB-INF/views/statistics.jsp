@@ -74,28 +74,6 @@
                 </tbody>
             </table>
         </div>
-        <div class="pb-8 mb-8 border-b">
-            <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most popular questions</span>
-            <span class="leading-normal text-lg italic text-gray-600 mt-1">(by number of votes)</span>
-        </div>
-        <div class="pb-0 md:pb-8 mb-8 border-b">
-            <table class="table-auto w-full">
-                <thead>
-                <tr>
-                    <th class="border px-4 py-2 text-left">Question</th>
-                    <th class="border px-4 py-2">Number of votes</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${statistics.mostVotedQuestions.questions}" var="question">
-                    <tr class="userRow">
-                        <td class="border px-4 py-2">${question.title}</td>
-                        <td class="border px-4 py-2 text-center">${question.nbVotes}</td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </div>
         <c:if test="${isGamificationOn}">
             <div class="pb-8 mb-8 border-b">
                 <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most active users</span>
@@ -123,7 +101,7 @@
                 <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most active users</span>
                 <span class="leading-normal text-lg italic text-gray-600 mt-1">(by number of badges)</span>
             </div>
-            <div>
+            <div class="pb-0 md:pb-8 mb-8 border-b">
                 <table class="table-auto w-full">
                     <thead>
                     <tr>
@@ -142,6 +120,28 @@
                 </table>
             </div>
         </c:if>
+        <div class="pb-8 mb-8 border-b">
+            <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most popular questions</span>
+            <span class="leading-normal text-lg italic text-gray-600 mt-1">(by number of votes)</span>
+        </div>
+        <div>
+            <table class="table-auto w-full">
+                <thead>
+                <tr>
+                    <th class="border px-4 py-2 text-left">Question</th>
+                    <th class="border px-4 py-2">Number of votes</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${statistics.mostVotedQuestions.questions}" var="question">
+                    <tr class="userRow">
+                        <td class="border px-4 py-2">${question.title}</td>
+                        <td class="border px-4 py-2 text-center">${question.nbVotes}</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <!-- Footer -->
