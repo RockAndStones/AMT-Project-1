@@ -19,7 +19,7 @@ import static ch.heigvd.amt.stoneoverflow.application.gamification.EventType.*;
 
 public class GamificationFacade {
 
-    private final String RULE = "Rule";
+    private final String RULE           = "Rule";
     private final String ENV_PROPERTIES = "environment.properties";
 
     private DefaultApi gamificationApi;
@@ -135,22 +135,18 @@ public class GamificationFacade {
 
             PointScale stonerPointScale = PointScale(Arrays.asList(
                     Stage(1d, stonerBadges[0]),
-                    Stage(5d, stonerBadges[1]),
-                    Stage(10d, stonerBadges[2]),
-                    Stage(20d, stonerBadges[3])));
+                    Stage(25d, stonerBadges[1]),
+                    Stage(80d, stonerBadges[2]),
+                    Stage(120d, stonerBadges[3])));
 
-            // Add all pointscales
-            String QPSId;
-            String RPSId;
-            String CPSId;
-            String VPSId;
-            String SPSId;
+            // Add all point scale
+            String[] pointScaleIds = new String[5];
             try {
-                QPSId = getLastFieldOfLocationHeader(createPointScale(questionPointScale));
-                RPSId = getLastFieldOfLocationHeader(createPointScale(replyPointScale));
-                CPSId = getLastFieldOfLocationHeader(createPointScale(commentPointScale));
-                VPSId = getLastFieldOfLocationHeader(createPointScale(votePointScale));
-                SPSId = getLastFieldOfLocationHeader(createPointScale(stonerPointScale));
+                pointScaleIds[0] = getLastFieldOfLocationHeader(createPointScale(questionPointScale));
+                pointScaleIds[1] = getLastFieldOfLocationHeader(createPointScale(replyPointScale));
+                pointScaleIds[2] = getLastFieldOfLocationHeader(createPointScale(commentPointScale));
+                pointScaleIds[3] = getLastFieldOfLocationHeader(createPointScale(votePointScale));
+                pointScaleIds[4] = getLastFieldOfLocationHeader(createPointScale(stonerPointScale));
             } catch (ApiException e) {
                 closeGamificationApi(e);
                 return;
@@ -162,51 +158,57 @@ public class GamificationFacade {
                     NEW_QUESTION.name,
                     1d,
                     null,
-                    Integer.parseInt(QPSId));
+                    Integer.parseInt(pointScaleIds[0]));
 
             Rule newReplyRule = Rule(NEW_REPLY.name + RULE,
                     "New reply rule to apply when a user respond to a question.",
                     NEW_REPLY.name,
                     1d,
                     null,
-                    Integer.parseInt(RPSId));
+                    Integer.parseInt(pointScaleIds[1]));
 
             Rule newCommentRule = Rule(NEW_COMMENT.name + RULE,
                     "New comment rule to apply when a user comment a question or a reply.",
                     NEW_COMMENT.name,
                     1d,
                     null,
-                    Integer.parseInt(CPSId));
+                    Integer.parseInt(pointScaleIds[2]));
 
             Rule newVoteRule = Rule(NEW_VOTE.name + RULE,
                     "New vote rule to apply when a user up/down vote a question or a reply.",
                     NEW_VOTE.name,
                     1d,
                     null,
-                    Integer.parseInt(VPSId));
+                    Integer.parseInt(pointScaleIds[3]));
 
             Rule removeVoteRule = Rule(REMOVE_VOTE.name + RULE,
                     "Remove vote rule to apply when a user remove his own vote from a question or a reply.",
                     REMOVE_VOTE.name,
                     -1d,
                     null,
-                    Integer.parseInt(VPSId));
+                    Integer.parseInt(pointScaleIds[3]));
 
-            Rule newStonerRule = Rule(NEW_STONER.name + RULE,
-                    "New stoner rule to apply when a user is created or has reach a new stoner level.",
-                    NEW_STONER.name,
+            Rule stonerProgressRule = Rule(STONER_PROGRESS.name + RULE,
+                    "Stoner progress rule to apply when a user progress in the stoner game.",
+                    STONER_PROGRESS.name,
                     1d,
                     null,
-                    Integer.parseInt(SPSId));
+                    Integer.parseInt(pointScaleIds[4]));
+
+            Rule stonerRegressRule = Rule(STONER_REGRESS.name + RULE,
+                    "Stoner regress rule to apply when a user regress in the stoner game.",
+                    STONER_REGRESS.name,
+                    -1d,
+                    null,
+                    Integer.parseInt(pointScaleIds[4]));
 
             // Add all rules
             try {
-                createRules(newQuestionRule, newReplyRule, newCommentRule, newVoteRule, removeVoteRule, newStonerRule);
+                createRules(newQuestionRule, newReplyRule, newCommentRule, newVoteRule, removeVoteRule,
+                        stonerProgressRule, stonerRegressRule);
             } catch (ApiException e) {
                 closeGamificationApi(e);
-                return;
             }
-
         }
     }
 
@@ -214,85 +216,140 @@ public class GamificationFacade {
         return gamificationApi != null;
     }
 
-    /*
-    todo: implement method
-    public Boolean newQuestion(User user) {
-        try {
-            gamificationApi.createEventAsync(Event(
-                    user.getId().asString(),
-                    OffsetDateTime.now(),
-                    NEW_QUESTION.name,
-                    null), new ApiCallback<Void>() {
-                        @Override
-                        public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
-
-                        }
-                        @Override
-                        public void onSuccess(Void result, int statusCode, Map<String, List<String>> responseHeaders) {
-
-                        }
-                        @Override
-                        public void onUploadProgress(long bytesWritten, long contentLength, boolean done) { }
-                        @Override
-                        public void onDownloadProgress(long bytesRead, long contentLength, boolean done) { }
-                    }
-            );
-        } catch (ApiException apiException) {
-            apiException.printStackTrace();
+    /**
+     * Add a question in the gamification engine.
+     * @param userId The userId of the user who performed the action.
+     * @param callback API callback to handle api result.
+     */
+    public void addQuestionAsync(String userId, ApiCallback<Void> callback) {
+        if (isInstantiate()) {
+            try {
+                newEventAsync(userId, NEW_QUESTION, callback);
+            } catch (ApiException apiException) {
+                apiException.printStackTrace();
+            }
         }
-    }*/
+    }
 
     /**
      * Add a reply in the gamification engine.
-     * @param user The user who performed the action.
-     * @return True if successful.
+     * @param userId The userId of the user who performed the action.
+     * @param callback API callback to handle api result.
      */
-    public Boolean addReply(User user) {
-        // todo: implement the method using callback
-        return false;
+    public void addReplyAsync(String userId, ApiCallback<Void> callback) {
+        if (isInstantiate()) {
+            try {
+                newEventAsync(userId, NEW_REPLY, callback);
+            } catch (ApiException apiException) {
+                apiException.printStackTrace();
+            }
+        }
     }
 
     /**
      * Add a comment in the gamification engine.
-     * @param user The user who performed the action.
-     * @return True if successful.
+     * @param userId The userId of the user who performed the action.
+     * @param callback API callback to handle api result.
      */
-    public Boolean addComment(User user) {
-        // todo: implement the method using callback
-        return false;
+    public void addCommentAsync(String userId, ApiCallback<Void> callback) {
+        if (isInstantiate()) {
+            try {
+                newEventAsync(userId, NEW_COMMENT, callback);
+            } catch (ApiException apiException) {
+                apiException.printStackTrace();
+            }
+        }
     }
 
     /**
      * Add a reply in the gamification engine.
-     * @param user The user who performed the action.
-     * @return True if successful.
+     * @param userId The userId of the user who performed the action.
+     * @param callback API callback to handle api result.
      */
-    public Boolean addVote(User user) {
-        // todo: implement the method using callback
-        return false;
+    public void addVoteAsync(String userId, ApiCallback<Void> callback) {
+        if (isInstantiate()) {
+            try {
+                newEventAsync(userId, NEW_VOTE, callback);
+            } catch (ApiException apiException) {
+                apiException.printStackTrace();
+            }
+        }
     }
 
     /**
      * Add a vote in the gamification engine.
-     * @param user The user who performed the action.
-     * @return True if successful.
+     * @param userId The userId of the user who performed the action.
+     * @param callback API callback to handle api result.
      */
-    public Boolean removeVote(User user) {
-        // todo: implement the method using callback
-        return false;
+    public void removeVoteAsync(String userId, ApiCallback<Void> callback) {
+        if (isInstantiate()) {
+            try {
+                newEventAsync(userId, REMOVE_VOTE, callback);
+            } catch (ApiException apiException) {
+                apiException.printStackTrace();
+            }
+        }
     }
 
     /**
-     * Remove a vote in the gamification engine.
-     * @param user The user who performed the action.
-     * @return True if successful.
+     * Progress in the stoner game toward the given user in the gamification engine.
+     * @param userId The userId of the user who performed the action.
+     * @param callback API callback to handle api result.
      */
-    public Boolean removeReply(User user) {
-        // todo: implement the method using callback
-        return false;
+    public void stonerProgressAsync(String userId, ApiCallback<Void> callback) {
+        if (isInstantiate()) {
+            try {
+                newEventAsync(userId, STONER_PROGRESS, callback);
+            } catch (ApiException apiException) {
+                apiException.printStackTrace();
+            }
+        }
     }
 
-    // todo: handle stoner event
+    /**
+     * Regress in the stoner game toward the given user in the gamification engine.
+     * @param userId The userId of the user who performed the action.
+     * @param callback API callback to handle api result.
+     */
+    public void stonerRegressAsync(String userId, ApiCallback<Void> callback) {
+        if (isInstantiate()) {
+            try {
+                newEventAsync(userId, STONER_REGRESS, callback);
+            } catch (ApiException apiException) {
+                apiException.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Add an Event in the gamification engine.
+     * @param userId The userId of the user who performed the action.
+     * @param eventType Type of event to add.
+     * @param callback API callback to handle api result.
+     * @throws ApiException threw if an error occurred with the gamification engine.
+     */
+    private void newEventAsync(String userId, EventType eventType, ApiCallback<Void> callback) throws ApiException {
+
+        if (callback == null) {
+            callback = new ApiCallback<Void>() {
+                @Override
+                public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) { }
+                @Override
+                public void onSuccess(Void result, int statusCode, Map<String, List<String>> responseHeaders) { }
+                @Override
+                public void onUploadProgress(long bytesWritten, long contentLength, boolean done) { }
+                @Override
+                public void onDownloadProgress(long bytesRead, long contentLength, boolean done) { }
+            };
+        }
+
+        gamificationApi.createEventAsync(Event(
+                userId,
+                OffsetDateTime.now(),
+                eventType.name,
+                null),
+                callback);
+    }
 
     /**
      * Constructor of Badge.
@@ -400,13 +457,13 @@ public class GamificationFacade {
      * @param apiResponse
      * @return The 'Location' header field or null if field not present.
      */
-    private String getLastFieldOfLocationHeader(ApiResponse apiResponse) {
+    private String getLastFieldOfLocationHeader(ApiResponse apiResponse) throws ApiException {
         List<String> locationHeaderValues = (List<String>)apiResponse.getHeaders().get("Location");
         if (locationHeaderValues != null && locationHeaderValues.get(0) != null) {
             String[] tokens = locationHeaderValues.get(0).split("/");
             return tokens[tokens.length - 1];
         }
-        return null;
+        throw new ApiException("One or many returned point scale id are null.");
     }
 
     private void closeGamificationApi(ApiException apiException) {
