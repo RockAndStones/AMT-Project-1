@@ -48,6 +48,7 @@ public class CommentFacadeIT {
     public static WebArchive createDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
                 .addPackages(true, "ch.heigvd.amt")
+                .addPackages(true, "com.squareup.okhttp3")
                 .addPackages(true, "org.springframework.security.crypto.bcrypt")
                 .addPackages(true, "org.springframework.security.crypto.bcrypt.BCrypt")
                 .addAsResource(new File("src/main/resources/environment.properties"), "environment.properties");

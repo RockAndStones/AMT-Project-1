@@ -41,6 +41,7 @@ public class QuestionFacadeIT {
     public static WebArchive createDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
                 .addPackages(true, "ch.heigvd.amt")
+                .addPackages(true, "com.squareup.okhttp3")
                 .addPackage("org.springframework.security.crypto.bcrypt")
                 .addAsResource(new File("src/main/resources/environment.properties"), "environment.properties");
         return archive;
