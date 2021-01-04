@@ -7,25 +7,22 @@ import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginCommand;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginFailedException;
-import com.github.javafaker.Faker;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(Arquillian.class)
 public class GamificationFacadeIT {
@@ -40,13 +37,6 @@ public class GamificationFacadeIT {
 
     @Deployment(testable = true)
     public static WebArchive createDeployment() {
-        File[] files = Maven.resolver()
-                .loadPomFromFile("pom.xml")
-                .importCompileAndRuntimeDependencies()
-                .resolve()
-                .withTransitivity()
-                .asFile();
-
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
                 .addPackages(true, "ch.heigvd.amt")
                 .addPackages(true, "com.squareup.okhttp3")
@@ -56,8 +46,7 @@ public class GamificationFacadeIT {
                 .addPackages(true, "okio")
                 .addPackages(true, "org.springframework.security.crypto.bcrypt")
                 .addPackages(true, "org.springframework.security.crypto.bcrypt.BCrypt")
-                .addAsResource("environment.properties")
-                .addAsLibraries(files);
+                .addAsResource("environment.properties");
         return archive;
     }
 
@@ -69,7 +58,7 @@ public class GamificationFacadeIT {
                 .plaintextPassword("test")
                 .build());
         System.out.println("init-2");//todo: debug
-        this.gamificationFacade = new GamificationFacade("unitTests-" + Faker.instance().regexify("[A-Za-z0-9]{10}"));
+        this.gamificationFacade = new GamificationFacade("unitTests-GamificationFacadeIT");
         System.out.println("init-3");//todo: debug
         this.gamificationFacade.stonerProgressAsync(testUser.getId().asString(), newApiCallbackVoidFailOnFailure());
     }
