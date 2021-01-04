@@ -1,4 +1,4 @@
-# AMT Project 1 : StoneOverflow <img src="https://github.com/RockAndStones/AMT-Project-1/workflows/MVN%20&%20E2E%20Tests/badge.svg?branch=dev" alt="Tests">
+# AMT Project 1 : StoneOverflow <img src="https://github.com/RockAndStones/AMT-Project-1/workflows/stoneoverflow_tests/badge.svg?branch=dev" alt="Tests">
 
 ## Table of contents
 - [Introduction](#Introduction)  
