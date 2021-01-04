@@ -56,10 +56,7 @@ public class VoteFacadeIT {
     @Deployment(testable = true)
     public static WebArchive createDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
-                .addAsDirectory("target/generated-sources/openapi")
                 .addPackages(true, "ch.heigvd.amt")
-                .addPackages(true, "ch.heigvd.amt.gamification")
-                .addClass(ch.heigvd.amt.gamification.Configuration.class)
                 .addPackages(true, "com.squareup.okhttp3")
                 .addPackages(true, "com.google.gson")
                 .addPackages(true, "io.gsonfire")
@@ -67,7 +64,7 @@ public class VoteFacadeIT {
                 .addPackages(true, "okio")
                 .addPackages(true, "org.springframework.security.crypto.bcrypt")
                 .addPackages(true, "org.springframework.security.crypto.bcrypt.BCrypt")
-                .addAsResource(new File("src/main/resources/environment.properties"), "environment.properties");
+                .addAsResource("environment.properties");
         return archive;
     }
 

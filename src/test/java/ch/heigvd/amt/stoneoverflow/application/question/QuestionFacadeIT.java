@@ -41,10 +41,7 @@ public class QuestionFacadeIT {
     @Deployment(testable = true)
     public static WebArchive createDeployment() {
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
-                .addAsDirectory("target/generated-sources/openapi")
                 .addPackages(true, "ch.heigvd.amt")
-                .addPackages(true, "ch.heigvd.amt.gamification")
-                .addClass(ch.heigvd.amt.gamification.Configuration.class)
                 .addPackages(true, "com.squareup.okhttp3")
                 .addPackages(true, "com.google.gson")
                 .addPackages(true, "io.gsonfire")
