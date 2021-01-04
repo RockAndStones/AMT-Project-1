@@ -47,6 +47,7 @@ public class GamificationFacadeIT {
                 .addPackages(true, "okio")
                 .addPackages(true, "org.springframework.security.crypto.bcrypt")
                 .addPackages(true, "org.springframework.security.crypto.bcrypt.BCrypt")
+                .addPackages(true, "org.apache.commons.lang3")
                 .addAsResource("environment.properties");
         return archive;
     }
