@@ -7,16 +7,18 @@ import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginCommand;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginFailedException;
-import org.apache.commons.lang3.RandomStringUtils;
+import com.github.javafaker.Faker;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +40,13 @@ public class GamificationFacadeIT {
 
     @Deployment(testable = true)
     public static WebArchive createDeployment() {
+        File[] files = Maven.resolver()
+                .loadPomFromFile("pom.xml")
+                .importCompileAndRuntimeDependencies()
+                .resolve()
+                .withTransitivity()
+                .asFile();
+
         WebArchive archive = ShrinkWrap.create(WebArchive.class, WARNAME)
                 .addPackages(true, "ch.heigvd.amt")
                 .addPackages(true, "com.squareup.okhttp3")
@@ -47,9 +56,8 @@ public class GamificationFacadeIT {
                 .addPackages(true, "okio")
                 .addPackages(true, "org.springframework.security.crypto.bcrypt")
                 .addPackages(true, "org.springframework.security.crypto.bcrypt.BCrypt")
-                .addPackages(true, "org.apache.commons.lang3")
-                .addPackages(true, "org.opentest4j")
-                .addAsResource("environment.properties");
+                .addAsResource("environment.properties")
+                .addAsLibraries(files);
         return archive;
     }
 
@@ -61,7 +69,7 @@ public class GamificationFacadeIT {
                 .plaintextPassword("test")
                 .build());
         System.out.println("init-2");//todo: debug
-        this.gamificationFacade = new GamificationFacade("unitTests-" +  RandomStringUtils.random(10, true, true));
+        this.gamificationFacade = new GamificationFacade("unitTests-" + Faker.instance().regexify("[A-Za-z0-9]{10}"));
         System.out.println("init-3");//todo: debug
         this.gamificationFacade.stonerProgressAsync(testUser.getId().asString(), newApiCallbackVoidFailOnFailure());
     }
