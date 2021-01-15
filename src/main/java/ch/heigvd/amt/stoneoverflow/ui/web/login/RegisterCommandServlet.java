@@ -20,13 +20,11 @@ public class RegisterCommandServlet extends HttpServlet {
     @Inject
     ServiceRegistry serviceRegistry;
     IdentityManagementFacade identityManagementFacade;
-    GamificationFacade gamificationFacade;
 
     @Override
     public void init() throws ServletException {
         super.init();
         identityManagementFacade = serviceRegistry.getIdentityManagementFacade();
-        gamificationFacade = serviceRegistry.getGamificationFacade();
     }
 
     @Override
@@ -41,9 +39,7 @@ public class RegisterCommandServlet extends HttpServlet {
                 .build();
 
         try {
-            UserId userId = identityManagementFacade.register(registerCommand);
-            if (userId != null)
-                gamificationFacade.stonerProgressAsync(userId.asString(), null);
+            identityManagementFacade.register(registerCommand);
             //Forward request to login command. !! Only possible because username and password field name match !!
             req.getRequestDispatcher("/loginCommand").forward(req, resp);
         } catch (RegistrationFailedException e) {
