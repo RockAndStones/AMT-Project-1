@@ -72,64 +72,64 @@ public class GamificationFacade {
 
             // Create badges
             Badge[] questionBadges = new Badge[4];
-            questionBadges[0] = Badge("First question", "You asked your first question ! Congrats !");
-            questionBadges[1] = Badge("Pebble questionner", "We see you're getting used to ask questions. Keep going !");
-            questionBadges[2] = Badge("Rock questionner", "Almost a stonfessional in the asking game ?!");
-            questionBadges[3] = Badge("Mountain questionner", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
+            questionBadges[0] = GamificationHelper.createBadge("First question", "You asked your first question ! Congrats !");
+            questionBadges[1] = GamificationHelper.createBadge("Pebble questionner", "We see you're getting used to ask questions. Keep going !");
+            questionBadges[2] = GamificationHelper.createBadge("Rock questionner", "Almost a stonfessional in the asking game ?!");
+            questionBadges[3] = GamificationHelper.createBadge("Mountain questionner", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
 
             BadgeName[] questionBadgesName = new BadgeName[4];
-            questionBadgesName[0] = BadgeName("First question");
-            questionBadgesName[1] = BadgeName("Pebble questionner");
-            questionBadgesName[2] = BadgeName("Rock questionner");
-            questionBadgesName[3] = BadgeName("Mountain questionner");
+            questionBadgesName[0] = GamificationHelper.createBadgeName("First question");
+            questionBadgesName[1] = GamificationHelper.createBadgeName("Pebble questionner");
+            questionBadgesName[2] = GamificationHelper.createBadgeName("Rock questionner");
+            questionBadgesName[3] = GamificationHelper.createBadgeName("Mountain questionner");
 
             Badge[] replyBadges = new Badge[4];
-            replyBadges[0] = Badge("First reply", "You replied for the first time ! Congrats !");
-            replyBadges[1] = Badge("Earth replier", "We see you're getting used to reply questions. Keep going !");
-            replyBadges[2] = Badge("Cobblestone replier", "Almost a stonfessional in the replying game ?!");
-            replyBadges[3] = Badge("Mineral replier", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
+            replyBadges[0] = GamificationHelper.createBadge("First reply", "You replied for the first time ! Congrats !");
+            replyBadges[1] = GamificationHelper.createBadge("Earth replier", "We see you're getting used to reply questions. Keep going !");
+            replyBadges[2] = GamificationHelper.createBadge("Cobblestone replier", "Almost a stonfessional in the replying game ?!");
+            replyBadges[3] = GamificationHelper.createBadge("Mineral replier", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
 
             BadgeName[] replyBadgesName = new BadgeName[4];
-            replyBadgesName[0] = BadgeName("First reply");
-            replyBadgesName[1] = BadgeName("Earth replier");
-            replyBadgesName[2] = BadgeName("Cobblestone replier");
-            replyBadgesName[3] = BadgeName("Mineral replier");
+            replyBadgesName[0] = GamificationHelper.createBadgeName("First reply");
+            replyBadgesName[1] = GamificationHelper.createBadgeName("Earth replier");
+            replyBadgesName[2] = GamificationHelper.createBadgeName("Cobblestone replier");
+            replyBadgesName[3] = GamificationHelper.createBadgeName("Mineral replier");
 
             Badge[] commentBadges = new Badge[4];
-            commentBadges[0] = Badge("First comment", "You wrote your first comment ! Congrats !");
-            commentBadges[1] = Badge("Sand commenter", "We see you're getting used to commenting. Keep going !");
-            commentBadges[2] = Badge("Gravel commenter", "Almost a stonfessional in the commenting game ?!");
-            commentBadges[3] = Badge("Crag commenter", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
+            commentBadges[0] = GamificationHelper.createBadge("First comment", "You wrote your first comment ! Congrats !");
+            commentBadges[1] = GamificationHelper.createBadge("Sand commenter", "We see you're getting used to commenting. Keep going !");
+            commentBadges[2] = GamificationHelper.createBadge("Gravel commenter", "Almost a stonfessional in the commenting game ?!");
+            commentBadges[3] = GamificationHelper.createBadge("Crag commenter", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
 
             BadgeName[] commentBadgesName = new BadgeName[4];
-            commentBadgesName[0] = BadgeName("First comment");
-            commentBadgesName[1] = BadgeName("Sand commenter");
-            commentBadgesName[2] = BadgeName("Gravel commenter");
-            commentBadgesName[3] = BadgeName("Crag commenter");
+            commentBadgesName[0] = GamificationHelper.createBadgeName("First comment");
+            commentBadgesName[1] = GamificationHelper.createBadgeName("Sand commenter");
+            commentBadgesName[2] = GamificationHelper.createBadgeName("Gravel commenter");
+            commentBadgesName[3] = GamificationHelper.createBadgeName("Crag commenter");
 
             Badge[] voteBadges = new Badge[4];
-            voteBadges[0] = Badge("First vote", "You voted for the first time ! Congrats !");
-            voteBadges[1] = Badge("Rubble voter", "We see you're getting used to voting. Keep going !");
-            voteBadges[2] = Badge("Boulder voter", "Almost a stonfessional in the voting game ?!");
-            voteBadges[3] = Badge("Peak voter", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
+            voteBadges[0] = GamificationHelper.createBadge("First vote", "You voted for the first time ! Congrats !");
+            voteBadges[1] = GamificationHelper.createBadge("Rubble voter", "We see you're getting used to voting. Keep going !");
+            voteBadges[2] = GamificationHelper.createBadge("Boulder voter", "Almost a stonfessional in the voting game ?!");
+            voteBadges[3] = GamificationHelper.createBadge("Peak voter", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
 
             BadgeName[] voteBadgesName = new BadgeName[4];
-            voteBadgesName[0] = BadgeName("First vote");
-            voteBadgesName[1] = BadgeName("Rubble voter");
-            voteBadgesName[2] = BadgeName("Boulder voter");
-            voteBadgesName[3] = BadgeName("Peak voter");
+            voteBadgesName[0] = GamificationHelper.createBadgeName("First vote");
+            voteBadgesName[1] = GamificationHelper.createBadgeName("Rubble voter");
+            voteBadgesName[2] = GamificationHelper.createBadgeName("Boulder voter");
+            voteBadgesName[3] = GamificationHelper.createBadgeName("Peak voter");
 
             Badge[] stonerBadges = new Badge[4];
-            stonerBadges[0] = Badge("Newcomer", "Welcome to the StoneOverflow family !");
-            stonerBadges[1] = Badge("Rookie", "We see you're getting used to StoneOverflow. Keep going !");
-            stonerBadges[2] = Badge("Confirmed", "Almost a stonfessional in the StoneOverflow game ?!");
-            stonerBadges[3] = Badge("Veteran", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
+            stonerBadges[0] = GamificationHelper.createBadge("Newcomer", "Welcome to the StoneOverflow family !");
+            stonerBadges[1] = GamificationHelper.createBadge("Rookie", "We see you're getting used to StoneOverflow. Keep going !");
+            stonerBadges[2] = GamificationHelper.createBadge("Confirmed", "Almost a stonfessional in the StoneOverflow game ?!");
+            stonerBadges[3] = GamificationHelper.createBadge("Veteran", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
 
             BadgeName[] stonerBadgesName = new BadgeName[4];
-            stonerBadgesName[0] = BadgeName("Newcomer");
-            stonerBadgesName[1] = BadgeName("Rookie");
-            stonerBadgesName[2] = BadgeName("Confirmed");
-            stonerBadgesName[3] = BadgeName("Veteran");
+            stonerBadgesName[0] = GamificationHelper.createBadgeName("Newcomer");
+            stonerBadgesName[1] = GamificationHelper.createBadgeName("Rookie");
+            stonerBadgesName[2] = GamificationHelper.createBadgeName("Confirmed");
+            stonerBadgesName[3] = GamificationHelper.createBadgeName("Veteran");
 
             // Add all badges
             try {
@@ -140,35 +140,35 @@ public class GamificationFacade {
             }
 
             // Create point scales
-            PointScale questionPointScale = PointScale(Arrays.asList(
-                    Stage(1d, questionBadgesName[0]),
-                    Stage(5d, questionBadgesName[1]),
-                    Stage(10d, questionBadgesName[2]),
-                    Stage(20d, questionBadgesName[3])));
+            PointScale questionPointScale = GamificationHelper.createPointScale(Arrays.asList(
+                    GamificationHelper.createStage(1d, questionBadgesName[0]),
+                    GamificationHelper.createStage(5d, questionBadgesName[1]),
+                    GamificationHelper.createStage(10d, questionBadgesName[2]),
+                    GamificationHelper.createStage(20d, questionBadgesName[3])));
 
-            PointScale replyPointScale = PointScale(Arrays.asList(
-                    Stage(1d, replyBadgesName[0]),
-                    Stage(5d, replyBadgesName[1]),
-                    Stage(10d, replyBadgesName[2]),
-                    Stage(20d, replyBadgesName[3])));
+            PointScale replyPointScale = GamificationHelper.createPointScale(Arrays.asList(
+                    GamificationHelper.createStage(1d, replyBadgesName[0]),
+                    GamificationHelper.createStage(5d, replyBadgesName[1]),
+                    GamificationHelper.createStage(10d, replyBadgesName[2]),
+                    GamificationHelper.createStage(20d, replyBadgesName[3])));
 
-            PointScale commentPointScale = PointScale(Arrays.asList(
-                    Stage(1d, commentBadgesName[0]),
-                    Stage(5d, commentBadgesName[1]),
-                    Stage(10d, commentBadgesName[2]),
-                    Stage(20d, commentBadgesName[3])));
+            PointScale commentPointScale = GamificationHelper.createPointScale(Arrays.asList(
+                    GamificationHelper.createStage(1d, commentBadgesName[0]),
+                    GamificationHelper.createStage(5d, commentBadgesName[1]),
+                    GamificationHelper.createStage(10d, commentBadgesName[2]),
+                    GamificationHelper.createStage(20d, commentBadgesName[3])));
 
-            PointScale votePointScale = PointScale(Arrays.asList(
-                    Stage(1d, voteBadgesName[0]),
-                    Stage(5d, voteBadgesName[1]),
-                    Stage(10d, voteBadgesName[2]),
-                    Stage(20d, voteBadgesName[3])));
+            PointScale votePointScale = GamificationHelper.createPointScale(Arrays.asList(
+                    GamificationHelper.createStage(1d, voteBadgesName[0]),
+                    GamificationHelper.createStage(5d, voteBadgesName[1]),
+                    GamificationHelper.createStage(10d, voteBadgesName[2]),
+                    GamificationHelper.createStage(20d, voteBadgesName[3])));
 
-            PointScale stonerPointScale = PointScale(Arrays.asList(
-                    Stage(1d, stonerBadgesName[0]),
-                    Stage(25d, stonerBadgesName[1]),
-                    Stage(80d, stonerBadgesName[2]),
-                    Stage(120d, stonerBadgesName[3])));
+            PointScale stonerPointScale = GamificationHelper.createPointScale(Arrays.asList(
+                    GamificationHelper.createStage(1d, stonerBadgesName[0]),
+                    GamificationHelper.createStage(25d, stonerBadgesName[1]),
+                    GamificationHelper.createStage(80d, stonerBadgesName[2]),
+                    GamificationHelper.createStage(120d, stonerBadgesName[3])));
 
             // Add all point scale
             String[] pointScaleIds = new String[5];
@@ -184,49 +184,49 @@ public class GamificationFacade {
             }
 
             // Create rules
-            Rule newQuestionRule = Rule(NEW_QUESTION.name + RULE,
+            Rule newQuestionRule = GamificationHelper.createRule(NEW_QUESTION.name + RULE,
                     "New question rule to apply when a user create a question.",
                     NEW_QUESTION.name,
                     1d,
                     null,
                     Integer.parseInt(pointScaleIds[0]));
 
-            Rule newReplyRule = Rule(NEW_REPLY.name + RULE,
+            Rule newReplyRule = GamificationHelper.createRule(NEW_REPLY.name + RULE,
                     "New reply rule to apply when a user respond to a question.",
                     NEW_REPLY.name,
                     1d,
                     null,
                     Integer.parseInt(pointScaleIds[1]));
 
-            Rule newCommentRule = Rule(NEW_COMMENT.name + RULE,
+            Rule newCommentRule = GamificationHelper.createRule(NEW_COMMENT.name + RULE,
                     "New comment rule to apply when a user comment a question or a reply.",
                     NEW_COMMENT.name,
                     1d,
                     null,
                     Integer.parseInt(pointScaleIds[2]));
 
-            Rule newVoteRule = Rule(NEW_VOTE.name + RULE,
+            Rule newVoteRule = GamificationHelper.createRule(NEW_VOTE.name + RULE,
                     "New vote rule to apply when a user up/down vote a question or a reply.",
                     NEW_VOTE.name,
                     1d,
                     null,
                     Integer.parseInt(pointScaleIds[3]));
 
-            Rule removeVoteRule = Rule(REMOVE_VOTE.name + RULE,
+            Rule removeVoteRule = GamificationHelper.createRule(REMOVE_VOTE.name + RULE,
                     "Remove vote rule to apply when a user remove his own vote from a question or a reply.",
                     REMOVE_VOTE.name,
                     -1d,
                     null,
                     Integer.parseInt(pointScaleIds[3]));
 
-            Rule stonerProgressRule = Rule(STONER_PROGRESS.name + RULE,
+            Rule stonerProgressRule = GamificationHelper.createRule(STONER_PROGRESS.name + RULE,
                     "Stoner progress rule to apply when a user progress in the stoner game.",
                     STONER_PROGRESS.name,
                     1d,
                     null,
                     Integer.parseInt(pointScaleIds[4]));
 
-            Rule stonerRegressRule = Rule(STONER_REGRESS.name + RULE,
+            Rule stonerRegressRule = GamificationHelper.createRule(STONER_REGRESS.name + RULE,
                     "Stoner regress rule to apply when a user regress in the stoner game.",
                     STONER_REGRESS.name,
                     -1d,
@@ -431,95 +431,11 @@ public class GamificationFacade {
             };
         }
 
-        gamificationApi.createEventAsync(Event(
+        gamificationApi.createEventAsync(GamificationHelper.createEvent(
                 userId,
                 OffsetDateTime.now(),
                 eventType.name),
                 callback);
-    }
-
-    /**
-     * Constructor of Badge.
-     * @param name        Badge's attribute.
-     * @param description Badge's attribute.
-     * @return an instance of Badge.
-     */
-    private Badge Badge(String name, String description) {
-        Badge badge = new Badge();
-        badge.name(name);
-        badge.description(description);
-        return badge;
-    }
-
-    /**
-     * Constructor of BadgeName.
-     * @param name        BadgeName's attribute.
-     * @return an instance of BadgeName.
-     */
-    private BadgeName BadgeName(String name) {
-        BadgeName badgeName = new BadgeName();
-        badgeName.name(name);
-        return badgeName;
-    }
-
-    /**
-     * Constructor of Stage.
-     * @param points Stage's attribute.
-     * @param badge  Stage's attribute.
-     * @return an instance of Stage.
-     */
-    private Stage Stage(Double points, BadgeName badge) {
-        Stage stage = new Stage();
-        stage.points(points);
-        stage.badge(badge);
-        return stage;
-    }
-
-    /**
-     * Constructor of PointScale.
-     * @param stages PointScale's attribute.
-     * @return an instance of PointScale.
-     */
-    private PointScale PointScale(List<Stage> stages) {
-        PointScale pointScale = new PointScale();
-        pointScale.stages(stages);
-        return pointScale;
-    }
-
-    /**
-     * Constructor of Rule.
-     * @param name         Rule's attribute.
-     * @param description  Rule's attribute.
-     * @param eventType    Rule's attribute.
-     * @param pointsToAdd  Rule's attribute.
-     * @param badgeName    Rule's attribute.
-     * @param pointScaleId Rule's attribute.
-     * @return an instance of Rule.
-     */
-    private Rule Rule(String name, String description, String eventType, Double pointsToAdd, String badgeName, Integer pointScaleId) {
-        Rule rule = new Rule();
-        rule.name(name);
-        rule.description(description);
-        rule.eventType(eventType);
-        rule.pointsToAdd(pointsToAdd);
-        rule.badgeName(badgeName);
-        rule.pointScaleId(pointScaleId);
-        return rule;
-    }
-
-    /**
-     * Constructor of Event.
-     * @param userAppId       Event's attribute.
-     * @param timestamp       Event's attribute.
-     * @param eventType       Event's attribute.
-     * @return an instance of Event.
-     */
-    private Event Event(String userAppId, OffsetDateTime timestamp, String eventType) {
-        Event event = new Event();
-        event.userAppId(userAppId);
-        event.timestamp(timestamp);
-        event.eventType(eventType);
-        return event;
     }
 
     /**
