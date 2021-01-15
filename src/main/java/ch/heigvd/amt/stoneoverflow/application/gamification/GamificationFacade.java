@@ -77,11 +77,23 @@ public class GamificationFacade {
             questionBadges[2] = Badge("Rock questionner", "Almost a stonfessional in the asking game ?!");
             questionBadges[3] = Badge("Mountain questionner", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
 
+            BadgeName[] questionBadgesName = new BadgeName[4];
+            questionBadgesName[0] = BadgeName("First question");
+            questionBadgesName[1] = BadgeName("Pebble questionner");
+            questionBadgesName[2] = BadgeName("Rock questionner");
+            questionBadgesName[3] = BadgeName("Mountain questionner");
+
             Badge[] replyBadges = new Badge[4];
             replyBadges[0] = Badge("First reply", "You replied for the first time ! Congrats !");
             replyBadges[1] = Badge("Earth replier", "We see you're getting used to reply questions. Keep going !");
             replyBadges[2] = Badge("Cobblestone replier", "Almost a stonfessional in the replying game ?!");
             replyBadges[3] = Badge("Mineral replier", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
+
+            BadgeName[] replyBadgesName = new BadgeName[4];
+            replyBadgesName[0] = BadgeName("First reply");
+            replyBadgesName[1] = BadgeName("Earth replier");
+            replyBadgesName[2] = BadgeName("Cobblestone replier");
+            replyBadgesName[3] = BadgeName("Mineral replier");
 
             Badge[] commentBadges = new Badge[4];
             commentBadges[0] = Badge("First comment", "You wrote your first comment ! Congrats !");
@@ -89,17 +101,35 @@ public class GamificationFacade {
             commentBadges[2] = Badge("Gravel commenter", "Almost a stonfessional in the commenting game ?!");
             commentBadges[3] = Badge("Crag commenter", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
 
+            BadgeName[] commentBadgesName = new BadgeName[4];
+            commentBadgesName[0] = BadgeName("First comment");
+            commentBadgesName[1] = BadgeName("Sand commenter");
+            commentBadgesName[2] = BadgeName("Gravel commenter");
+            commentBadgesName[3] = BadgeName("Crag commenter");
+
             Badge[] voteBadges = new Badge[4];
             voteBadges[0] = Badge("First vote", "You voted for the first time ! Congrats !");
             voteBadges[1] = Badge("Rubble voter", "We see you're getting used to voting. Keep going !");
             voteBadges[2] = Badge("Boulder voter", "Almost a stonfessional in the voting game ?!");
             voteBadges[3] = Badge("Peak voter", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
 
+            BadgeName[] voteBadgesName = new BadgeName[4];
+            voteBadgesName[0] = BadgeName("First vote");
+            voteBadgesName[1] = BadgeName("Rubble voter");
+            voteBadgesName[2] = BadgeName("Boulder voter");
+            voteBadgesName[3] = BadgeName("Peak voter");
+
             Badge[] stonerBadges = new Badge[4];
             stonerBadges[0] = Badge("Newcomer", "Welcome to the StoneOverflow family !");
             stonerBadges[1] = Badge("Rookie", "We see you're getting used to StoneOverflow. Keep going !");
             stonerBadges[2] = Badge("Confirmed", "Almost a stonfessional in the StoneOverflow game ?!");
             stonerBadges[3] = Badge("Veteran", "Management is proud of your efforts ! You're a true Stone member ! Rock and Stone !");
+
+            BadgeName[] stonerBadgesName = new BadgeName[4];
+            stonerBadgesName[0] = BadgeName("Newcomer");
+            stonerBadgesName[1] = BadgeName("Rookie");
+            stonerBadgesName[2] = BadgeName("Confirmed");
+            stonerBadgesName[3] = BadgeName("Veteran");
 
             // Add all badges
             try {
@@ -111,34 +141,34 @@ public class GamificationFacade {
 
             // Create point scales
             PointScale questionPointScale = PointScale(Arrays.asList(
-                    Stage(1d, questionBadges[0]),
-                    Stage(5d, questionBadges[1]),
-                    Stage(10d, questionBadges[2]),
-                    Stage(20d, questionBadges[3])));
+                    Stage(1d, questionBadgesName[0]),
+                    Stage(5d, questionBadgesName[1]),
+                    Stage(10d, questionBadgesName[2]),
+                    Stage(20d, questionBadgesName[3])));
 
             PointScale replyPointScale = PointScale(Arrays.asList(
-                    Stage(1d, replyBadges[0]),
-                    Stage(5d, replyBadges[1]),
-                    Stage(10d, replyBadges[2]),
-                    Stage(20d, replyBadges[3])));
+                    Stage(1d, replyBadgesName[0]),
+                    Stage(5d, replyBadgesName[1]),
+                    Stage(10d, replyBadgesName[2]),
+                    Stage(20d, replyBadgesName[3])));
 
             PointScale commentPointScale = PointScale(Arrays.asList(
-                    Stage(1d, commentBadges[0]),
-                    Stage(5d, commentBadges[1]),
-                    Stage(10d, commentBadges[2]),
-                    Stage(20d, commentBadges[3])));
+                    Stage(1d, commentBadgesName[0]),
+                    Stage(5d, commentBadgesName[1]),
+                    Stage(10d, commentBadgesName[2]),
+                    Stage(20d, commentBadgesName[3])));
 
             PointScale votePointScale = PointScale(Arrays.asList(
-                    Stage(1d, voteBadges[0]),
-                    Stage(5d, voteBadges[1]),
-                    Stage(10d, voteBadges[2]),
-                    Stage(20d, voteBadges[3])));
+                    Stage(1d, voteBadgesName[0]),
+                    Stage(5d, voteBadgesName[1]),
+                    Stage(10d, voteBadgesName[2]),
+                    Stage(20d, voteBadgesName[3])));
 
             PointScale stonerPointScale = PointScale(Arrays.asList(
-                    Stage(1d, stonerBadges[0]),
-                    Stage(25d, stonerBadges[1]),
-                    Stage(80d, stonerBadges[2]),
-                    Stage(120d, stonerBadges[3])));
+                    Stage(1d, stonerBadgesName[0]),
+                    Stage(25d, stonerBadgesName[1]),
+                    Stage(80d, stonerBadgesName[2]),
+                    Stage(120d, stonerBadgesName[3])));
 
             // Add all point scale
             String[] pointScaleIds = new String[5];
@@ -368,8 +398,11 @@ public class GamificationFacade {
     public  PaginatedPointsRankings getPointsRankings(Integer page, Integer pageSize)  {
         if (isInstantiate()) {
             try {
+                System.out.println(page);
+                System.out.println(pageSize);
                 return gamificationApi.getRankingsByTotalPoints(page, pageSize);
             } catch (ApiException apiException) {
+                System.out.println(apiException.getCode());
                 apiException.printStackTrace();
             }
         }
@@ -401,8 +434,7 @@ public class GamificationFacade {
         gamificationApi.createEventAsync(Event(
                 userId,
                 OffsetDateTime.now(),
-                eventType.name,
-                null),
+                eventType.name),
                 callback);
     }
 
@@ -420,12 +452,23 @@ public class GamificationFacade {
     }
 
     /**
+     * Constructor of BadgeName.
+     * @param name        BadgeName's attribute.
+     * @return an instance of BadgeName.
+     */
+    private BadgeName BadgeName(String name) {
+        BadgeName badgeName = new BadgeName();
+        badgeName.name(name);
+        return badgeName;
+    }
+
+    /**
      * Constructor of Stage.
      * @param points Stage's attribute.
      * @param badge  Stage's attribute.
      * @return an instance of Stage.
      */
-    private Stage Stage(Double points, Badge badge) {
+    private Stage Stage(Double points, BadgeName badge) {
         Stage stage = new Stage();
         stage.points(points);
         stage.badge(badge);
@@ -469,15 +512,13 @@ public class GamificationFacade {
      * @param userAppId       Event's attribute.
      * @param timestamp       Event's attribute.
      * @param eventType       Event's attribute.
-     * @param eventProperties Event's attribute.
      * @return an instance of Event.
      */
-    private Event Event(String userAppId, OffsetDateTime timestamp, String eventType, Object eventProperties) {
+    private Event Event(String userAppId, OffsetDateTime timestamp, String eventType) {
         Event event = new Event();
         event.userAppId(userAppId);
         event.timestamp(timestamp);
         event.eventType(eventType);
-        event.eventProperties(eventProperties);
         return event;
     }
 
