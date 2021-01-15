@@ -70,7 +70,7 @@ public class ServiceRegistry {
      */
     private void initFacades() {
         identityManagementFacade = new IdentityManagementFacade(userRepository);
-        questionFacade           = new QuestionFacade(questionRepository);
+        questionFacade           = new QuestionFacade(questionRepository, gamificationFacade);
         answerFacade             = new AnswerFacade(answerRepository, gamificationFacade);
         commentFacade            = new CommentFacade(commentRepository, gamificationFacade);
         voteFacade               = new VoteFacade(voteRepository);
