@@ -48,9 +48,10 @@ public class GamificationHelper {
      * @param stages PointScale's attribute.
      * @return an instance of PointScale.
      */
-    static PointScale createPointScale(List<Stage> stages) {
+    static PointScale createPointScale(String name, List<Stage> stages) {
         PointScale pointScale = new PointScale();
         pointScale.stages(stages);
+        pointScale.name(name);
         return pointScale;
     }
 
