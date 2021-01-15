@@ -155,7 +155,7 @@ public class VoteFacadeIT {
         VoteId voteId = new VoteId(voteFacade.getVote(questionId, testUser.getId(), UserMessageType.QUESTION).getUuid());
 
         assertEquals(nbVotesBefore+1, voteFacade.getNumberOfVotes(questionId));
-        voteFacade.remove(voteId);
+        voteFacade.remove(voteId, testUser.getId());
         assertEquals(nbVotesBefore, voteFacade.getNumberOfVotes(questionId));
     }
 
