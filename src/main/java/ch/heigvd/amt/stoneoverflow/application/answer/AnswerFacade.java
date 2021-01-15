@@ -1,6 +1,7 @@
 package ch.heigvd.amt.stoneoverflow.application.answer;
 
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.domain.answer.Answer;
 import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
 import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
@@ -14,9 +15,11 @@ import java.util.stream.Collectors;
 
 public class AnswerFacade {
     private IAnswerRepository answerRepository;
+    private GamificationFacade gamificationFacade;
 
-    public AnswerFacade(IAnswerRepository answerRepository) {
+    public AnswerFacade(IAnswerRepository answerRepository, GamificationFacade gamificationFacade) {
         this.answerRepository = answerRepository;
+        this.gamificationFacade = gamificationFacade;
     }
 
     public AnswerId addAnswer(AddAnswerCommand command) {
@@ -27,6 +30,9 @@ public class AnswerFacade {
                 .creator(command.getCreator())
                 .date(command.getDate()).build();
         answerRepository.save(addAnswer);
+        // Send to the gamification
+        gamificationFacade.addReplyAsync(command.getCreatorId().asString(), null);
+        gamificationFacade.stonerProgressAsync(command.getCreatorId().asString(), null);
         return addAnswer.getId();
     }
 
