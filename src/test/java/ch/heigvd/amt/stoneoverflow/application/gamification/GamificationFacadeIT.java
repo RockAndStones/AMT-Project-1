@@ -12,8 +12,11 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -25,6 +28,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Arquillian.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)// To not have tests making others fail because runned before
 public class GamificationFacadeIT {
 
     private final static String WARNAME = "arquillian-managed.war";
@@ -33,7 +37,7 @@ public class GamificationFacadeIT {
     private ServiceRegistry serviceRegistry;
 
     private AuthenticatedUserDTO testUser;
-    private GamificationFacade gamificationFacade;
+    private GamificationFacade gamificationFacade = new GamificationFacade("unitTests-GamificationFacadeIT");
 
     @Deployment(testable = true)
     public static WebArchive createDeployment() {
@@ -52,15 +56,10 @@ public class GamificationFacadeIT {
 
     @Before
     public void init() throws LoginFailedException {
-        System.out.println("init-1"); //todo: debug
         this.testUser = serviceRegistry.getIdentityManagementFacade().login(LoginCommand.builder()
                 .username("test")
                 .plaintextPassword("test")
                 .build());
-        System.out.println("init-2");//todo: debug
-        this.gamificationFacade = new GamificationFacade("unitTests-GamificationFacadeIT");
-        System.out.println("init-3");//todo: debug
-        this.gamificationFacade.stonerProgressAsync(testUser.getId().asString(), newApiCallbackVoidFailOnFailure());
     }
 
     @Test
@@ -85,13 +84,18 @@ public class GamificationFacadeIT {
     }
 
     @Test
+    public void shouldAddStonerProgressAsync() {
+        this.gamificationFacade.stonerProgressAsync(testUser.getId().asString(), newApiCallbackVoidFailOnFailure());
+    }
+
+    @Test
     public void shouldAddAndRemoveVoteAsync() {
         gamificationFacade.addVoteAsync(testUser.getId().asString(), newApiCallbackVoidFailOnFailure());
         gamificationFacade.removeVoteAsync(testUser.getId().asString(), newApiCallbackVoidFailOnFailure());
     }
 
     @Test
-    public void shouldProgressAndRegressStonerAsync() {
+    public void shouldAddProgressAndRegressStonerAsync() {
         gamificationFacade.stonerProgressAsync(testUser.getId().asString(), newApiCallbackVoidFailOnFailure());
         gamificationFacade.stonerRegressAsync(testUser.getId().asString(), newApiCallbackVoidFailOnFailure());
     }
@@ -100,9 +104,9 @@ public class GamificationFacadeIT {
     public void shouldGetRightTestUserInfo() {
         UserInfo testUserInfo = gamificationFacade.getUserInfo(testUser.getId().asString());
         assertNotNull(testUserInfo);
-        assertEquals(Integer.valueOf(8), testUserInfo.getPoints());
+        assertEquals(Integer.valueOf(4), testUserInfo.getPoints());
         assertNotNull(testUserInfo.getBadges());
-        assertEquals(5, testUserInfo.getBadges().size());
+        assertEquals(4, testUserInfo.getBadges().size());
     }
 
     @Test
@@ -112,7 +116,7 @@ public class GamificationFacadeIT {
         assertNotNull(badgesRankings.getData());
         assertTrue(badgesRankings.getData().contains(new BadgesRanking()
                 .userId(testUser.getId().asString())
-                .badges(8)));
+                .badges(5)));
     }
 
     @Test
@@ -122,7 +126,7 @@ public class GamificationFacadeIT {
         assertNotNull(pointsRankings.getData());
         assertTrue(pointsRankings.getData().contains(new PointsRanking()
                 .userId(testUser.getId().asString())
-                .points(5d)));
+                .points(4d)));
     }
 
     private ApiCallback<Void> newApiCallbackVoidFailOnFailure() {
