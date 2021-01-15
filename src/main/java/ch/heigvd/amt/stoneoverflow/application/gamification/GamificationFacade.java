@@ -140,31 +140,31 @@ public class GamificationFacade {
             }
 
             // Create point scales
-            PointScale questionPointScale = GamificationHelper.createPointScale(Arrays.asList(
+            PointScale questionPointScale = GamificationHelper.createPointScale("Question PointScale", Arrays.asList(
                     GamificationHelper.createStage(1d, questionBadgesName[0]),
                     GamificationHelper.createStage(5d, questionBadgesName[1]),
                     GamificationHelper.createStage(10d, questionBadgesName[2]),
                     GamificationHelper.createStage(20d, questionBadgesName[3])));
 
-            PointScale replyPointScale = GamificationHelper.createPointScale(Arrays.asList(
+            PointScale replyPointScale = GamificationHelper.createPointScale("Reply PointScale", Arrays.asList(
                     GamificationHelper.createStage(1d, replyBadgesName[0]),
                     GamificationHelper.createStage(5d, replyBadgesName[1]),
                     GamificationHelper.createStage(10d, replyBadgesName[2]),
                     GamificationHelper.createStage(20d, replyBadgesName[3])));
 
-            PointScale commentPointScale = GamificationHelper.createPointScale(Arrays.asList(
+            PointScale commentPointScale = GamificationHelper.createPointScale("Comment PointScale", Arrays.asList(
                     GamificationHelper.createStage(1d, commentBadgesName[0]),
                     GamificationHelper.createStage(5d, commentBadgesName[1]),
                     GamificationHelper.createStage(10d, commentBadgesName[2]),
                     GamificationHelper.createStage(20d, commentBadgesName[3])));
 
-            PointScale votePointScale = GamificationHelper.createPointScale(Arrays.asList(
+            PointScale votePointScale = GamificationHelper.createPointScale("Vote PointScale", Arrays.asList(
                     GamificationHelper.createStage(1d, voteBadgesName[0]),
                     GamificationHelper.createStage(5d, voteBadgesName[1]),
                     GamificationHelper.createStage(10d, voteBadgesName[2]),
                     GamificationHelper.createStage(20d, voteBadgesName[3])));
 
-            PointScale stonerPointScale = GamificationHelper.createPointScale(Arrays.asList(
+            PointScale stonerPointScale = GamificationHelper.createPointScale("Stoner PointScale", Arrays.asList(
                     GamificationHelper.createStage(1d, stonerBadgesName[0]),
                     GamificationHelper.createStage(25d, stonerBadgesName[1]),
                     GamificationHelper.createStage(80d, stonerBadgesName[2]),
