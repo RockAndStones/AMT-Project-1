@@ -257,13 +257,7 @@ public class GamificationFacade {
      * @param callback API callback to handle api result.
      */
     public void addQuestionAsync(String userId, ApiCallback<Void> callback) {
-        if (isInstantiate()) {
-            try {
-                newEventAsync(userId, NEW_QUESTION, callback);
-            } catch (ApiException apiException) {
-                apiException.printStackTrace();
-            }
-        }
+        newEventAsync(userId, NEW_QUESTION, callback);
     }
 
     /**
@@ -272,13 +266,7 @@ public class GamificationFacade {
      * @param callback API callback to handle api result.
      */
     public void addReplyAsync(String userId, ApiCallback<Void> callback) {
-        if (isInstantiate()) {
-            try {
-                newEventAsync(userId, NEW_REPLY, callback);
-            } catch (ApiException apiException) {
-                apiException.printStackTrace();
-            }
-        }
+        newEventAsync(userId, NEW_REPLY, callback);
     }
 
     /**
@@ -287,13 +275,7 @@ public class GamificationFacade {
      * @param callback API callback to handle api result.
      */
     public void addCommentAsync(String userId, ApiCallback<Void> callback) {
-        if (isInstantiate()) {
-            try {
-                newEventAsync(userId, NEW_COMMENT, callback);
-            } catch (ApiException apiException) {
-                apiException.printStackTrace();
-            }
-        }
+        newEventAsync(userId, NEW_COMMENT, callback);
     }
 
     /**
@@ -302,13 +284,7 @@ public class GamificationFacade {
      * @param callback API callback to handle api result.
      */
     public void addVoteAsync(String userId, ApiCallback<Void> callback) {
-        if (isInstantiate()) {
-            try {
-                newEventAsync(userId, NEW_VOTE, callback);
-            } catch (ApiException apiException) {
-                apiException.printStackTrace();
-            }
-        }
+        newEventAsync(userId, NEW_VOTE, callback);
     }
 
     /**
@@ -317,13 +293,7 @@ public class GamificationFacade {
      * @param callback API callback to handle api result.
      */
     public void removeVoteAsync(String userId, ApiCallback<Void> callback) {
-        if (isInstantiate()) {
-            try {
-                newEventAsync(userId, REMOVE_VOTE, callback);
-            } catch (ApiException apiException) {
-                apiException.printStackTrace();
-            }
-        }
+        newEventAsync(userId, REMOVE_VOTE, callback);
     }
 
     /**
@@ -332,13 +302,7 @@ public class GamificationFacade {
      * @param callback API callback to handle api result.
      */
     public void stonerProgressAsync(String userId, ApiCallback<Void> callback) {
-        if (isInstantiate()) {
-            try {
-                newEventAsync(userId, STONER_PROGRESS, callback);
-            } catch (ApiException apiException) {
-                apiException.printStackTrace();
-            }
-        }
+        newEventAsync(userId, STONER_PROGRESS, callback);
     }
 
     /**
@@ -347,13 +311,7 @@ public class GamificationFacade {
      * @param callback API callback to handle api result.
      */
     public void stonerRegressAsync(String userId, ApiCallback<Void> callback) {
-        if (isInstantiate()) {
-            try {
-                newEventAsync(userId, STONER_REGRESS, callback);
-            } catch (ApiException apiException) {
-                apiException.printStackTrace();
-            }
-        }
+        newEventAsync(userId, STONER_REGRESS, callback);
     }
 
     /**
@@ -416,7 +374,9 @@ public class GamificationFacade {
      * @param callback API callback to handle api result.
      * @throws ApiException threw if an error occurred with the gamification engine.
      */
-    private void newEventAsync(String userId, EventType eventType, ApiCallback<Void> callback) throws ApiException {
+    public void newEventAsync(String userId, EventType eventType, ApiCallback<Void> callback) {
+        if (!isInstantiate())
+            return;
 
         if (callback == null) {
             callback = new ApiCallback<Void>() {
@@ -431,11 +391,15 @@ public class GamificationFacade {
             };
         }
 
-        gamificationApi.createEventAsync(GamificationHelper.createEvent(
-                userId,
-                OffsetDateTime.now(),
-                eventType.name),
-                callback);
+        try {
+            gamificationApi.createEventAsync(GamificationHelper.createEvent(
+                    userId,
+                    OffsetDateTime.now(),
+                    eventType.name),
+                    callback);
+        } catch (ApiException apiException) {
+            apiException.printStackTrace();
+        }
     }
 
     /**
