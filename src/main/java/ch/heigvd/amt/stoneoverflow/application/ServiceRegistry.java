@@ -69,6 +69,7 @@ public class ServiceRegistry {
      * Initialize facades.
      */
     private void initFacades() {
+        gamificationFacade       = new GamificationFacade(null);
         identityManagementFacade = new IdentityManagementFacade(userRepository, gamificationFacade);
         questionFacade           = new QuestionFacade(questionRepository, gamificationFacade);
         answerFacade             = new AnswerFacade(answerRepository, gamificationFacade);
@@ -76,7 +77,6 @@ public class ServiceRegistry {
         voteFacade               = new VoteFacade(voteRepository, gamificationFacade);
         statisticsFacade         = new StatisticsFacade(questionRepository, userRepository, commentRepository, answerRepository, voteRepository, questionFacade, voteFacade);
         paginationFacade         = new PaginationFacade(questionRepository, answerRepository);
-        gamificationFacade       = new GamificationFacade(null);
     }
 
     /**
