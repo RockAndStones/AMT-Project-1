@@ -22,13 +22,11 @@ public class AddCommentCommandServlet extends HttpServlet {
     @Inject
     ServiceRegistry serviceRegistry;
     CommentFacade commentFacade;
-    GamificationFacade gamificationFacade;
 
     @Override
     public void init() throws ServletException {
         super.init();
         commentFacade = serviceRegistry.getCommentFacade();
-        gamificationFacade = serviceRegistry.getGamificationFacade();
     }
 
     @Override
@@ -55,9 +53,6 @@ public class AddCommentCommandServlet extends HttpServlet {
                 .creator(user.getUsername())
                 .content(req.getParameter("commentContent")).build();
         commentFacade.addComment(command);
-
-        gamificationFacade.addCommentAsync(user.getId().asString(), null);
-        gamificationFacade.stonerProgressAsync(user.getId().asString(), null);
 
         resp.sendRedirect(req.getContextPath() + "/questionDetails?questionUUID=" + questionUUID);
     }
