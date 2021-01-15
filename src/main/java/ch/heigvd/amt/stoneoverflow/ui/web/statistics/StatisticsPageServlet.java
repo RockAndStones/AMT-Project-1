@@ -55,7 +55,7 @@ public class StatisticsPageServlet extends HttpServlet {
             for (BadgesRanking rank : badgesRankings.getData()) {
                 username = identityManagementFacade.getUsername(new UserId(rank.getUserId()));
                 if (username != null) {
-                    badgesRank.put(username, rank.getPoints());
+                    badgesRank.put(username, rank.getBadges());
                 }
             }
         }

@@ -112,7 +112,7 @@ public class GamificationFacadeIT {
         assertNotNull(badgesRankings.getData());
         assertTrue(badgesRankings.getData().contains(new BadgesRanking()
                 .userId(testUser.getId().asString())
-                .points(8)));
+                .badges(8)));
     }
 
     @Test
