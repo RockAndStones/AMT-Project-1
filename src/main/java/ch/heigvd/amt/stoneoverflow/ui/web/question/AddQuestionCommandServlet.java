@@ -38,9 +38,6 @@ public class AddQuestionCommandServlet extends HttpServlet {
                 .description(req.getParameter("description")).build();
         questionFacade.addQuestion(command);
 
-        gamificationFacade.addQuestionAsync(user.getId().asString(), null);
-        gamificationFacade.stonerProgressAsync(user.getId().asString(), null);
-
         resp.sendRedirect(req.getContextPath() + "/home");
     }
 }
