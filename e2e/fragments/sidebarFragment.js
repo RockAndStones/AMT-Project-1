@@ -7,7 +7,8 @@ module.exports = {
     links: {
         home: {css: 'a[href=home]'},
         newQuestions: {css: 'a[href=addQuestion]'},
-        statistics: {css: 'a[href=statistics]'}
+        statistics: {css: 'a[href=statistics]'},
+        history: {css: 'a[href=history]'},
     },
 
     elements: {
@@ -29,6 +30,12 @@ module.exports = {
     goToStatisticsPage(){
         within(this.root, () => {
             I.clickLink(this.links.statistics);
+        });
+    },
+
+    goToHistoryPage(){
+        within(this.root, () => {
+            I.clickLink(this.links.history);
         });
     },
 

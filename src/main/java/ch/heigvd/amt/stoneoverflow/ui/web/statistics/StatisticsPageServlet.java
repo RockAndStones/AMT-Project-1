@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static ch.heigvd.amt.stoneoverflow.application.gamification.EventType.NEW_QUESTION;
+
 @WebServlet(name = "StatisticsPageServlet", urlPatterns =  "statistics")
 public class StatisticsPageServlet extends HttpServlet {
     @Inject
@@ -37,6 +39,7 @@ public class StatisticsPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         StatisticsDTO statistics = statisticsFacade.getGlobalStatistics();
 
+        PaginatedPointsRankings pointsQuestionsRankings = gamificationFacade.getPointsRankings(NEW_QUESTION, 0, 10);
         int pointsPage = 0;
         try {
             pointsPage = Integer.parseInt(req.getParameter("pointsPage")) - 1;
@@ -51,6 +54,10 @@ public class StatisticsPageServlet extends HttpServlet {
             System.out.println("Invalid badge page argument");
         }
 
+        HashMap<String, Double>  pointsQRank = new HashMap<>();
+
+        getUsernameFromId(pointsQuestionsRankings, pointsQRank);
+
         PointsRankingsDTO pointsRankings = statisticsFacade.getPointsRankings(pointsPage, 10);
         BadgesRankingsDTO badgesRankings = statisticsFacade.getBadgesRankings(badgesPage, 10);
 
@@ -58,6 +65,8 @@ public class StatisticsPageServlet extends HttpServlet {
         req.setAttribute("badgesRank", badgesRankings);
         req.setAttribute("pointsRank", pointsRankings);
         req.setAttribute("pagination", badgesRankings.getPagination());
+
+        req.setAttribute("pointsQRank", pointsQRank);
 
         req.setAttribute("statistics", statistics);
         req.getRequestDispatcher("/WEB-INF/views/statistics.jsp").forward(req, resp);

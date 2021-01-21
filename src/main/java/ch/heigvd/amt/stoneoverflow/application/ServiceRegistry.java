@@ -3,6 +3,7 @@ package ch.heigvd.amt.stoneoverflow.application;
 import ch.heigvd.amt.stoneoverflow.application.answer.AddAnswerCommand;
 import ch.heigvd.amt.stoneoverflow.application.comment.AddCommentCommand;
 import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
+import ch.heigvd.amt.stoneoverflow.application.history.HistoryFacade;
 import ch.heigvd.amt.stoneoverflow.application.pagination.PaginationFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.AddQuestionCommand;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
@@ -61,6 +62,7 @@ public class ServiceRegistry {
     @Getter VoteFacade               voteFacade;
     @Getter StatisticsFacade         statisticsFacade;
     @Getter PaginationFacade         paginationFacade;
+    @Getter HistoryFacade            historyFacade;
 
     @PostConstruct
     private void initDefaultValues() {
@@ -83,6 +85,7 @@ public class ServiceRegistry {
         voteFacade               = new VoteFacade(voteRepository, gamificationFacade);
         statisticsFacade         = new StatisticsFacade(questionRepository, userRepository, commentRepository, answerRepository, voteRepository, questionFacade, voteFacade, gamificationFacade);
         paginationFacade         = new PaginationFacade(questionRepository, answerRepository);
+        historyFacade            = new HistoryFacade(gamificationFacade);
     }
 
     /**
