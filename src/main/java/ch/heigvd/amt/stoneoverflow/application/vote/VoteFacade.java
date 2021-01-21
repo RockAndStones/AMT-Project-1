@@ -28,8 +28,7 @@ public class VoteFacade {
                 .votedObject(command.getVotedObject())
                 .voteType(command.getVoteType()).build();
         voteRepository.save(vote);
-        gamificationFacade.addVoteAsync(command.getVotedBy().asString(), null);
-        gamificationFacade.stonerProgressAsync(command.getVotedBy().asString(), null);
+        sendEvent(command.getVoteType(), command.getVotedBy());
         return vote.getId();
     }
 
@@ -78,12 +77,16 @@ public class VoteFacade {
                 .votedObject(command.getVotedObject())
                 .voteType(command.getVoteType()).build());
         // TODO : Better Solution ?
-        if(command.getVoteType() == Vote.VoteType.UP){
-            gamificationFacade.addVoteAsync(command.getVotedBy().asString(), null);
-            gamificationFacade.stonerProgressAsync(command.getVotedBy().asString(), null);
-        } else if(command.getVoteType() == Vote.VoteType.DOWN){
-            gamificationFacade.removeVoteAsync(command.getVotedBy().asString(), null);
-            gamificationFacade.stonerRegressAsync(command.getVotedBy().asString(), null);
+        sendEvent(command.getVoteType(), command.getVotedBy());
+    }
+
+    public void sendEvent(Vote.VoteType type, UserId voteBy){
+        if(type == Vote.VoteType.UP){
+            gamificationFacade.addVoteAsync(voteBy.asString(), null);
+            gamificationFacade.stonerProgressAsync(voteBy.asString(), null);
+        } else if(type == Vote.VoteType.DOWN){
+            gamificationFacade.removeVoteAsync(voteBy.asString(), null);
+            gamificationFacade.stonerRegressAsync(voteBy.asString(), null);
         }
     }
 }

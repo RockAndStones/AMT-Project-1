@@ -168,6 +168,7 @@ public class GamificationFacade {
      * @param callback API callback to handle api result.
      */
     public void removeVoteAsync(String userId, ApiCallback<Void> callback) {
+        System.out.println("Sending Remove");
         newEventAsync(userId, REMOVE_VOTE, callback);
     }
 
