@@ -58,7 +58,9 @@
                 <c:otherwise>
                     <!-- Pagination -->
                     <div class="mx-3 mt-8">
-                        <%@include file="fragments/homePagination.jsp" %>
+                        <c:set var="path" value="home"/>
+                        <c:set var="pageArg" value="page"/>
+                        <%@include file="fragments/pagination.jsp" %>
                     </div>
                 </c:otherwise>
             </c:choose>

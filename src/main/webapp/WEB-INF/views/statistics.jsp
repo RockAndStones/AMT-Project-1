@@ -7,8 +7,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<jsp:useBean scope="request" id="badgesRank" type="java.util.HashMap"/>
-<jsp:useBean scope="request" id="pointsRank" type="java.util.HashMap"/>
+<jsp:useBean scope="request" id="badgesRank" type="ch.heigvd.amt.stoneoverflow.application.statistics.BadgesRankingsDTO"/>
+<jsp:useBean scope="request" id="pointsRank" type="ch.heigvd.amt.stoneoverflow.application.statistics.PointsRankingsDTO"/>
 <jsp:useBean scope="request" id="isGamificationOn" type="java.lang.Boolean"/>
 <!DOCTYPE html>
 <html>
@@ -88,14 +88,20 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${pointsRank}" var="rank">
+                    <c:forEach items="${pointsRank.rankings}" var="rank">
                         <tr class="userRow">
-                            <td class="border px-4 py-2">${rank.key}</td>
-                            <td class="border px-4 py-2 text-center">${rank.value}</td>
+                            <td class="border px-4 py-2">${rank.username}</td>
+                            <td class="border px-4 py-2">${rank.points}</td>
                         </tr>
                     </c:forEach>
                     </tbody>
                 </table>
+                <!-- Pagination -->
+                <div class="mx-3 mt-8">
+                    <c:set var="path" value="statistics"/>
+                    <c:set var="pageArg" value="pointsPage"/>
+                    <%@include file="fragments/pagination.jsp" %>
+                </div>
             </div>
             <div class="pb-8 mb-8 border-b">
                 <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most active users</span>
@@ -110,14 +116,20 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${badgesRank}" var="rank">
+                    <c:forEach items="${badgesRank.rankings}" var="rank">
                         <tr class="userRow">
-                            <td class="border px-4 py-2">${rank.key}</td>
-                            <td class="border px-4 py-2 text-center">${rank.value}</td>
+                            <td class="border px-4 py-2">${rank.username}</td>
+                            <td class="border px-4 py-2 text-center">${rank.badges}</td>
                         </tr>
                     </c:forEach>
                     </tbody>
                 </table>
+                <!-- Pagination -->
+                <div class="mx-3 mt-8">
+                    <c:set var="path" value="statistics"/>
+                    <c:set var="pageArg" value="badgesPage"/>
+                    <%@include file="fragments/pagination.jsp" %>
+                </div>
             </div>
         </c:if>
         <div class="pb-8 mb-8 border-b">

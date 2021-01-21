@@ -81,7 +81,7 @@ public class ServiceRegistry {
         answerFacade             = new AnswerFacade(answerRepository, gamificationFacade);
         commentFacade            = new CommentFacade(commentRepository, gamificationFacade);
         voteFacade               = new VoteFacade(voteRepository, gamificationFacade);
-        statisticsFacade         = new StatisticsFacade(questionRepository, userRepository, commentRepository, answerRepository, voteRepository, questionFacade, voteFacade);
+        statisticsFacade         = new StatisticsFacade(questionRepository, userRepository, commentRepository, answerRepository, voteRepository, questionFacade, voteFacade, gamificationFacade);
         paginationFacade         = new PaginationFacade(questionRepository, answerRepository);
     }
 
