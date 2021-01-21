@@ -244,6 +244,22 @@ public class GamificationFacade {
     }
 
     /**
+     * Get user history (event & points).
+     * @param userId The userId of the requested user.
+     * @return an instance of UserInfo.
+     */
+    public PointsProgression getUserHistory(String userId) {
+        if (isInstantiate()) {
+            try {
+                return gamificationApi.getUserOverallProgression(userId);
+            } catch (ApiException apiException) {
+                apiException.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
      * Add an Event in the gamification engine.
      * @param userId The userId of the user who performed the action.
      * @param eventType Type of event to add.

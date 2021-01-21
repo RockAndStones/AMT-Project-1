@@ -1,5 +1,6 @@
 package ch.heigvd.amt.stoneoverflow.application.statistics;
 
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuerySortBy;
@@ -14,8 +15,7 @@ import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.vote.IVoteRepository;
 
-import java.util.Collection;
-import java.util.Comparator;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -28,7 +28,7 @@ public class StatisticsFacade {
     private final QuestionFacade questionFacade;
     private final VoteFacade voteFacade;
 
-    public StatisticsFacade(IQuestionRepository questionRepository, IUserRepository userRepository, ICommentRepository commentRepository, IAnswerRepository answerRepository, IVoteRepository voteRepository, QuestionFacade questionFacade, VoteFacade voteFacade) {
+    public StatisticsFacade(IQuestionRepository questionRepository, IUserRepository userRepository, ICommentRepository commentRepository, IAnswerRepository answerRepository, IVoteRepository voteRepository, QuestionFacade questionFacade, VoteFacade voteFacade, GamificationFacade gamificationFacade) {
         this.questionRepository = questionRepository;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
@@ -36,6 +36,7 @@ public class StatisticsFacade {
         this.voteRepository = voteRepository;
         this.questionFacade = questionFacade;
         this.voteFacade = voteFacade;
+
     }
 
     int getTotalViews() {
