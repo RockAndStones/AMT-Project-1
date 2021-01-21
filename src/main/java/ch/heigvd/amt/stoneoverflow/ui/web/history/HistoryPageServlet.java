@@ -2,6 +2,8 @@ package ch.heigvd.amt.stoneoverflow.ui.web.history;
 
 
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
+import ch.heigvd.amt.stoneoverflow.application.gamification.PointScaleHistoryDTO;
 import ch.heigvd.amt.stoneoverflow.application.history.HistoryFacade;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
 
@@ -23,11 +25,13 @@ public class HistoryPageServlet extends HttpServlet {
     @Inject
     private ServiceRegistry serviceRegistry;
     private HistoryFacade historyFacade;
+    private GamificationFacade gamificationFacade;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         historyFacade = serviceRegistry.getHistoryFacade();
+        gamificationFacade = serviceRegistry.getGamificationFacade();
     }
 
     @Override
@@ -35,7 +39,17 @@ public class HistoryPageServlet extends HttpServlet {
         AuthenticatedUserDTO user = (AuthenticatedUserDTO) req.getSession().getAttribute("authenticatedUser");
         Collection<Map<Object, Object>> historyUser = historyFacade.getHistoryUser(user.getId());
 
-        req.setAttribute("history", new Gson().toJson(historyUser));
+        if(historyUser != null) {
+            PointScaleHistoryDTO pointScaleHistoryDTO = gamificationFacade.getPointScalesHistory();
+            req.setAttribute("historyOverall", new Gson().toJson(historyUser));
+            String filter = req.getParameter("f");
+            if (filter != null) {
+                req.setAttribute("historyPointscale", new Gson().toJson(historyFacade.getHistoryUserPointScale(user.getId(), Integer.parseInt(filter))));
+            } else {
+                req.setAttribute("historyPointscale", new Gson().toJson(historyFacade.getHistoryUserPointScale(user.getId(), pointScaleHistoryDTO.getPointscales().get(0).getId())));
+            }
+            req.setAttribute("pointscales", pointScaleHistoryDTO);
+        }
 
         req.getRequestDispatcher("/WEB-INF/views/history.jsp").forward(req, resp);
     }

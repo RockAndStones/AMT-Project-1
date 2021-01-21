@@ -6,13 +6,14 @@ import ch.heigvd.amt.gamification.ApiResponse;
 import ch.heigvd.amt.gamification.api.DefaultApi;
 import ch.heigvd.amt.gamification.api.dto.*;
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
+import ch.heigvd.amt.stoneoverflow.application.comment.CommentsDTO;
+import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
+import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static ch.heigvd.amt.stoneoverflow.application.gamification.EventType.*;
 
@@ -271,6 +272,45 @@ public class GamificationFacade {
         if (isInstantiate()) {
             try {
                 return gamificationApi.getUserOverallProgression(userId);
+            } catch (ApiException apiException) {
+                apiException.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get user history (event & points).
+     * @param userId The userId of the requested user.
+     * @return an instance of UserInfo.
+     */
+    public PointsProgression getUserHistoryByPointScale(String userId, int pointscaleId) {
+        if (isInstantiate()) {
+            try {
+                return gamificationApi.getUserProgressionByPointScale(userId, (long) pointscaleId);
+            } catch (ApiException apiException) {
+                apiException.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Will get the pointscales but we only want the name and the id not the stages
+     * @return PointScaleHistoryDTO that will contain all the pointscales of the application
+     */
+    public PointScaleHistoryDTO getPointScalesHistory(){
+        if (isInstantiate()) {
+            try {
+                Collection<PointScaleInfo> pointScales = gamificationApi.getPointScales();
+
+                List<PointScaleHistoryDTO.PointScaleDTO> pointScaleDTOS = pointScales.stream().map(
+                        pointScale -> PointScaleHistoryDTO.PointScaleDTO.builder()
+                                .id(pointScale.getId())
+                                .name(pointScale.getName()).build())
+                        .collect(Collectors.toList());
+
+                return PointScaleHistoryDTO.builder().pointscales(pointScaleDTOS).build();
             } catch (ApiException apiException) {
                 apiException.printStackTrace();
             }
