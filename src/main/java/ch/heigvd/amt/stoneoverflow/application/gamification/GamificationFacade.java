@@ -244,6 +244,25 @@ public class GamificationFacade {
     }
 
     /**
+     * Get the paginated points rankings of an EventType.
+     * @param eventType The requested event type.
+     * @param page The requested page.
+     * @param pageSize Amount of badges per page.
+     * @return an instance of PaginatedPointsRankings.
+     */
+    public  PaginatedPointsRankings getPointsRankings(EventType eventType, Integer page, Integer pageSize)  {
+        if (isInstantiate()) {
+            try {
+                return gamificationApi.getRankingsByEventTypePoints(eventType.name, page, pageSize);
+            } catch (ApiException apiException) {
+                System.out.println(apiException.getCode());
+                apiException.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
      * Get user history (event & points).
      * @param userId The userId of the requested user.
      * @return an instance of UserInfo.

@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 
+import static ch.heigvd.amt.stoneoverflow.application.gamification.EventType.NEW_QUESTION;
+
 @WebServlet(name = "StatisticsPageServlet", urlPatterns =  "statistics")
 public class StatisticsPageServlet extends HttpServlet {
     @Inject
@@ -43,13 +45,26 @@ public class StatisticsPageServlet extends HttpServlet {
 
         PaginatedBadgesRankings badgesRankings = gamificationFacade.getBadgesRankings(0, 10);
         PaginatedPointsRankings pointsRankings = gamificationFacade.getPointsRankings(0, 10);
+        PaginatedPointsRankings pointsQuestionsRankings = gamificationFacade.getPointsRankings(NEW_QUESTION, 0, 10);
 
-        System.out.println(badgesRankings);
-        System.out.println(pointsRankings);
+        HashMap<String, Integer> badgesRank  = new HashMap<>();
+        HashMap<String, Double>  pointsRank  = new HashMap<>();
+        HashMap<String, Double>  pointsQRank = new HashMap<>();
 
-        HashMap<String, Integer> badgesRank = new HashMap<>();
-        HashMap<String, Double> pointsRank = new HashMap<>();
+        getUsernameFromId(badgesRankings, badgesRank);
+        getUsernameFromId(pointsRankings, pointsRank);
+        getUsernameFromId(pointsQuestionsRankings, pointsQRank);
 
+        req.setAttribute("isGamificationOn", badgesRankings != null && pointsRankings != null);
+        req.setAttribute("badgesRank", badgesRank);
+        req.setAttribute("pointsRank", pointsRank);
+        req.setAttribute("pointsQRank", pointsQRank);
+
+        req.setAttribute("statistics", statistics);
+        req.getRequestDispatcher("/WEB-INF/views/statistics.jsp").forward(req, resp);
+    }
+
+    private void getUsernameFromId(PaginatedBadgesRankings badgesRankings, HashMap<String, Integer> badgesRank) {
         String username;
         if (badgesRankings != null && badgesRankings.getData() != null) {
             for (BadgesRanking rank : badgesRankings.getData()) {
@@ -59,6 +74,10 @@ public class StatisticsPageServlet extends HttpServlet {
                 }
             }
         }
+    }
+
+    private void getUsernameFromId(PaginatedPointsRankings pointsRankings, HashMap<String, Double> pointsRank) {
+        String username;
         if (pointsRankings != null && pointsRankings.getData() != null) {
             for (PointsRanking rank : pointsRankings.getData()) {
                 username = identityManagementFacade.getUsername(new UserId(rank.getUserId()));
@@ -67,12 +86,5 @@ public class StatisticsPageServlet extends HttpServlet {
                 }
             }
         }
-
-        req.setAttribute("isGamificationOn", badgesRankings != null && pointsRankings != null);
-        req.setAttribute("badgesRank", badgesRank);
-        req.setAttribute("pointsRank", pointsRank);
-
-        req.setAttribute("statistics", statistics);
-        req.getRequestDispatcher("/WEB-INF/views/statistics.jsp").forward(req, resp);
     }
 }
