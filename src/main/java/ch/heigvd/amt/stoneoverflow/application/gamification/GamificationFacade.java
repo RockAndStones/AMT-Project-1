@@ -247,7 +247,6 @@ public class GamificationFacade {
      * @param userId The userId of the user who performed the action.
      * @param eventType Type of event to add.
      * @param callback API callback to handle api result.
-     * @throws ApiException threw if an error occurred with the gamification engine.
      */
     public void newEventAsync(String userId, EventType eventType, ApiCallback<Void> callback) {
         if (!isInstantiate())

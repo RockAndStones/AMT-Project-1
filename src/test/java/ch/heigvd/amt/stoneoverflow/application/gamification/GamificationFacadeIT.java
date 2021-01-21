@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Arquillian.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)// To not have tests making others fail because runned before
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GamificationFacadeIT {
 
     private final static String WARNAME = "arquillian-managed.war";
@@ -37,7 +37,7 @@ public class GamificationFacadeIT {
     private ServiceRegistry serviceRegistry;
 
     private AuthenticatedUserDTO testUser;
-    private GamificationFacade gamificationFacade = new GamificationFacade("unitTests-GamificationFacadeIT");
+    private GamificationFacade gamificationFacade;
 
     @Deployment(testable = true)
     public static WebArchive createDeployment() {
@@ -56,15 +56,15 @@ public class GamificationFacadeIT {
 
     @Before
     public void init() throws LoginFailedException {
-        this.testUser = serviceRegistry.getIdentityManagementFacade().login(LoginCommand.builder()
+        testUser = serviceRegistry.getIdentityManagementFacade().login(LoginCommand.builder()
                 .username("test")
                 .plaintextPassword("test")
                 .build());
+        gamificationFacade = new GamificationFacade("unitTests-GamificationFacadeIT");
     }
 
     @Test
     public void shouldBeInstantiate() {
-        System.out.println(gamificationFacade);
         assertTrue(gamificationFacade.isInstantiate());
     }
 
@@ -84,18 +84,19 @@ public class GamificationFacadeIT {
     }
 
     @Test
-    public void shouldAddStonerProgressAsync() {
-        this.gamificationFacade.stonerProgressAsync(testUser.getId().asString(), newApiCallbackVoidFailOnFailure());
-    }
-
-    @Test
     public void shouldAddAndRemoveVoteAsync() {
+        // Add one more vote
+        gamificationFacade.addVoteAsync(testUser.getId().asString(), newApiCallbackVoidFailOnFailure());
+
         gamificationFacade.addVoteAsync(testUser.getId().asString(), newApiCallbackVoidFailOnFailure());
         gamificationFacade.removeVoteAsync(testUser.getId().asString(), newApiCallbackVoidFailOnFailure());
     }
 
     @Test
     public void shouldAddProgressAndRegressStonerAsync() {
+        // Progress once more than regress
+        gamificationFacade.stonerProgressAsync(testUser.getId().asString(), newApiCallbackVoidFailOnFailure());
+
         gamificationFacade.stonerProgressAsync(testUser.getId().asString(), newApiCallbackVoidFailOnFailure());
         gamificationFacade.stonerRegressAsync(testUser.getId().asString(), newApiCallbackVoidFailOnFailure());
     }
@@ -104,9 +105,9 @@ public class GamificationFacadeIT {
     public void shouldGetRightTestUserInfo() {
         UserInfo testUserInfo = gamificationFacade.getUserInfo(testUser.getId().asString());
         assertNotNull(testUserInfo);
-        assertEquals(Integer.valueOf(4), testUserInfo.getPoints());
+        assertEquals(Integer.valueOf(5), testUserInfo.getPoints());
         assertNotNull(testUserInfo.getBadges());
-        assertEquals(4, testUserInfo.getBadges().size());
+        assertEquals(5, testUserInfo.getBadges().size());
     }
 
     @Test
@@ -126,10 +127,10 @@ public class GamificationFacadeIT {
         assertNotNull(pointsRankings.getData());
         assertTrue(pointsRankings.getData().contains(new PointsRanking()
                 .userId(testUser.getId().asString())
-                .points(4d)));
+                .points(5d)));
     }
 
-    private ApiCallback<Void> newApiCallbackVoidFailOnFailure() {
+    private static ApiCallback<Void> newApiCallbackVoidFailOnFailure() {
         return new ApiCallback<Void>() {
             @Override
             public void onFailure(ApiException e, int statusCode, Map<String, List<String>> responseHeaders) {
