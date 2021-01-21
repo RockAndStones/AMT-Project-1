@@ -38,9 +38,8 @@ public class HistoryPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         AuthenticatedUserDTO user = (AuthenticatedUserDTO) req.getSession().getAttribute("authenticatedUser");
         Collection<Map<Object, Object>> historyUser = historyFacade.getHistoryUser(user.getId());
-
-        if(historyUser != null) {
-            PointScaleHistoryDTO pointScaleHistoryDTO = gamificationFacade.getPointScalesHistory();
+        PointScaleHistoryDTO pointScaleHistoryDTO = gamificationFacade.getPointScalesHistory();
+        if(historyUser.size() != 0) {
             req.setAttribute("historyOverall", new Gson().toJson(historyUser));
             String filter = req.getParameter("f");
             if (filter != null) {
@@ -48,9 +47,8 @@ public class HistoryPageServlet extends HttpServlet {
             } else {
                 req.setAttribute("historyPointscale", new Gson().toJson(historyFacade.getHistoryUserPointScale(user.getId(), pointScaleHistoryDTO.getPointscales().get(0).getId())));
             }
-            req.setAttribute("pointscales", pointScaleHistoryDTO);
         }
-
+        req.setAttribute("pointscales", pointScaleHistoryDTO);
         req.getRequestDispatcher("/WEB-INF/views/history.jsp").forward(req, resp);
     }
 }

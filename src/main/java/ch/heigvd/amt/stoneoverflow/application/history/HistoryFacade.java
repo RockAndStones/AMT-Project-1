@@ -39,7 +39,7 @@ public class HistoryFacade {
         // Adapted source : https://canvasjs.com/jsp-charts/line-chart/
         Map<Object,Object> map;
         List<Map<Object,Object>> list = new ArrayList<>();
-        if(pointsProgression.getData() != null) {
+        if(pointsProgression != null && pointsProgression.getData() != null) {
             int total = 0;
             for (PointsProgressionData pointsProgressionData : pointsProgression.getData()) {
                 map = new HashMap<>();
