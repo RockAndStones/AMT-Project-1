@@ -232,9 +232,26 @@ public class GamificationFacade {
     public  PaginatedPointsRankings getPointsRankings(Integer page, Integer pageSize)  {
         if (isInstantiate()) {
             try {
-                System.out.println(page);
-                System.out.println(pageSize);
                 return gamificationApi.getRankingsByTotalPoints(page, pageSize);
+            } catch (ApiException apiException) {
+                System.out.println(apiException.getCode());
+                apiException.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get the paginated points rankings of an EventType.
+     * @param eventType The requested event type.
+     * @param page The requested page.
+     * @param pageSize Amount of badges per page.
+     * @return an instance of PaginatedPointsRankings.
+     */
+    public  PaginatedPointsRankings getPointsRankings(EventType eventType, Integer page, Integer pageSize)  {
+        if (isInstantiate()) {
+            try {
+                return gamificationApi.getRankingsByEventTypePoints(eventType.name, page, pageSize);
             } catch (ApiException apiException) {
                 System.out.println(apiException.getCode());
                 apiException.printStackTrace();

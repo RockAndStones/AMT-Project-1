@@ -7,8 +7,10 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:useBean scope="request" id="badgesRank" type="java.util.HashMap"/>
 <jsp:useBean scope="request" id="pointsRank" type="java.util.HashMap"/>
+<jsp:useBean scope="request" id="pointsQRank" type="java.util.HashMap"/>
 <jsp:useBean scope="request" id="isGamificationOn" type="java.lang.Boolean"/>
 <!DOCTYPE html>
 <html>
@@ -28,6 +30,7 @@
 
     <!-- Main content -->
     <div class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-700 leading-normal">
+        <!-- A few numbers -->
         <div class="pb-8 mb-8 border-b">
             <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">A few numbers</span>
         </div>
@@ -52,29 +55,43 @@
 
             </ul>
         </div>
-        <div class="pb-8 mb-8 border-b">
-            <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most active users</span>
-            <span class="leading-normal text-lg italic text-gray-600 mt-1">(by questions asked)</span>
-        </div>
-        <div class="pb-0 md:pb-8 mb-8 border-b">
-            <table class="table-auto">
-                <thead>
-                <tr>
-                    <th class="border px-4 py-2">User</th>
-                    <th class="border px-4 py-2">Number of questions asked</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${statistics.mostActiveUsers}" var="user">
-                    <tr class="userRow">
-                        <td class="border px-4 py-2">${user.username}</td>
-                        <td class="border px-4 py-2 text-center">${user.nbQuestions}</td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </div>
         <c:if test="${isGamificationOn}">
+            <!-- Gamification stats -->
+            <!-- Most active users (by questions asked) -->
+            <div class="pb-8 mb-8 border-b">
+                <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most active users</span>
+                <span class="leading-normal text-lg italic text-gray-600 mt-1">(by questions asked)</span>
+            </div>
+            <div class="pb-0 md:pb-8 mb-8 border-b">
+                <table class="table-auto w-full">
+                    <thead>
+                    <tr>
+                        <th class="border px-4 py-2 text-left">User</th>
+                        <th class="border px-4 py-2">Number of points</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${pointsQRank}" var="rank">
+                        <tr class="userRow">
+                            <td class="border px-4 py-2">${rank.key}</td>
+                            <td class="border px-4 py-2 text-center">
+                                <c:choose>
+                                    <c:when test="${rank.value == null}">
+                                        0
+                                    </c:when>
+                                    <c:otherwise>
+                                        <fmt:parseNumber var="nbQ" integerOnly="true"
+                                                         type="number" value="${rank.value}" />
+                                        ${nbQ}
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Most active users (by number of points) -->
             <div class="pb-8 mb-8 border-b">
                 <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most active users</span>
                 <span class="leading-normal text-lg italic text-gray-600 mt-1">(by number of points)</span>
@@ -91,12 +108,22 @@
                     <c:forEach items="${pointsRank}" var="rank">
                         <tr class="userRow">
                             <td class="border px-4 py-2">${rank.key}</td>
-                            <td class="border px-4 py-2 text-center">${rank.value}</td>
+                            <td class="border px-4 py-2 text-center">
+                                <c:choose>
+                                    <c:when test="${rank.value == null}">
+                                        0.0
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${rank.value}
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                         </tr>
                     </c:forEach>
                     </tbody>
                 </table>
             </div>
+            <!-- Most active users (by number of badges) -->
             <div class="pb-8 mb-8 border-b">
                 <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most active users</span>
                 <span class="leading-normal text-lg italic text-gray-600 mt-1">(by number of badges)</span>
@@ -113,13 +140,23 @@
                     <c:forEach items="${badgesRank}" var="rank">
                         <tr class="userRow">
                             <td class="border px-4 py-2">${rank.key}</td>
-                            <td class="border px-4 py-2 text-center">${rank.value}</td>
+                            <td class="border px-4 py-2 text-center">
+                                <c:choose>
+                                    <c:when test="${rank.value == null}">
+                                        0
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${rank.value}
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                         </tr>
                     </c:forEach>
                     </tbody>
                 </table>
             </div>
         </c:if>
+        <!-- Most popular questions (by number of votes) -->
         <div class="pb-8 mb-8 border-b">
             <span class="leading-normal text-2xl font-semibold text-gray-900 mt-1">Most popular questions</span>
             <span class="leading-normal text-lg italic text-gray-600 mt-1">(by number of votes)</span>
