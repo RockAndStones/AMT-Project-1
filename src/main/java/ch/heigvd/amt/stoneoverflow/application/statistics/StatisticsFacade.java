@@ -1,6 +1,7 @@
 package ch.heigvd.amt.stoneoverflow.application.statistics;
 
 import ch.heigvd.amt.gamification.api.dto.*;
+import ch.heigvd.amt.stoneoverflow.application.gamification.EventType;
 import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.application.pagination.PaginationDTO;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
@@ -97,8 +98,7 @@ public class StatisticsFacade {
                 .build();
     }
 
-    public PointsRankingsDTO getPointsRankings(int page, int pageSize) {
-        PaginatedPointsRankings pointsRankings = gamificationFacade.getPointsRankings(page, pageSize);
+    private PointsRankingsDTO getPointsRankingsDTO(int pageSize, PaginatedPointsRankings pointsRankings) {
         if (pointsRankings == null || pointsRankings.getData() == null || pointsRankings.getPagination() == null)
             return PointsRankingsDTO.builder()
                     .rankings(new LinkedList<>())
@@ -119,6 +119,16 @@ public class StatisticsFacade {
                 .rankings(rankings)
                 .pagination(getPaginationDTO(pointsRankings.getPagination(), pageSize))
                 .build();
+    }
+
+    public PointsRankingsDTO getPointsRankings(int page, int pageSize) {
+        PaginatedPointsRankings pointsRankings = gamificationFacade.getPointsRankings(page, pageSize);
+        return getPointsRankingsDTO(pageSize, pointsRankings);
+    }
+
+    public PointsRankingsDTO getPointsQuestionsRankings(EventType eventType, int page, int pageSize) {
+        PaginatedPointsRankings pointsRankings = gamificationFacade.getPointsRankings(eventType, page, pageSize);
+        return getPointsRankingsDTO(pageSize, pointsRankings);
     }
 
     public BadgesRankingsDTO getBadgesRankings(int page, int pageSize) {

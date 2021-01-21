@@ -10,7 +10,7 @@
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:useBean scope="request" id="badgesRank" type="ch.heigvd.amt.stoneoverflow.application.statistics.BadgesRankingsDTO"/>
 <jsp:useBean scope="request" id="pointsRank" type="ch.heigvd.amt.stoneoverflow.application.statistics.PointsRankingsDTO"/>
-<jsp:useBean scope="request" id="pointsQRank" type="java.util.HashMap"/>
+<jsp:useBean scope="request" id="pointsQRank" type="ch.heigvd.amt.stoneoverflow.application.statistics.PointsRankingsDTO"/>
 <jsp:useBean scope="request" id="isGamificationOn" type="java.lang.Boolean"/>
 <!DOCTYPE html>
 <html>
@@ -71,17 +71,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach items="${pointsQRank}" var="rank">
+                    <c:forEach items="${pointsQRank.rankings}" var="rank">
                         <tr class="userRow">
-                            <td class="border px-4 py-2">${rank.key}</td>
+                            <td class="border px-4 py-2">${rank.username}</td>
                             <td class="border px-4 py-2 text-center">
                                 <c:choose>
-                                    <c:when test="${rank.value == null}">
+                                    <c:when test="${rank.points == null}">
                                         0
                                     </c:when>
                                     <c:otherwise>
                                         <fmt:parseNumber var="nbQ" integerOnly="true"
-                                                         type="number" value="${rank.value}" />
+                                                         type="number" value="${rank.points}" />
                                         ${nbQ}
                                     </c:otherwise>
                                 </c:choose>
@@ -90,6 +90,13 @@
                     </c:forEach>
                     </tbody>
                 </table>
+                <!-- Pagination -->
+                <div class="mx-3 mt-8">
+                    <c:set var="path" value="statistics"/>
+                    <c:set var="pageArg" value="pointsQPage"/>
+                    <c:set var="pagination" value="${pointsQRank.pagination}"/>
+                    <%@include file="fragments/pagination.jsp" %>
+                </div>
             </div>
             <!-- Most active users (by number of points) -->
             <div class="pb-8 mb-8 border-b">
@@ -126,6 +133,7 @@
                 <div class="mx-3 mt-8">
                     <c:set var="path" value="statistics"/>
                     <c:set var="pageArg" value="pointsPage"/>
+                    <c:set var="pagination" value="${pointsRank.pagination}"/>
                     <%@include file="fragments/pagination.jsp" %>
                 </div>
             </div>
@@ -164,6 +172,7 @@
                 <div class="mx-3 mt-8">
                     <c:set var="path" value="statistics"/>
                     <c:set var="pageArg" value="badgesPage"/>
+                    <c:set var="pagination" value="${badgesRank.pagination}"/>
                     <%@include file="fragments/pagination.jsp" %>
                 </div>
             </div>

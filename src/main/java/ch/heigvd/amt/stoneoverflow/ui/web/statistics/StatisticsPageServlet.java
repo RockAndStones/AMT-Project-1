@@ -39,7 +39,6 @@ public class StatisticsPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         StatisticsDTO statistics = statisticsFacade.getGlobalStatistics();
 
-        PaginatedPointsRankings pointsQuestionsRankings = gamificationFacade.getPointsRankings(NEW_QUESTION, 0, 10);
         int pointsPage = 0;
         try {
             pointsPage = Integer.parseInt(req.getParameter("pointsPage")) - 1;
@@ -54,19 +53,21 @@ public class StatisticsPageServlet extends HttpServlet {
             System.out.println("Invalid badge page argument");
         }
 
-        HashMap<String, Double>  pointsQRank = new HashMap<>();
-
-        getUsernameFromId(pointsQuestionsRankings, pointsQRank);
+        int pointsQPage = 0;
+        try {
+            pointsQPage = Integer.parseInt(req.getParameter("pointsQPage")) - 1;
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid pointsQPage argument");
+        }
 
         PointsRankingsDTO pointsRankings = statisticsFacade.getPointsRankings(pointsPage, 10);
+        PointsRankingsDTO pointsQuestionsRankings = statisticsFacade.getPointsQuestionsRankings(NEW_QUESTION, pointsQPage, 10);
         BadgesRankingsDTO badgesRankings = statisticsFacade.getBadgesRankings(badgesPage, 10);
 
         req.setAttribute("isGamificationOn", badgesRankings != null && pointsRankings != null);
         req.setAttribute("badgesRank", badgesRankings);
         req.setAttribute("pointsRank", pointsRankings);
-        req.setAttribute("pagination", badgesRankings.getPagination());
-
-        req.setAttribute("pointsQRank", pointsQRank);
+        req.setAttribute("pointsQRank", pointsQuestionsRankings);
 
         req.setAttribute("statistics", statistics);
         req.getRequestDispatcher("/WEB-INF/views/statistics.jsp").forward(req, resp);
