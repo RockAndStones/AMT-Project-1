@@ -65,7 +65,7 @@ public class HistoryFacadeIT {
 
     @Test
     public void shouldGetHistoryUserPointScale() {
-        Collection<Map<Object, Object>> history = historyFacade.getHistoryUserPointScale(testUser.getId(), 0);
+        Collection<Map<Object, Object>> history = historyFacade.getHistoryUserPointScale(testUser.getId(), 1);
         assertNotNull(history);
         assertNotEquals(0, history.size());
     }
