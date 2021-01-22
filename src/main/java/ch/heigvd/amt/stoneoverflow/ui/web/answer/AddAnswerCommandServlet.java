@@ -3,6 +3,7 @@ package ch.heigvd.amt.stoneoverflow.ui.web.answer;
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 import ch.heigvd.amt.stoneoverflow.application.answer.AddAnswerCommand;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 
@@ -42,6 +43,7 @@ public class AddAnswerCommandServlet extends HttpServlet {
                 .creator(user.getUsername())
                 .description(req.getParameter("description")).build();
         answerFacade.addAnswer(command);
+
         resp.sendRedirect(req.getContextPath() + "/questionDetails?questionUUID=" + questionUUID);
     }
 }

@@ -1,5 +1,6 @@
 package ch.heigvd.amt.stoneoverflow.ui.web.question;
 
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.AddQuestionCommand;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
@@ -18,11 +19,13 @@ public class AddQuestionCommandServlet extends HttpServlet {
     @Inject
     ServiceRegistry serviceRegistry;
     QuestionFacade questionFacade;
+    GamificationFacade gamificationFacade;
 
     @Override
     public void init() throws ServletException {
         super.init();
         questionFacade = serviceRegistry.getQuestionFacade();
+        gamificationFacade = serviceRegistry.getGamificationFacade();
     }
 
     @Override
@@ -34,6 +37,7 @@ public class AddQuestionCommandServlet extends HttpServlet {
                 .title(req.getParameter("title"))
                 .description(req.getParameter("description")).build();
         questionFacade.addQuestion(command);
+
         resp.sendRedirect(req.getContextPath() + "/home");
     }
 }

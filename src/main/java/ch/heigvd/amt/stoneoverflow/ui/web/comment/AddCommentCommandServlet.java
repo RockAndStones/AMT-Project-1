@@ -3,6 +3,7 @@ package ch.heigvd.amt.stoneoverflow.ui.web.comment;
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 import ch.heigvd.amt.stoneoverflow.application.comment.AddCommentCommand;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
 import ch.heigvd.amt.stoneoverflow.domain.Id;
 import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
@@ -38,7 +39,7 @@ public class AddCommentCommandServlet extends HttpServlet {
         AuthenticatedUserDTO user = (AuthenticatedUserDTO)req.getSession().getAttribute("authenticatedUser");
 
         String questionUUID = req.getParameter("questionUUID");
-        Id targetId = null;
+        Id targetId;
 
         if(req.getParameter("targetType").equals("answer")){
             targetId = new AnswerId(req.getParameter("targetUUID"));

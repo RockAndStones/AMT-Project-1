@@ -2,6 +2,7 @@ package ch.heigvd.amt.stoneoverflow.ui.web.vote;
 
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionsDTO;
@@ -64,7 +65,7 @@ public class VoteCommandServlet extends HttpServlet {
             // Update the vote
             if (voteType == vote.getVoteType()) {
                 // If voteType are identical, remove vote from repository
-                voteFacade.remove(new VoteId(vote.getUuid()));
+                voteFacade.remove(new VoteId(vote.getUuid()), userId);
             } else {
                 // Otherwise change the voteType
                 voteFacade.changeVote(UpdateVoteCommand.builder()

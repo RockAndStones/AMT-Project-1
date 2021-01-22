@@ -1,10 +1,11 @@
-# AMT Project 1 : StoneOverflow <img src="https://github.com/RockAndStones/AMT-Project-1/workflows/MVN%20&%20E2E%20Tests/badge.svg?branch=dev" alt="Tests">
+# AMT Project 1 : StoneOverflow <img src="https://github.com/RockAndStones/AMT-Project-1/workflows/stoneoverflow_tests/badge.svg?branch=dev" alt="Tests">
 
 ## Table of contents
 - [Introduction](#Introduction)  
 - [Sql Schema](#Sql-Schema)  
 - [Deployment](#Deployment)
 - [Tests](#Tests)
+- [Known Problems](#Known-Problems)
 
 ## Introduction
 As part of the course AMT we were asked to create a site that will be a simple version of Stack Overflow. We will have to use the Jakarat EE technology to be able to create a site using Java language.
@@ -42,3 +43,8 @@ git clone https://github.com/RockAndStones/AMT-Project-1.git
 To run the unit & integration tests, use the `run-unit-integration-tests.sh` script from the cloned root folder.
 ### End to End (E2E) Tests
 To run the end to end (E2E) tests, use the `run-e2e-tests.sh` script from the cloned root folder.
+
+## Known Problems
+- The load-tests do not work with the Jdbc repositories. We think that this comes from the fact that we have concurrence access with the database. It works only with the InMemory repositories.
+- The tag functionality is implemented and tested but, we did not have the time to implement it in the UI.
+

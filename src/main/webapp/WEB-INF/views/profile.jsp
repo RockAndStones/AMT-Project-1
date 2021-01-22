@@ -7,12 +7,15 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:useBean scope="request" id="userGameInfo" type="ch.heigvd.amt.gamification.api.dto.UserInfo"/>
+<jsp:useBean scope="request" id="isGamificationOn" type="java.lang.Boolean"/>
 <html>
 <head>
     <title>User Profile</title>
     <link href="assets/css/custom.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/styles.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/normalize.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/badges.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <script type="text/javascript" src="assets/javascript/header.js"></script>
 </head>
@@ -26,9 +29,38 @@
     <%@include file="fragments/sidebar.jsp" %>
     <!-- Main -->
     <div class="w-full lg:w-4/5 p-8 lg:mt-0 text-gray-900 leading-normal">
+        <!-- Gamification section -->
+        <c:if test="${isGamificationOn}">
+            <div class="w-full mb-8 border-b">
+                <div class="text-center pb-8 border-b pl-4">
+                    <span class="leading-normal text-3xl text-gray-900 mt-1">Your Badge(s)</span>
+                </div>
+                <div class="py-8 pl-4">
+                    <c:choose>
+                        <c:when test="${userGameInfo.badges.size() != 0}">
+                            <ul  class="flex flex-row flex-wrap  justify-center">
+                                <c:forEach items="${userGameInfo.badges}" var="badge">
+                                    <li>
+                                        <div style="padding-top: 0.1em; padding-bottom: 0.1rem" class="${badge.name} text-sm px-3 bg-blue-300 text-gray-800">${badge.name}</div>
+                                    </li>
+                                </c:forEach>
+                            </ul>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="flex items-center justify-center flex-col">
+                                <h2 class="leading-normal text-lg text-gray-900">You do not own a badge at the moment.</h2>
+                                <h2 class="leading-normal text-lg text-gray-900 mt-2">Continue to use StoneOverflow and you will quickly get your first badge!</h2>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </div>
+        </c:if>
         <!-- Update Section -->
-        <div id="updateSection" class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
-            <p id="updateLabel" class="text-center text-3xl">Your Profile</p>
+        <div class="text-center pb-8 border-b">
+            <span class="leading-normal text-3xl text-gray-900 mt-1">Your Profile</span>
+        </div>
+        <div id="updateSection" class="flex flex-col justify-center md:justify-start my-auto md:pt-0 px-8 md:px-24 lg:px-32">
             <form action="${pageContext.request.contextPath}/updateUser.do" method="POST" class="flex flex-col pt-3 md:pt-8">
                 <c:if test="${errorMessage != null}">
                     <p class="text-center text-xl text-red-700">${errorMessage}</p>
