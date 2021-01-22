@@ -2,21 +2,21 @@
 
 ## Table of contents
 - [Introduction](#Introduction)  
-- [Sql Schema](#Sql-Schema)  
+- [SQL Schema](#Sql-Schema)  
 - [Deployment](#Deployment)
 - [Tests](#Tests)
 - [Known Problems](#Known-Problems)
 
 ## Introduction
-As part of the course AMT we were asked to create a site that will be a simple version of Stack Overflow. We will have to use the Jakarat EE technology to be able to create a site using Java language.
+As part of the course AMT, we were asked to create a site that will be a simple version of Stack Overflow. We will have to use the Jakarta EE technology to be able to create a site using Java language.
 
 We will also use JUnit for the UnitTest and Codecept.js for the e2e tests.
 
 If you want to see the specification of the user interface please [click here](https://docs.google.com/document/d/1DSahosKDQq_0yjQDg7r0EOaPcs6QhwXc7yyWqTjHFSo/edit?usp=sharing)
 
-## Sql Schema
+## SQL Schema
 
-The project contains a sql database and below you will see the different tables and views used in this database.
+The project contains a SQL database and below you will see the different tables and views used in this database.
 
 ![Sql Model](./img/SqlModel.PNG)
 
@@ -27,11 +27,11 @@ First clone the repository.
 ```
 git clone https://github.com/RockAndStones/AMT-Project-1.git
 ```
-Next open a terminal in the docker folder of the cloned repository and run the following command. 
+Next, open a terminal in the docker folder of the cloned repository and run the following command. 
 ```
 docker-compose up -d
 ```
-You will then be able to access the web application at the url http://localhost:8080 when docker-compose is up and running.
+You will then be able to access the web application at the URL http://localhost:8080 when docker-compose is up and running.
 
 ## Tests
 If you want to run the tests you will first need to clone the repository here is the command.
@@ -45,6 +45,6 @@ To run the unit & integration tests, use the `run-unit-integration-tests.sh` scr
 To run the end to end (E2E) tests, use the `run-e2e-tests.sh` script from the cloned root folder.
 
 ## Known Problems
-- The load-tests do not work with the Jdbc repositories. We think that this comes from the fact that we have concurrence access with the database. It works only with the InMemory repositories.
+- The load-tests do not work with the Jdbc repositories. We think that this comes from the fact that we have concurrence access to the database. It works only with the InMemory repositories.
 - The tag functionality is implemented and tested but, we did not have the time to implement it in the UI.
 
