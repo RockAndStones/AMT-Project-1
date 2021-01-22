@@ -1,5 +1,6 @@
 package ch.heigvd.amt.stoneoverflow.application.vote;
 
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.domain.Id;
 import ch.heigvd.amt.stoneoverflow.domain.UserMessageType;
 import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
@@ -14,9 +15,11 @@ import java.util.Optional;
 
 public class VoteFacade {
     private IVoteRepository voteRepository;
+    GamificationFacade gamificationFacade;
 
-    public VoteFacade(IVoteRepository voteRepository) {
+    public VoteFacade(IVoteRepository voteRepository, GamificationFacade gamificationFacade) {
         this.voteRepository = voteRepository;
+        this.gamificationFacade = gamificationFacade;
     }
 
     public VoteId addVote(AddVoteCommand command) {
@@ -25,6 +28,7 @@ public class VoteFacade {
                 .votedObject(command.getVotedObject())
                 .voteType(command.getVoteType()).build();
         voteRepository.save(vote);
+        sendEvent(command.getVoteType(), command.getVotedBy());
         return vote.getId();
     }
 
@@ -60,8 +64,10 @@ public class VoteFacade {
         return voteRepository.findNbVotes(id, userMessageType);
     }
 
-    public void remove(VoteId voteId) {
+    public void remove(VoteId voteId, UserId userId) {
         voteRepository.remove(voteId);
+        gamificationFacade.removeVoteAsync(userId.asString(), null);
+        gamificationFacade.stonerRegressAsync(userId.asString(), null);
     }
 
     public void changeVote(UpdateVoteCommand command) {
@@ -70,5 +76,17 @@ public class VoteFacade {
                 .votedBy(command.getVotedBy())
                 .votedObject(command.getVotedObject())
                 .voteType(command.getVoteType()).build());
+        // TODO : Better Solution ?
+        sendEvent(command.getVoteType(), command.getVotedBy());
+    }
+
+    public void sendEvent(Vote.VoteType type, UserId voteBy){
+        if(type == Vote.VoteType.UP){
+            gamificationFacade.addVoteAsync(voteBy.asString(), null);
+            gamificationFacade.stonerProgressAsync(voteBy.asString(), null);
+        } else if(type == Vote.VoteType.DOWN){
+            gamificationFacade.removeVoteAsync(voteBy.asString(), null);
+            gamificationFacade.stonerRegressAsync(voteBy.asString(), null);
+        }
     }
 }

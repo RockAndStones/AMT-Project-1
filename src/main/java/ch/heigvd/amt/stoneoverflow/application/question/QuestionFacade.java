@@ -1,21 +1,21 @@
 package ch.heigvd.amt.stoneoverflow.application.question;
 
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
+import lombok.AllArgsConstructor;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 public class QuestionFacade {
     private IQuestionRepository questionRepository;
-
-    public QuestionFacade(IQuestionRepository questionRepository) {
-        this.questionRepository = questionRepository;
-    }
+    private GamificationFacade gamificationFacade;
 
     public QuestionId addQuestion(AddQuestionCommand command){
         Question addedQuestion = Question.builder()
@@ -27,6 +27,9 @@ public class QuestionFacade {
                 .date(command.getDate())
                 .questionType(command.getType()).build();
         questionRepository.save(addedQuestion);
+        // Send to the gamification
+        gamificationFacade.addQuestionAsync(command.getCreatorId().asString(), null);
+        gamificationFacade.stonerProgressAsync(command.getCreatorId().asString(), null);
         return addedQuestion.getId();
     }
 
@@ -62,7 +65,7 @@ public class QuestionFacade {
             .orElse(null);
     }
 
-    public void addViewToQuestion(QuestionId id){
+    public synchronized void addViewToQuestion(QuestionId id){
         Optional<Question> question = questionRepository.findById(id);
         question.ifPresent(Question::addView);
         question.ifPresent(value -> questionRepository.update(value));
