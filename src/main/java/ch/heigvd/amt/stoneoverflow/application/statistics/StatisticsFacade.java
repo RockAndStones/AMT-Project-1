@@ -4,6 +4,7 @@ import ch.heigvd.amt.gamification.api.dto.*;
 import ch.heigvd.amt.stoneoverflow.application.gamification.EventType;
 import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.application.pagination.PaginationDTO;
+import ch.heigvd.amt.stoneoverflow.application.pagination.PaginationFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuery;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionQuerySortBy;
@@ -81,21 +82,22 @@ public class StatisticsFacade {
     }
 
     private PaginationDTO getPaginationDTO(Pagination pagination, int pageSize) {
-        int totalPages = (int) Math.ceil((double) pagination.getNumberOfItems() / (double) pageSize);
-        int currentPage = pagination.getPage();
-        int startItem = currentPage * pageSize;
-        int lastItem = Math.min(startItem + pageSize, pagination.getNumberOfItems().intValue());
+        return PaginationFacade.settingPagination(pageSize, pagination.getNumberOfItems().intValue(), pagination.getPage() + 1);
 
-        return PaginationDTO.builder()
-                .limit(pageSize)
-                .currentPage(pagination.getPage() + 1)
-                .itemRepoSize(pagination.getNumberOfItems().intValue())
-                .startPage(1)
-                .lastPage(totalPages)
-                .startItem(startItem)
-                .lastItem(lastItem)
-                .totalPages(totalPages)
-                .build();
+//        int totalPages = (int) Math.ceil((double) pagination.getNumberOfItems() / (double) pageSize);
+//        int currentPage = pagination.getPage();
+//        int startItem = currentPage * pageSize;
+//        int lastItem = Math.min(startItem + pageSize, pagination.getNumberOfItems().intValue());
+//        return PaginationDTO.builder()
+//                .limit(pageSize)
+//                .currentPage(pagination.getPage() + 1)
+//                .itemRepoSize(pagination.getNumberOfItems().intValue())
+//                .startPage(1)
+//                .lastPage(totalPages)
+//                .startItem(startItem)
+//                .lastItem(lastItem)
+//                .totalPages(totalPages)
+//                .build();
     }
 
     private PointsRankingsDTO getPointsRankingsDTO(int pageSize, PaginatedPointsRankings pointsRankings) {
