@@ -4,6 +4,7 @@ import ch.heigvd.amt.gamification.api.dto.PointsProgression;
 import ch.heigvd.amt.gamification.api.dto.PointsProgressionData;
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
 import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
+import ch.heigvd.amt.stoneoverflow.application.gamification.PointScaleHistoryDTO;
 import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 
 import java.util.*;
@@ -22,7 +23,12 @@ public class HistoryFacade {
      * @return a Collection of map containing the object on the y axis (points) and the object that will be the label
      */
     public Collection<Map<Object,Object>> getHistoryUser(UserId userId){
-        return prepareGraph(gamificationFacade.getUserHistory(userId.asString()));
+        for (PointScaleHistoryDTO.PointScaleDTO pointscale : gamificationFacade.getPointScalesHistory().getPointscales()) {
+            if (pointscale.getName().equals("Stoner PointScale")) {
+                return prepareGraph(gamificationFacade.getUserHistoryByPointScale(userId.asString(), pointscale.getId()));
+            }
+        }
+        return null;
     }
 
     /**
