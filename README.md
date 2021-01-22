@@ -2,7 +2,7 @@
 
 ## Table of contents
 - [Introduction](#Introduction)  
-- [SQL Schema](#Sql-Schema)  
+- [SQL Schema](#SQL-Schema)  
 - [Deployment](#Deployment)
 - [Tests](#Tests)
 - [Known Problems](#Known-Problems)
@@ -16,7 +16,7 @@ If you want to see the specification of the user interface please [click here](h
 
 ## SQL Schema
 
-The project contains a SQL database and below you will see the different tables and views used in this database.
+The project contains an SQL database and below you will see the different tables and views used in this database.
 
 ![Sql Model](./img/SqlModel.PNG)
 
