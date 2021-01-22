@@ -65,7 +65,7 @@ public class QuestionFacade {
             .orElse(null);
     }
 
-    public void addViewToQuestion(QuestionId id){
+    public synchronized void addViewToQuestion(QuestionId id){
         Optional<Question> question = questionRepository.findById(id);
         question.ifPresent(Question::addView);
         question.ifPresent(value -> questionRepository.update(value));
