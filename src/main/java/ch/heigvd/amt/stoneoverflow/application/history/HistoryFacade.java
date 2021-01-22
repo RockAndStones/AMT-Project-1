@@ -1,6 +1,5 @@
 package ch.heigvd.amt.stoneoverflow.application.history;
 
-import ch.heigvd.amt.gamification.api.dto.PointScale;
 import ch.heigvd.amt.gamification.api.dto.PointsProgression;
 import ch.heigvd.amt.gamification.api.dto.PointsProgressionData;
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
@@ -35,7 +34,7 @@ public class HistoryFacade {
         return prepareGraph(gamificationFacade.getUserHistoryByPointScale(userId.asString(), pointScaleId));
     }
 
-    public Collection<Map<Object,Object>> prepareGraph(PointsProgression pointsProgression){
+    private Collection<Map<Object,Object>> prepareGraph(PointsProgression pointsProgression){
         // Adapted source : https://canvasjs.com/jsp-charts/line-chart/
         Map<Object,Object> map;
         List<Map<Object,Object>> list = new ArrayList<>();
