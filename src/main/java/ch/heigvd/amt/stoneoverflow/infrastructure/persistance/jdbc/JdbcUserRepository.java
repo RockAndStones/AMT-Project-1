@@ -39,8 +39,11 @@ public class JdbcUserRepository implements IUserRepository {
             ps.setString(1, username);
 
             ResultSet rs = ps.executeQuery();
-            if (!rs.next())
+            if (!rs.next()) {
+                ps.close();
+                con.close();
                 return Optional.empty();
+            }
 
             User u = User.builder()
                     .id(new UserId(rs.getString("id")))
@@ -145,8 +148,11 @@ public class JdbcUserRepository implements IUserRepository {
             ps.setString(1, userId.asString());
 
             ResultSet rs = ps.executeQuery();
-            if (!rs.next())
+            if (!rs.next()) {
+                ps.close();
+                con.close();
                 return Optional.empty();
+            }
 
             User u = User.builder()
                     .id(new UserId(rs.getString("id")))
