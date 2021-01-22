@@ -2,6 +2,7 @@ package ch.heigvd.amt.stoneoverflow.application.history;
 
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
 import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
+import ch.heigvd.amt.stoneoverflow.application.gamification.PointScaleHistoryDTO;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginCommand;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginFailedException;
@@ -30,6 +31,7 @@ public class HistoryFacadeIT {
 
     private AuthenticatedUserDTO testUser;
     private HistoryFacade        historyFacade;
+    private GamificationFacade   gamificationFacade;
 
     @Deployment(testable = true)
     public static WebArchive createDeployment() {
@@ -52,7 +54,7 @@ public class HistoryFacadeIT {
                 .username("test")
                 .plaintextPassword("test")
                 .build());
-        GamificationFacade gamificationFacade = new GamificationFacade("unitTests-GamificationFacadeIT");
+        gamificationFacade = new GamificationFacade("unitTests-GamificationFacadeIT");
         historyFacade = new HistoryFacade(gamificationFacade);
     }
 
@@ -65,7 +67,11 @@ public class HistoryFacadeIT {
 
     @Test
     public void shouldGetHistoryUserPointScale() {
-        Collection<Map<Object, Object>> history = historyFacade.getHistoryUserPointScale(testUser.getId(), 1);
+        PointScaleHistoryDTO pointScaleHistoryDTO = gamificationFacade.getPointScalesHistory();
+        assertNotNull(pointScaleHistoryDTO);
+        Collection<Map<Object, Object>> history = historyFacade.getHistoryUserPointScale(
+                testUser.getId(),
+                pointScaleHistoryDTO.getPointscales().get(0).getId());
         assertNotNull(history);
         assertNotEquals(0, history.size());
     }
