@@ -67,10 +67,12 @@ public class JdbcUserRepository implements IUserRepository {
         if (this.findByUsername(user.getUsername()).isPresent())
             throw new IntegrityConstraintViolationException("Cannot save user. Integrity constraint violation: username must be unique");
 
+        Connection con = null;
+        PreparedStatement ps = null;
         try {
-            Connection con = dataSource.getConnection();
+            con = dataSource.getConnection();
 
-            PreparedStatement ps = con.prepareStatement("INSERT INTO User VALUES (?, ?, ?, ?, ?, ?)");
+            ps = con.prepareStatement("INSERT INTO User VALUES (?, ?, ?, ?, ?, ?)");
             ps.setString(1, user.getId().asString());
             ps.setString(2, user.getFirstName());
             ps.setString(3, user.getLastName());
@@ -79,11 +81,24 @@ public class JdbcUserRepository implements IUserRepository {
             ps.setString(6, user.getHashedPassword());
 
             ps.executeUpdate();
-
-            ps.close();
-            con.close();
         } catch (SQLException ex) {
-            ex.printStackTrace();;
+            ex.printStackTrace();
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
     }
 
