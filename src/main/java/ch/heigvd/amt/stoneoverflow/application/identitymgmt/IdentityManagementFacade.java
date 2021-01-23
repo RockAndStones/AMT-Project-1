@@ -1,5 +1,6 @@
 package ch.heigvd.amt.stoneoverflow.application.identitymgmt;
 
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.AuthenticatedUserDTO;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginCommand;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.login.LoginFailedException;
@@ -9,17 +10,20 @@ import ch.heigvd.amt.stoneoverflow.application.identitymgmt.updateprofile.Update
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.updateprofile.UpdateProfileFailedException;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 
 import java.util.Optional;
 
 public class IdentityManagementFacade {
     private IUserRepository userRepository;
+    private GamificationFacade gamificationFacade;
 
-    public IdentityManagementFacade(IUserRepository userRepository) {
+    public IdentityManagementFacade(IUserRepository userRepository, GamificationFacade gamificationFacade) {
         this.userRepository = userRepository;
+        this.gamificationFacade = gamificationFacade;
     }
 
-    public void register(RegisterCommand registerCommand) throws RegistrationFailedException {
+    public UserId register(RegisterCommand registerCommand) throws RegistrationFailedException {
         // If passwords are not equals
         if (!registerCommand.getPlaintextPassword().equals(registerCommand.getPlaintextPasswordConfirmation()))
             throw new RegistrationFailedException("Passwords are not equal");
@@ -42,6 +46,11 @@ public class IdentityManagementFacade {
                     .build();
 
             userRepository.save(newUser);
+
+            // Send event to gamification
+            gamificationFacade.stonerProgressAsync(newUser.getId().asString(), null);
+
+            return userRepository.findByUsername(registerCommand.getUsername()).map(User::getId).orElse(null);
         } catch (Exception e) {
             throw new RegistrationFailedException(e.getMessage());
         }
@@ -124,6 +133,10 @@ public class IdentityManagementFacade {
         } catch (Exception e) {
             throw new UpdateProfileFailedException(e.getMessage());
         }
+    }
+
+    public String getUsername(UserId userId) {
+        return userRepository.findById(userId).map(User::getUsername).orElse(null);
     }
 
     private boolean isPasswordStrong(String plaintextPassword) {

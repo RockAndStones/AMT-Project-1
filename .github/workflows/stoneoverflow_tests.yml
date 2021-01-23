@@ -1,0 +1,108 @@
+name: stoneoverflow_tests
+on:
+  push:
+    branches-ignore:
+      - 'master'
+
+jobs:
+  tests:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - run: chmod +x ./docker/wait-for-it.unix.sh
+
+      - name: Maven Clean Package
+        run: mvn clean package
+
+      - name: Start docker dependencies (stoneoverflow-db, gamification-db/api)
+        run: |
+          cd docker
+          docker-compose up -d stoneoverflow-db gamification-api
+
+      - name: MVN liberty configuration
+        run: |
+          sed -i '/DB_HOST/s/=.*/=localhost/' src/main/liberty/config/server.env
+          mvn liberty:create liberty:install-feature liberty:deploy
+
+      - name: Wait on stoneoverflow-db and gamification-api
+        run: |
+          cd docker
+          ./wait-for-it.unix.sh --timeout=30000 localhost:3306
+          ./wait-for-it.unix.sh --timeout=30000 localhost:8081
+
+      - name: MVN verify webapp
+        run: mvn liberty:start
+
+      - name: Wait on stoneoverflow-webapp
+        run: |
+          ./docker/wait-for-it.unix.sh --timeout=30000 localhost:8080
+          curl localhost:8080
+
+      - name: MVN verify webapp
+        run: mvn verify
+
+      - name: MVN stop webapp
+        run: mvn liberty:stop
+
+      - name: Stop docker dependencies (stoneoverflow-db, gamification-db/api)
+        run: |
+          cd docker
+          docker-compose down
+
+      - name: Start docker dependencies (stoneoverflow-db, gamification-db/api)
+        run: |
+          cd docker
+          docker-compose up -d stoneoverflow-db gamification-api
+
+      - name: E2E npm install
+        run: |
+          cd e2e
+          npm install
+
+      - name: Wait on stoneoverflow-db and gamification-api
+        run: |
+          cd docker
+          ./wait-for-it.unix.sh --timeout=30000 localhost:3306
+          ./wait-for-it.unix.sh --timeout=30000 localhost:8081
+
+      - name: MVN start webapp
+        run: mvn liberty:start
+
+      - name: Wait on stoneoverflow-webapp
+        run: |
+          ./docker/wait-for-it.unix.sh --timeout=30000 localhost:8080
+          curl localhost:8080
+
+      - name: E2E tests
+        run: |
+          cd e2e
+          npx codeceptjs run --colors --override '{"helpers": {"Puppeteer": {"show": false}}}'
+
+      - name: Stop all the services
+        run: |
+          mvn liberty:stop
+          cd docker
+          docker-compose down

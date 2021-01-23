@@ -1,4 +1,4 @@
-const {homePage, loginPage, newQuestionPage, profilePage, statisticsPage, sidebarFragment } = inject();
+const {homePage, loginPage, newQuestionPage, profilePage, statisticsPage, historyPage, sidebarFragment } = inject();
 
 Feature('Navigation');
 
@@ -34,6 +34,13 @@ Feature('Navigation');
     I.seeInTitle(statisticsPage.pageTitle);
   });
 
+  Scenario('Home => History', (I) => {
+    I.loginTestUser();
+    I.waitForElement(sidebarFragment.root, 5);
+    homePage.components.sidebar.goToHistoryPage();
+    I.seeInTitle(historyPage.pageTitle);
+  });
+
   Scenario('Login => Home', (I) => {
     I.amOnPage('login');
     loginPage.goToHomePage();
@@ -62,6 +69,14 @@ Feature('Navigation');
     I.seeInTitle(statisticsPage.pageTitle);
   });
 
+  Scenario('New question => History', (I) => {
+    I.loginTestUser();
+    I.amOnPage(newQuestionPage.url);
+    I.waitForElement(sidebarFragment.root, 5);
+    newQuestionPage.components.sidebar.goToHistoryPage();
+    I.seeInTitle(historyPage.pageTitle);
+  });
+
   Scenario('Statistics => Home', (I) => {
     I.loginTestUser();
     I.amOnPage(statisticsPage.url);
@@ -81,6 +96,44 @@ Feature('Navigation');
     I.loginTestUser();
     I.amOnPage(statisticsPage.url);
     statisticsPage.components.header.goToProfilePage();
+    I.seeInTitle(profilePage.pageTitle);
+  });
+
+  Scenario('Statistics => History', (I) => {
+    I.loginTestUser();
+    I.amOnPage(statisticsPage.url);
+    I.waitForElement(sidebarFragment.root, 5);
+    statisticsPage.components.sidebar.goToHistoryPage();
+    I.seeInTitle(historyPage.pageTitle);
+  });
+
+  Scenario('History => Home', (I) => {
+    I.loginTestUser();
+    I.amOnPage(historyPage.url);
+    historyPage.components.header.goToHomePage();
+    I.seeInTitle(homePage.pageTitle);
+  });
+
+  Scenario('History => New Question', (I) => {
+    I.loginTestUser();
+    I.amOnPage(historyPage.url);
+    I.waitForElement(sidebarFragment.root, 5);
+    historyPage.components.sidebar.goToNewQuestionPage();
+    I.seeInTitle(newQuestionPage.pageTitle);
+  });
+
+  Scenario('History => Statistics', (I) => {
+    I.loginTestUser();
+    I.amOnPage(historyPage.url);
+    I.waitForElement(sidebarFragment.root, 5);
+    historyPage.components.sidebar.goToStatisticsPage();
+    I.seeInTitle(statisticsPage.pageTitle);
+  });
+
+  Scenario('History => Profile', (I) => {
+    I.loginTestUser();
+    I.amOnPage(historyPage.url);
+    historyPage.components.header.goToProfilePage();
     I.seeInTitle(profilePage.pageTitle);
   });
 

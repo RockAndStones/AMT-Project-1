@@ -1,6 +1,7 @@
 package ch.heigvd.amt.stoneoverflow.application.comment;
 
 import ch.heigvd.amt.stoneoverflow.application.date.DateDTO;
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.domain.UserMessageType;
 import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
 import ch.heigvd.amt.stoneoverflow.domain.comment.CommentId;
@@ -13,9 +14,11 @@ import java.util.stream.Collectors;
 
 public class CommentFacade {
     private ICommentRepository commentRepository;
+    private GamificationFacade gamificationFacade;
 
-    public CommentFacade(ICommentRepository commentRepository) {
+    public CommentFacade(ICommentRepository commentRepository, GamificationFacade gamificationFacade) {
         this.commentRepository = commentRepository;
+        this.gamificationFacade = gamificationFacade;
     }
 
     public CommentId addComment(AddCommentCommand command) {
@@ -26,6 +29,9 @@ public class CommentFacade {
                 .description(command.getContent())
                 .date(command.getDate()).build();
         commentRepository.save(addComment);
+        // Send to the gamification
+        gamificationFacade.addCommentAsync(command.getCreatorId().asString(), null);
+        gamificationFacade.stonerProgressAsync(command.getCreatorId().asString(), null);
         return addComment.getId();
     }
 

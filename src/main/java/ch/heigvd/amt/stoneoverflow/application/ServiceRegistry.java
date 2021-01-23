@@ -1,5 +1,9 @@
 package ch.heigvd.amt.stoneoverflow.application;
 
+import ch.heigvd.amt.stoneoverflow.application.answer.AddAnswerCommand;
+import ch.heigvd.amt.stoneoverflow.application.comment.AddCommentCommand;
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
+import ch.heigvd.amt.stoneoverflow.application.history.HistoryFacade;
 import ch.heigvd.amt.stoneoverflow.application.pagination.PaginationFacade;
 import ch.heigvd.amt.stoneoverflow.application.question.AddQuestionCommand;
 import ch.heigvd.amt.stoneoverflow.application.question.QuestionFacade;
@@ -7,19 +11,24 @@ import ch.heigvd.amt.stoneoverflow.application.answer.AnswerFacade;
 import ch.heigvd.amt.stoneoverflow.application.comment.CommentFacade;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.IdentityManagementFacade;
 import ch.heigvd.amt.stoneoverflow.application.statistics.StatisticsFacade;
+import ch.heigvd.amt.stoneoverflow.application.vote.AddVoteCommand;
 import ch.heigvd.amt.stoneoverflow.application.vote.VoteFacade;
+import ch.heigvd.amt.stoneoverflow.domain.answer.AnswerId;
+import ch.heigvd.amt.stoneoverflow.domain.comment.CommentId;
 import ch.heigvd.amt.stoneoverflow.domain.question.IQuestionRepository;
 import ch.heigvd.amt.stoneoverflow.domain.question.Question;
 import ch.heigvd.amt.stoneoverflow.domain.answer.Answer;
 import ch.heigvd.amt.stoneoverflow.domain.answer.IAnswerRepository;
 import ch.heigvd.amt.stoneoverflow.domain.comment.Comment;
 import ch.heigvd.amt.stoneoverflow.domain.comment.ICommentRepository;
+import ch.heigvd.amt.stoneoverflow.domain.question.QuestionId;
 import ch.heigvd.amt.stoneoverflow.domain.user.IUserRepository;
 import ch.heigvd.amt.stoneoverflow.domain.user.User;
 import ch.heigvd.amt.stoneoverflow.domain.vote.IVoteRepository;
 import ch.heigvd.amt.stoneoverflow.domain.vote.Vote;
 
 import java.util.concurrent.atomic.AtomicInteger;
+
 import lombok.Getter;
 
 import javax.annotation.PostConstruct;
@@ -29,6 +38,7 @@ import javax.inject.Named;
 
 @ApplicationScoped
 public class ServiceRegistry {
+
     @Inject @Named("JdbcQuestionRepository")
     IQuestionRepository questionRepository;
 
@@ -44,6 +54,7 @@ public class ServiceRegistry {
     @Inject @Named("JdbcVoteRepository")
     IVoteRepository voteRepository;
 
+    @Getter GamificationFacade       gamificationFacade;
     @Getter IdentityManagementFacade identityManagementFacade;
     @Getter QuestionFacade           questionFacade;
     @Getter AnswerFacade             answerFacade;
@@ -51,21 +62,36 @@ public class ServiceRegistry {
     @Getter VoteFacade               voteFacade;
     @Getter StatisticsFacade         statisticsFacade;
     @Getter PaginationFacade         paginationFacade;
+    @Getter HistoryFacade            historyFacade;
 
     @PostConstruct
     private void initDefaultValues() {
-        identityManagementFacade = new IdentityManagementFacade(userRepository);
-        questionFacade           = new QuestionFacade(questionRepository);
-        answerFacade             = new AnswerFacade(answerRepository);
-        commentFacade            = new CommentFacade(commentRepository);
-        voteFacade               = new VoteFacade(voteRepository);
-        statisticsFacade         = new StatisticsFacade(questionRepository, userRepository, commentRepository, answerRepository, voteRepository, questionFacade, voteFacade);
-        paginationFacade         = new PaginationFacade(questionRepository, answerRepository);
-
+        initFacades();
         if(userRepository.getRepositorySize() > 0) {
             return;
         }
+        populateRepositories();
+    }
 
+    /**
+     * Initialize facades.
+     */
+    private void initFacades() {
+        gamificationFacade       = new GamificationFacade(null);
+        identityManagementFacade = new IdentityManagementFacade(userRepository, gamificationFacade);
+        questionFacade           = new QuestionFacade(questionRepository, gamificationFacade);
+        answerFacade             = new AnswerFacade(answerRepository, gamificationFacade);
+        commentFacade            = new CommentFacade(commentRepository, gamificationFacade);
+        voteFacade               = new VoteFacade(voteRepository, gamificationFacade);
+        statisticsFacade         = new StatisticsFacade(questionRepository, userRepository, commentRepository, answerRepository, voteRepository, questionFacade, voteFacade, gamificationFacade);
+        paginationFacade         = new PaginationFacade(questionRepository, answerRepository);
+        historyFacade            = new HistoryFacade(gamificationFacade);
+    }
+
+    /**
+     * Populate StoneOverflow's repositories with default values.
+     */
+    private void populateRepositories() {
         // Add default users
         User u1 = User.builder()
                 .username("test")
@@ -143,13 +169,13 @@ public class ServiceRegistry {
                 .nbViews(new AtomicInteger(44))
                 .build());
 
-        Question q1 = Question.builder()
+        QuestionId q1Id = questionFacade.addQuestion(AddQuestionCommand.builder()
                 .title("Is there any herb to get your dog high like catnip?")
                 .description("The question is all about the title :)")
                 .creatorId(u2.getId())
                 .creator(u2.getUsername())
                 .nbViews(new AtomicInteger(0))
-                .build();
+                .build());
 
         Question qE2e = Question.builder()
                 .title("E2e testing question")
@@ -159,21 +185,20 @@ public class ServiceRegistry {
                 .nbViews(new AtomicInteger(0))
                 .build();
 
-        questionRepository.save(q1);
         questionRepository.save(qE2e); // e2e testing
 
         // Add default answers
-        Answer a1 = Answer.builder()
-                .answerTo(q1.getId())
+        AnswerId a1Id = answerFacade.addAnswer(AddAnswerCommand.builder()
+                .answerTo(q1Id)
                 .description("Yes there is. It's called anise ;)")
                 .creatorId(u1.getId())
-                .creator(u1.getUsername()).build();
+                .creator(u1.getUsername()).build());
 
-        Answer a2 = Answer.builder()
-                .answerTo(q1.getId())
+        AnswerId a2Id = answerFacade.addAnswer(AddAnswerCommand.builder()
+                .answerTo(q1Id)
                 .description("Is this questions a cake?")
                 .creatorId(u1.getId())
-                .creator("IAmALieBecauseIMayBeACakeInsideAndIAmScaredAboutThat").build();
+                .creator("IAmALieBecauseIMayBeACakeInsideAndIAmScaredAboutThat").build());
 
         Answer aE2e = Answer.builder()
                 .answerTo(qE2e.getId())
@@ -181,34 +206,32 @@ public class ServiceRegistry {
                 .creatorId(uE2e.getId())
                 .creator(uE2e.getUsername()).build();
 
-        answerRepository.save(a1);
-        answerRepository.save(a2);
         answerRepository.save(aE2e);
 
         // Add default comments
-        Comment c1 = Comment.builder()
-                .commentTo(q1.getId())
-                .description("Excellent question sir.")
+        commentFacade.addComment(AddCommentCommand.builder()
+                .commentTo(q1Id)
+                .content("Excellent question sir.")
                 .creatorId(u1.getId())
-                .creator(u1.getUsername()).build();
+                .creator(u1.getUsername()).build());
 
-        Comment c2 = Comment.builder()
-                .commentTo(a1.getId())
-                .description("It's also called dog nip by the way.")
+        commentFacade.addComment(AddCommentCommand.builder()
+                .commentTo(a1Id)
+                .content("It's also called dog nip by the way.")
                 .creatorId(u1.getId())
-                .creator(u1.getUsername()).build();
+                .creator(u1.getUsername()).build());
 
-        Comment c3 = Comment.builder()
-                .commentTo(a1.getId())
-                .description("Yeah it's anise, I've tried it with my dog. But since this event my dog stopped moving but it was fun I would say.")
+        commentFacade.addComment(AddCommentCommand.builder()
+                .commentTo(a1Id)
+                .content("Yeah it's anise, I've tried it with my dog. But since this event my dog stopped moving but it was fun I would say.")
                 .creatorId(u2.getId())
-                .creator(u2.getUsername()).build();
+                .creator(u2.getUsername()).build());
 
-        Comment c4 = Comment.builder()
-                .commentTo(a2.getId())
-                .description("D*fuck is wrong with you buddy?")
+        commentFacade.addComment(AddCommentCommand.builder()
+                .commentTo(a2Id)
+                .content("D*fuck is wrong with you buddy?")
                 .creatorId(u2.getId())
-                .creator(u2.getUsername()).build();
+                .creator(u2.getUsername()).build());
 
         Comment cE2e = Comment.builder()
                 .commentTo(aE2e.getId())
@@ -222,37 +245,28 @@ public class ServiceRegistry {
                 .creatorId(uE2e.getId())
                 .creator(uE2e.getUsername()).build();
 
-        commentRepository.save(c1);
-        commentRepository.save(c2);
-        commentRepository.save(c3);
-        commentRepository.save(c4);
         commentRepository.save(cE2e); // e2e testing
         commentRepository.save(c2E2e); // e2e testing
 
-        Vote v1 = Vote.builder()
+        voteFacade.addVote(AddVoteCommand.builder()
                 .votedBy(u1.getId())
-                .votedObject(q1.getId())
-                .voteType(Vote.VoteType.UP).build();
+                .votedObject(q1Id)
+                .voteType(Vote.VoteType.UP).build());
 
-        Vote v2 = Vote.builder()
+        voteFacade.addVote(AddVoteCommand.builder()
                 .votedBy(u1.getId())
-                .votedObject(a2.getId())
-                .voteType(Vote.VoteType.DOWN).build();
+                .votedObject(a2Id)
+                .voteType(Vote.VoteType.DOWN).build());
 
-        Vote v3 = Vote.builder()
+        voteFacade.addVote(AddVoteCommand.builder()
                 .votedBy(u2.getId())
-                .votedObject(a2.getId())
-                .voteType(Vote.VoteType.DOWN).build();
+                .votedObject(a2Id)
+                .voteType(Vote.VoteType.DOWN).build());
 
-        Vote v4 = Vote.builder()
+        voteFacade.addVote(AddVoteCommand.builder()
                 .votedBy(u2.getId())
-                .votedObject(a1.getId())
-                .voteType(Vote.VoteType.UP).build();
-
-        voteRepository.save(v1);
-        voteRepository.save(v2);
-        voteRepository.save(v3);
-        voteRepository.save(v4);
+                .votedObject(a1Id)
+                .voteType(Vote.VoteType.UP).build());
 
         // Place the E2E question in the front page by giving it the biggest upvote count
         voteRepository.save(Vote.builder()

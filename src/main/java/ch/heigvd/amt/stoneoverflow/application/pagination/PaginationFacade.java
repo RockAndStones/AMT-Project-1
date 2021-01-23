@@ -24,11 +24,10 @@ public class PaginationFacade {
         this.answerRepository   = answerRepository;
     }
 
-    private PaginationDTO settingPagination(int itemPerPage, int itemRepoSize, String paramPage) {
+    public static PaginationDTO settingPagination(int itemPerPage, int itemRepoSize, int page) {
 
         int totalPages = (int) Math.ceil((double) itemRepoSize / (double) itemPerPage);
-        int currentPage = paramPage != null && Integer.parseInt(paramPage) <= totalPages ?
-                Integer.parseInt(paramPage) : START_PAGE;
+        int currentPage = page <= totalPages ? page : START_PAGE;
         int startItem = (currentPage - 1) * itemPerPage;
         int lastItem = Math.min(startItem + itemPerPage, itemRepoSize);
 
@@ -44,35 +43,23 @@ public class PaginationFacade {
                 .build();
     }
 
+    private int pageFromString(String paramPage) {
+        int page = START_PAGE;
+        if (paramPage != null)
+            page = Integer.parseInt(paramPage);
+
+        return page;
+    }
+
     public PaginationDTO settingQuestionPagination(String paramPage) {
-        /*
-        int allQuestions = questionRepository.getRepositorySize();
-        int totalPages = (int) Math.ceil((double) allQuestions / (double) QUESTION_PER_PAGE);
-        int currentPage = paramPage != null && Integer.parseInt(paramPage) <= totalPages ?
-                Integer.parseInt(paramPage) : START_PAGE;
-        int startQuestion = (currentPage - 1) * QUESTION_PER_PAGE;
-        int lastQuestion = Math.min(startQuestion + QUESTION_PER_PAGE, allQuestions);
-
-        return PaginationDTO.builder()
-                .limit(QUESTION_PER_PAGE)
-                .itemRepoSize(allQuestions)
-                .totalPages(totalPages)
-                .currentPage(currentPage)
-                .startItem(startQuestion)
-                .lastItem(lastQuestion)
-                .startPage(getStartingPage(currentPage, totalPages))
-                .lastPage(getLastPage(currentPage, totalPages))
-                .build();
-        */
-
-        return settingPagination(QUESTION_PER_PAGE, questionRepository.getRepositorySize(), paramPage);
+        return settingPagination(QUESTION_PER_PAGE, questionRepository.getRepositorySize(), pageFromString(paramPage));
     }
 
     public PaginationDTO settingAnswerPagination(String paramPage, int nbAnswers) {
-        return settingPagination(ANSWER_PER_PAGE, nbAnswers, paramPage);
+        return settingPagination(ANSWER_PER_PAGE, nbAnswers, pageFromString(paramPage));
     }
 
-    private int getStartingPage(int currentPage, int totalPages){
+    private static int getStartingPage(int currentPage, int totalPages){
         // Cannot have a page below 1
         int startingPage = Math.max(currentPage - SHOWED_PAGES, START_PAGE);
         if(startingPage >= totalPages){
@@ -88,7 +75,7 @@ public class PaginationFacade {
         return startingPage;
     }
 
-    private int getLastPage(int currentPage, int totalPages){
+    private static int getLastPage(int currentPage, int totalPages){
         // Cannot have a page higher than the last page
         int lastPage = Math.min(currentPage + SHOWED_PAGES, totalPages);
         if(lastPage <= START_PAGE){

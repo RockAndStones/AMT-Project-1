@@ -1,9 +1,11 @@
 package ch.heigvd.amt.stoneoverflow.ui.web.login;
 
 import ch.heigvd.amt.stoneoverflow.application.ServiceRegistry;
+import ch.heigvd.amt.stoneoverflow.application.gamification.GamificationFacade;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.IdentityManagementFacade;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.register.RegistrationFailedException;
 import ch.heigvd.amt.stoneoverflow.application.identitymgmt.register.RegisterCommand;
+import ch.heigvd.amt.stoneoverflow.domain.user.UserId;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;

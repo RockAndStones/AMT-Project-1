@@ -15,6 +15,7 @@
                   httpsPort="${default.https.port}" id="defaultHttpEndpoint"/>
 
     <dataSource id="mySQL" jndiName="jdbc/StoneOverflowDS" type="javax.sql.DataSource">
+        <connectionManager maxPoolSize="150"/>
         <jdbcDriver libraryRef="MySQLLib"/>
         <properties databaseName="${DB_DATABASE}" serverName="${DB_HOST}" portNumber="${DB_PORT}"
             user="${DB_USER}" password="${DB_PASSWORD}"/>
