@@ -47,6 +47,3 @@ services:
     depends_on:
       - stoneoverflow-db
       - gamification-api
-
-
-

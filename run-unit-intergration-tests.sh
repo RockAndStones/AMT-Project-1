@@ -20,12 +20,9 @@ mvn liberty:create liberty:install-feature liberty:deploy
 mvn liberty:start
 # Access StoneOverflow home page to generate default data
 curl http://localhost:8080/home
-# Run end to end tests
-cd e2e
-npm install
-npx codeceptjs run --colors --steps
+# Run integration tests
+mvn verify
 # Stop liberty server and containers
-cd ..
 mvn liberty:stop
 cd docker
 docker-compose down
