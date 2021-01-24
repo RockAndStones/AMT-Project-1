@@ -51,8 +51,8 @@ jobs:
       - name: Wait on stoneoverflow-db and gamification-api
         run: |
           cd docker
-          ./wait-for-it.unix.sh --timeout=30000 localhost:3306
-          ./wait-for-it.unix.sh --timeout=30000 localhost:8081
+          ./wait-for-it.sh --timeout=30000 localhost:3306
+          ./wait-for-it.sh --timeout=30000 localhost:8081
 
       - name: MVN verify webapp
         run: mvn liberty:start
