@@ -3,8 +3,13 @@
 mvn liberty:stop
 # Run container dependencies
 cd docker
+docker-compose stop
+docker-compose rm -f
 docker-compose up -d stoneoverflow-db gamification-api
 cd ..
+# Update environment properties
+sed -i '/DB_HOST/s/=.*/=localhost/' src/main/liberty/config/server.env
+sed -i '/ch.heigvd.amt.gamification.server.url/s/=.*/=http://localhost:8081/' src/main/liberty/config/server.env
 # Prepare liberty server
 mvn clean package
 mvn liberty:create liberty:install-feature liberty:deploy
@@ -20,3 +25,6 @@ mvn verify
 mvn liberty:stop
 cd docker
 docker-compose down
+# Restore environment properties
+sed -i '/DB_HOST/s/=.*/=stoneoverflow-db/' src/main/liberty/config/server.env
+sed -i '/ch.heigvd.amt.gamification.server.url/s/=.*/=http://gamification-api:8080' src/main/liberty/config/server.env
