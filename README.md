@@ -28,11 +28,15 @@ First clone the repository.
 ```
 git clone https://github.com/RockAndStones/AMT-Project-1.git
 ```
-Next, open a terminal in the docker folder of the cloned repository and run the following command.
-```
-docker-compose up -d
-```
-You will then be able to access the web application at the URL http://localhost:8080 when docker-compose is up and running.
+
+You will then have to ways of running the application :
+- First, you can run the run-stoneoverflow.sh script that will start all the containers
+- Secondly, you can open a terminal in the docker folder of the cloned repository and run the following command.
+    ```
+    docker-compose up -d
+    ```
+
+In both case at the end, you will then be able to access the web application at the URL http://localhost:8080 when docker-compose is up and running.
 
 ## Tests
 If you want to run the tests you will first need to clone the repository here is the command.
