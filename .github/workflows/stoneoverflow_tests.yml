@@ -32,7 +32,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - run: chmod +x ./docker/wait-for-it.unix.sh
+      - run: chmod +x ./docker/wait-for-it.sh
 
       - name: Maven Clean Package
         run: mvn clean package
@@ -59,7 +59,7 @@ jobs:
 
       - name: Wait on stoneoverflow-webapp
         run: |
-          ./docker/wait-for-it.unix.sh --timeout=30000 localhost:8080
+          ./docker/wait-for-it.sh --timeout=30000 localhost:8080
           curl localhost:8080
 
       - name: MVN verify webapp
@@ -86,15 +86,15 @@ jobs:
       - name: Wait on stoneoverflow-db and gamification-api
         run: |
           cd docker
-          ./wait-for-it.unix.sh --timeout=30000 localhost:3306
-          ./wait-for-it.unix.sh --timeout=30000 localhost:8081
+          ./wait-for-it.sh --timeout=30000 localhost:3306
+          ./wait-for-it.sh --timeout=30000 localhost:8081
 
       - name: MVN start webapp
         run: mvn liberty:start
 
       - name: Wait on stoneoverflow-webapp
         run: |
-          ./docker/wait-for-it.unix.sh --timeout=30000 localhost:8080
+          ./docker/wait-for-it.sh --timeout=30000 localhost:8080
           curl localhost:8080
 
       - name: E2E tests
