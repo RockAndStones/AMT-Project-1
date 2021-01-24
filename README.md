@@ -46,14 +46,14 @@ To run the unit & integration tests, use the `run-unit-integration-tests.sh` scr
 To run the end to end (E2E) tests, use the `run-e2e-tests.sh` script from the cloned root folder.
 
 ### Gamification Implementation
-In the last part of the semester, we were asked to merge the two projects created in this semester the StoneOverflow and the gamification engine created with spring.  
-To create a connection between the two applications we created a new class named `GamificationFacade` in the application/gamification package. This class will make the different calls for the API.  
-With this class we created another class named `GamificationHelper` that will contain all the rules, badges and pointscales that we will generate on the API for our site.  
-The calls of the functions on the `GamificationFacade` will be made by other Facades when we need to add or remove points on different scales. But some servlets, for instance StatiticServlet and HistoryServlet, will call directly the facade to make get calls for their respective pages.  
-To create the different calls function to the API we generated the code with openapi generator and the yaml file of our gamification engine.  
+In the last part of the semester, we were asked to merge the two projects created in this course, the StoneOverflow and the gamification engine.  
+To create a connection between the two applications, we created a new class named `GamificationFacade` in the application/gamification package. This class will make the different calls for the API.  
+With this class we created another class named `GamificationHelper` that will contain all the rules, badges, and point scales that we will generate on the API for our site.  
+The calls of the functions on the `GamificationFacade` will be made by other Facades when we will need to add or remove points on different scales. But some servlets, for instance, StatiticServlet and HistoryServlet, will call directly the facade to make get calls for their respective pages.  
+To create the different calls function to the API we generated the code with the openAPI generator and the YAML file of our gamification engine.  
 
-Of course, once the facade was created we also added a few more integration tests to make sure that the facade is working as wanted.  
-We tested that we could make all the calls needed to the API and receives response. Of course, we are talking about integration tests so we tested it with Arquillian.
+Of course, once the facade was created, we added a few more integration tests to make sure the facade is working as planned.  
+We tested that we could make all the calls needed to the API and receives a response. The intergration phase was tested using Arquillian as well.
 
 ## Known Problems
 - The tag functionality is implemented and tested but, we did not have the time to implement it in the UI.
