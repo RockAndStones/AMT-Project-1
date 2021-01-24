@@ -7,7 +7,7 @@ on:
 
 jobs:
   build_publish_docker_image:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
 
@@ -25,7 +25,7 @@ jobs:
 
       - name: Maven Clean Package
         run: |
-          sed -i '/DB_HOST/s/=.*/=localhost/' src/main/liberty/config/server.env
+          sed -i '/DB_HOST/s/=.*/=stoneoverflow-db/' src/main/liberty/config/server.env
           mvn clean package
 
       - uses: docker/setup-buildx-action@v1
