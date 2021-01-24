@@ -7,7 +7,6 @@ docker-compose stop
 docker-compose rm -f
 docker-compose up -d stoneoverflow-db gamification-api
 # Wait for gamification api to be ready
-./docker/wait-for-it.sh --timeout=0 localhost:8081
-./docker/wait-for-it.sh --timeout=0 localhost:3306
+while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8081/swagger-ui/)" != "200" ]]; do sleep 5; done
 # Run StoneOverflow
 docker-compose up -d stoneoverflow-webapp
