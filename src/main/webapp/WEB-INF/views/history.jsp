@@ -78,7 +78,9 @@
                         <div class="inline-block relative w-64">
                             <select name="f" onchange="document.forms['filter-form'].submit();" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
                                 <c:forEach items="${pointscales.pointscales}" var="pointscale">
-                                    <option value="${pointscale.id}" <c:if test="${param.f == pointscale.id}">selected</c:if>>${pointscale.name}</option>
+                                    <c:if test="${pointscale.name != 'Stoner PointScale'}">
+                                        <option value="${pointscale.id}" <c:if test="${param.f == pointscale.id}">selected</c:if>>${pointscale.name}</option>
+                                    </c:if>
                                 </c:forEach>
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">

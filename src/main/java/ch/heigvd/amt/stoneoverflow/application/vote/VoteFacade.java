@@ -76,8 +76,6 @@ public class VoteFacade {
                 .votedBy(command.getVotedBy())
                 .votedObject(command.getVotedObject())
                 .voteType(command.getVoteType()).build());
-        // TODO : Better Solution ?
-        sendEvent(command.getVoteType(), command.getVotedBy());
     }
 
     public void sendEvent(Vote.VoteType type, UserId voteBy){
