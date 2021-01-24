@@ -52,9 +52,11 @@ To run the end to end (E2E) tests, use the `run-e2e-tests.sh` script from the cl
 ### Gamification Implementation
 In the last part of the semester, we were asked to merge the two projects created in this course, the StoneOverflow and the gamification engine.  
 To create a connection between the two applications, we created a new class named `GamificationFacade` in the application/gamification package. This class will make the different calls for the API.  
-With this class we created another class named `GamificationHelper` that will contain all the rules, badges, and point scales that we will generate on the API for our site.  
-The calls of the functions on the `GamificationFacade` will be made by other Facades when we will need to add or remove points on different scales. But some servlets, for instance, StatiticServlet and HistoryServlet, will call directly the facade to make get calls for their respective pages.  
-To create the different calls function to the API we generated the code with the openAPI generator and the YAML file of our gamification engine.  
+With this class we created another class named `GamificationHelper` that will contain helper functions to easily generate all the rules, badges, and point scales, before submitting them to the API.   
+The calls of the functions on the `GamificationFacade` will be made by other Facades when we will need to add or remove points on different scales. But some servlets, for instance, StatisticsServlet and HistoryServlet, will call directly the facade to make GET calls for their respective pages.  
+
+In order to have an easily maintainable solution, we decided to add the openapi-generator, and okhttp3 libraries to maven. The openapi-generator dependency will automatically generate the classes based on our API specification (the YAML file). \\
+The use of okhttp3 makes it very easy to use API methods synchronously or asynchronously (with a callback). We opted for an asynchronous approach when creating events in order to improve performances. The other requests are executed synchronously.
 
 Of course, once the facade was created, we added a few more integration tests to make sure the facade is working as planned.  
 We tested that we could make all the calls needed to the API and receives a response. The intergration phase was tested using Arquillian as well.
