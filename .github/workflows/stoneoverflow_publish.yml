@@ -24,9 +24,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Maven Clean Package
-        run: |
-          sed -i '/DB_HOST/s/=.*/=stoneoverflow-db/' src/main/liberty/config/server.env
-          mvn clean package
+        run: mvn clean package
 
       - uses: docker/setup-buildx-action@v1
 
