@@ -45,7 +45,7 @@ jobs:
       - name: MVN liberty configuration
         run: |
           sed -i '/DB_HOST/s/=.*/=localhost/' src/main/liberty/config/server.env
-          sed -i '/ch.heigvd.amt.gamification.server.url/s/=.*/=http://localhost:8081/' src/main/liberty/config/server.env
+          sed -i '/ch\.heigvd\.amt\.gamification\.server\.url/s/=.*/=http\:\/\/localhost\:8081/' src/main/resources/environment.properties
           mvn liberty:create liberty:install-feature liberty:deploy
 
       - name: Wait on stoneoverflow-db and gamification-api
